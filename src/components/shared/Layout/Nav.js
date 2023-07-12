@@ -40,7 +40,7 @@ function Nav() {
                                     aria-current="page"
                                     href="/#how-it-works"
                                 >
-                                    How it works
+                                    How It Works
                                 </Link>
                             </li>
                             <li className="nav-item mx-3">

@@ -3,7 +3,7 @@ export const how_it_works = [
         title:
             "Step 1: Sign Up and Create Your Child's Profile",
         desc: "Begin by signing up for a KidWiz account and creating a profile for your child. Fill in some basic information, such as your child's name, age, interests, and any prior educational experiences. This information will help our AI-powered companion to understand your child's unique needs and tailor their learning experience accordingly.",
-        img: '/images/How-It-Works-1.png'
+        img: '/images/how-it-works-1.png'
     },
     {
         title:
