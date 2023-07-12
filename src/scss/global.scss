@@ -1,0 +1,506 @@
+@import './varaible.scss';
+@import './responsive.scss';
+
+.body {
+    overflow-x: hidden;
+}
+
+.fallback {
+    height: 100vh;
+    width: 100vw;
+
+    img {
+        height: 25%;
+        -webkit-animation: fadeinout .5s linear infinite;
+        animation: fadeinout .5s linear infinite;
+    }
+
+    @-webkit-keyframes fadeinout {
+
+        0%,
+        100% {
+            opacity: 0;
+        }
+
+        50% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes fadeinout {
+
+        0%,
+        100% {
+            opacity: 0;
+        }
+
+        50% {
+            opacity: 1;
+        }
+    }
+
+}
+
+button {
+    font-family: 'poppins-semibold';
+    border-radius: 12px !important;
+}
+
+#header {
+    height: 125px;
+
+    @include sm {
+        height: auto;
+    }
+
+    .navbar-toggler {
+        .navbar-toggler-icon {
+            background-image: url("../../public/icons/hamburger.svg") !important;
+            height: 5vh;
+            transform: scale(2.25);
+        }
+    }
+
+    .navbar-brand {
+        img {
+            @include sm {
+                height: 10vh;
+                width: auto;
+            }
+        }
+    }
+
+    .nav-link {
+        font-family: 'poppins-semibold';
+
+        &:hover {
+            color: $tertiary !important;
+        }
+
+        @include sm {
+            font-size: 3rem !important;
+        }
+    }
+}
+
+
+#slider-menu {
+    background-color: $tertiary;
+    .nav-link {
+        font-family: 'poppins-semibold';
+        &:hover {
+            color: $tertiary !important;
+        }
+        
+        @include sm {
+            color: $white !important;
+            font-size: 1.5rem !important;
+        }
+    }
+}
+
+h1,
+.heading {
+    font-size: 3.25rem;
+    font-family: 'poppins-bold';
+
+    @include sm {
+        font-size: 2.25rem;
+    }
+}
+
+.side-heading {
+    font-size: 2.5rem;
+    font-family: 'poppins-bold';
+
+    @include sm {
+        font-size: 1.5rem;
+        padding: 0 6vw;
+    }
+}
+
+.paragraph {
+    font-size: 1.1em;
+    font-weight: 400;
+    font-family: 'poppins-regular';
+
+    @include sm {
+        font-size: .9rem;
+        text-align: left !important;
+        padding: 0 4vw;
+    }
+}
+
+.sub-heading {
+    font-size: 1.6rem;
+    font-weight: 400;
+    font-family: 'poppins-medium';
+
+    @include sm {
+        font-size: 1.2rem;
+        padding: 0 5vw;
+    }
+}
+
+.sub-heading-text {
+    font-size: 1.45rem;
+    font-weight: 450;
+
+    @include sm {
+        font-size: 1.25rem;
+    }
+}
+
+.sub-text {
+    font-size: 1.5rem;
+    font-weight: 450;
+
+    @include sm {
+        font-size: 1.25rem;
+    }
+}
+
+.bold {
+    font-family: 'poppins-bold';
+}
+
+
+
+.button-colored {
+    color: $white;
+    font-weight: 600;
+    font-size: 1.3rem;
+    width: 15vw;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.5);
+    border-radius: 12px;
+    position: relative;
+    font-family: 'poppins-semibold';
+
+    span {
+        padding: 0vw 25px;
+        font-family: 'poppins-regular';
+        text-align: left;
+        position: absolute;
+        top: 98%;
+        left: 0;
+        min-height: 150px;
+        display: none;
+        background-color: $white;
+        font-size: .9rem;
+        z-index: 1000;
+        box-shadow: 0.1px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    }
+
+    &:hover {
+        background-color: $white !important;
+        color: $black !important;
+        transition: .25s linear;
+        border: none;
+        border-bottom-left-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+
+        span {
+            display: block;
+        }
+    }
+
+    &.orange {
+        background-color: #F3A600;
+    }
+
+    &.shocking_pink {
+        background-color: #FF00FF;
+    }
+
+    &.dull_pink {
+        background-color: #AF0C86;
+    }
+
+    &.green {
+        background-color: $tertiary;
+    }
+
+    &.blue {
+        background-color: $secondary;
+    }
+
+    &:hover {
+        color: #fff;
+    }
+
+    @include sm {
+        width: 100%;
+    }
+
+
+}
+
+#review-card {
+    min-height: 40vh;
+
+    @include sm {
+        font-size: 1.1rem;
+
+        .paragraph {
+            padding: 0 0;
+            font-family: 'poppins-regular' !important;
+        }
+    }
+
+    border-radius: 40px;
+
+    h3 {
+        font-size: 1.5rem;
+        max-width: 60%;
+        @include sm{
+            max-width: 100%;
+        }
+    }
+
+    .paragraph {
+        font-size: 1.05rem;
+    }
+
+
+    .sub-heading-text {
+        @include xs {
+            font-size: .9rem;
+        }
+    }
+
+    .sub-text {
+        @include xs {
+            font-size: .85rem;
+        }
+    }
+}
+
+.bg {
+    &.light {
+        background-color: $primary;
+    }
+
+    &.white {
+        background-color: $white;
+    }
+
+    &.blue {
+        background-color: $secondary;
+    }
+
+    &.green {
+        background-color: $tertiary;
+    }
+}
+
+.text {
+    &.light {
+        color: $primary;
+    }
+
+    &.white {
+        color: $white;
+    }
+
+    &.blue {
+        color: $secondary;
+    }
+
+    &.green {
+        color: $tertiary;
+    }
+}
+
+
+#swipper {
+    .content {
+        height: 60vh;
+
+        p {
+            font-size: 1.25rem;
+        }
+
+    }
+}
+
+.offer-images {
+    height: 60vh;
+}
+
+.carousal-buttons {
+    button {
+        background-color: #D9D9D9;
+        border: none;
+        height: 40px;
+        width: 40px;
+    }
+
+    @include sm {
+        display: flex;
+        justify-content: center;
+    }
+}
+
+.carousal-dots {
+
+    @include sm {
+        justify-content: center;
+    }
+
+    span {
+        border-radius: 2px;
+        height: 5px;
+        width: 20px;
+        background-color: #D9D9D9;
+        margin: 2px;
+
+        &.active {
+            background-color: #545454;
+        }
+    }
+}
+
+#swipper-image {
+    position: sticky;
+    top: 35%;
+}
+
+.opacity-10 {
+    opacity: 10%;
+}
+
+.bubble-button {
+    border-radius: 20px;
+    padding: 0px 5px 5px 5px;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.5);
+    display: flex;
+    padding: 10px 1rem;
+    opacity: 0;
+    min-width: 45%;
+    max-width: 100%;
+    animation-name: fadeIn;
+    animation-duration: 2s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    font-family: 'poppins-regular';
+    font-size: 0.85rem;
+
+    &.bot {
+        justify-content: end;
+    }
+
+    &.user {
+        justify-content: start;
+        background-color: #EFF1F3;
+    }
+
+    &.one {
+        animation-delay: 1s;
+    }
+
+    &.two {
+        animation-delay: 2s;
+    }
+
+    &.three {
+        animation-delay: 3s;
+    }
+
+    &.four {
+        animation-delay: 4s;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    span {
+        width: 90%;
+        font-weight: 500;
+    }
+}
+
+#chatboat-floating-avatar {
+    position: fixed;
+    height: 20vh;
+    width: 20vh;
+    bottom: 5vh;
+    right: 5vh;
+}
+
+.sm-hidden {
+    @include sm {
+        display: none !important;
+    }
+}
+
+.sm-visible {
+    display: none;
+
+    @include sm {
+        display: block !important;
+    }
+
+    &.inline {
+        @include sm {
+            display: inline !important;
+        }
+    }
+}
+
+.sticky-20 {
+    position: sticky !important;
+
+    top: 125px;
+
+    @include xl {
+        top: 12vh;
+    }
+
+    @include lg {
+        top: 12vh;
+    }
+
+    @include sm {
+        top: 10vh;
+    }
+}
+
+.overlay {
+    background-color: hsla(0, 0%, 0%, 0.1);
+}
+
+.z-index-100 {
+    z-index: 100;
+}
+
+.video-player-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1022;
+    background-color: hsla(0, 0%, 0%, 0.5);
+    height: 100vh;
+    width: 100vw;
+
+    .video-container {
+        .close-icon {
+            margin-bottom: -30px;
+            margin-right: 5px;
+            z-index: 1023;
+        }
+
+        z-index: 1023;
+        width: 50%;
+
+        @include sm {
+            width: 90%;
+        }
+    }
+}
