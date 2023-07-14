@@ -24,7 +24,7 @@ function Footer() {
                     <div className='col-lg-4 col-6 py-lg-0 py-3'>
                         <h4>Resource</h4>
                         <p className='my-1'>
-                            <Link className='text-dark text-decoration-none' target='_blank' href="https://kidwizlearning.com/">
+                            <Link className='text-dark text-decoration-none' target='_blank' href="https://kidwizlearning.com/blogs">
                                 Educational Blog
                             </Link>
                         </p>
