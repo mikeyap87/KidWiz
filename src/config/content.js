@@ -31,8 +31,8 @@ export const how_it_works = [
     },
     {
         title:
-            "Step 6: Collaborate with Certified Early Childhood Educators (Premium and Elite Plans)",
-        desc: "If you've opted for our Premium or Elite plans, you'll have access to weekly or bi-weekly one-on-one virtual sessions with certified early childhood educators. These sessions provide an opportunity for you and your child to discuss their progress, set new goals, and receive personalized guidance and support.",
+            "Step 6: Collaborate with Certified Early Childhood Educators",
+        desc: "One-on-one virtual sessions with certified early childhood educators. These sessions provide an opportunity for you and your child to discuss their progress, set new goals, and receive personalized guidance and support.",
         img: '/images/How-It-Works-6.png'
     },
     {

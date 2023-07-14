@@ -56,7 +56,7 @@ function Nav() {
                                 <Link
                                     className="nav-link fw-bold text-dark"
                                     aria-current="page"
-                                    href="/home#pricing"
+                                    href="/#prelaunch"
                                 >
                                     Pricing
                                 </Link>

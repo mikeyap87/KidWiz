@@ -50,7 +50,7 @@ function WhatWeCover() {
           <CollapsableButton
             title='Enviroment'
             color='green'
-            content='Studies: Foster a love of nature and a sense of responsibility for our planet with lessons on environmental issues and conservation.'
+            content='Foster a love of nature and a sense of responsibility for our planet with lessons on environmental issues and conservation.'
           />
           <CollapsableButton
             title='Languages'

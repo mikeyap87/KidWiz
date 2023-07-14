@@ -39,7 +39,7 @@ function Slider({ open, setOpen }) {
                     <a
                         className="nav-link fw-bold text-dark"
                         aria-current="page"
-                        href="/home#pricing"
+                        href="/#prelaunch"
                     >
                         Pricing
                     </a>

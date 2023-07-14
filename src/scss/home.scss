@@ -323,7 +323,7 @@ body {
 
     .bottom {
         width: 50%;
-
+        height: auto !important;
         @include sm {
             width: 90%;
         }
@@ -461,6 +461,7 @@ body {
 
         button {
             font-family: 'poppins-semibold';
+            height: auto !important;
         }
 
     }
