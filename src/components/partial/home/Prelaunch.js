@@ -32,7 +32,7 @@ function PreLaunch() {
             body: JSON.stringify({ data })
         };
         // Send data to Klaviyo API using Axios GET request with base64-encoded JSON data as query parameter
-        fetch(`https://a.klaviyo.com/client/subscriptions/?company_id=UfeDay`, options)
+        fetch(`https://a.klaviyo.com/client/subscriptions/?company_id=Ui46UJ`, options)
             .then(() => {
                 setLoading(false)
                 api.success({

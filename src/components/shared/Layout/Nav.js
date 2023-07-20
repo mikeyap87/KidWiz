@@ -9,7 +9,7 @@ function Nav() {
 
     return (
         <>
-            <nav id='header' className="navbar navbar-white bg-white shadow sticky-top">
+            <nav id='header' className="navbar navbar-expand-lg navbar-white bg-white shadow sticky-top">
                 <div className="container">
                     <Link className="navbar-brand" href="/#">
                         <Image
