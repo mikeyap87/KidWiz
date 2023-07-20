@@ -24,7 +24,7 @@ function PreLaunch() {
                 },
                 custom_source: 'Prelaunch Sign up!'
             },
-            relationships: { list: { data: { type: 'list', id: 'W8gFnX' } } }
+            relationships: { list: { data: { type: 'list', id: 'RzdCPx' } } }
         }
         const options = {
             method: 'POST',
