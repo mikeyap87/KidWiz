@@ -16,8 +16,8 @@ function PreLaunch() {
                         type: 'profile',
                         attributes: {
                             meta: { patch_properties: { append: { skus: ['92538', '40571'] } } },
-                            email: 'sarah.mason@klaviyo-demo.com',
-                            first_name: 'Sarah'
+                            email: values.email,
+                            first_name: values.full_name
                         },
                         id: '01GDDKASAP8TKDDA2GRZDSVP4H'
                     }
