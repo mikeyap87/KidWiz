@@ -86,12 +86,14 @@ button {
 
 #slider-menu {
     background-color: $tertiary;
+
     .nav-link {
         font-family: 'poppins-semibold';
+
         &:hover {
             color: $tertiary !important;
         }
-        
+
         @include sm {
             color: $white !important;
             font-size: 1.5rem !important;
@@ -252,7 +254,8 @@ h1,
     h3 {
         font-size: 1.5rem;
         max-width: 60%;
-        @include sm{
+
+        @include sm {
             max-width: 100%;
         }
     }

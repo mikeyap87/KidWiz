@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Button, Drawer } from 'antd';
+import { Drawer } from 'antd';
+import Link from 'next/link';
 
 function Slider({ open, setOpen }) {
     const onClose = () => {
@@ -9,58 +10,64 @@ function Slider({ open, setOpen }) {
         <Drawer zIndex={1020} size='small' placement="right" onClose={onClose} open={open}>
             <ul id="slider-menu" className="navbar-nav me-auto mb-2 mb-lg-0 w-100 d-flex justify-content-center">
                 <li className="nav-item mx-3">
-                    <a
+                    <Link
                         className="nav-link fw-bold text-dark"
                         aria-current="page"
-                        href="#what-we-cover"
+                        href="/#what-we-cover"
+                        onClick={() => setOpen(false)}
                     >
                         Topics
-                    </a>
+                    </Link>
                 </li>
                 <li className="nav-item mx-3">
-                    <a
+                    <Link
                         className="nav-link fw-bold text-dark"
                         aria-current="page"
-                        href="#how-it-works"
+                        href="/#how-it-works"
+                        onClick={() => setOpen(false)}
                     >
                         How It Works
-                    </a>
+                    </Link>
                 </li>
                 <li className="nav-item mx-3">
-                    <a
+                    <Link
                         className="nav-link fw-bold text-dark"
                         aria-current="page"
-                        href="#what_we_offer"
+                        href="/#what_we_offer"
+                        onClick={() => setOpen(false)}
                     >
                         Features
-                    </a>
+                    </Link>
                 </li>
                 <li className="nav-item mx-3">
-                    <a
+                    <Link
                         className="nav-link fw-bold text-dark"
                         aria-current="page"
                         href="/#prelaunch"
+                        onClick={() => setOpen(false)}
                     >
                         Pricing
-                    </a>
+                    </Link>
                 </li>
                 <li className="nav-item mx-3">
-                    <a
+                    <Link
                         className="nav-link fw-bold text-dark"
                         aria-current="page"
-                        href="#faq"
+                        href="/#faq"
+                        onClick={() => setOpen(false)}
                     >
                         FAQ
-                    </a>
+                    </Link>
                 </li>
                 <li className="nav-item mx-3">
-                    <a
+                    <Link
                         className="nav-link fw-bold text-dark"
                         aria-current="page"
-                        href="#our_vision"
+                        href="/#our_vision"
+                        onClick={() => setOpen(false)}
                     >
                         Vision
-                    </a>
+                    </Link>
                 </li>
             </ul>
         </Drawer>

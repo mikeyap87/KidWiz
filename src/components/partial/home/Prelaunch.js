@@ -9,19 +9,30 @@ function PreLaunch() {
     async function handleSubmit(values) {
         setLoading(true)
         const data = {
-            token: 'Ui46UJ',
-            event: 'Contact Form',
-            customer_properties: {
-                $email: 'michael.yap.87@gmail.com'
+            type: 'subscription',
+            attributes: {
+                profile: {
+                    data: {
+                        type: 'profile',
+                        attributes: {
+                            meta: { patch_properties: { append: { skus: ['92538', '40571'] } } },
+                            email: values.email,
+                            first_name: values.full_name
+                        },
+                        id: '01GDDKASAP8TKDDA2GRZDSVP4H'
+                    }
+                },
+                custom_source: 'Prelaunch Sign up!'
             },
-            properties: {
-                values
-            }
+            relationships: { list: { data: { type: 'list', id: 'RzdCPx' } } }
+        }
+        const options = {
+            method: 'POST',
+            headers: { revision: '2023-07-15', 'content-type': 'application/json' },
+            body: JSON.stringify({ data })
         };
         // Send data to Klaviyo API using Axios GET request with base64-encoded JSON data as query parameter
-        fetch(`https://a.klaviyo.com/api/track?data=${Buffer.from(
-            JSON.stringify(data)
-        ).toString('base64')}`)
+        fetch(`https://a.klaviyo.com/client/subscriptions/?company_id=Ui46UJ`, options)
             .then(() => {
                 setLoading(false)
                 api.success({

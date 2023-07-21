@@ -324,6 +324,7 @@ body {
     .bottom {
         width: 50%;
         height: auto !important;
+
         @include sm {
             width: 90%;
         }
