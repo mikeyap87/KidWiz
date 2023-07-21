@@ -8,7 +8,7 @@ function Footer() {
         <footer id='footer' className='py-lg-5 3 px-lg-0 px-3 pt-lg-0 pt-3 mt-lg-0 mt-3'>
             <div className='container py-lg-5 py-3 my-3'>
                 <div className='row'>
-                    <div className='col-lg-4 col-6 py-lg-0 py-3'>
+                    <div className='col-lg-4 col-6 py-lg-0 py-3 text-center'>
                         <h4>KidWiz</h4>
                         <p className='my-1'>
                             <Link className='text-dark text-decoration-none' href="/privacy-policy">
@@ -21,17 +21,17 @@ function Footer() {
                             </Link>
                         </p>
                     </div>
-                    <div className='col-lg-4 col-6 py-lg-0 py-3'>
+                    <div className='col-lg-4 col-6 py-lg-0 py-3 text-center'>
                         <h4>Resource</h4>
                         <p className='my-1'>
-                            <Link className='text-dark text-decoration-none' target='_blank' href="https://kidwizlearning.com/blogs">
+                            <Link className='text-dark text-decoration-none' target='_blank' href="https://blog.kidwizlearning.com/blogs">
                                 Educational Blog
                             </Link>
                         </p>
                     </div>
-                    <div className='col-lg-4 col-12 py-lg-0 py-3'>
+                    <div className='col-lg-4 col-12 py-lg-0 py-3 text-center'>
                         <div className='d-flex flex-column justify-content-center align-items-center'>
-                            <h4>Resource</h4>
+                            <h4>Contact</h4>
                             <p className='my-1'>
                                 1-(530) 325-0852
                             </p>
