@@ -32,12 +32,12 @@ function Footer() {
                     <div className='col-lg-4 col-12 py-lg-0 py-3 text-center'>
                         <div className='d-flex flex-column justify-content-center align-items-center'>
                             <h4>Contact</h4>
-                            <p className='my-1'>
+                            <Link className='text-dark text-decoration-none my-1' target='_blank' href="tel:1-(530) 325-0852">
                                 1-(530) 325-0852
-                            </p>
-                            <p className='my-1'>
+                            </Link>
+                            <Link className='text-dark text-decoration-none my-1' target='_blank' href="mailto:info@kidwizlearning.com">
                                 info@kidwizlearning.com
-                            </p>
+                            </Link>
                             <div className='my-2'>
                                 <Link className='text-dark text-decoration-none' target='_blank' href="https://www.facebook.com/KidWizLearning">
                                     <Image
