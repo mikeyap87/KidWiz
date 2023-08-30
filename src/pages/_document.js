@@ -5,11 +5,9 @@ export default function Document() {
     <Html lang="en">
         <Head>
           {/* Updated chatbot script */}
-          <script
-            id="retune.so/chat"
-            src="https://retune.so/api/script/chat.js?id=11ee3bc9-97de-cb50-b060-27e1e8063720"
-            defer
-          ></script>
+          <script id="__webwhizSdk__" chatbotId="64e9113c36efb9b9f5c7c282"
+src="https://widget.webwhiz.ai/webwhiz-sdk.js">
+</script>
         </Head>
       <body>
         <Main />
