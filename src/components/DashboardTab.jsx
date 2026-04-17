@@ -1,15 +1,34 @@
 import {
+  ArrowDownRight,
+  ArrowUpRight,
   Award,
   Brain,
   BookOpen,
   ChevronRight,
   LayoutDashboard,
   MessagesSquare,
+  Minus,
   NotebookPen,
   Sparkles,
   Target,
   Users,
 } from "lucide-react";
+
+function TrendDelta({ deltaLabel, deltaTone }) {
+  const Icon =
+    deltaTone === "up"
+      ? ArrowUpRight
+      : deltaTone === "down"
+        ? ArrowDownRight
+        : Minus;
+
+  return (
+    <span className={`dashboard-delta-pill is-${deltaTone}`}>
+      <Icon size={14} />
+      {deltaLabel} vs last week
+    </span>
+  );
+}
 
 export function DashboardTab({
   childSummaries,
@@ -128,6 +147,88 @@ export function DashboardTab({
             ))}
           </div>
         </article>
+      </div>
+
+      <div className="dashboard-report-grid dashboard-report-grid-secondary">
+        <section className="surface-panel">
+          <div className="panel-head">
+            <LayoutDashboard size={18} />
+            <h2>Trend watch</h2>
+          </div>
+
+          <div className="dashboard-trend-overview">
+            <div className="dashboard-trend-overview-copy">
+              <p>Family readiness</p>
+              <strong>{weeklyReport.readinessScore}%</strong>
+              <span>{weeklyReport.readinessCopy}</span>
+              <TrendDelta
+                deltaLabel={weeklyReport.familyDeltaLabel}
+                deltaTone={weeklyReport.familyDeltaTone}
+              />
+            </div>
+
+            <div className="dashboard-trend-bar-grid">
+              {weeklyReport.familyTrendSeries.map((point) => (
+                <div key={point.weekLabel} className="dashboard-trend-bar-group">
+                  <div className="dashboard-trend-bar-head">
+                    <span>{point.weekLabel}</span>
+                    <strong>{point.readinessScore}%</strong>
+                  </div>
+                  <div className="dashboard-trend-bar">
+                    <div
+                      className="dashboard-trend-bar-fill"
+                      style={{ width: `${point.readinessScore}%` }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="surface-panel">
+          <div className="panel-head">
+            <Users size={18} />
+            <h2>Child trend watch</h2>
+          </div>
+
+          <div className="dashboard-report-list">
+            {weeklyReport.childTrendRows.map((row) => (
+              <article key={row.childId} className="dashboard-detail-row">
+                <div className="dashboard-child-trend-head">
+                  <div>
+                    <p>{row.childName}</p>
+                    <strong>{row.currentReadiness}% weekly readiness</strong>
+                  </div>
+                  <TrendDelta deltaLabel={row.deltaLabel} deltaTone={row.deltaTone} />
+                </div>
+
+                <div className="dashboard-mini-trend-row">
+                  {row.trendSeries.map((point) => (
+                    <div key={`${row.childId}-${point.weekLabel}`} className="dashboard-mini-trend-item">
+                      <div className="dashboard-mini-trend-label">
+                        <span>{point.weekLabel}</span>
+                        <strong>{point.readinessScore}%</strong>
+                      </div>
+                      <div className="dashboard-mini-trend-bar">
+                        <div
+                          className="dashboard-mini-trend-fill"
+                          style={{ width: `${point.readinessScore}%` }}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <span>{row.note}</span>
+                <em>
+                  Biggest movement: {row.strongestMetricLabel} ({row.strongestMetricDelta > 0 ? "+" : ""}
+                  {row.strongestMetricDelta} pts).
+                </em>
+              </article>
+            ))}
+          </div>
+        </section>
       </div>
 
       <div className="dashboard-report-grid dashboard-report-grid-secondary">

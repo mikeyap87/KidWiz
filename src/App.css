@@ -1452,6 +1452,32 @@
   margin-top: 8px;
 }
 
+.dashboard-delta-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 0 10px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.dashboard-delta-pill.is-up {
+  background: rgba(120, 212, 106, 0.12);
+  color: #9df58a;
+}
+
+.dashboard-delta-pill.is-down {
+  background: rgba(255, 107, 74, 0.12);
+  color: #ff9a84;
+}
+
+.dashboard-delta-pill.is-steady {
+  background: rgba(255, 209, 90, 0.12);
+  color: #ffd15a;
+}
+
 .dashboard-detail-row {
   padding: 16px;
   border: 1px solid rgba(246, 248, 251, 0.08);
@@ -1468,11 +1494,103 @@
   margin-top: 8px;
 }
 
+.dashboard-detail-row em {
+  display: block;
+  margin-top: 10px;
+  color: rgba(246, 248, 251, 0.58);
+  font-size: 0.84rem;
+  font-style: normal;
+}
+
 .dashboard-detail-row-action {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: 16px;
+}
+
+.dashboard-trend-overview {
+  display: grid;
+  grid-template-columns: minmax(0, 0.75fr) minmax(0, 1fr);
+  gap: 18px;
+  margin-top: 18px;
+}
+
+.dashboard-trend-overview-copy,
+.dashboard-trend-bar-grid,
+.dashboard-mini-trend-row {
+  display: grid;
+  gap: 12px;
+}
+
+.dashboard-trend-overview-copy p,
+.dashboard-trend-overview-copy strong,
+.dashboard-trend-overview-copy span,
+.dashboard-trend-bar-head span,
+.dashboard-trend-bar-head strong,
+.dashboard-mini-trend-label span,
+.dashboard-mini-trend-label strong,
+.dashboard-child-trend-head p,
+.dashboard-child-trend-head strong {
+  margin: 0;
+}
+
+.dashboard-trend-overview-copy p,
+.dashboard-trend-bar-head span,
+.dashboard-mini-trend-label span,
+.dashboard-child-trend-head p {
+  color: rgba(246, 248, 251, 0.58);
+  font-size: 0.82rem;
+}
+
+.dashboard-trend-overview-copy strong {
+  font-size: 1.9rem;
+}
+
+.dashboard-trend-overview-copy span {
+  color: rgba(246, 248, 251, 0.74);
+  line-height: 1.58;
+}
+
+.dashboard-trend-bar-group,
+.dashboard-mini-trend-item {
+  display: grid;
+  gap: 8px;
+}
+
+.dashboard-trend-bar-head,
+.dashboard-mini-trend-label,
+.dashboard-child-trend-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.dashboard-trend-bar,
+.dashboard-mini-trend-bar {
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(246, 248, 251, 0.08);
+  overflow: hidden;
+}
+
+.dashboard-trend-bar-fill,
+.dashboard-mini-trend-fill {
+  height: 100%;
+  border-radius: 999px;
+}
+
+.dashboard-trend-bar-fill {
+  background: linear-gradient(90deg, #3fd0c9, #d9ff6b);
+}
+
+.dashboard-mini-trend-fill {
+  background: linear-gradient(90deg, #ff6b4a, #ffd15a);
+}
+
+.dashboard-child-trend-head {
+  margin-bottom: 4px;
 }
 
 .summary-card {
@@ -2253,6 +2371,7 @@
 
   .trust-layout,
   .dashboard-report-grid,
+  .dashboard-trend-overview,
   .quest-hero-band,
   .quest-main-grid,
   .overview-hero-grid,

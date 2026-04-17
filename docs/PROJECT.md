@@ -34,7 +34,7 @@ KidWiz aims to close that gap by giving families one place to build:
 - demo-mode fallback when auth is not configured
 - guided family onboarding for goal selection, weekly rhythm, coach style, and celebration style
 - parent dashboard with per-child weekly targets, focus tracks, progress, and recommended next lessons
-- parent weekly report layer with highlights, child-specific action plans, and family conversation prompts
+- parent weekly report layer with highlights, child-specific action plans, family conversation prompts, and trend history
 - Quest Hub for the child experience with a world map, weekly mission board, reward shelf, and guided rhythm checklist
 - multi-child switching inside the app shell
 - seven always-available course tracks:
@@ -54,6 +54,7 @@ KidWiz aims to close that gap by giving families one place to build:
 - world-themed progression model that reframes course tracks as explorable regions
 - weekly mission system for lessons, stories, reflections, and family rituals
 - expanded branching story library across confidence, money, and family repair scenarios
+- trend tracking that compares the current week against prior demo snapshots for each child and the family overall
 - daily rhythm checklist with visible completion inside the Quest Hub
 - guided lesson and quiz flow for each course track
 - sequential lesson progression within tracks
@@ -103,7 +104,7 @@ The value is:
 ### Local Product Logic
 
 - `src/lib/demoState.js` owns the local demo bootstrap state and browser persistence behavior.
-- `src/lib/progression.js` owns playlist generation, quest world derivation, mission board logic, weekly report derivation, lesson progression, track status, badge logic, and recommended-next-step behavior.
+- `src/lib/progression.js` owns playlist generation, quest world derivation, mission board logic, weekly report derivation, trend comparison logic, lesson progression, track status, badge logic, and recommended-next-step behavior.
 
 ### Data Model Today
 
@@ -150,7 +151,7 @@ For faster local QA, the app also supports direct demo boot URLs such as:
 - The current product foundation is parent-led rather than child-signup-first.
 - The local product now includes an onboarding flow instead of skipping straight into the app.
 - The local product now includes a quest-style child home experience instead of a plain dashboard-style landing screen.
-- The parent dashboard now includes a weekly report layer rather than only raw metrics and controls.
+- The parent dashboard now includes a weekly report plus historical trend comparison rather than only raw metrics and controls.
 - Sensitive topics stay behind a parent unlock.
 - AI is positioned as bounded and supportive, not as an unrestricted social chatbot.
 - The app supports demo mode by default so product design can move before backend work is finished.
@@ -167,7 +168,7 @@ For faster local QA, the app also supports direct demo boot URLs such as:
 ## Next Priorities
 
 1. Add real Supabase schema for parents, children, tracks, journals, progress, and unlock settings.
-2. Add report history and trend comparisons so the parent dashboard can show change over time instead of only current-state summaries.
+2. Turn the static demo trend history into generated weekly snapshots that can be reviewed, reset, and simulated from the Family Hub.
 3. Split the app into route-level screens and smaller components as the product settles.
 4. Add a server-side AI orchestration layer with moderation, age banding, and audit logs.
 5. Replace the static course content model with a more scalable curriculum structure and content authoring approach.

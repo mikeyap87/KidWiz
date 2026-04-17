@@ -1613,6 +1613,79 @@ export const starterParentJournalEntries = [
   },
 ];
 
+export const starterWeeklyHistoryByChild = {
+  nova: [
+    {
+      weekLabel: "3 weeks ago",
+      readinessScore: 46,
+      lessonTargetProgress: 34,
+      storyTargetProgress: 50,
+      reflectionTargetProgress: 55,
+      focusTrackId: "brave-heart",
+      strongestTrackId: "story-studio",
+      supportTrackId: "money-moves",
+      note: "Confidence habits were starting to stick, but money follow-through was still wobbly.",
+    },
+    {
+      weekLabel: "2 weeks ago",
+      readinessScore: 58,
+      lessonTargetProgress: 50,
+      storyTargetProgress: 65,
+      reflectionTargetProgress: 60,
+      focusTrackId: "brave-heart",
+      strongestTrackId: "brave-heart",
+      supportTrackId: "money-moves",
+      note: "Brave scripts landed better once Nova got shorter, story-shaped practice.",
+    },
+    {
+      weekLabel: "Last week",
+      readinessScore: 67,
+      lessonTargetProgress: 67,
+      storyTargetProgress: 75,
+      reflectionTargetProgress: 60,
+      focusTrackId: "money-moves",
+      strongestTrackId: "brave-heart",
+      supportTrackId: "money-moves",
+      note: "Saving decisions improved, but the family still needed stronger money language at home.",
+    },
+  ],
+  kai: [
+    {
+      weekLabel: "3 weeks ago",
+      readinessScore: 51,
+      lessonTargetProgress: 45,
+      storyTargetProgress: 50,
+      reflectionTargetProgress: 58,
+      focusTrackId: "digital-detectives",
+      strongestTrackId: "money-moves",
+      supportTrackId: "home-team",
+      note: "Kai had good reasoning, but relationship moments still needed more guided repair practice.",
+    },
+    {
+      weekLabel: "2 weeks ago",
+      readinessScore: 61,
+      lessonTargetProgress: 55,
+      storyTargetProgress: 60,
+      reflectionTargetProgress: 68,
+      focusTrackId: "digital-detectives",
+      strongestTrackId: "money-moves",
+      supportTrackId: "home-team",
+      note: "Reflection quality improved once tasks were broken into clearer chunks.",
+    },
+    {
+      weekLabel: "Last week",
+      readinessScore: 69,
+      lessonTargetProgress: 66,
+      storyTargetProgress: 70,
+      reflectionTargetProgress: 72,
+      focusTrackId: "home-team",
+      strongestTrackId: "money-moves",
+      supportTrackId: "brave-heart",
+      note: "Kai began repairing family friction faster, but still needed support with bold first steps.",
+    },
+  ],
+};
+
 export const trustSignals = [
   {
     title: "Parent-led onboarding",

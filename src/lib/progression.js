@@ -3,6 +3,7 @@ import {
   childProfiles,
   courseCatalog,
   questWorldCatalog,
+  starterWeeklyHistoryByChild,
   storyEpisodes,
 } from "../data/kidwizData";
 
@@ -432,6 +433,40 @@ function formatJoinedList(items) {
   return `${items.slice(0, -1).join(", ")}, and ${items[items.length - 1]}`;
 }
 
+function formatDelta(value) {
+  if (value > 0) {
+    return `+${value}`;
+  }
+
+  if (value < 0) {
+    return `${value}`;
+  }
+
+  return "0";
+}
+
+function getDeltaTone(value) {
+  if (value > 3) {
+    return "up";
+  }
+
+  if (value < -3) {
+    return "down";
+  }
+
+  return "steady";
+}
+
+function getMetricDisplayName(metricKey) {
+  const labels = {
+    lessonTargetProgress: "lesson follow-through",
+    storyTargetProgress: "story practice",
+    reflectionTargetProgress: "reflection rhythm",
+  };
+
+  return labels[metricKey] ?? "weekly rhythm";
+}
+
 function getMomentumState(score) {
   if (score >= 80) {
     return {
@@ -454,6 +489,54 @@ function getMomentumState(score) {
     detail:
       "The family still has good raw material, but this week would benefit from a simpler next step and a cleaner routine.",
   };
+}
+
+function buildChildTrendSeries(summary) {
+  const history = starterWeeklyHistoryByChild[summary.child.id] ?? [];
+  const currentSnapshot = {
+    weekLabel: "This week",
+    readinessScore: summary.overallTargetProgress,
+    lessonTargetProgress: summary.lessonTargetProgress,
+    storyTargetProgress: summary.storyTargetProgress,
+    reflectionTargetProgress: summary.reflectionTargetProgress,
+    focusTrackId: summary.weeklyTarget.focusTrackId,
+    strongestTrackId: summary.strongestTrack.id,
+    supportTrackId: summary.supportTrack.id,
+    note: summary.supportMessage,
+  };
+
+  return [...history, currentSnapshot];
+}
+
+function buildFamilyTrendSeries(childTrendRows) {
+  const maxLength = Math.max(...childTrendRows.map((row) => row.trendSeries.length));
+
+  return Array.from({ length: maxLength }, (_, index) => {
+    const items = childTrendRows
+      .map((row) => row.trendSeries[index])
+      .filter(Boolean);
+
+    return {
+      weekLabel: items[0]?.weekLabel ?? `Week ${index + 1}`,
+      readinessScore: Math.round(
+        items.reduce((total, item) => total + item.readinessScore, 0) /
+          Math.max(1, items.length),
+      ),
+    };
+  });
+}
+
+function getStrongestMetricDelta(current, previous) {
+  const metrics = [
+    "lessonTargetProgress",
+    "storyTargetProgress",
+    "reflectionTargetProgress",
+  ].map((metricKey) => ({
+    metricKey,
+    delta: (current?.[metricKey] ?? 0) - (previous?.[metricKey] ?? 0),
+  }));
+
+  return metrics.sort((left, right) => Math.abs(right.delta) - Math.abs(left.delta))[0];
 }
 
 export function buildParentWeeklyReport({
@@ -480,6 +563,32 @@ export function buildParentWeeklyReport({
     [...childSummaries].sort(
       (left, right) => left.overallTargetProgress - right.overallTargetProgress,
     )[0] ?? childSummaries[0];
+  const childTrendRows = childSummaries.map((summary) => {
+    const trendSeries = buildChildTrendSeries(summary);
+    const previousSnapshot = trendSeries.at(-2) ?? null;
+    const currentSnapshot = trendSeries.at(-1) ?? null;
+    const delta = (currentSnapshot?.readinessScore ?? 0) - (previousSnapshot?.readinessScore ?? 0);
+    const strongestMetric = getStrongestMetricDelta(currentSnapshot, previousSnapshot);
+
+    return {
+      childId: summary.child.id,
+      childName: summary.child.name,
+      trendSeries,
+      currentReadiness: currentSnapshot?.readinessScore ?? 0,
+      delta,
+      deltaLabel: formatDelta(delta),
+      deltaTone: getDeltaTone(delta),
+      strongestMetricLabel: getMetricDisplayName(strongestMetric.metricKey),
+      strongestMetricDelta: strongestMetric.delta,
+      note: currentSnapshot?.note ?? summary.supportMessage,
+    };
+  });
+  const familyTrendSeries = buildFamilyTrendSeries(childTrendRows);
+  const previousFamilyPoint = familyTrendSeries.at(-2) ?? null;
+  const currentFamilyPoint = familyTrendSeries.at(-1) ?? null;
+  const familyDelta =
+    (currentFamilyPoint?.readinessScore ?? averageTargetProgress) -
+    (previousFamilyPoint?.readinessScore ?? averageTargetProgress);
   const goalPhrase = formatJoinedList(
     selectedGoals.map((goal) => goal.title.toLowerCase()),
   );
@@ -565,11 +674,16 @@ export function buildParentWeeklyReport({
     readinessScore: averageTargetProgress,
     readinessLabel: momentumState.label,
     readinessCopy: momentumState.detail,
+    familyDelta,
+    familyDeltaLabel: formatDelta(familyDelta),
+    familyDeltaTone: getDeltaTone(familyDelta),
     focusCopy: `${supportSummary.child.name} may need extra help in ${supportSummary.supportTrack.title}, while ${strongestSummary.child.name} is carrying visible momentum in ${strongestSummary.strongestTrack.title}.`,
     stats,
     highlights,
     actionPlan,
     conversationPrompts,
+    familyTrendSeries,
+    childTrendRows,
   };
 }
 
