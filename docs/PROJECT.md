@@ -99,8 +99,10 @@ The value is:
 - `src/App.jsx` now also renders a mobile-only learner rail and sticky section nav so app switching stays easy on phones and small tablets.
 - `src/App.jsx` now also surfaces child-specific mobile resume and quick-action controls, driven by the same recommendation and weekly-progress logic as the rest of the product.
 - `src/App.jsx` now also surfaces a child-specific mobile weekly-pulse view so the current lesson, story, and reflection momentum is legible before opening deeper screens.
+- The always-mounted mobile learner shell now lives in its own component so the app shell stays easier to evolve and the mobile-first experience can grow without bloating `App.jsx`.
 - `src/App.jsx` now also includes a parent-only mobile control strip that routes settings work into Family Hub and keeps the sensitive-track toggle in a clearly protected area.
 - `src/components/` contains the public site, onboarding flow, dashboard, and tab-level UI modules.
+- `src/components/MobileShell.jsx` owns the mobile learner summary, weekly pulse, quick actions, and parent control rail.
 - Dashboard, quest-hub, onboarding-preview, family assignment, and course track-progress derivation now run inside their lazy screen modules instead of being precomputed by the app shell on every load.
 - Selected-child workspace state and archive snapshots now derive from shared progression helpers so the shell, dashboard, and save-week flows stay aligned.
 - `src/data/kidwizMarketingData.js` now owns public-site and trust-copy content so those lazy surfaces no longer share the same all-purpose data module as the main app shell.
@@ -192,6 +194,7 @@ The Family Hub now includes local controls to:
 - Marketing/trust content and starter demo seed content now live in their own data modules so lazy surfaces and bootstrap data have cleaner boundaries as the product grows.
 - Dashboard summaries, weekly reports, quest boards, onboarding previews, and track-progress rows now compute inside lazy-loaded screens so the entry bundle stays focused on the shell and active learner controls.
 - Mobile resume progress and archive snapshot generation now share the same child-summary model, reducing repeated logic and making parent-facing progress cues more consistent.
+- The mobile home layer now includes a clearer “Today’s best move” explanation plus a parent note so the first screen communicates both learner momentum and the next family adjustment.
 - Sensitive topics stay behind a parent unlock.
 - AI is positioned as bounded and supportive, not as an unrestricted social chatbot.
 - The app supports demo mode by default so product design can move before backend work is finished.

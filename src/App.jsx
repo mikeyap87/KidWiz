@@ -1,6 +1,5 @@
 import { Suspense, lazy, useEffect, useState } from "react";
 import {
-  ArrowRight,
   BookOpen,
   Bot,
   NotebookPen,
@@ -32,6 +31,7 @@ import {
   supabase,
 } from "./lib/supabaseClient";
 import "./App.css";
+import { MobileShell } from "./components/MobileShell";
 
 function lazyNamed(importer, exportName) {
   return lazy(() =>
@@ -1109,207 +1109,26 @@ function App() {
             </div>
           </header>
 
-          <section className="page-width app-mobile-learner-shell">
-            <div className="mobile-learner-summary">
-              <div className="mobile-learner-copy">
-                <p className="eyebrow eyebrow-dark">Active learner</p>
-                <h2>{selectedChild.name}</h2>
-                <p>
-                  Age {selectedChild.age} · Grade {selectedChild.grade} ·{" "}
-                  {selectedChild.levelTitle}
-                </p>
-              </div>
-
-              <div className="mobile-coach-pill">
-                <Bot size={16} />
-                <span>{selectedChild.coachLens}</span>
-              </div>
-            </div>
-
-            <div className="mobile-profile-row" aria-label="Learner switcher">
-              {childProfiles.map((child) => (
-                <button
-                  key={child.id}
-                  className={`mobile-profile-chip ${
-                    child.id === selectedChild.id ? "is-selected" : ""
-                  }`}
-                  onClick={() => handleSelectChild(child.id)}
-                  type="button"
-                >
-                  <strong>{child.name}</strong>
-                  <span>
-                    Age {child.age} · {child.levelTitle}
-                  </span>
-                </button>
-              ))}
-            </div>
-
-            <div className="mobile-resume-strip">
-              <div className="mobile-resume-head">
-                <div>
-                  <p className="eyebrow eyebrow-dark">Resume for {selectedChild.name}</p>
-                  <h3>
-                    {recommendedLesson?.lesson.title ?? "Choose the next lesson"}
-                  </h3>
-                </div>
-                <div className="mobile-progress-pill">
-                  <span>
-                    {selectedChildWorkspace.weeklyLessonCount}/{selectedWeeklyTarget.lessons} lessons
-                  </span>
-                </div>
-              </div>
-
-              <p className="mobile-resume-copy">
-                {recommendedLesson
-                  ? `${recommendedLesson.reason} in ${recommendedLesson.track.title}. ${recommendedLesson.lesson.summary}`
-                  : `${selectedChild.supportSpot} Open the course library to pick the next lesson.`}
-              </p>
-
-              <div className="summary-chip-row mobile-resume-meta">
-                <span className="summary-chip">{focusTrackTitle}</span>
-                <span className="summary-chip">
-                  {selectedChildWorkspace.overallTargetProgress}% week plan
-                </span>
-                <span className="summary-chip">{selectedChild.todayTheme}</span>
-              </div>
-
-              <div className="mobile-pulse-grid">
-                {selectedChildWorkspace.pulseRows.map((item) => (
-                  <article key={item.id} className="mobile-pulse-card">
-                    <div className="mobile-pulse-head">
-                      <span>{item.label}</span>
-                      <strong>{item.value}</strong>
-                    </div>
-                    <div className="mobile-pulse-bar" aria-hidden="true">
-                      <span style={{ width: `${item.progress}%` }} />
-                    </div>
-                    <em>{item.progress}% to target</em>
-                  </article>
-                ))}
-              </div>
-
-              <div className="mobile-resume-actions">
-                <button
-                  className="solid-button mobile-shell-button"
-                  onClick={() =>
-                    recommendedLesson
-                      ? handleOpenLesson(recommendedLesson.lesson.id)
-                      : handleSelectTab("courses")
-                  }
-                  type="button"
-                >
-                  {recommendedLesson ? "Resume lesson" : "Open courses"}
-                  <ArrowRight size={16} />
-                </button>
-                <button
-                  className="ghost-button ghost-button-dark mobile-shell-button"
-                  onClick={() => handleSelectTab("dashboard")}
-                  type="button"
-                >
-                  See weekly plan
-                </button>
-              </div>
-            </div>
-          </section>
-
-          <div className="app-mobile-nav-shell">
-            <div className="page-width">
-              <nav className="mobile-tab-row" aria-label="KidWiz sections">
-                {tabItems.map((item) => {
-                  const Icon = item.icon;
-
-                  return (
-                    <button
-                      key={item.id}
-                      className={`mobile-tab-chip ${
-                        appState.activeTab === item.id ? "is-active" : ""
-                      }`}
-                      onClick={() => handleSelectTab(item.id)}
-                      type="button"
-                    >
-                      <Icon size={16} />
-                      <span>{item.label}</span>
-                    </button>
-                  );
-                })}
-              </nav>
-            </div>
-          </div>
-
-          <section className="page-width app-mobile-action-shell">
-            <p className="eyebrow eyebrow-dark mobile-quick-action-eyebrow">
-              Quick actions for {selectedChild.name}
-            </p>
-            <div className="mobile-quick-action-grid">
-              {mobileQuickActions.map((action) => {
-                const Icon = action.icon;
-
-                return (
-                  <button
-                    key={action.id}
-                    className="mobile-quick-action"
-                    onClick={action.onClick}
-                    type="button"
-                  >
-                    <div className="mobile-quick-action-top">
-                      <Icon size={16} />
-                      <span>{action.label}</span>
-                    </div>
-                    <strong>{action.title}</strong>
-                    <p>{action.copy}</p>
-                    <em>{action.meta}</em>
-                  </button>
-                );
-              })}
-            </div>
-
-            <div className="mobile-parent-shell">
-              <div className="mobile-parent-head">
-                <div>
-                  <p className="eyebrow eyebrow-dark">Parent controls</p>
-                  <h3>Protected family settings stay here.</h3>
-                </div>
-                <span className="mobile-parent-lock">
-                  {appState.bodyBoundariesUnlocked ? "Sensitive track unlocked" : "Sensitive track locked"}
-                </span>
-              </div>
-
-              <p className="mobile-parent-copy">
-                Kid-facing next steps stay above. Use these controls for family setup,
-                rhythm changes, and protected content decisions.
-              </p>
-
-              <div className="summary-chip-row mobile-parent-meta">
-                {mobileParentSnapshots.map((item) => (
-                  <span key={item} className="summary-chip">
-                    {item}
-                  </span>
-                ))}
-              </div>
-
-              <div className="mobile-parent-actions">
-                <button
-                  className="ghost-button ghost-button-dark mobile-shell-button"
-                  onClick={handleOpenFamily}
-                  type="button"
-                >
-                  Open Family Hub
-                </button>
-                <button
-                  className={`mobile-parent-toggle ${
-                    appState.bodyBoundariesUnlocked ? "is-unlocked" : ""
-                  }`}
-                  onClick={handleToggleBodyBoundaries}
-                  type="button"
-                >
-                  <span>Sensitive track</span>
-                  <strong>
-                    {appState.bodyBoundariesUnlocked ? "Unlocked" : "Locked"}
-                  </strong>
-                </button>
-              </div>
-            </div>
-          </section>
+          <MobileShell
+            activeTab={appState.activeTab}
+            bodyBoundariesUnlocked={appState.bodyBoundariesUnlocked}
+            childProfiles={childProfiles}
+            mobileParentSnapshots={mobileParentSnapshots}
+            mobileQuickActions={mobileQuickActions}
+            onOpenFamily={handleOpenFamily}
+            onOpenLesson={handleOpenLesson}
+            onSelectChild={handleSelectChild}
+            onSelectTab={handleSelectTab}
+            onToggleBodyBoundaries={handleToggleBodyBoundaries}
+            recommendedLesson={recommendedLesson}
+            selectedChild={selectedChild}
+            selectedChildOverallTargetProgress={
+              selectedChildWorkspace.overallTargetProgress
+            }
+            selectedChildWorkspace={selectedChildWorkspace}
+            selectedCoachStyle={selectedCoachStyle}
+            selectedWeeklyTarget={selectedWeeklyTarget}
+          />
 
           <div className="page-width app-layout">
             <aside className="app-sidebar">

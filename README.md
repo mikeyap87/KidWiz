@@ -79,6 +79,7 @@ If Supabase is not configured yet, the product still opens cleanly in demo mode 
 
 - `src/App.jsx` - top-level state, mobile shell, and app routing with lighter first-load derivation
 - `src/components/` - public site, onboarding, dashboard, and tab components
+- `src/components/MobileShell.jsx` - extracted mobile learner shell, section nav, quick actions, and parent control rail
 - `src/data/kidwizData.js` - core curriculum, worlds, rituals, badges, and child/profile data used by the app shell
 - `src/data/kidwizMarketingData.js` - public-site and trust-copy data for lazy marketing and setup surfaces
 - `src/data/kidwizDemoSeedData.js` - starter demo state and seeded history used to bootstrap local testing
@@ -96,4 +97,5 @@ If Supabase is not configured yet, the product still opens cleanly in demo mode 
 - introduce billing and subscription controls
 - keep trimming the local bundle by pushing the remaining shell-only recommendation and archive helpers behind lazy screen boundaries or async state utilities
 - move more of the always-mounted mobile shell into focused components now that its state derives from shared progression helpers
+- keep sharpening the mobile shell so the first screen answers both “what should my child do next?” and “what should the parent adjust?”
 - deepen lesson authoring so each track gets richer interactive practice variations, stronger media moments, and more sharply authored age-banded lesson content
