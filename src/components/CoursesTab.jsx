@@ -6,6 +6,7 @@ import {
   Lock,
   NotebookPen,
   Rocket,
+  ScrollText,
   Sparkles,
   Target,
   Users,
@@ -16,6 +17,7 @@ import { isLessonUnlocked } from "../lib/progression";
 export function CoursesTab({
   activeLesson,
   activeLessonAnswer,
+  activeLessonExperience,
   activeLessonMilestoneIds,
   activeTrack,
   answeredCorrectly,
@@ -24,9 +26,9 @@ export function CoursesTab({
   childCompletedLessonIds,
   childPlaylistLessonIds,
   coachResponseMode,
-  nextRitual,
   onAnswer,
   onChangeCoachMode,
+  onOpenChildReflectionStarter,
   onOpenParentNoteStarter,
   onSelectLesson,
   onSelectTrack,
@@ -34,8 +36,6 @@ export function CoursesTab({
   onToggleComplete,
   onToggleLessonMilestone,
   onTogglePlaylist,
-  selectedCelebrationStyle,
-  selectedChild,
   trackProgressRows,
   visibleTracks,
 }) {
@@ -45,26 +45,7 @@ export function CoursesTab({
   const nextLesson = activeTrack.lessons[lessonIndex + 1] ?? null;
   const lessonComplete = childCompletedLessonIds.includes(activeLesson.id);
   const familyChatDone = childCompletedJourneyIds.includes("family-chat");
-  const lessonStages = [
-    {
-      id: "coach-cue",
-      label: "Coach cue",
-      title: "Set the tone",
-      copy: activeLesson.coachModes[coachResponseMode],
-    },
-    {
-      id: "activity",
-      label: "Mini mission",
-      title: "Try the skill",
-      copy: activeLesson.activity,
-    },
-    {
-      id: "parent-bridge",
-      label: "Bring it home",
-      title: "Talk it through",
-      copy: activeLesson.parentCue,
-    },
-  ];
+  const lessonStages = activeLessonExperience.stages;
   const lessonStageCount = lessonStages.filter((stage) =>
     activeLessonMilestoneIds.includes(stage.id),
   ).length;
@@ -76,17 +57,6 @@ export function CoursesTab({
   );
   const lessonReadyToCelebrate =
     lessonStageCount === lessonStages.length && answeredCorrectly;
-  const celebrationMessageByStyle = {
-    effort:
-      "Name the effort it took to stay with the lesson, even if parts felt wobbly.",
-    curiosity:
-      "Ask what felt new, surprising, or worth trying again after the checkpoint.",
-    "follow-through":
-      "Call out the follow-through it took to finish the practice and lock it in.",
-  };
-  const celebrationMessage =
-    celebrationMessageByStyle[selectedCelebrationStyle.id] ??
-    "Notice what helped the lesson stick today.";
   const completionLabel = lessonComplete
     ? "Mark incomplete"
     : lessonReadyToCelebrate
@@ -97,10 +67,10 @@ export function CoursesTab({
     <section className="workspace-band">
       <div className="section-heading section-heading-tight">
         <p className="eyebrow eyebrow-dark">Course library</p>
-        <h1>Lessons should feel guided, interactive, and easy to carry into real life.</h1>
+        <h1>Each track now teaches with its own lesson playbook.</h1>
         <p>
-          Tracks still unlock in sequence, but each lesson now works like a mini
-          mission with guided steps, a checkpoint, and a parent follow-through loop.
+          Tracks still unlock in sequence, but each lesson now carries its own
+          rhythm, proof-of-learning moment, and parent follow-through loop.
         </p>
       </div>
 
@@ -197,8 +167,9 @@ export function CoursesTab({
           <p className="lesson-copy">{activeLesson.summary}</p>
 
           <div className="detail-pills">
+            <span>{activeLessonExperience.trackPlaybookLabel}</span>
             <span>{activeLesson.activity}</span>
-            <span>{activeLesson.parentCue}</span>
+            <span>{activeLessonExperience.familyMissionTitle}</span>
           </div>
 
           <div className="mode-toggle-row">
@@ -217,6 +188,7 @@ export function CoursesTab({
           </div>
 
           <p className="coach-callout">{activeLesson.coachModes[coachResponseMode]}</p>
+          <p className="lesson-subcopy">{activeLessonExperience.headerCopy}</p>
 
           <div className="lesson-momentum">
             <div className="lesson-momentum-head">
@@ -315,6 +287,26 @@ export function CoursesTab({
             )}
           </div>
 
+          <div className="lesson-proof-panel">
+            <div className="panel-head">
+              <ScrollText size={18} />
+              <h2>{activeLessonExperience.proofTitle}</h2>
+            </div>
+            <p className="panel-copy">{activeLessonExperience.proofCopy}</p>
+
+            <div className="lesson-follow-list">
+              <div className="lesson-follow-row">
+                <p>Child reflection starter</p>
+                <strong>{activeLessonExperience.reflectionPrompt}</strong>
+                <span>Use this when opening the child journal so the lesson turns into language.</span>
+              </div>
+              <div className="lesson-follow-row">
+                <p>{activeLessonExperience.familyMissionTitle}</p>
+                <strong>{activeLessonExperience.familyMissionCopy}</strong>
+              </div>
+            </div>
+          </div>
+
           {lessonComplete || lessonReadyToCelebrate ? (
             <div className="lesson-complete-strip">
               <div className="panel-head">
@@ -323,8 +315,8 @@ export function CoursesTab({
               </div>
               <p className="panel-copy">
                 {lessonComplete
-                  ? `${selectedChild.name} has this lesson logged for the week. ${celebrationMessage}`
-                  : `${selectedChild.name} finished the guided steps and cleared the checkpoint. ${celebrationMessage}`}
+                  ? `This lesson is logged for the week. ${activeLessonExperience.celebrationLine}`
+                  : `The guided steps and checkpoint are done. ${activeLessonExperience.celebrationLine}`}
               </p>
               <div className="detail-pills detail-pills-support">
                 <span>
@@ -332,7 +324,7 @@ export function CoursesTab({
                     ? `Next lesson: ${nextLesson.title}`
                     : `Capstone ready: ${activeTrack.project}`}
                 </span>
-                <span>{nextRitual.title}</span>
+                <span>{activeLessonExperience.familyMissionTitle}</span>
               </div>
             </div>
           ) : null}
@@ -344,20 +336,12 @@ export function CoursesTab({
             </div>
 
             <div className="lesson-follow-list">
-              <div className="lesson-follow-row">
-                <p>Ask</p>
-                <strong>{activeLesson.parentCue}</strong>
-              </div>
-              <div className="lesson-follow-row">
-                <p>Celebrate</p>
-                <strong>{selectedCelebrationStyle.title}</strong>
-                <span>{selectedCelebrationStyle.copy}</span>
-              </div>
-              <div className="lesson-follow-row">
-                <p>Tonight&apos;s ritual</p>
-                <strong>{nextRitual.title}</strong>
-                <span>{nextRitual.copy}</span>
-              </div>
+              {activeLessonExperience.parentPrompts.map((prompt) => (
+                <div key={prompt.label} className="lesson-follow-row">
+                  <p>{prompt.label}</p>
+                  <strong>{prompt.text}</strong>
+                </div>
+              ))}
             </div>
           </div>
 
@@ -379,6 +363,14 @@ export function CoursesTab({
               type="button"
             >
               {familyChatDone ? "Family chat logged" : "Mark family chat done"}
+            </button>
+            <button
+              className="inline-action"
+              onClick={onOpenChildReflectionStarter}
+              type="button"
+            >
+              <Sparkles size={14} />
+              Open child reflection
             </button>
             <button
               className="inline-action"

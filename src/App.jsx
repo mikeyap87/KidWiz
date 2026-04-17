@@ -22,6 +22,7 @@ import { OverviewTab } from "./components/OverviewTab";
 import { PublicSite } from "./components/PublicSite";
 import { StoriesTab } from "./components/StoriesTab";
 import { STORAGE_KEY, createDefaultState, loadSavedState } from "./lib/demoState";
+import { buildLessonExperience } from "./lib/lessonExperience";
 import {
   buildQuestWorldRows,
   buildParentWeeklyReport,
@@ -308,6 +309,14 @@ function App() {
   });
   const nextRitual =
     familyRituals[childCompletedLessonIds.length % familyRituals.length];
+  const activeLessonExperience = buildLessonExperience({
+    childName: selectedChild.name,
+    coachMode: coachResponseMode,
+    celebrationStyle: selectedCelebrationStyle,
+    lesson: activeLesson,
+    nextRitual,
+    track: activeTrack,
+  });
   const todayLabel = formatTodayLabel();
   const weeklyCompletion =
     (childCompletedJourneyIds.length / Math.max(1, 5)) * 100;
@@ -818,14 +827,15 @@ function App() {
   }
 
   function handleOpenParentNoteStarter() {
-    const noteStarter = [
-      `${selectedChild.name} finished ${activeTrack.title}: ${activeLesson.title}.`,
-      `Parent follow-through: ${activeLesson.parentCue}`,
-      `Celebrate with ${selectedCelebrationStyle.title.toLowerCase()}: ${selectedCelebrationStyle.copy}`,
-      `Tonight's ritual: ${nextRitual.title}. ${nextRitual.copy}`,
-    ].join(" ");
+    setParentJournalDraft(activeLessonExperience.parentNoteStarter);
+    updateAppState((current) => ({
+      ...current,
+      activeTab: "journal",
+    }));
+  }
 
-    setParentJournalDraft(noteStarter);
+  function handleOpenChildReflectionStarter() {
+    setChildJournalDraft(activeLessonExperience.childReflectionStarter);
     updateAppState((current) => ({
       ...current,
       activeTab: "journal",
@@ -1289,6 +1299,7 @@ function App() {
                 <CoursesTab
                   activeLesson={activeLesson}
                   activeLessonAnswer={activeLessonAnswer}
+                  activeLessonExperience={activeLessonExperience}
                   activeLessonMilestoneIds={activeLessonMilestoneIds}
                   activeTrack={activeTrack}
                   answeredCorrectly={answeredCorrectly}
@@ -1297,9 +1308,9 @@ function App() {
                   childCompletedLessonIds={childCompletedLessonIds}
                   childPlaylistLessonIds={childPlaylistLessonIds}
                   coachResponseMode={coachResponseMode}
-                  nextRitual={nextRitual}
                   onAnswer={handleQuizAnswer}
                   onChangeCoachMode={setCoachResponseMode}
+                  onOpenChildReflectionStarter={handleOpenChildReflectionStarter}
                   onOpenParentNoteStarter={handleOpenParentNoteStarter}
                   onSelectLesson={(lessonId) =>
                     updateAppState((current) => ({
@@ -1312,8 +1323,6 @@ function App() {
                   onToggleComplete={handleToggleLessonComplete}
                   onToggleLessonMilestone={handleToggleLessonMilestone}
                   onTogglePlaylist={handleTogglePlaylistLesson}
-                  selectedCelebrationStyle={selectedCelebrationStyle}
-                  selectedChild={selectedChild}
                   trackProgressRows={trackProgressRows}
                   visibleTracks={visibleTracks}
                 />

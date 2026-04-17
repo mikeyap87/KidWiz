@@ -1940,6 +1940,7 @@
 
 .panel-copy,
 .lesson-copy,
+.lesson-subcopy,
 .story-body,
 .coach-callout {
   margin: 16px 0 0;
@@ -2056,6 +2057,7 @@
 }
 
 .lesson-momentum,
+.lesson-proof-panel,
 .lesson-follow-through,
 .lesson-complete-strip {
   margin-top: 22px;
