@@ -989,6 +989,89 @@ function App() {
     }));
   }
 
+  function patchPlanningNudgeState(childId, updater) {
+    updateAppState((current) => ({
+      ...current,
+      planningNudgeStateByChild: {
+        ...current.planningNudgeStateByChild,
+        [childId]: updater(current.planningNudgeStateByChild?.[childId]),
+      },
+    }));
+  }
+
+  function handleDismissPlanningNudge(childId, nudgeId) {
+    patchPlanningNudgeState(childId, (current = {}) => ({
+      acceptedIds: current.acceptedIds ?? [],
+      dismissedIds: Array.from(
+        new Set([...(current.dismissedIds ?? []), nudgeId]),
+      ),
+    }));
+    setFamilyToolsMessage("Planning nudge dismissed for now.");
+  }
+
+  function handleApplyPlanningNudge(childId, planningNudge) {
+    updateAppState((current) => {
+      const currentTarget = current.weeklyTargetsByChild?.[childId] ?? {
+        lessons: 3,
+        stories: 2,
+        reflections: 2,
+        focusTrackId: getVisibleTracks(current.bodyBoundariesUnlocked)[0]?.id,
+      };
+      const nextTarget = planningNudge.actions.reduce((target, action) => {
+        if (action.type === "focus" && action.trackId) {
+          return {
+            ...target,
+            focusTrackId: action.trackId,
+          };
+        }
+
+        if (action.type === "target" && action.key && action.delta) {
+          return {
+            ...target,
+            [action.key]: clampTargetValue(
+              action.key,
+              (target[action.key] ?? 1) + action.delta,
+            ),
+          };
+        }
+
+        return target;
+      }, currentTarget);
+      const nextPlanningNudgeState = current.planningNudgeStateByChild?.[childId] ?? {
+        acceptedIds: [],
+        dismissedIds: [],
+      };
+
+      return {
+        ...current,
+        weeklyTargetsByChild: {
+          ...current.weeklyTargetsByChild,
+          [childId]: nextTarget,
+        },
+        playlistLessonIdsByChild: buildSuggestedPlaylists(
+          current.selectedGoalIds,
+          current.bodyBoundariesUnlocked,
+          {
+            ...current.weeklyTargetsByChild,
+            [childId]: nextTarget,
+          },
+        ),
+        planningNudgeStateByChild: {
+          ...current.planningNudgeStateByChild,
+          [childId]: {
+            acceptedIds: Array.from(
+              new Set([...(nextPlanningNudgeState.acceptedIds ?? []), planningNudge.id]),
+            ),
+            dismissedIds: (nextPlanningNudgeState.dismissedIds ?? []).filter(
+              (id) => id !== planningNudge.id,
+            ),
+          },
+        },
+      };
+    });
+    setFamilyToolsMessage("Planning nudge applied to this week's setup.");
+  }
+
   function handleOpenStory(storyId, childId = selectedChild.id) {
     updateAppState((current) => ({
       ...current,
@@ -1199,7 +1282,9 @@ function App() {
                     appState={appState}
                     nextRitual={nextRitual}
                     onAdjustWeeklyTarget={handleAdjustWeeklyTarget}
+                    onApplyPlanningNudge={handleApplyPlanningNudge}
                     onChangeFocusTrack={handleChangeFocusTrack}
+                    onDismissPlanningNudge={handleDismissPlanningNudge}
                     onOpenFamily={handleOpenFamily}
                     onOpenLesson={handleOpenLessonForChild}
                     onOpenStory={handleOpenStory}
@@ -1330,6 +1415,7 @@ function App() {
                     assignedTrackIds={assignedTrackIds}
                     familyToolsMessage={familyToolsMessage}
                     onAdjustWeeklyTarget={handleAdjustWeeklyTarget}
+                    onApplyPlanningNudge={handleApplyPlanningNudge}
                     onArchiveAndStartFreshWeek={handleArchiveAndStartFreshWeek}
                     onChangeCelebrationStyle={(styleId) =>
                       updateAppState((current) => ({
@@ -1344,6 +1430,7 @@ function App() {
                         coachStyleId: styleId,
                       }))
                     }
+                    onDismissPlanningNudge={handleDismissPlanningNudge}
                     onChangeRhythm={(rhythmId) =>
                       updateAppState((current) => ({
                         ...current,

@@ -844,6 +844,12 @@ export function buildPlanningNudge(summary, visibleTracks) {
   }
 
   return {
+    id: [
+      summary.child.id,
+      summary.signal.source,
+      summary.signal.title,
+      ...actions.map((action) => action.label),
+    ].join("::"),
     title: `${summary.child.name}'s recent signal is worth planning around`,
     copy: summary.signal.parentCopy,
     actions: actions.slice(0, 2),
@@ -863,6 +869,7 @@ export function buildChildSummary({
   playlistLessonIdsByChild,
   storyChoicesByChild,
   weeklyTargetsByChild,
+  planningNudgeStateByChild,
 }) {
   const completedLessons = completedLessonIdsByChild?.[child.id] ?? [];
   const playlistLessonIds = playlistLessonIdsByChild?.[child.id] ?? [];
@@ -964,9 +971,19 @@ export function buildChildSummary({
       : `${child.supportSpot} Current visible tracks look complete in the demo state.`,
   };
 
+  const planningNudge = buildPlanningNudge(summary, visibleTracks);
+  const planningNudgeState = planningNudgeStateByChild?.[child.id] ?? {
+    acceptedIds: [],
+    dismissedIds: [],
+  };
+  const isPlanningNudgeHidden =
+    planningNudge &&
+    (planningNudgeState.acceptedIds?.includes(planningNudge.id) ||
+      planningNudgeState.dismissedIds?.includes(planningNudge.id));
+
   return {
     ...summary,
-    planningNudge: buildPlanningNudge(summary, visibleTracks),
+    planningNudge: isPlanningNudgeHidden ? null : planningNudge,
   };
 }
 
@@ -982,6 +999,7 @@ export function buildChildSummaries({
   playlistLessonIdsByChild,
   storyChoicesByChild,
   weeklyTargetsByChild,
+  planningNudgeStateByChild,
 }) {
   return childProfiles.map((child) =>
     buildChildSummary({
@@ -997,6 +1015,7 @@ export function buildChildSummaries({
       playlistLessonIdsByChild,
       storyChoicesByChild,
       weeklyTargetsByChild,
+      planningNudgeStateByChild,
     }),
   );
 }
@@ -1019,6 +1038,7 @@ export function buildSelectedChildWorkspace({
     playlistLessonIdsByChild: appState.playlistLessonIdsByChild,
     storyChoicesByChild: appState.storyChoicesByChild,
     weeklyTargetsByChild: appState.weeklyTargetsByChild,
+    planningNudgeStateByChild: appState.planningNudgeStateByChild,
   });
   const completedLessonIds =
     appState.completedLessonIdsByChild?.[child.id] ?? [];
@@ -1082,6 +1102,7 @@ export function buildArchivedSnapshotsByChild(appState) {
     playlistLessonIdsByChild: appState.playlistLessonIdsByChild,
     storyChoicesByChild: appState.storyChoicesByChild,
     weeklyTargetsByChild: appState.weeklyTargetsByChild,
+    planningNudgeStateByChild: appState.planningNudgeStateByChild,
   });
 
   return Object.fromEntries(

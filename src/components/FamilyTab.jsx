@@ -23,6 +23,7 @@ export function FamilyTab({
   appState,
   assignedTrackIds,
   familyToolsMessage,
+  onApplyPlanningNudge,
   onArchiveAndStartFreshWeek,
   onArchiveCurrentWeek,
   onChangeCelebrationStyle,
@@ -34,6 +35,7 @@ export function FamilyTab({
   onResetDemo,
   onResetWeeklyHistory,
   onRestartOnboarding,
+  onDismissPlanningNudge,
   onToggleBodyBoundaries,
   onToggleGoal,
   onToggleTrackAssignment,
@@ -58,6 +60,7 @@ export function FamilyTab({
     playlistLessonIdsByChild: appState.playlistLessonIdsByChild,
     storyChoicesByChild: appState.storyChoicesByChild,
     weeklyTargetsByChild: appState.weeklyTargetsByChild,
+    planningNudgeStateByChild: appState.planningNudgeStateByChild,
   });
 
   function handlePlanningAction(action) {
@@ -237,6 +240,18 @@ export function FamilyTab({
               <strong>{selectedChildSummary.signal?.title ?? "Recent child signal"}</strong>
               <span>{selectedChildSummary.planningNudge.copy}</span>
               <div className="tool-list planning-nudge-actions">
+                <button
+                  className="inline-action"
+                  onClick={() =>
+                    onApplyPlanningNudge(
+                      selectedChild.id,
+                      selectedChildSummary.planningNudge,
+                    )
+                  }
+                  type="button"
+                >
+                  Apply all
+                </button>
                 {selectedChildSummary.planningNudge.actions.map((action) => (
                   <button
                     key={action.label}
@@ -247,6 +262,18 @@ export function FamilyTab({
                     {action.label}
                   </button>
                 ))}
+                <button
+                  className="inline-action"
+                  onClick={() =>
+                    onDismissPlanningNudge(
+                      selectedChild.id,
+                      selectedChildSummary.planningNudge.id,
+                    )
+                  }
+                  type="button"
+                >
+                  Dismiss
+                </button>
               </div>
             </div>
           ) : (

@@ -36,7 +36,9 @@ export function DashboardTab({
   appState,
   nextRitual,
   onAdjustWeeklyTarget,
+  onApplyPlanningNudge,
   onChangeFocusTrack,
+  onDismissPlanningNudge,
   onOpenFamily,
   onOpenLesson,
   onOpenStory,
@@ -62,6 +64,7 @@ export function DashboardTab({
         playlistLessonIdsByChild: appState.playlistLessonIdsByChild,
         storyChoicesByChild: appState.storyChoicesByChild,
         weeklyTargetsByChild: appState.weeklyTargetsByChild,
+        planningNudgeStateByChild: appState.planningNudgeStateByChild,
       }),
     [appState, visibleTracks],
   );
@@ -549,6 +552,15 @@ export function DashboardTab({
                 <strong>{summary.planningNudge.title}</strong>
                 <span>{summary.planningNudge.copy}</span>
                 <div className="dashboard-planning-actions">
+                  <button
+                    className="inline-action"
+                    onClick={() =>
+                      onApplyPlanningNudge(summary.child.id, summary.planningNudge)
+                    }
+                    type="button"
+                  >
+                    Apply all
+                  </button>
                   {summary.planningNudge.actions.map((action) => (
                     <button
                       key={action.label}
@@ -559,6 +571,18 @@ export function DashboardTab({
                       {action.label}
                     </button>
                   ))}
+                  <button
+                    className="inline-action"
+                    onClick={() =>
+                      onDismissPlanningNudge(
+                        summary.child.id,
+                        summary.planningNudge.id,
+                      )
+                    }
+                    type="button"
+                  >
+                    Dismiss
+                  </button>
                 </div>
               </div>
             ) : null}

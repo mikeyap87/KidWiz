@@ -75,6 +75,7 @@ If Supabase is not configured yet, the product still opens cleanly in demo mode 
 - guided empty and success states in courses, stories, and journals so child-facing flows feel more complete
 - signal-driven lesson recommendations that react to recent story choices and child reflection mood
 - parent planning nudges in Dashboard and Family Hub that can adjust weekly targets or switch focus tracks from those child signals
+- accept/dismiss controls for planning nudges so parents can treat recommendations like actionable inbox items instead of repeated alerts
 - parent controls for goals, rhythm, celebration style, track assignment, and sensitive-topic unlocks
 - local save-week, archive-week, fresh-week, and reset testing tools in the Family Hub
 

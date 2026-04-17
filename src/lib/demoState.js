@@ -46,6 +46,15 @@ export function createDefaultState() {
     assignedTrackIdsByChild: starterAssignedTrackIdsByChild,
     weeklyTargetsByChild: starterWeeklyTargetsByChild,
     weeklyHistoryByChild: starterWeeklyHistoryByChild,
+    planningNudgeStateByChild: Object.fromEntries(
+      childProfiles.map((child) => [
+        child.id,
+        {
+          acceptedIds: [],
+          dismissedIds: [],
+        },
+      ]),
+    ),
     lessonMilestoneIdsByChild: Object.fromEntries(
       childProfiles.map((child) => [child.id, {}]),
     ),
@@ -108,6 +117,10 @@ export function loadSavedState() {
       weeklyHistoryByChild: {
         ...defaults.weeklyHistoryByChild,
         ...(parsed.weeklyHistoryByChild ?? {}),
+      },
+      planningNudgeStateByChild: {
+        ...defaults.planningNudgeStateByChild,
+        ...(parsed.planningNudgeStateByChild ?? {}),
       },
       lessonMilestoneIdsByChild: {
         ...defaults.lessonMilestoneIdsByChild,
