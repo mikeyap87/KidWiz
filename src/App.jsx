@@ -656,6 +656,12 @@ function App() {
       onClick: handleOpenFamily,
     },
   ];
+  const mobileParentSnapshots = [
+    `${selectedGoals.length} family goals`,
+    selectedRhythm.title,
+    selectedCoachStyle.title,
+    selectedCelebrationStyle.title,
+  ];
 
   const coachCards = [
     {
@@ -1500,6 +1506,53 @@ function App() {
                   </button>
                 );
               })}
+            </div>
+
+            <div className="mobile-parent-shell">
+              <div className="mobile-parent-head">
+                <div>
+                  <p className="eyebrow eyebrow-dark">Parent controls</p>
+                  <h3>Protected family settings stay here.</h3>
+                </div>
+                <span className="mobile-parent-lock">
+                  {appState.bodyBoundariesUnlocked ? "Sensitive track unlocked" : "Sensitive track locked"}
+                </span>
+              </div>
+
+              <p className="mobile-parent-copy">
+                Kid-facing next steps stay above. Use these controls for family setup,
+                rhythm changes, and protected content decisions.
+              </p>
+
+              <div className="summary-chip-row mobile-parent-meta">
+                {mobileParentSnapshots.map((item) => (
+                  <span key={item} className="summary-chip">
+                    {item}
+                  </span>
+                ))}
+              </div>
+
+              <div className="mobile-parent-actions">
+                <button
+                  className="ghost-button ghost-button-dark mobile-shell-button"
+                  onClick={handleOpenFamily}
+                  type="button"
+                >
+                  Open Family Hub
+                </button>
+                <button
+                  className={`mobile-parent-toggle ${
+                    appState.bodyBoundariesUnlocked ? "is-unlocked" : ""
+                  }`}
+                  onClick={handleToggleBodyBoundaries}
+                  type="button"
+                >
+                  <span>Sensitive track</span>
+                  <strong>
+                    {appState.bodyBoundariesUnlocked ? "Unlocked" : "Locked"}
+                  </strong>
+                </button>
+              </div>
             </div>
           </section>
 
