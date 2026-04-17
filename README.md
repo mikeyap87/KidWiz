@@ -10,6 +10,7 @@ KidWiz is a modern children's education SaaS concept that combines traditional l
 - a parent weekly report layer with action plans, conversation prompts, and stateful trend history
 - eight course tracks with multi-lesson arcs, guided lesson flows, track-specific playbooks, visual practice panels, age-band aware lesson copy, authored scenario cards, and interactive move storyboards
 - lazy-loaded public, onboarding, and app-screen modules with in-product loading states so the local build stays fast as content grows
+- a mobile weekly-pulse strip that makes lesson, story, and reflection targets readable at a glance
 - a mobile-first in-app shell with learner switching and sticky section navigation instead of a collapsed desktop sidebar
 - a child-specific mobile resume strip and quick-action rail for opening the next lesson, story, reflection, or family prompt in one tap
 - a parent-only mobile control strip for protected settings, Family Hub access, and sensitive-track status
@@ -83,6 +84,7 @@ If Supabase is not configured yet, the product still opens cleanly in demo mode 
 - `src/data/kidwizDemoSeedData.js` - starter demo state and seeded history used to bootstrap local testing
 - `src/lib/demoState.js` - local demo state bootstrap and persistence helpers
 - `src/lib/progression.js` - playlist, mission board, world map, badge, recommendation, and track-progression logic
+- `src/lib/progression.js` - playlist, mission board, world map, badge, recommendation, child summary, and archive snapshot logic
 - `src/lib/lessonExperience.js` - course-only lesson experience builder, now loaded with the Courses screen chunk
 - `src/lib/supabaseClient.js` - optional Supabase auth wiring
 - `docs/PROJECT.md` - living product and architecture document
@@ -93,4 +95,5 @@ If Supabase is not configured yet, the product still opens cleanly in demo mode 
 - add a server-side AI layer for bounded tutoring and summaries
 - introduce billing and subscription controls
 - keep trimming the local bundle by pushing the remaining shell-only recommendation and archive helpers behind lazy screen boundaries or async state utilities
+- move more of the always-mounted mobile shell into focused components now that its state derives from shared progression helpers
 - deepen lesson authoring so each track gets richer interactive practice variations, stronger media moments, and more sharply authored age-banded lesson content

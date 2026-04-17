@@ -13,17 +13,15 @@ import {
   courseCatalog,
   dailyJourneys,
   familyGoals,
-  familyRituals,
   storyEpisodes,
   weeklyRhythms,
 } from "./data/kidwizData";
 import { STORAGE_KEY, createDefaultState, loadSavedState } from "./lib/demoState";
 import {
-  buildChildSummaries,
+  buildArchivedSnapshotsByChild,
+  buildSelectedChildWorkspace,
   buildSuggestedPlaylists,
   findTrackByLessonId,
-  getRecommendedLesson,
-  getRecommendedStory,
   getVisibleTracks,
 } from "./lib/progression";
 import { moodOptions, tabItems } from "./lib/uiConfig";
@@ -348,13 +346,12 @@ function App() {
     appState.lessonPracticeChoiceIdsByChild[selectedChild.id] ?? {};
   const assignedTrackIds =
     appState.assignedTrackIdsByChild[selectedChild.id] ?? [];
-  const selectedWeeklyTarget =
-    appState.weeklyTargetsByChild[selectedChild.id] ?? {
-      lessons: 3,
-      stories: 2,
-      reflections: 2,
-      focusTrackId: visibleTracks[0].id,
-    };
+  const selectedChildWorkspace = buildSelectedChildWorkspace({
+    appState,
+    child: selectedChild,
+    visibleTracks,
+  });
+  const selectedWeeklyTarget = selectedChildWorkspace.weeklyTarget;
   const activeLessonAnswer = childQuizAnswers[activeLesson.id];
   const activeLessonMilestoneIds = childLessonMilestones[activeLesson.id] ?? [];
   const activeLessonPracticeChoiceId = childLessonPracticeChoices[activeLesson.id];
@@ -365,63 +362,15 @@ function App() {
     (choice) => choice.id === childStoryChoices[activeStory.id],
   );
 
-  const recommendedLesson = getRecommendedLesson({
-    visibleTracks,
-    assignedTrackIds,
-    playlistLessonIds: childPlaylistLessonIds,
-    completedLessonIds: childCompletedLessonIds,
-    weeklyTarget: selectedWeeklyTarget,
-  });
-  const recommendedStory = getRecommendedStory({
-    selectedGoalIds: appState.selectedGoalIds,
-    storyChoices: childStoryChoices,
-  });
-  const nextRitual =
-    familyRituals[childCompletedLessonIds.length % familyRituals.length];
+  const recommendedLesson = selectedChildWorkspace.recommendedLesson;
+  const recommendedStory = selectedChildWorkspace.recommendedStory;
+  const nextRitual = selectedChildWorkspace.nextRitual;
   const todayLabel = formatTodayLabel();
   const weeklyCompletion =
     (childCompletedJourneyIds.length / Math.max(1, 5)) * 100;
-  const latestWeeklySnapshot =
-    (appState.weeklyHistoryByChild?.[selectedChild.id] ?? []).at(-1) ?? null;
-  const weeklyLessonCount = Math.max(
-    0,
-    childCompletedLessonIds.length - (latestWeeklySnapshot?.completedLessonsTotal ?? 0),
-  );
-  const weeklyStoryCount = Math.max(
-    0,
-    Object.keys(childStoryChoices).length -
-      (latestWeeklySnapshot?.completedStoriesTotal ?? 0),
-  );
-  const weeklyReflectionCount = Math.max(
-    0,
-    childJournalEntries.length - (latestWeeklySnapshot?.reflectionsTotal ?? 0),
-  );
-  const familyChatDone = childCompletedJourneyIds.includes("family-chat");
-  const lessonTargetProgress = Math.min(
-    100,
-    Math.round((weeklyLessonCount / Math.max(1, selectedWeeklyTarget.lessons)) * 100),
-  );
-  const storyTargetProgress = Math.min(
-    100,
-    Math.round((weeklyStoryCount / Math.max(1, selectedWeeklyTarget.stories)) * 100),
-  );
-  const reflectionTargetProgress = Math.min(
-    100,
-    Math.round(
-      (weeklyReflectionCount / Math.max(1, selectedWeeklyTarget.reflections)) * 100,
-    ),
-  );
-  const selectedChildOverallTargetProgress = Math.round(
-    (lessonTargetProgress + storyTargetProgress + reflectionTargetProgress) / 3,
-  );
-  const focusTrackTitle =
-    visibleTracks.find((track) => track.id === selectedWeeklyTarget.focusTrackId)
-      ?.title ??
-    recommendedLesson?.track.title ??
-    activeTrack.title;
-  const childReflectionStarter =
-    recommendedStory?.reflectionPrompt ??
-    `What is one small move ${selectedChild.name} feels proud of today?`;
+  const familyChatDone = selectedChildWorkspace.familyChatDone;
+  const focusTrackTitle = selectedChildWorkspace.focusTrackTitle;
+  const childReflectionStarter = selectedChildWorkspace.childReflectionStarter;
   const mobileQuickActions = [
     {
       id: "story",
@@ -430,7 +379,7 @@ function App() {
       copy: recommendedStory
         ? `Practice ${recommendedStory.focus.toLowerCase()} and unlock a family debrief.`
         : "Open a story choice for today's practice moment.",
-      meta: `${weeklyStoryCount}/${selectedWeeklyTarget.stories} stories this week`,
+      meta: `${selectedChildWorkspace.weeklyStoryCount}/${selectedWeeklyTarget.stories} stories this week`,
       icon: BookOpen,
       onClick: () => handleOpenStory(recommendedStory?.id, selectedChild.id),
     },
@@ -439,10 +388,10 @@ function App() {
       label: "Reflection",
       title: `${selectedChild.companionName} check-in`,
       copy:
-        weeklyReflectionCount > 0
+        selectedChildWorkspace.weeklyReflectionCount > 0
           ? "Capture today's proud moment, wobble, or question before it slips away."
           : `Start ${selectedChild.name}'s first reflection for this week.`,
-      meta: `${weeklyReflectionCount}/${selectedWeeklyTarget.reflections} reflections`,
+      meta: `${selectedChildWorkspace.weeklyReflectionCount}/${selectedWeeklyTarget.reflections} reflections`,
       icon: NotebookPen,
       onClick: () => handleOpenChildReflectionStarter(childReflectionStarter),
     },
@@ -480,10 +429,7 @@ function App() {
     },
     {
       title: "Playlist anchor",
-      copy: `This week's focus track is ${
-        visibleTracks.find((track) => track.id === selectedWeeklyTarget.focusTrackId)
-          ?.title ?? activeTrack.title
-      }, with ${selectedWeeklyTarget.lessons} lesson target(s).`,
+      copy: `This week's focus track is ${focusTrackTitle}, with ${selectedWeeklyTarget.lessons} lesson target(s).`,
     },
   ];
 
@@ -879,37 +825,14 @@ function App() {
   }
 
   function buildArchivedSnapshotsMap(weekLabel, sourceState = appState) {
-    const childSummaries = buildChildSummaries({
-      bodyBoundariesUnlocked: sourceState.bodyBoundariesUnlocked,
-      selectedGoalIds: sourceState.selectedGoalIds,
-      visibleTracks: getVisibleTracks(sourceState.bodyBoundariesUnlocked),
-      weeklyHistoryByChild: sourceState.weeklyHistoryByChild,
-      assignedTrackIdsByChild: sourceState.assignedTrackIdsByChild,
-      completedJourneyIdsByChild: sourceState.completedJourneyIdsByChild,
-      completedLessonIdsByChild: sourceState.completedLessonIdsByChild,
-      childJournalEntriesByChild: sourceState.childJournalEntriesByChild,
-      playlistLessonIdsByChild: sourceState.playlistLessonIdsByChild,
-      storyChoicesByChild: sourceState.storyChoicesByChild,
-      weeklyTargetsByChild: sourceState.weeklyTargetsByChild,
-    });
+    const snapshots = buildArchivedSnapshotsByChild(sourceState);
 
     return Object.fromEntries(
-      childSummaries.map((summary) => [
-        summary.child.id,
+      Object.entries(snapshots).map(([childId, snapshot]) => [
+        childId,
         {
+          ...snapshot,
           weekLabel,
-          readinessScore: summary.overallTargetProgress,
-          lessonTargetProgress: summary.lessonTargetProgress,
-          storyTargetProgress: summary.storyTargetProgress,
-          reflectionTargetProgress: summary.reflectionTargetProgress,
-          completedLessonsTotal: summary.completedLessons,
-          completedStoriesTotal: summary.completedStories,
-          reflectionsTotal: summary.journalCount,
-          badgesTotal: summary.badgesEarned,
-          focusTrackId: summary.weeklyTarget.focusTrackId,
-          strongestTrackId: summary.strongestTrack.id,
-          supportTrackId: summary.supportTrack.id,
-          note: summary.supportMessage,
         },
       ]),
     );
@@ -1231,7 +1154,7 @@ function App() {
                 </div>
                 <div className="mobile-progress-pill">
                   <span>
-                    {weeklyLessonCount}/{selectedWeeklyTarget.lessons} lessons
+                    {selectedChildWorkspace.weeklyLessonCount}/{selectedWeeklyTarget.lessons} lessons
                   </span>
                 </div>
               </div>
@@ -1245,9 +1168,24 @@ function App() {
               <div className="summary-chip-row mobile-resume-meta">
                 <span className="summary-chip">{focusTrackTitle}</span>
                 <span className="summary-chip">
-                  {selectedChildOverallTargetProgress}% week plan
+                  {selectedChildWorkspace.overallTargetProgress}% week plan
                 </span>
                 <span className="summary-chip">{selectedChild.todayTheme}</span>
+              </div>
+
+              <div className="mobile-pulse-grid">
+                {selectedChildWorkspace.pulseRows.map((item) => (
+                  <article key={item.id} className="mobile-pulse-card">
+                    <div className="mobile-pulse-head">
+                      <span>{item.label}</span>
+                      <strong>{item.value}</strong>
+                    </div>
+                    <div className="mobile-pulse-bar" aria-hidden="true">
+                      <span style={{ width: `${item.progress}%` }} />
+                    </div>
+                    <em>{item.progress}% to target</em>
+                  </article>
+                ))}
               </div>
 
               <div className="mobile-resume-actions">
