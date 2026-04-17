@@ -81,9 +81,38 @@ export function CoursesTab({
     lessonStageCount === lessonStages.length && answeredCorrectly;
   const completionLabel = lessonComplete
     ? "Mark incomplete"
+      : lessonReadyToCelebrate
+        ? "Celebrate lesson"
+        : "Mark complete anyway";
+  const lessonStateCard = lessonComplete
+    ? {
+        eyebrow: "Logged for the week",
+        title: "This lesson is already counted.",
+        copy: activeLessonExperience.celebrationLine,
+      }
     : lessonReadyToCelebrate
-      ? "Celebrate lesson"
-      : "Mark complete anyway";
+      ? {
+          eyebrow: "Ready to celebrate",
+          title: "Every guided move is complete.",
+          copy: "Mark the lesson complete and open the reflection or family follow-through while the language is still fresh.",
+        }
+      : !activeLessonExperience.selectedPracticeChoice
+        ? {
+            eyebrow: "Next step",
+            title: "Choose the practice move that feels strongest.",
+            copy: practicePanel.unselectedNote,
+          }
+        : !answeredOption
+          ? {
+              eyebrow: "Checkpoint open",
+              title: "Test the lesson before you move on.",
+              copy: "Answer the checkpoint after the guided steps so the skill gets locked in, not just read once.",
+            }
+          : {
+              eyebrow: "Keep going",
+              title: "You are building the lesson path.",
+              copy: activeLessonExperience.practiceChoiceNote,
+            };
 
   function renderPracticeOption(option) {
     const selected = activeLessonExperience.selectedPracticeChoice?.id === option.id;
@@ -280,6 +309,12 @@ export function CoursesTab({
             <span>{activeLessonExperience.trackPlaybookLabel}</span>
             <span>{activeLessonExperience.ageLens.label}</span>
             <span>{activeLesson.activity}</span>
+          </div>
+
+          <div className="lesson-state-card">
+            <p>{lessonStateCard.eyebrow}</p>
+            <strong>{lessonStateCard.title}</strong>
+            <span>{lessonStateCard.copy}</span>
           </div>
 
           <div className="mode-toggle-row">

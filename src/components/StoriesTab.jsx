@@ -6,6 +6,8 @@ export function StoriesTab({
   onSelectStory,
   storyEpisodes,
 }) {
+  const completedStoryCount = Object.keys(childStoryChoices).length;
+
   return (
     <section className="workspace-band">
       <div className="section-heading section-heading-tight">
@@ -15,6 +17,23 @@ export function StoriesTab({
           Each story now includes richer branches and a parent follow-up cue after
           the choice is made.
         </p>
+      </div>
+
+      <div className="story-progress-strip">
+        <article className="story-progress-card">
+          <p>Stories explored</p>
+          <strong>{completedStoryCount}</strong>
+          <span>Choices already saved across the current story library.</span>
+        </article>
+        <article className="story-progress-card">
+          <p>Current state</p>
+          <strong>{activeStoryChoice ? "Path saved" : "Choice open"}</strong>
+          <span>
+            {activeStoryChoice
+              ? "The child choice is locked in and the family cue is ready below."
+              : "Pick the option that feels strongest and reveal the follow-up cue."}
+          </span>
+        </article>
       </div>
 
       <div className="story-layout">
@@ -47,6 +66,20 @@ export function StoriesTab({
 
           <p className="story-body">{activeStory.setup}</p>
 
+          <div className={`story-outcome-card ${activeStoryChoice ? "is-complete" : ""}`}>
+            <p>{activeStoryChoice ? "Saved story move" : "Choose a path"}</p>
+            <strong>
+              {activeStoryChoice
+                ? activeStoryChoice.title
+                : "Pick the response that feels most true for this moment."}
+            </strong>
+            <span>
+              {activeStoryChoice
+                ? activeStoryChoice.result
+                : "There is no perfect answer here. The point is to rehearse a real move before life asks for it."}
+            </span>
+          </div>
+
           <div className="choice-list">
             {activeStory.choices.map((choice) => (
               <button
@@ -68,7 +101,7 @@ export function StoriesTab({
             <strong>{activeStory.reflectionPrompt}</strong>
             <span>
               {activeStoryChoice
-                ? activeStoryChoice.parentCue
+                ? `Parent cue: ${activeStoryChoice.parentCue}`
                 : "Choose a path to reveal the family follow-up cue."}
             </span>
           </div>

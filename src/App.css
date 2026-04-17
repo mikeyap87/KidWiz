@@ -2502,6 +2502,79 @@
   border-top: 1px solid rgba(246, 248, 251, 0.08);
 }
 
+.lesson-state-card,
+.story-progress-card,
+.story-outcome-card,
+.journal-guidance {
+  padding: 16px;
+  border: 1px solid rgba(246, 248, 251, 0.08);
+  background: rgba(246, 248, 251, 0.04);
+}
+
+.lesson-state-card p,
+.lesson-state-card strong,
+.lesson-state-card span,
+.story-progress-card p,
+.story-progress-card strong,
+.story-progress-card span,
+.story-outcome-card p,
+.story-outcome-card strong,
+.story-outcome-card span,
+.journal-guidance p,
+.journal-guidance strong,
+.journal-guidance span {
+  margin: 0;
+}
+
+.lesson-state-card p,
+.story-progress-card p,
+.story-outcome-card p,
+.journal-guidance p {
+  color: rgba(246, 248, 251, 0.58);
+  font-size: 0.82rem;
+}
+
+.lesson-state-card strong,
+.story-outcome-card strong,
+.journal-guidance strong {
+  display: block;
+  margin-top: 8px;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.lesson-state-card span,
+.story-progress-card span,
+.story-outcome-card span,
+.journal-guidance span {
+  display: block;
+  margin-top: 8px;
+  color: rgba(246, 248, 251, 0.74);
+  line-height: 1.55;
+}
+
+.story-progress-strip {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.story-progress-card strong {
+  display: block;
+  margin-top: 8px;
+  font-size: 1.28rem;
+}
+
+.story-outcome-card {
+  margin-top: 18px;
+}
+
+.story-outcome-card.is-complete {
+  border-color: rgba(131, 255, 240, 0.22);
+  background: rgba(23, 197, 179, 0.1);
+}
+
 .practice-panel-helper,
 .practice-selection-note {
   margin: 14px 0 0;
@@ -3047,6 +3120,19 @@
   font-size: 1rem;
 }
 
+.entry-row-empty strong {
+  display: block;
+  margin-top: 8px;
+  font-size: 1rem;
+}
+
+.entry-row-empty span {
+  display: block;
+  margin-top: 8px;
+  color: rgba(246, 248, 251, 0.74);
+  line-height: 1.55;
+}
+
 .entry-row span {
   display: block;
   margin-top: 10px;
@@ -3268,6 +3354,7 @@
   .feature-grid,
   .course-showcase,
   .dashboard-summary-grid,
+  .story-progress-strip,
   .story-strip,
   .choice-grid,
   .preview-grid,

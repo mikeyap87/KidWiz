@@ -32,6 +32,12 @@ export function JournalTab({
             <h2>{selectedChild.name}&apos;s journal</h2>
           </div>
 
+          <div className="journal-guidance">
+            <p>Starter idea</p>
+            <strong>Notice one tiny brave move, one wobble, or one question.</strong>
+            <span>Short, honest reflections are enough. The goal is memory, not perfection.</span>
+          </div>
+
           <form className="journal-form" onSubmit={onSaveChildJournal}>
             <div className="mood-row">
               {moodOptions.map((mood) => (
@@ -59,15 +65,23 @@ export function JournalTab({
           </form>
 
           <div className="entry-list">
-            {childJournalEntries.map((entry) => (
-              <article key={entry.id} className="entry-row">
-                <p>
-                  {entry.title} · {entry.dateLabel}
-                </p>
-                <h3>{entry.mood}</h3>
-                <span>{entry.body}</span>
+            {childJournalEntries.length ? (
+              childJournalEntries.map((entry) => (
+                <article key={entry.id} className="entry-row">
+                  <p>
+                    {entry.title} · {entry.dateLabel}
+                  </p>
+                  <h3>{entry.mood}</h3>
+                  <span>{entry.body}</span>
+                </article>
+              ))
+            ) : (
+              <article className="entry-row entry-row-empty">
+                <p>First reflection waiting</p>
+                <strong>{selectedChild.name} has not saved a journal note yet.</strong>
+                <span>Use the prompt above and keep it simple. One sentence is enough to start a real streak.</span>
               </article>
-            ))}
+            )}
           </div>
         </article>
 
@@ -75,6 +89,12 @@ export function JournalTab({
           <div className="panel-head">
             <Users size={18} />
             <h2>Parent notes</h2>
+          </div>
+
+          <div className="journal-guidance">
+            <p>Parent prompt</p>
+            <strong>Write down what helped, what felt sticky, and what to try next.</strong>
+            <span>These notes become the memory system for the family, especially when the week gets busy.</span>
           </div>
 
           <form className="journal-form" onSubmit={onSaveParentJournal}>
@@ -89,14 +109,22 @@ export function JournalTab({
           </form>
 
           <div className="entry-list">
-            {parentJournalEntries.map((entry) => (
-              <article key={entry.id} className="entry-row">
-                <p>
-                  {entry.title} · {entry.dateLabel}
-                </p>
-                <span>{entry.body}</span>
+            {parentJournalEntries.length ? (
+              parentJournalEntries.map((entry) => (
+                <article key={entry.id} className="entry-row">
+                  <p>
+                    {entry.title} · {entry.dateLabel}
+                  </p>
+                  <span>{entry.body}</span>
+                </article>
+              ))
+            ) : (
+              <article className="entry-row entry-row-empty">
+                <p>Parent note waiting</p>
+                <strong>No parent notes saved yet.</strong>
+                <span>Capture one pattern you want to remember before the next lesson, story, or family ritual.</span>
               </article>
-            ))}
+            )}
           </div>
         </article>
       </div>
