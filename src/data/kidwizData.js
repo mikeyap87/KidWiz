@@ -1148,6 +1148,21 @@ export const starterAssignedTrackIdsByChild = {
   kai: ["wonder-lab", "digital-detectives", "focus-forge"],
 };
 
+export const starterWeeklyTargetsByChild = {
+  nova: {
+    lessons: 3,
+    stories: 2,
+    reflections: 2,
+    focusTrackId: "brave-heart",
+  },
+  kai: {
+    lessons: 4,
+    stories: 2,
+    reflections: 2,
+    focusTrackId: "digital-detectives",
+  },
+};
+
 export const starterPlaylistLessonIdsByChild = {
   nova: ["brave-script", "save-spend-share", "voice-switch"],
   kai: ["moon-budget", "truth-check", "tiny-plan"],

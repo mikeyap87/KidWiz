@@ -46,8 +46,9 @@ If Supabase is not configured yet, the product still opens cleanly in demo mode 
 
 - public marketing site
 - guided onboarding flow
+- parent dashboard with child-by-child weekly targets and recommendations
 - multi-child switching
-- course library with lesson progress and quiz state
+- course library with lesson progress, quiz state, and sequential progression
 - weekly playlists
 - branching story choices
 - Spark Coach demo layer with different coaching modes
@@ -57,8 +58,11 @@ If Supabase is not configured yet, the product still opens cleanly in demo mode 
 
 ## Project Structure
 
-- `src/App.jsx` - main public site and application shell
+- `src/App.jsx` - top-level state and app routing
+- `src/components/` - public site, onboarding, dashboard, and tab components
 - `src/data/kidwizData.js` - content model for worlds, stories, family rituals, and demo profiles
+- `src/lib/demoState.js` - local demo state bootstrap and persistence helpers
+- `src/lib/progression.js` - playlist, badge, recommendation, and track-progression logic
 - `src/lib/supabaseClient.js` - optional Supabase auth wiring
 - `docs/PROJECT.md` - living product and architecture document
 

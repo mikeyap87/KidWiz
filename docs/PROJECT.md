@@ -33,6 +33,7 @@ KidWiz aims to close that gap by giving families one place to build:
 - parent email entry flow with optional Supabase magic-link auth
 - demo-mode fallback when auth is not configured
 - guided family onboarding for goal selection, weekly rhythm, coach style, and celebration style
+- parent dashboard with per-child weekly targets, focus tracks, progress, and recommended next lessons
 - multi-child switching inside the app shell
 - seven always-available course tracks:
   - Wonder Lab
@@ -46,6 +47,8 @@ KidWiz aims to close that gap by giving families one place to build:
   - Body and Boundaries
 - daily rhythm dashboard with missions, progress signals, and weekly completion
 - guided lesson and quiz flow for each course track
+- sequential lesson progression within tracks
+- track statuses such as ready, in progress, checkpoint ready, and complete
 - per-child weekly playlists with add/remove controls
 - branching story episodes with richer choices and parent debrief prompts
 - badge system based on local progress state
@@ -78,7 +81,8 @@ The value is:
 
 ### Frontend
 
-- `src/App.jsx` contains the public site, onboarding flow, login entry, and in-app experience.
+- `src/App.jsx` now acts mainly as the state container and app shell.
+- `src/components/` contains the public site, onboarding flow, dashboard, and tab-level UI modules.
 - `src/data/kidwizData.js` acts as the current content source for demo profiles, course tracks, lessons, stories, playlists, badges, rituals, and setup options.
 - `src/App.css` contains the full visual system and responsive layout.
 
@@ -86,6 +90,11 @@ The value is:
 
 - `src/lib/supabaseClient.js` enables magic-link login when environment variables are present.
 - If Supabase is not configured, the app falls back to a polished demo mode instead of breaking.
+
+### Local Product Logic
+
+- `src/lib/demoState.js` owns the local demo bootstrap state and browser persistence behavior.
+- `src/lib/progression.js` owns playlist generation, lesson progression, track status, badge logic, and recommended-next-lesson behavior.
 
 ### Data Model Today
 
@@ -95,6 +104,7 @@ The live app shell currently uses in-browser demo state for:
 - onboarding completion and setup preferences
 - selected family goals
 - weekly rhythm, coach style, and celebration style
+- weekly targets by child
 - selected child profile
 - selected course track and lesson
 - selected story path
