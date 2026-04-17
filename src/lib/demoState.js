@@ -44,6 +44,9 @@ export function createDefaultState() {
     assignedTrackIdsByChild: starterAssignedTrackIdsByChild,
     weeklyTargetsByChild: starterWeeklyTargetsByChild,
     weeklyHistoryByChild: starterWeeklyHistoryByChild,
+    lessonMilestoneIdsByChild: Object.fromEntries(
+      childProfiles.map((child) => [child.id, {}]),
+    ),
     lessonQuizAnswersByChild: Object.fromEntries(
       childProfiles.map((child) => [child.id, {}]),
     ),
@@ -100,6 +103,10 @@ export function loadSavedState() {
       weeklyHistoryByChild: {
         ...defaults.weeklyHistoryByChild,
         ...(parsed.weeklyHistoryByChild ?? {}),
+      },
+      lessonMilestoneIdsByChild: {
+        ...defaults.lessonMilestoneIdsByChild,
+        ...(parsed.lessonMilestoneIdsByChild ?? {}),
       },
       lessonQuizAnswersByChild: {
         ...defaults.lessonQuizAnswersByChild,

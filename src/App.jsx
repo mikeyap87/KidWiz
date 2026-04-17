@@ -264,6 +264,8 @@ function App() {
     appState.childJournalEntriesByChild[selectedChild.id] ?? [];
   const childQuizAnswers =
     appState.lessonQuizAnswersByChild[selectedChild.id] ?? {};
+  const childLessonMilestones =
+    appState.lessonMilestoneIdsByChild[selectedChild.id] ?? {};
   const assignedTrackIds =
     appState.assignedTrackIdsByChild[selectedChild.id] ?? [];
   const selectedWeeklyTarget =
@@ -274,6 +276,7 @@ function App() {
       focusTrackId: visibleTracks[0].id,
     };
   const activeLessonAnswer = childQuizAnswers[activeLesson.id];
+  const activeLessonMilestoneIds = childLessonMilestones[activeLesson.id] ?? [];
   const answeredOption = activeLesson.quiz.options[activeLessonAnswer];
   const answeredCorrectly =
     activeLessonAnswer === activeLesson.quiz.correctIndex;
@@ -733,6 +736,24 @@ function App() {
     );
   }
 
+  function handleToggleLessonMilestone(stageId) {
+    patchChildCollection(
+      "lessonMilestoneIdsByChild",
+      selectedChild.id,
+      (current = {}) => {
+        const completedStageIds = current[activeLesson.id] ?? [];
+        const nextStageIds = completedStageIds.includes(stageId)
+          ? completedStageIds.filter((id) => id !== stageId)
+          : [...completedStageIds, stageId];
+
+        return {
+          ...current,
+          [activeLesson.id]: nextStageIds,
+        };
+      },
+    );
+  }
+
   function handleQuizAnswer(answerIndex) {
     patchChildCollection(
       "lessonQuizAnswersByChild",
@@ -796,6 +817,21 @@ function App() {
     setParentJournalDraft("");
   }
 
+  function handleOpenParentNoteStarter() {
+    const noteStarter = [
+      `${selectedChild.name} finished ${activeTrack.title}: ${activeLesson.title}.`,
+      `Parent follow-through: ${activeLesson.parentCue}`,
+      `Celebrate with ${selectedCelebrationStyle.title.toLowerCase()}: ${selectedCelebrationStyle.copy}`,
+      `Tonight's ritual: ${nextRitual.title}. ${nextRitual.copy}`,
+    ].join(" ");
+
+    setParentJournalDraft(noteStarter);
+    updateAppState((current) => ({
+      ...current,
+      activeTab: "journal",
+    }));
+  }
+
   function handleToggleTrackAssignment(trackId) {
     patchChildCollection(
       "assignedTrackIdsByChild",
@@ -850,6 +886,9 @@ function App() {
         ),
         completedJourneyIdsByChild: Object.fromEntries(
           childProfiles.map((child) => [child.id, []]),
+        ),
+        lessonMilestoneIdsByChild: Object.fromEntries(
+          childProfiles.map((child) => [child.id, {}]),
         ),
         lessonQuizAnswersByChild: Object.fromEntries(
           childProfiles.map((child) => [child.id, {}]),
@@ -960,6 +999,9 @@ function App() {
         ),
         completedJourneyIdsByChild: Object.fromEntries(
           childProfiles.map((child) => [child.id, []]),
+        ),
+        lessonMilestoneIdsByChild: Object.fromEntries(
+          childProfiles.map((child) => [child.id, {}]),
         ),
         lessonQuizAnswersByChild: Object.fromEntries(
           childProfiles.map((child) => [child.id, {}]),
@@ -1247,14 +1289,18 @@ function App() {
                 <CoursesTab
                   activeLesson={activeLesson}
                   activeLessonAnswer={activeLessonAnswer}
+                  activeLessonMilestoneIds={activeLessonMilestoneIds}
                   activeTrack={activeTrack}
                   answeredCorrectly={answeredCorrectly}
                   answeredOption={answeredOption}
+                  childCompletedJourneyIds={childCompletedJourneyIds}
                   childCompletedLessonIds={childCompletedLessonIds}
                   childPlaylistLessonIds={childPlaylistLessonIds}
                   coachResponseMode={coachResponseMode}
+                  nextRitual={nextRitual}
                   onAnswer={handleQuizAnswer}
                   onChangeCoachMode={setCoachResponseMode}
+                  onOpenParentNoteStarter={handleOpenParentNoteStarter}
                   onSelectLesson={(lessonId) =>
                     updateAppState((current) => ({
                       ...current,
@@ -1262,8 +1308,12 @@ function App() {
                     }))
                   }
                   onSelectTrack={handleSelectTrack}
+                  onToggleJourney={handleToggleJourney}
                   onToggleComplete={handleToggleLessonComplete}
+                  onToggleLessonMilestone={handleToggleLessonMilestone}
                   onTogglePlaylist={handleTogglePlaylistLesson}
+                  selectedCelebrationStyle={selectedCelebrationStyle}
+                  selectedChild={selectedChild}
                   trackProgressRows={trackProgressRows}
                   visibleTracks={visibleTracks}
                 />

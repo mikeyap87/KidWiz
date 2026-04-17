@@ -8,7 +8,7 @@ KidWiz is a modern children's education SaaS concept that combines traditional l
 - a fully navigable demo application for family learning
 - a Quest Hub with world-map navigation, weekly missions, and visible rewards
 - a parent weekly report layer with action plans, conversation prompts, and stateful trend history
-- eight course tracks with multi-lesson arcs
+- eight course tracks with multi-lesson arcs and guided lesson flows
 - expanded Brave Heart, Money Moves, and Home Team content depth
 - weekly playlists, badges, progress bars, coach prompts, parent controls, and Family Hub archive tools
 - branching story practice, private journals, and a parent family hub
@@ -34,6 +34,7 @@ Useful local review shortcuts:
 - public site: `http://127.0.0.1:5290/`
 - instant Quest Hub demo: `http://127.0.0.1:5290/?demo=instant&tab=quest`
 - instant dashboard demo: `http://127.0.0.1:5290/?demo=instant&tab=dashboard`
+- guided courses demo: `http://127.0.0.1:5290/?demo=instant&tab=courses`
 - Family Hub demo: `http://127.0.0.1:5290/?demo=instant&tab=family`
 - guided onboarding demo: `http://127.0.0.1:5290/?demo=guided`
 - instant demo for a specific child: `http://127.0.0.1:5290/?demo=instant&tab=quest&child=kai`
@@ -61,7 +62,7 @@ If Supabase is not configured yet, the product still opens cleanly in demo mode 
 - parent dashboard with child-by-child weekly targets, weekly report summaries, archived trend comparisons, and recommendations
 - child-facing Quest Hub with mission board, world map, reward shelf, and rhythm checklist
 - multi-child switching
-- course library with lesson progress, quiz state, and sequential progression
+- course library with lesson progress, guided lesson milestones, quiz checkpoints, and sequential progression
 - weekly playlists
 - branching story choices across confidence, money, relationships, and digital safety
 - Spark Coach demo layer with different coaching modes
@@ -86,3 +87,4 @@ If Supabase is not configured yet, the product still opens cleanly in demo mode 
 - introduce billing and subscription controls
 - break the app shell into smaller route-level screens and components once the product shape stabilizes
 - add route-level code splitting to trim the current main bundle
+- deepen lesson authoring so each course includes richer practice variations, parent debriefs, and age-banded prompts

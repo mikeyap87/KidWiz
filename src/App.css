@@ -2055,6 +2055,138 @@
   font-size: 0.9rem;
 }
 
+.lesson-momentum,
+.lesson-follow-through,
+.lesson-complete-strip {
+  margin-top: 22px;
+  padding-top: 22px;
+  border-top: 1px solid rgba(246, 248, 251, 0.08);
+}
+
+.lesson-momentum-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.lesson-momentum-head p,
+.lesson-momentum-head h3,
+.lesson-momentum-head strong,
+.lesson-stage-row p,
+.lesson-stage-row strong,
+.lesson-stage-row span,
+.lesson-follow-row p,
+.lesson-follow-row strong,
+.lesson-follow-row span {
+  margin: 0;
+}
+
+.lesson-momentum-head p,
+.lesson-stage-row p,
+.lesson-follow-row p {
+  color: rgba(246, 248, 251, 0.58);
+  font-size: 0.82rem;
+}
+
+.lesson-momentum-head h3 {
+  margin-top: 6px;
+  font-size: 1rem;
+}
+
+.lesson-momentum-head strong {
+  color: #d9ff6b;
+  font-size: 0.92rem;
+}
+
+.lesson-progress-meter {
+  margin-top: 14px;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(246, 248, 251, 0.08);
+  overflow: hidden;
+}
+
+.lesson-progress-meter span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #d9ff6b 0%, #83fff0 100%);
+}
+
+.lesson-stage-list,
+.lesson-follow-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.lesson-stage-row,
+.lesson-follow-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 14px;
+  border: 1px solid rgba(246, 248, 251, 0.08);
+  background: rgba(246, 248, 251, 0.03);
+  border-radius: 8px;
+}
+
+.lesson-stage-row strong,
+.lesson-follow-row strong {
+  display: block;
+  margin-top: 6px;
+  line-height: 1.5;
+}
+
+.lesson-stage-row span,
+.lesson-follow-row span {
+  display: block;
+  margin-top: 6px;
+  color: rgba(246, 248, 251, 0.72);
+  line-height: 1.5;
+}
+
+.stage-toggle,
+.lesson-stage-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: 0 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(246, 248, 251, 0.1);
+  background: rgba(246, 248, 251, 0.04);
+  color: #f6f8fb;
+  font: inherit;
+}
+
+.stage-toggle {
+  cursor: pointer;
+}
+
+.stage-toggle.is-selected,
+.lesson-stage-status.is-complete {
+  border-color: rgba(217, 255, 107, 0.32);
+  background: rgba(217, 255, 107, 0.12);
+  color: #d9ff6b;
+}
+
+.detail-pills.detail-pills-support {
+  margin-top: 14px;
+}
+
+.lesson-action-row {
+  align-items: flex-start;
+}
+
+.lesson-action-row .inline-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .mode-toggle-row,
 .action-row,
 .mood-row {
@@ -2402,7 +2534,10 @@
   .app-topbar-inner,
   .hero-login-row,
   .coach-hero,
-  .story-layout {
+  .story-layout,
+  .lesson-momentum-head,
+  .lesson-stage-row,
+  .lesson-follow-row {
     flex-direction: column;
     align-items: stretch;
   }
