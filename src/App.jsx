@@ -24,6 +24,7 @@ import { StoriesTab } from "./components/StoriesTab";
 import { STORAGE_KEY, createDefaultState, loadSavedState } from "./lib/demoState";
 import {
   buildQuestWorldRows,
+  buildParentWeeklyReport,
   buildSuggestedPlaylistForChild,
   buildSuggestedPlaylists,
   buildWeeklyMissionBoard,
@@ -31,6 +32,7 @@ import {
   findLessonById,
   findTrackByLessonId,
   getRecommendedLesson,
+  getRecommendedStory,
   getTrackProgress,
   getTrackStatus,
   getVisibleTracks,
@@ -380,6 +382,10 @@ function App() {
       completedLessonIds: completedLessons,
       weeklyTarget,
     });
+    const recommendedStory = getRecommendedStory({
+      selectedGoalIds: appState.selectedGoalIds,
+      storyChoices,
+    });
     const childBadgeIds = deriveEarnedBadgeIds({
       completedLessonIds: completedLessons,
       playlistLessonIds,
@@ -388,28 +394,35 @@ function App() {
       storyChoices,
       bodyBoundariesUnlocked: appState.bodyBoundariesUnlocked,
     });
+    const lessonTargetProgress = Math.min(
+      100,
+      Math.round((completedLessons.length / weeklyTarget.lessons) * 100),
+    );
+    const storyTargetProgress = Math.min(
+      100,
+      Math.round((Object.keys(storyChoices).length / weeklyTarget.stories) * 100),
+    );
+    const reflectionTargetProgress = Math.min(
+      100,
+      Math.round((journalEntries.length / weeklyTarget.reflections) * 100),
+    );
 
     return {
       child,
       strongestTrack: strongest,
       supportTrack: support,
       recommendedLesson,
+      recommendedStory,
       completedLessons: completedLessons.length,
       completedStories: Object.keys(storyChoices).length,
       journalCount: journalEntries.length,
       badgesEarned: childBadgeIds.length,
       weeklyTarget,
-      lessonTargetProgress: Math.min(
-        100,
-        Math.round((completedLessons.length / weeklyTarget.lessons) * 100),
-      ),
-      storyTargetProgress: Math.min(
-        100,
-        Math.round((Object.keys(storyChoices).length / weeklyTarget.stories) * 100),
-      ),
-      reflectionTargetProgress: Math.min(
-        100,
-        Math.round((journalEntries.length / weeklyTarget.reflections) * 100),
+      lessonTargetProgress,
+      storyTargetProgress,
+      reflectionTargetProgress,
+      overallTargetProgress: Math.round(
+        (lessonTargetProgress + storyTargetProgress + reflectionTargetProgress) / 3,
       ),
       supportMessage: recommendedLesson
         ? `${child.supportSpot} Next best move: ${recommendedLesson.lesson.title}.`
@@ -435,6 +448,15 @@ function App() {
       0,
     ),
   };
+  const weeklyReport = buildParentWeeklyReport({
+    childSummaries,
+    familyMetrics,
+    nextRitual,
+    selectedCelebrationStyle,
+    selectedCoachStyle,
+    selectedGoals,
+    selectedRhythm,
+  });
 
   const coachCards = [
     {
@@ -804,10 +826,11 @@ function App() {
     }));
   }
 
-  function handleOpenStory(storyId) {
+  function handleOpenStory(storyId, childId = selectedChild.id) {
     updateAppState((current) => ({
       ...current,
       activeTab: "stories",
+      selectedChildId: childId,
       selectedStoryId: storyId ?? current.selectedStoryId,
     }));
   }
@@ -981,7 +1004,9 @@ function App() {
                   familyMetrics={familyMetrics}
                   onAdjustWeeklyTarget={handleAdjustWeeklyTarget}
                   onChangeFocusTrack={handleChangeFocusTrack}
+                  onOpenFamily={handleOpenFamily}
                   onOpenLesson={handleOpenLessonForChild}
+                  onOpenStory={handleOpenStory}
                   onSelectChild={(childId) =>
                     updateAppState((current) => ({
                       ...current,
@@ -990,6 +1015,7 @@ function App() {
                   }
                   selectedChildId={selectedChild.id}
                   visibleTracks={visibleTracks}
+                  weeklyReport={weeklyReport}
                 />
               ) : null}
 

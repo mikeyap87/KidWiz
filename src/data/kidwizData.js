@@ -9,7 +9,7 @@ export const siteImages = {
 
 export const heroStats = [
   { label: "Guided tracks", value: "8 course arcs" },
-  { label: "Story branches", value: "12 child choices" },
+  { label: "Story branches", value: "21 child choices" },
   { label: "Family loops", value: "playlists, badges, journals" },
 ];
 
@@ -519,6 +519,64 @@ export const courseCatalog = [
           success: "Right. Reflection plus one next try beats shame.",
         },
       },
+      {
+        id: "courage-ladder",
+        title: "Build a courage ladder",
+        duration: "9 min",
+        summary:
+          "Children turn one scary moment into steps that are brave but still doable.",
+        activity: "Break one intimidating challenge into four ladder steps.",
+        parentCue:
+          "Ask which step feels just brave enough for this week instead of too big.",
+        coachModes: {
+          gentle:
+            "A courage ladder works best when the first step feels possible, not perfect.",
+          playful:
+            "Build a cliff-climbing route with tiny ledges instead of one giant leap.",
+          stretch:
+            "Which step would make the biggest difference, and why is it not the first one?",
+        },
+        quiz: {
+          question: "What makes a courage ladder useful?",
+          options: [
+            "It removes every uncomfortable feeling",
+            "It turns one big fear into smaller doable steps",
+            "It guarantees instant confidence",
+            "It only works if adults do every step with you",
+          ],
+          correctIndex: 1,
+          success: "Exactly. Smaller brave steps help confidence grow through action.",
+        },
+      },
+      {
+        id: "help-script",
+        title: "Ask for support without giving up",
+        duration: "8 min",
+        summary:
+          "Children practice asking for help in a way that keeps ownership and courage together.",
+        activity: "Turn three stuck moments into clear support requests.",
+        parentCue:
+          "Ask how getting support can still leave the child in charge of the next move.",
+        coachModes: {
+          gentle:
+            "Asking for help is not quitting. It is choosing the next support on purpose.",
+          playful:
+            "Treat it like calling in the right teammate for one part of the mission.",
+          stretch:
+            "What kind of help would move you forward without taking the job away?",
+        },
+        quiz: {
+          question: "Which request shows healthy support-seeking?",
+          options: [
+            "Do it all for me.",
+            "Never mind, I will just stay stuck.",
+            "Can you help me start the first step, then I will keep going?",
+            "I should only ask if I already know everything.",
+          ],
+          correctIndex: 2,
+          success: "Yes. Good support helps you keep ownership of the work.",
+        },
+      },
     ],
   },
   {
@@ -619,6 +677,64 @@ export const courseCatalog = [
           success: "Yes. Small checkpoints make progress feel real.",
         },
       },
+      {
+        id: "needs-wants-maybe",
+        title: "Sort needs, wants, and maybes",
+        duration: "8 min",
+        summary:
+          "Children learn that not every want is wrong, but different purchases deserve different urgency.",
+        activity: "Sort real kid purchases into need, want, or maybe later.",
+        parentCue:
+          "Ask which category felt hardest and what made that choice feel tricky.",
+        coachModes: {
+          gentle:
+            "A want is not a bad thing. The skill is knowing whether it belongs now, later, or not at all.",
+          playful:
+            "Become the official sorter for the market meadow and label each item correctly.",
+          stretch:
+            "What changes a maybe into a yes or a no?",
+        },
+        quiz: {
+          question: "Why is it helpful to sort needs, wants, and maybes?",
+          options: [
+            "So fun things disappear forever",
+            "So every choice feels urgent",
+            "So you can match spending to what matters most right now",
+            "So money decisions stay confusing",
+          ],
+          correctIndex: 2,
+          success: "Right. Clear categories make smarter money choices easier.",
+        },
+      },
+      {
+        id: "tradeoff-tracker",
+        title: "Track a tradeoff before you buy",
+        duration: "9 min",
+        summary:
+          "Children compare what they gain now with what they delay or protect for later.",
+        activity: "Choose between two purchase plans and explain the tradeoff.",
+        parentCue:
+          "Ask what had to be given up to make the chosen plan work.",
+        coachModes: {
+          gentle:
+            "A tradeoff is not a punishment. It is the truth hiding inside every choice.",
+          playful:
+            "Use your tradeoff tracker like a mission dashboard before you spend.",
+          stretch:
+            "Which plan matches your values best, not just your feelings this minute?",
+        },
+        quiz: {
+          question: "What is a tradeoff?",
+          options: [
+            "Getting everything without limits",
+            "The part of a choice you give up to get something else",
+            "A mistake you should avoid at all costs",
+            "Only a problem for adults",
+          ],
+          correctIndex: 1,
+          success: "Exactly. Smart spending means seeing what each yes also costs.",
+        },
+      },
     ],
   },
   {
@@ -716,6 +832,64 @@ export const courseCatalog = [
           ],
           correctIndex: 2,
           success: "Right. Specific appreciation makes people feel seen.",
+        },
+      },
+      {
+        id: "listen-first-lantern",
+        title: "Light the listen-first lantern",
+        duration: "8 min",
+        summary:
+          "Children practice showing they understood before trying to fix, defend, or win.",
+        activity: "Rewrite three arguments so listening comes before the comeback.",
+        parentCue:
+          "Ask what changed when the first job became understanding instead of winning.",
+        coachModes: {
+          gentle:
+            "You can still disagree later. Listening first just makes the next part safer.",
+          playful:
+            "Carry the lantern long enough to see the other person's side before you speak.",
+          stretch:
+            "How can you prove you understood without pretending you agree?",
+        },
+        quiz: {
+          question: "What is a listen-first move?",
+          options: [
+            "Interrupt so your side is heard immediately",
+            "Show you understood before pushing your own point",
+            "Stay silent forever",
+            "Agree with everything to avoid tension",
+          ],
+          correctIndex: 1,
+          success: "Yes. Feeling understood makes hard conversations calmer.",
+        },
+      },
+      {
+        id: "boundary-bridge",
+        title: "Build a kind boundary",
+        duration: "9 min",
+        summary:
+          "Children learn how to say what is okay, what is not, and what they need next without attacking.",
+        activity: "Turn three messy moments into kind, clear boundary lines.",
+        parentCue:
+          "Ask how a boundary can stay firm without becoming mean.",
+        coachModes: {
+          gentle:
+            "A clear boundary protects the relationship by making the limit easier to understand.",
+          playful:
+            "Build a bridge with guardrails so everyone can cross without crashing.",
+          stretch:
+            "What exact words keep the limit clear and the tone respectful?",
+        },
+        quiz: {
+          question: "Which sentence sounds most like a healthy boundary?",
+          options: [
+            "You are the worst.",
+            "Whatever, do what you want.",
+            "I do not want my things used without asking. Please check with me first.",
+            "I should never say what bothers me.",
+          ],
+          correctIndex: 2,
+          success: "Right. Healthy boundaries are clear, respectful, and specific.",
         },
       },
     ],
@@ -1169,6 +1343,117 @@ export const storyEpisodes = [
       },
     ],
   },
+  {
+    id: "club-door",
+    title: "Club Door",
+    focus: "Trying something new",
+    goalIds: ["confidence", "friendships"],
+    ageBand: "7-11",
+    setup:
+      "A new club is meeting after school. You want to join, but you do not know anyone yet and your brain keeps inventing reasons to stay comfortable.",
+    reflectionPrompt:
+      "How do you decide whether nerves are warning you or simply showing that you care?",
+    choices: [
+      {
+        id: "enter-small",
+        title: "Walk in and ask one simple question",
+        result:
+          "The nerves stay loud for a minute, but one small action opens the whole room.",
+        parentCue:
+          "Ask why one small entrance move can matter more than waiting for total confidence.",
+      },
+      {
+        id: "bring-buddy",
+        title: "Ask a friend or adult to help with the first hello",
+        result:
+          "Support makes the first step lighter while still leaving the child to join the activity.",
+        parentCue:
+          "Ask what kind of backup helps without stealing the brave moment.",
+      },
+      {
+        id: "skip-again",
+        title: "Tell yourself maybe next time and leave",
+        result:
+          "The nerves calm down for now, but the club may feel even bigger next time.",
+        parentCue:
+          "Ask what avoiding one moment teaches the brain about future chances.",
+      },
+    ],
+  },
+  {
+    id: "gift-jar",
+    title: "Gift Jar",
+    focus: "Saving versus impulse spending",
+    goalIds: ["money", "confidence"],
+    ageBand: "8-12",
+    setup:
+      "You have been saving for a gift for someone you love. Then you see a surprise sale on something you want for yourself, and the math suddenly feels emotional.",
+    reflectionPrompt:
+      "How do you stay loyal to a plan when a new shiny option arrives right in front of you?",
+    choices: [
+      {
+        id: "protect-goal",
+        title: "Keep the gift plan and wait",
+        result:
+          "The sale may disappear, but the original goal stays whole and intentional.",
+        parentCue:
+          "Ask what felt powerful about protecting a choice you made earlier.",
+      },
+      {
+        id: "split-money",
+        title: "Change the plan and split the money",
+        result:
+          "Both wants get a little attention, but the gift goal slows down immediately.",
+        parentCue:
+          "Ask when splitting a plan is wise and when it quietly weakens the goal.",
+      },
+      {
+        id: "buy-self-first",
+        title: "Grab the sale before it is gone",
+        result:
+          "The moment feels exciting, but the original purpose gets replaced by urgency.",
+        parentCue:
+          "Ask how time pressure can trick the brain into treating a want like a need.",
+      },
+    ],
+  },
+  {
+    id: "kitchen-spill",
+    title: "Kitchen Spill",
+    focus: "Truth, repair, and boundaries at home",
+    goalIds: ["friendships", "confidence"],
+    ageBand: "6-11",
+    setup:
+      "Something important got spilled in the kitchen and everyone is tired. You know what happened, but the room feels tense and you are deciding whether to hide, blame, or repair.",
+    reflectionPrompt:
+      "What helps honesty feel safer and more useful than defensiveness in a family moment?",
+    choices: [
+      {
+        id: "own-and-repair",
+        title: "Say what happened and offer one repair step",
+        result:
+          "The moment is still uncomfortable, but trust starts rebuilding quickly.",
+        parentCue:
+          "Ask why pairing honesty with repair changes the tone of the whole conversation.",
+      },
+      {
+        id: "half-truth",
+        title: "Tell only part of the story so it sounds smaller",
+        result:
+          "The tension drops a little, but the room stays uncertain because the full truth is missing.",
+        parentCue:
+          "Ask what partial honesty does to trust, even when it sounds calmer at first.",
+      },
+      {
+        id: "blame-fast",
+        title: "Point to someone else before they speak",
+        result:
+          "Self-protection feels fast, but the relationship takes the hit instead.",
+        parentCue:
+          "Ask why blame can feel protective for one second and costly right after.",
+      },
+    ],
+  },
 ];
 
 export const childProfiles = [
@@ -1224,11 +1509,11 @@ export const childProfiles = [
   },
 ];
 
-export const starterFamilyGoalIds = ["confidence", "money", "reading"];
+export const starterFamilyGoalIds = ["confidence", "money", "friendships"];
 
 export const starterAssignedTrackIdsByChild = {
   nova: ["brave-heart", "money-moves", "story-studio"],
-  kai: ["wonder-lab", "digital-detectives", "focus-forge"],
+  kai: ["wonder-lab", "digital-detectives", "focus-forge", "home-team"],
 };
 
 export const starterWeeklyTargetsByChild = {
@@ -1236,19 +1521,19 @@ export const starterWeeklyTargetsByChild = {
     lessons: 3,
     stories: 2,
     reflections: 2,
-    focusTrackId: "brave-heart",
+    focusTrackId: "money-moves",
   },
   kai: {
     lessons: 4,
     stories: 2,
     reflections: 2,
-    focusTrackId: "digital-detectives",
+    focusTrackId: "home-team",
   },
 };
 
 export const starterPlaylistLessonIdsByChild = {
   nova: ["brave-script", "save-spend-share", "voice-switch"],
-  kai: ["moon-budget", "truth-check", "tiny-plan"],
+  kai: ["repair-words", "moon-budget", "truth-check"],
 };
 
 export const starterCompletedLessonIdsByChild = {

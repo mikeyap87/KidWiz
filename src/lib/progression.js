@@ -420,6 +420,159 @@ export function buildWeeklyMissionBoard({
   };
 }
 
+function formatJoinedList(items) {
+  if (items.length <= 1) {
+    return items[0] ?? "";
+  }
+
+  if (items.length === 2) {
+    return `${items[0]} and ${items[1]}`;
+  }
+
+  return `${items.slice(0, -1).join(", ")}, and ${items[items.length - 1]}`;
+}
+
+function getMomentumState(score) {
+  if (score >= 80) {
+    return {
+      label: "Strong momentum",
+      detail:
+        "The weekly rhythm is sticking, and the children are moving through targets with real follow-through.",
+    };
+  }
+
+  if (score >= 60) {
+    return {
+      label: "Steady momentum",
+      detail:
+        "The learning loop is working, but one or two focused nudges could make the week feel much more settled.",
+    };
+  }
+
+  return {
+    label: "Needs a rhythm reset",
+    detail:
+      "The family still has good raw material, but this week would benefit from a simpler next step and a cleaner routine.",
+  };
+}
+
+export function buildParentWeeklyReport({
+  childSummaries,
+  familyMetrics,
+  nextRitual,
+  selectedCelebrationStyle,
+  selectedCoachStyle,
+  selectedGoals,
+  selectedRhythm,
+}) {
+  const averageTargetProgress = Math.round(
+    childSummaries.reduce(
+      (total, summary) => total + summary.overallTargetProgress,
+      0,
+    ) / Math.max(1, childSummaries.length),
+  );
+  const momentumState = getMomentumState(averageTargetProgress);
+  const strongestSummary =
+    [...childSummaries].sort(
+      (left, right) => right.overallTargetProgress - left.overallTargetProgress,
+    )[0] ?? childSummaries[0];
+  const supportSummary =
+    [...childSummaries].sort(
+      (left, right) => left.overallTargetProgress - right.overallTargetProgress,
+    )[0] ?? childSummaries[0];
+  const goalPhrase = formatJoinedList(
+    selectedGoals.map((goal) => goal.title.toLowerCase()),
+  );
+
+  const stats = [
+    {
+      label: "Weekly readiness",
+      value: `${averageTargetProgress}%`,
+      detail: momentumState.label,
+    },
+    {
+      label: "Top momentum",
+      value: strongestSummary.child.name,
+      detail: `${strongestSummary.strongestTrack.title} is landing best right now.`,
+    },
+    {
+      label: "Needs coaching",
+      value: supportSummary.child.name,
+      detail: `${supportSummary.supportTrack.title} is the clearest support opportunity this week.`,
+    },
+  ];
+
+  const highlights = [
+    {
+      title: `${strongestSummary.child.name} is carrying the strongest rhythm`,
+      copy: `${strongestSummary.child.name} is ${strongestSummary.overallTargetProgress}% through this week's targets and looks strongest in ${strongestSummary.strongestTrack.title}.`,
+    },
+    {
+      title: "The family learning system is defined",
+      copy: `${selectedRhythm.title} plus ${selectedCoachStyle.title.toLowerCase()} coaching and ${selectedCelebrationStyle.title.toLowerCase()} reinforcement is giving the week a clear shape.`,
+    },
+    {
+      title: "KidWiz already has real review material",
+      copy: `The current demo family has generated ${familyMetrics.lessonsDone} completed lessons, ${familyMetrics.storiesDone} story choices, ${familyMetrics.reflectionsSaved} reflections, and ${familyMetrics.badgesEarned} badges.`,
+    },
+  ];
+
+  const actionPlan = childSummaries.map((summary) => ({
+    id: `action-${summary.child.id}`,
+    childId: summary.child.id,
+    eyebrow: summary.child.name,
+    title: summary.recommendedLesson
+      ? `${summary.recommendedLesson.track.title}: ${summary.recommendedLesson.lesson.title}`
+      : `${summary.child.name} has cleared the visible lesson queue`,
+    copy: summary.recommendedLesson
+      ? `${summary.recommendedLesson.reason}. ${summary.recommendedLesson.lesson.parentCue}`
+      : summary.supportMessage,
+    ctaLabel: summary.recommendedLesson ? "Open lesson" : "View child",
+    actionType: summary.recommendedLesson ? "lesson" : "child",
+    lessonId: summary.recommendedLesson?.lesson.id ?? null,
+  }));
+
+  const conversationPrompts = [
+    ...childSummaries.map((summary) => ({
+      id: `prompt-${summary.child.id}`,
+      childId: summary.child.id,
+      eyebrow: `${summary.child.name} conversation`,
+      title: summary.recommendedStory?.title ?? "Story reflection",
+      copy: summary.recommendedStory
+        ? summary.recommendedStory.reflectionPrompt
+        : summary.supportMessage,
+      ctaLabel: summary.recommendedStory ? "Open story" : "View child",
+      actionType: summary.recommendedStory ? "story" : "child",
+      storyId: summary.recommendedStory?.id ?? null,
+    })),
+    {
+      id: "prompt-family",
+      eyebrow: "Family ritual",
+      title: nextRitual.title,
+      copy: nextRitual.copy,
+      ctaLabel: "Open family hub",
+      actionType: "family",
+    },
+  ];
+
+  return {
+    title: goalPhrase
+      ? `${momentumState.label} around ${goalPhrase}`
+      : momentumState.label,
+    summary: goalPhrase
+      ? `KidWiz is currently turning ${goalPhrase} into repeatable practice through lessons, story choices, and family follow-up.`
+      : "KidWiz is currently turning family goals into repeatable practice through lessons, story choices, and family follow-up.",
+    readinessScore: averageTargetProgress,
+    readinessLabel: momentumState.label,
+    readinessCopy: momentumState.detail,
+    focusCopy: `${supportSummary.child.name} may need extra help in ${supportSummary.supportTrack.title}, while ${strongestSummary.child.name} is carrying visible momentum in ${strongestSummary.strongestTrack.title}.`,
+    stats,
+    highlights,
+    actionPlan,
+    conversationPrompts,
+  };
+}
+
 function pickAvailableLessonFromTracks(tracks, completedLessonIds) {
   for (const track of tracks) {
     const lesson = getNextTrackLesson(track, completedLessonIds);

@@ -1,5 +1,6 @@
 import {
   Award,
+  Brain,
   BookOpen,
   ChevronRight,
   LayoutDashboard,
@@ -7,6 +8,7 @@ import {
   NotebookPen,
   Sparkles,
   Target,
+  Users,
 } from "lucide-react";
 
 export function DashboardTab({
@@ -14,11 +16,35 @@ export function DashboardTab({
   familyMetrics,
   onAdjustWeeklyTarget,
   onChangeFocusTrack,
+  onOpenFamily,
   onOpenLesson,
+  onOpenStory,
   onSelectChild,
   selectedChildId,
   visibleTracks,
+  weeklyReport,
 }) {
+  function handleReportAction(item) {
+    if (item.actionType === "lesson" && item.lessonId) {
+      onOpenLesson(item.childId, item.lessonId);
+      return;
+    }
+
+    if (item.actionType === "story" && item.storyId) {
+      onOpenStory(item.storyId, item.childId);
+      return;
+    }
+
+    if (item.actionType === "family") {
+      onOpenFamily();
+      return;
+    }
+
+    if (item.childId) {
+      onSelectChild(item.childId);
+    }
+  }
+
   return (
     <section className="workspace-band">
       <div className="section-heading section-heading-tight">
@@ -60,6 +86,104 @@ export function DashboardTab({
           <strong>{familyMetrics.badgesEarned}</strong>
           <span>Badges earned across both children</span>
         </article>
+      </div>
+
+      <div className="dashboard-report-grid">
+        <article className="surface-panel dashboard-report-hero">
+          <div className="panel-head">
+            <Brain size={18} />
+            <h2>Weekly report</h2>
+          </div>
+
+          <div className="dashboard-report-copy">
+            <p>{weeklyReport.readinessLabel}</p>
+            <h2>{weeklyReport.title}</h2>
+            <span>{weeklyReport.summary}</span>
+            <strong>{weeklyReport.focusCopy}</strong>
+          </div>
+
+          <div className="dashboard-report-stat-grid">
+            {weeklyReport.stats.map((stat) => (
+              <article key={stat.label} className="dashboard-report-stat">
+                <p>{stat.label}</p>
+                <strong>{stat.value}</strong>
+                <span>{stat.detail}</span>
+              </article>
+            ))}
+          </div>
+        </article>
+
+        <article className="surface-panel">
+          <div className="panel-head">
+            <Sparkles size={18} />
+            <h2>What changed this week</h2>
+          </div>
+
+          <div className="dashboard-report-list">
+            {weeklyReport.highlights.map((highlight) => (
+              <article key={highlight.title} className="dashboard-detail-row">
+                <strong>{highlight.title}</strong>
+                <span>{highlight.copy}</span>
+              </article>
+            ))}
+          </div>
+        </article>
+      </div>
+
+      <div className="dashboard-report-grid dashboard-report-grid-secondary">
+        <section className="surface-panel">
+          <div className="panel-head">
+            <Target size={18} />
+            <h2>Parent action plan</h2>
+          </div>
+
+          <div className="dashboard-report-list">
+            {weeklyReport.actionPlan.map((item) => (
+              <article key={item.id} className="dashboard-detail-row dashboard-detail-row-action">
+                <div>
+                  <p>{item.eyebrow}</p>
+                  <strong>{item.title}</strong>
+                  <span>{item.copy}</span>
+                </div>
+                <button
+                  className="inline-action"
+                  onClick={() => handleReportAction(item)}
+                  type="button"
+                >
+                  {item.ctaLabel}
+                  <ChevronRight size={14} />
+                </button>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="surface-panel">
+          <div className="panel-head">
+            <Users size={18} />
+            <h2>Family conversation starters</h2>
+          </div>
+
+          <div className="dashboard-report-list">
+            {weeklyReport.conversationPrompts.map((item) => (
+              <article key={item.id} className="dashboard-detail-row dashboard-detail-row-action">
+                <div>
+                  <p>{item.eyebrow}</p>
+                  <strong>{item.title}</strong>
+                  <span>{item.copy}</span>
+                </div>
+                <button
+                  className="inline-action"
+                  onClick={() => handleReportAction(item)}
+                  type="button"
+                >
+                  {item.ctaLabel}
+                  <ChevronRight size={14} />
+                </button>
+              </article>
+            ))}
+          </div>
+        </section>
       </div>
 
       <div className="dashboard-child-grid">
