@@ -1195,6 +1195,20 @@ function App() {
     }));
   }
 
+  function handleSelectChild(childId) {
+    updateAppState((current) => ({
+      ...current,
+      selectedChildId: childId,
+    }));
+  }
+
+  function handleSelectTab(tabId) {
+    updateAppState((current) => ({
+      ...current,
+      activeTab: tabId,
+    }));
+  }
+
   const canAdvanceOnboarding =
     appState.onboardingStep === 0 ? appState.selectedGoalIds.length >= 2 : true;
   const currentTab =
@@ -1277,6 +1291,66 @@ function App() {
             </div>
           </header>
 
+          <section className="page-width app-mobile-learner-shell">
+            <div className="mobile-learner-summary">
+              <div className="mobile-learner-copy">
+                <p className="eyebrow eyebrow-dark">Active learner</p>
+                <h2>{selectedChild.name}</h2>
+                <p>
+                  Age {selectedChild.age} · Grade {selectedChild.grade} ·{" "}
+                  {selectedChild.levelTitle}
+                </p>
+              </div>
+
+              <div className="mobile-coach-pill">
+                <Bot size={16} />
+                <span>{selectedChild.coachLens}</span>
+              </div>
+            </div>
+
+            <div className="mobile-profile-row" aria-label="Learner switcher">
+              {childProfiles.map((child) => (
+                <button
+                  key={child.id}
+                  className={`mobile-profile-chip ${
+                    child.id === selectedChild.id ? "is-selected" : ""
+                  }`}
+                  onClick={() => handleSelectChild(child.id)}
+                  type="button"
+                >
+                  <strong>{child.name}</strong>
+                  <span>
+                    Age {child.age} · {child.levelTitle}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </section>
+
+          <div className="app-mobile-nav-shell">
+            <div className="page-width">
+              <nav className="mobile-tab-row" aria-label="KidWiz sections">
+                {tabItems.map((item) => {
+                  const Icon = item.icon;
+
+                  return (
+                    <button
+                      key={item.id}
+                      className={`mobile-tab-chip ${
+                        appState.activeTab === item.id ? "is-active" : ""
+                      }`}
+                      onClick={() => handleSelectTab(item.id)}
+                      type="button"
+                    >
+                      <Icon size={16} />
+                      <span>{item.label}</span>
+                    </button>
+                  );
+                })}
+              </nav>
+            </div>
+          </div>
+
           <div className="page-width app-layout">
             <aside className="app-sidebar">
               <div className="sidebar-block">
@@ -1288,12 +1362,7 @@ function App() {
                       className={`profile-chip ${
                         child.id === selectedChild.id ? "is-selected" : ""
                       }`}
-                      onClick={() =>
-                        updateAppState((current) => ({
-                          ...current,
-                          selectedChildId: child.id,
-                        }))
-                      }
+                      onClick={() => handleSelectChild(child.id)}
                       type="button"
                     >
                       <div>
@@ -1318,12 +1387,7 @@ function App() {
                       className={`tab-button ${
                         appState.activeTab === item.id ? "is-active" : ""
                       }`}
-                      onClick={() =>
-                        updateAppState((current) => ({
-                          ...current,
-                          activeTab: item.id,
-                        }))
-                      }
+                      onClick={() => handleSelectTab(item.id)}
                       type="button"
                     >
                       <span>
@@ -1360,12 +1424,7 @@ function App() {
                     onOpenFamily={handleOpenFamily}
                     onOpenLesson={handleOpenLessonForChild}
                     onOpenStory={handleOpenStory}
-                    onSelectChild={(childId) =>
-                      updateAppState((current) => ({
-                        ...current,
-                        selectedChildId: childId,
-                      }))
-                    }
+                    onSelectChild={handleSelectChild}
                     selectedChildId={selectedChild.id}
                     visibleTracks={visibleTracks}
                     weeklyReport={weeklyReport}

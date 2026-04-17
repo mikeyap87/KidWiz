@@ -10,6 +10,7 @@ KidWiz is a modern children's education SaaS concept that combines traditional l
 - a parent weekly report layer with action plans, conversation prompts, and stateful trend history
 - eight course tracks with multi-lesson arcs, guided lesson flows, track-specific playbooks, visual practice panels, age-band aware lesson copy, authored scenario cards, and interactive move storyboards
 - lazy-loaded public, onboarding, and app-screen modules with in-product loading states so the local build stays fast as content grows
+- a mobile-first in-app shell with learner switching and sticky section navigation instead of a collapsed desktop sidebar
 - expanded Brave Heart, Money Moves, and Home Team content depth
 - weekly playlists, badges, progress bars, coach prompts, parent controls, and Family Hub archive tools
 - branching story practice, private journals, and a parent family hub
@@ -87,6 +88,6 @@ If Supabase is not configured yet, the product still opens cleanly in demo mode 
 - connect Supabase tables for real parent accounts, child profiles, journals, progress, and weekly snapshots
 - add a server-side AI layer for bounded tutoring and summaries
 - introduce billing and subscription controls
-- break the app shell into smaller route-level screens and components once the product shape stabilizes
 - keep trimming the local bundle by splitting demo data and bootstrap state as the curriculum grows
+- deepen the mobile shell with child-specific quick actions, lesson resume, and safer parent-only controls
 - deepen lesson authoring so each track gets richer interactive practice variations, stronger media moments, and more sharply authored age-banded lesson content

@@ -806,6 +806,104 @@
   padding: 28px 0 80px;
 }
 
+.app-mobile-learner-shell,
+.app-mobile-nav-shell {
+  display: none;
+}
+
+.mobile-learner-summary {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.mobile-learner-copy h2,
+.mobile-learner-copy p {
+  margin: 0;
+}
+
+.mobile-learner-copy h2 {
+  font-size: 1.45rem;
+}
+
+.mobile-learner-copy > p:last-child {
+  margin-top: 8px;
+  color: rgba(246, 248, 251, 0.68);
+  line-height: 1.55;
+}
+
+.mobile-coach-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(246, 248, 251, 0.08);
+  background: rgba(246, 248, 251, 0.05);
+  color: #f6f8fb;
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.mobile-profile-row,
+.mobile-tab-row {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.mobile-profile-row::-webkit-scrollbar,
+.mobile-tab-row::-webkit-scrollbar {
+  display: none;
+}
+
+.mobile-profile-chip,
+.mobile-tab-chip {
+  flex: 0 0 auto;
+  border: 1px solid rgba(246, 248, 251, 0.1);
+  background: rgba(246, 248, 251, 0.04);
+  color: #f6f8fb;
+  font: inherit;
+  cursor: pointer;
+}
+
+.mobile-profile-chip {
+  min-width: 164px;
+  min-height: 72px;
+  padding: 14px;
+  text-align: left;
+}
+
+.mobile-profile-chip strong,
+.mobile-profile-chip span {
+  display: block;
+}
+
+.mobile-profile-chip span {
+  margin-top: 8px;
+  color: rgba(246, 248, 251, 0.68);
+  font-size: 0.84rem;
+  line-height: 1.45;
+}
+
+.mobile-tab-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 14px;
+  white-space: nowrap;
+}
+
+.mobile-profile-chip.is-selected,
+.mobile-tab-chip.is-active {
+  border-color: rgba(217, 255, 107, 0.42);
+  background: rgba(217, 255, 107, 0.08);
+}
+
 .app-sidebar {
   display: grid;
   align-self: start;
@@ -2787,9 +2885,32 @@
     grid-template-columns: 1fr;
   }
 
+  .app-mobile-learner-shell {
+    display: grid;
+    gap: 16px;
+    margin-top: 18px;
+    padding: 18px;
+    border: 1px solid rgba(246, 248, 251, 0.08);
+    background: rgba(246, 248, 251, 0.03);
+  }
+
+  .app-mobile-nav-shell {
+    display: block;
+    position: sticky;
+    top: 84px;
+    z-index: 16;
+    padding: 14px 0 0;
+    background:
+      linear-gradient(180deg, rgba(11, 15, 22, 0.98), rgba(11, 15, 22, 0.9));
+    backdrop-filter: blur(12px);
+  }
+
+  .mobile-tab-row {
+    padding-bottom: 8px;
+  }
+
   .app-sidebar {
-    order: 2;
-    position: static;
+    display: none;
   }
 
   .app-main {
@@ -2813,6 +2934,24 @@
   .topbar-actions,
   .app-topbar-actions {
     justify-content: stretch;
+  }
+
+  .app-topbar .brand-subtitle,
+  .app-topbar .mode-pill {
+    display: none;
+  }
+
+  .app-topbar-inner {
+    min-height: 72px;
+  }
+
+  .app-mobile-nav-shell {
+    top: 72px;
+  }
+
+  .mobile-learner-summary {
+    flex-direction: column;
+    align-items: stretch;
   }
 
   .hero-content h1 {
@@ -2868,6 +3007,14 @@
 @media (max-width: 560px) {
   .page-width {
     width: min(100% - 24px, 1280px);
+  }
+
+  .app-mobile-learner-shell {
+    padding: 16px;
+  }
+
+  .mobile-profile-chip {
+    min-width: 144px;
   }
 
   .hero-content {
