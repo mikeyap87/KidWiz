@@ -1,4 +1,10 @@
-import { celebrationStyles, familyGoals, trustSignals, weeklyRhythms, coachStyles } from "../data/kidwizData";
+import {
+  celebrationStyles,
+  familyGoals,
+  weeklyRhythms,
+  coachStyles,
+} from "../data/kidwizData";
+import { trustSignals } from "../data/kidwizMarketingData";
 import { GoalGlyph } from "../lib/uiConfig";
 
 export function OnboardingFlow({

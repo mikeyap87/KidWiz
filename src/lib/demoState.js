@@ -3,6 +3,10 @@ import {
   childProfiles,
   coachStyles,
   courseCatalog,
+  storyEpisodes,
+  weeklyRhythms,
+} from "../data/kidwizData";
+import {
   starterAssignedTrackIdsByChild,
   starterChildJournalEntriesByChild,
   starterCompletedJourneyIdsByChild,
@@ -13,9 +17,7 @@ import {
   starterStoryChoicesByChild,
   starterWeeklyHistoryByChild,
   starterWeeklyTargetsByChild,
-  storyEpisodes,
-  weeklyRhythms,
-} from "../data/kidwizData";
+} from "../data/kidwizDemoSeedData";
 
 export const STORAGE_KEY = "kidwiz-demo-state-v3";
 

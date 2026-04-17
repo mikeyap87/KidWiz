@@ -1,5 +1,11 @@
 import { ArrowRight } from "lucide-react";
-import { appHighlights, heroStats, siteImages, storyEpisodes, trustSignals } from "../data/kidwizData";
+import { storyEpisodes } from "../data/kidwizData";
+import {
+  appHighlights,
+  heroStats,
+  siteImages,
+  trustSignals,
+} from "../data/kidwizMarketingData";
 import { TrackGlyph } from "../lib/uiConfig";
 
 export function PublicSite({

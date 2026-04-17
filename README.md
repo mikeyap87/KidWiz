@@ -78,7 +78,9 @@ If Supabase is not configured yet, the product still opens cleanly in demo mode 
 
 - `src/App.jsx` - top-level state and app routing
 - `src/components/` - public site, onboarding, dashboard, and tab components
-- `src/data/kidwizData.js` - content model for worlds, stories, family rituals, and demo profiles
+- `src/data/kidwizData.js` - core curriculum, worlds, rituals, badges, and child/profile data used by the app shell
+- `src/data/kidwizMarketingData.js` - public-site and trust-copy data for lazy marketing and setup surfaces
+- `src/data/kidwizDemoSeedData.js` - starter demo state and seeded history used to bootstrap local testing
 - `src/lib/demoState.js` - local demo state bootstrap and persistence helpers
 - `src/lib/progression.js` - playlist, mission board, world map, badge, recommendation, and track-progression logic
 - `src/lib/lessonExperience.js` - course-only lesson experience builder, now loaded with the Courses screen chunk
@@ -90,6 +92,5 @@ If Supabase is not configured yet, the product still opens cleanly in demo mode 
 - connect Supabase tables for real parent accounts, child profiles, journals, progress, and weekly snapshots
 - add a server-side AI layer for bounded tutoring and summaries
 - introduce billing and subscription controls
-- keep trimming the local bundle by splitting demo data and bootstrap state as the curriculum grows
-- split demo bootstrap and curriculum data so the growing mobile shell does not keep pushing the main bundle upward
+- keep trimming the local bundle by pushing more tab-specific derivation and data behind lazy screen boundaries
 - deepen lesson authoring so each track gets richer interactive practice variations, stronger media moments, and more sharply authored age-banded lesson content

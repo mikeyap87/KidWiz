@@ -13,10 +13,10 @@ import {
   childProfiles,
   familyGoals,
   familyRituals,
-  trustSignals,
   weeklyRhythms,
   coachStyles,
 } from "../data/kidwizData";
+import { trustSignals } from "../data/kidwizMarketingData";
 
 export function FamilyTab({
   appState,
