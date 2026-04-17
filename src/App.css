@@ -2078,6 +2078,60 @@
   line-height: 1.55;
 }
 
+.practice-spotlight,
+.practice-scene-card {
+  border: 1px solid var(--practice-accent, rgba(131, 255, 240, 0.24));
+  background: var(--practice-surface, rgba(23, 197, 179, 0.12));
+}
+
+.practice-spotlight {
+  margin-bottom: 14px;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.practice-spotlight p,
+.practice-spotlight strong,
+.practice-spotlight span,
+.practice-scene-card strong,
+.practice-scene-card span {
+  display: block;
+  margin: 0;
+}
+
+.practice-spotlight p {
+  color: rgba(246, 248, 251, 0.62);
+  font-size: 0.82rem;
+}
+
+.practice-spotlight strong {
+  margin-top: 8px;
+  font-size: 1rem;
+}
+
+.practice-spotlight span,
+.practice-scene-card span {
+  margin-top: 8px;
+  color: rgba(246, 248, 251, 0.78);
+  line-height: 1.55;
+}
+
+.practice-scene-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.practice-scene-card {
+  padding: 14px;
+  border-radius: 8px;
+}
+
+.practice-scene-card strong {
+  line-height: 1.45;
+}
+
 .practice-options {
   display: grid;
   gap: 10px;
@@ -2704,7 +2758,8 @@
   .dashboard-insight-grid,
   .practice-options-cards,
   .practice-options-tradeoff,
-  .practice-options-script {
+  .practice-options-script,
+  .practice-scene-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -2719,7 +2774,8 @@
   .practice-options-cards,
   .practice-options-tradeoff,
   .practice-options-script,
-  .practice-option-step {
+  .practice-option-step,
+  .practice-scene-grid {
     grid-template-columns: 1fr;
   }
 }

@@ -282,6 +282,36 @@ export function CoursesTab({
           <p className="lesson-age-note">{activeLessonExperience.ageLens.summary}</p>
 
           <div className="practice-panel">
+            <div
+              className="practice-spotlight"
+              style={{
+                "--practice-accent": activeLessonExperience.visualTheme.accent,
+                "--practice-surface": activeLessonExperience.visualTheme.surface,
+              }}
+            >
+              <p>{activeLessonExperience.scenarioSet.spotlight.eyebrow}</p>
+              <strong>{activeLessonExperience.scenarioSet.spotlight.title}</strong>
+              <span>{activeLessonExperience.scenarioSet.spotlight.copy}</span>
+            </div>
+
+            {activeLessonExperience.scenarioSet.cards.length ? (
+              <div className="practice-scene-grid">
+                {activeLessonExperience.scenarioSet.cards.map((card) => (
+                  <div
+                    key={card.title}
+                    className="practice-scene-card"
+                    style={{
+                      "--practice-accent": activeLessonExperience.visualTheme.accent,
+                      "--practice-surface": activeLessonExperience.visualTheme.surface,
+                    }}
+                  >
+                    <strong>{card.title}</strong>
+                    <span>{card.copy}</span>
+                  </div>
+                ))}
+              </div>
+            ) : null}
+
             <div className="panel-head">
               <Rocket size={18} />
               <h2>{practicePanel.title}</h2>
