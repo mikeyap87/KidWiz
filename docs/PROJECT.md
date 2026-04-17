@@ -34,6 +34,7 @@ KidWiz aims to close that gap by giving families one place to build:
 - demo-mode fallback when auth is not configured
 - guided family onboarding for goal selection, weekly rhythm, coach style, and celebration style
 - parent dashboard with per-child weekly targets, focus tracks, progress, and recommended next lessons
+- Quest Hub for the child experience with a world map, weekly mission board, reward shelf, and guided rhythm checklist
 - multi-child switching inside the app shell
 - seven always-available course tracks:
   - Wonder Lab
@@ -45,7 +46,9 @@ KidWiz aims to close that gap by giving families one place to build:
   - Focus Forge
 - one parent-unlocked sensitive track:
   - Body and Boundaries
-- daily rhythm dashboard with missions, progress signals, and weekly completion
+- world-themed progression model that reframes course tracks as explorable regions
+- weekly mission system for lessons, stories, reflections, and family rituals
+- daily rhythm checklist with visible completion inside the Quest Hub
 - guided lesson and quiz flow for each course track
 - sequential lesson progression within tracks
 - track statuses such as ready, in progress, checkpoint ready, and complete
@@ -66,7 +69,7 @@ The value is:
 - deeper parent trust than an open-ended AI kids app
 - broader usefulness than an academics-only platform
 - clearer subscription value because the product serves both parent and child
-- stronger product loop credibility because the app now includes onboarding, progress, badges, playlists, and parent customization
+- stronger product loop credibility because the app now includes onboarding, quests, missions, progress, badges, playlists, and parent customization
 
 ## Current Stack
 
@@ -83,7 +86,7 @@ The value is:
 
 - `src/App.jsx` now acts mainly as the state container and app shell.
 - `src/components/` contains the public site, onboarding flow, dashboard, and tab-level UI modules.
-- `src/data/kidwizData.js` acts as the current content source for demo profiles, course tracks, lessons, stories, playlists, badges, rituals, and setup options.
+- `src/data/kidwizData.js` acts as the current content source for demo profiles, course tracks, lessons, quest worlds, stories, playlists, badges, rituals, and setup options.
 - `src/App.css` contains the full visual system and responsive layout.
 
 ### Auth
@@ -94,7 +97,7 @@ The value is:
 ### Local Product Logic
 
 - `src/lib/demoState.js` owns the local demo bootstrap state and browser persistence behavior.
-- `src/lib/progression.js` owns playlist generation, lesson progression, track status, badge logic, and recommended-next-lesson behavior.
+- `src/lib/progression.js` owns playlist generation, quest world derivation, mission board logic, lesson progression, track status, badge logic, and recommended-next-step behavior.
 
 ### Data Model Today
 
@@ -119,13 +122,20 @@ The live app shell currently uses in-browser demo state for:
 
 This is stored in `localStorage` so a reviewer can interact with the experience without backend setup.
 
+For faster local QA, the app also supports direct demo boot URLs such as:
+
+- `/?demo=instant&tab=quest`
+- `/?demo=guided`
+- `/?demo=instant&tab=quest&child=kai`
+
 ## Setup
 
 1. Run `npm install`.
 2. Run `npm run dev`.
 3. Open `http://127.0.0.1:5290`.
-4. Run `npm run lint` and `npm run build`.
-5. Optionally copy `.env.example` to `.env.local` and add Supabase values for real magic-link login.
+4. For direct local review, optionally use `http://127.0.0.1:5290/?demo=instant&tab=quest`.
+5. Run `npm run lint` and `npm run build`.
+6. Optionally copy `.env.example` to `.env.local` and add Supabase values for real magic-link login.
 
 ## Important Decisions
 
@@ -133,9 +143,11 @@ This is stored in `localStorage` so a reviewer can interact with the experience 
 - The first build is intentionally web-first.
 - The current product foundation is parent-led rather than child-signup-first.
 - The local product now includes an onboarding flow instead of skipping straight into the app.
+- The local product now includes a quest-style child home experience instead of a plain dashboard-style landing screen.
 - Sensitive topics stay behind a parent unlock.
 - AI is positioned as bounded and supportive, not as an unrestricted social chatbot.
 - The app supports demo mode by default so product design can move before backend work is finished.
+- Direct URL demo boot is supported for local QA and stakeholder review.
 
 ## Constraints
 
@@ -148,8 +160,9 @@ This is stored in `localStorage` so a reviewer can interact with the experience 
 ## Next Priorities
 
 1. Add real Supabase schema for parents, children, tracks, journals, progress, and unlock settings.
-2. Split the app into route-level screens and smaller components as the product settles.
-3. Add a server-side AI orchestration layer with moderation, age banding, and audit logs.
-4. Replace the static course content model with a more scalable curriculum structure and content authoring approach.
-5. Add billing and subscription controls.
-6. Define the first launch age band more tightly and decide whether the sensitive track belongs in V1 or V2.
+2. Add a weekly parent report view that summarizes quest progress, growth themes, and conversation prompts.
+3. Split the app into route-level screens and smaller components as the product settles.
+4. Add a server-side AI orchestration layer with moderation, age banding, and audit logs.
+5. Replace the static course content model with a more scalable curriculum structure and content authoring approach.
+6. Add billing and subscription controls.
+7. Define the first launch age band more tightly and decide whether the sensitive track belongs in V1 or V2.

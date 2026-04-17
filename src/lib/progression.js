@@ -1,4 +1,10 @@
-import { badgeCatalog, childProfiles, courseCatalog } from "../data/kidwizData";
+import {
+  badgeCatalog,
+  childProfiles,
+  courseCatalog,
+  questWorldCatalog,
+  storyEpisodes,
+} from "../data/kidwizData";
 
 export function getVisibleTracks(bodyBoundariesUnlocked) {
   return bodyBoundariesUnlocked
@@ -15,6 +21,10 @@ export function findTrackByLessonId(lessonId) {
 export function findLessonById(lessonId) {
   const track = findTrackByLessonId(lessonId);
   return track?.lessons.find((lesson) => lesson.id === lessonId) ?? null;
+}
+
+export function findQuestWorld(trackId) {
+  return questWorldCatalog.find((world) => world.trackId === trackId) ?? null;
 }
 
 export function getLessonIndex(track, lessonId) {
@@ -85,6 +95,10 @@ export function getTrackStatus(track, completedLessonIds) {
     label: "In progress",
     detail: `${completedCount} of ${total} lessons done`,
   };
+}
+
+function countCompletedLessons(track, completedLessonIds) {
+  return track.lessons.filter((lesson) => completedLessonIds.includes(lesson.id)).length;
 }
 
 function rotateTracksForChild(tracks, childId) {
@@ -206,6 +220,204 @@ export function deriveEarnedBadgeIds({
       return false;
     })
     .map((badge) => badge.id);
+}
+
+export function getRecommendedStory({ selectedGoalIds, storyChoices }) {
+  const unansweredStories = storyEpisodes.filter((story) => !storyChoices[story.id]);
+
+  if (unansweredStories.length === 0) {
+    return storyEpisodes[0] ?? null;
+  }
+
+  return (
+    unansweredStories.find((story) =>
+      story.goalIds?.some((goalId) => selectedGoalIds.includes(goalId)),
+    ) ?? unansweredStories[0]
+  );
+}
+
+function getQuestPriority(row, focusTrackId) {
+  if (row.id === focusTrackId) {
+    return 0;
+  }
+
+  if (row.state === "active") {
+    return 1;
+  }
+
+  if (row.state === "complete") {
+    return 2;
+  }
+
+  return 3;
+}
+
+export function buildQuestWorldRows({
+  visibleTracks,
+  completedLessonIds,
+  weeklyTarget,
+  assignedTrackIds,
+}) {
+  return [...visibleTracks]
+    .map((track) => {
+      const world = findQuestWorld(track.id);
+      const completedCount = countCompletedLessons(track, completedLessonIds);
+      const completion = Math.round((completedCount / track.lessons.length) * 100);
+      const nextLesson = getNextTrackLesson(track, completedLessonIds);
+      const isAssigned = assignedTrackIds.includes(track.id);
+      const isFocus = track.id === weeklyTarget?.focusTrackId;
+
+      let state = "ready";
+
+      if (isFocus) {
+        state = "focus";
+      } else if (completedCount === track.lessons.length) {
+        state = "complete";
+      } else if (isAssigned || completedCount > 0) {
+        state = "active";
+      }
+
+      return {
+        ...track,
+        accent: world?.accent ?? "#ffd15a",
+        surface: world?.surface ?? "rgba(255, 209, 90, 0.16)",
+        worldTitle: world?.title ?? track.title,
+        worldShortTitle: world?.shortTitle ?? track.title,
+        worldSummary: world?.summary ?? track.summary,
+        mapOrder: world?.mapOrder ?? 99,
+        completedCount,
+        completion,
+        isAssigned,
+        isFocus,
+        state,
+        nextLessonId: nextLesson?.id ?? track.lessons[0]?.id ?? null,
+      };
+    })
+    .sort((left, right) => {
+      const leftPriority = getQuestPriority(left, weeklyTarget?.focusTrackId);
+      const rightPriority = getQuestPriority(right, weeklyTarget?.focusTrackId);
+
+      if (leftPriority !== rightPriority) {
+        return leftPriority - rightPriority;
+      }
+
+      return left.mapOrder - right.mapOrder;
+    });
+}
+
+export function buildWeeklyMissionBoard({
+  child,
+  selectedGoalIds,
+  visibleTracks,
+  weeklyTarget,
+  completedLessonIds,
+  storyChoices,
+  childJournalEntries,
+  completedJourneyIds,
+  recommendedLesson,
+  nextBadge,
+  nextRitual,
+}) {
+  const focusTrack = visibleTracks.find(
+    (track) => track.id === weeklyTarget?.focusTrackId,
+  );
+  const focusWorld = findQuestWorld(focusTrack?.id);
+  const recommendedStory = getRecommendedStory({
+    selectedGoalIds,
+    storyChoices,
+  });
+  const completedStories = Object.keys(storyChoices).length;
+  const lessonProgress = Math.min(weeklyTarget?.lessons ?? 0, completedLessonIds.length);
+  const storyProgress = Math.min(weeklyTarget?.stories ?? 0, completedStories);
+  const reflectionProgress = Math.min(
+    weeklyTarget?.reflections ?? 0,
+    childJournalEntries.length,
+  );
+  const familyProgress = completedJourneyIds.includes("family-chat") ? 1 : 0;
+
+  const missions = [
+    {
+      id: "lesson-sprint",
+      eyebrow: focusTrack ? `${focusTrack.title} sprint` : "Course mission",
+      title: recommendedLesson?.lesson.title ?? "Choose the next lesson",
+      copy: recommendedLesson
+        ? `${recommendedLesson.reason} mission in ${
+            recommendedLesson.track.title
+          }. ${recommendedLesson.lesson.summary}`
+        : `Finish ${weeklyTarget.lessons} lesson missions to keep the quest moving.`,
+      progress: lessonProgress,
+      target: weeklyTarget.lessons,
+      ctaLabel: recommendedLesson ? "Open lesson" : "See courses",
+      destination: "lesson",
+      lessonId: recommendedLesson?.lesson.id ?? null,
+      accent: focusWorld?.accent ?? "#ff6b4a",
+      reward: focusWorld
+        ? `Light up ${focusWorld.title}.`
+        : "Unlock the next quest step.",
+    },
+    {
+      id: "story-loop",
+      eyebrow: "Story mission",
+      title: recommendedStory?.title ?? "Open a story branch",
+      copy: recommendedStory
+        ? `Practice ${recommendedStory.focus.toLowerCase()} through a branching choice and family debrief.`
+        : `Finish ${weeklyTarget.stories} story choices this week.`,
+      progress: storyProgress,
+      target: weeklyTarget.stories,
+      ctaLabel: "Open story",
+      destination: "story",
+      storyId: recommendedStory?.id ?? null,
+      accent: "#3fd0c9",
+      reward: "Unlock a new conversation prompt for home.",
+    },
+    {
+      id: "reflection-spark",
+      eyebrow: `${child.companionName} reflection`,
+      title: "Save one clear reflection",
+      copy: `${child.companionName} helps ${child.name} turn a proud moment, wobble, or question into memory.`,
+      progress: reflectionProgress,
+      target: weeklyTarget.reflections,
+      ctaLabel: "Open journal",
+      destination: "journal",
+      accent: "#f28dc0",
+      reward: "Grow the badge wall with another reflection win.",
+    },
+    {
+      id: "family-ritual",
+      eyebrow: "Family ritual",
+      title: nextRitual.title,
+      copy: nextRitual.copy,
+      progress: familyProgress,
+      target: 1,
+      ctaLabel: "Open family hub",
+      destination: "family",
+      accent: "#78d46a",
+      reward: "Complete one family prompt to lock in the lesson.",
+    },
+  ];
+
+  const completedMissions = missions.filter(
+    (mission) => mission.progress >= mission.target,
+  ).length;
+  const questPoints =
+    completedLessonIds.length * 24 +
+    completedStories * 18 +
+    childJournalEntries.length * 14 +
+    completedJourneyIds.length * 8;
+
+  return {
+    focusTrack,
+    focusWorld,
+    completedMissions,
+    totalMissions: missions.length,
+    missions,
+    nextRewardTitle: nextBadge?.title ?? "Badge wall complete",
+    nextRewardCopy:
+      nextBadge?.copy ??
+      "Every current KidWiz badge is unlocked in this local demo state.",
+    questPoints,
+    recommendedStory,
+  };
 }
 
 function pickAvailableLessonFromTracks(tracks, completedLessonIds) {

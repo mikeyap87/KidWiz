@@ -161,6 +161,81 @@ export const dailyJourneys = [
   },
 ];
 
+export const questWorldCatalog = [
+  {
+    trackId: "wonder-lab",
+    title: "Star Harbor",
+    shortTitle: "Harbor",
+    summary: "Invent, estimate, and test ideas that turn curiosity into proof.",
+    accent: "#ffd15a",
+    surface: "rgba(255, 209, 90, 0.16)",
+    mapOrder: 1,
+  },
+  {
+    trackId: "story-studio",
+    title: "Story Reef",
+    shortTitle: "Reef",
+    summary: "Build voice, hooks, and feedback that make stories feel alive.",
+    accent: "#3fd0c9",
+    surface: "rgba(63, 208, 201, 0.16)",
+    mapOrder: 2,
+  },
+  {
+    trackId: "brave-heart",
+    title: "Courage Cliffs",
+    shortTitle: "Cliffs",
+    summary: "Practice calm resets, brave scripts, and bounce-back language.",
+    accent: "#ff6b4a",
+    surface: "rgba(255, 107, 74, 0.16)",
+    mapOrder: 3,
+  },
+  {
+    trackId: "money-moves",
+    title: "Market Meadow",
+    shortTitle: "Meadow",
+    summary: "Turn saving, spending, and tradeoffs into real kid-sized choices.",
+    accent: "#78d46a",
+    surface: "rgba(120, 212, 106, 0.16)",
+    mapOrder: 4,
+  },
+  {
+    trackId: "home-team",
+    title: "Harmony Hollow",
+    shortTitle: "Hollow",
+    summary: "Repair, perspective-taking, and appreciation for family life.",
+    accent: "#f28dc0",
+    surface: "rgba(242, 141, 192, 0.16)",
+    mapOrder: 5,
+  },
+  {
+    trackId: "digital-detectives",
+    title: "Signal Station",
+    shortTitle: "Station",
+    summary: "Spot privacy clues, truth-check fast content, and protect kindness.",
+    accent: "#67b7ff",
+    surface: "rgba(103, 183, 255, 0.16)",
+    mapOrder: 6,
+  },
+  {
+    trackId: "focus-forge",
+    title: "Momentum Mountain",
+    shortTitle: "Mountain",
+    summary: "Use tiny plans and quick resets to make hard starts easier.",
+    accent: "#c88cff",
+    surface: "rgba(200, 140, 255, 0.16)",
+    mapOrder: 7,
+  },
+  {
+    trackId: "body-boundaries",
+    title: "Boundary Bay",
+    shortTitle: "Bay",
+    summary: "Age-banded body literacy, privacy, and trusted support.",
+    accent: "#ff9b70",
+    surface: "rgba(255, 155, 112, 0.16)",
+    mapOrder: 8,
+  },
+];
+
 export const courseCatalog = [
   {
     id: "wonder-lab",
@@ -951,6 +1026,7 @@ export const storyEpisodes = [
     id: "friendship-loop",
     title: "The Friendship Loop",
     focus: "Friendship repair",
+    goalIds: ["friendships", "confidence"],
     ageBand: "7-10",
     setup:
       "Your teammate thinks you ignored her idea during a game plan. She goes quiet and stops helping. You still want the project to feel fun.",
@@ -986,6 +1062,7 @@ export const storyEpisodes = [
     id: "market-mission",
     title: "Market Mission",
     focus: "Money choices",
+    goalIds: ["money", "confidence"],
     ageBand: "8-12",
     setup:
       "You brought enough coins for one snack and maybe one extra item. Then your friend spots matching bracelets and wants you both to buy them.",
@@ -1022,6 +1099,7 @@ export const storyEpisodes = [
     id: "stage-lights",
     title: "Stage Lights",
     focus: "Confidence under pressure",
+    goalIds: ["confidence", "focus"],
     ageBand: "6-10",
     setup:
       "Your group is about to present. Your heart is thumping, and you suddenly wish someone else would go first.",
@@ -1058,6 +1136,7 @@ export const storyEpisodes = [
     id: "group-chat-glitch",
     title: "Group Chat Glitch",
     focus: "Digital safety and tone",
+    goalIds: ["digital", "friendships"],
     ageBand: "9-12",
     setup:
       "A fast group chat turns mean after someone posts an embarrassing photo. The chat keeps moving, and you feel the pressure to join in or stay quiet.",
@@ -1103,6 +1182,8 @@ export const childProfiles = [
     todayTheme: "Brave starts and smart spending",
     heroLine:
       "Nova lights up when a lesson turns into a mission. She is especially ready for confidence reps and money choices today.",
+    companionName: "Comet Fox",
+    companionTitle: "Bravery scout",
     coachLens: "story prompts, short wins, and gentle repetition",
     supportSpot: "Sometimes needs help recovering after one wobbly moment.",
     baseTrackScores: {
@@ -1126,6 +1207,8 @@ export const childProfiles = [
     todayTheme: "Clear communication and big-picture planning",
     heroLine:
       "Kai responds best when KidWiz turns choices into consequences and gives him room to explain his thinking.",
+    companionName: "Signal Owl",
+    companionTitle: "Strategy guide",
     coachLens: "tradeoff stories, roleplay, and visible progress bars",
     supportSpot: "Benefits from smaller plans when a task feels too big.",
     baseTrackScores: {

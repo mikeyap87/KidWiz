@@ -6,6 +6,7 @@ KidWiz is a modern children's education SaaS concept that combines traditional l
 - a parent login entry with optional Supabase magic-link auth
 - a guided family onboarding flow for goals, rhythm, and coach style
 - a fully navigable demo application for family learning
+- a Quest Hub with world-map navigation, weekly missions, and visible rewards
 - eight course tracks with multi-lesson arcs
 - weekly playlists, badges, progress bars, coach prompts, and parent controls
 - branching story practice, private journals, and a parent family hub
@@ -25,6 +26,13 @@ KidWiz is a modern children's education SaaS concept that combines traditional l
    ```
 
 3. Open `http://127.0.0.1:5290`.
+
+Useful local review shortcuts:
+
+- public site: `http://127.0.0.1:5290/`
+- instant Quest Hub demo: `http://127.0.0.1:5290/?demo=instant&tab=quest`
+- guided onboarding demo: `http://127.0.0.1:5290/?demo=guided`
+- instant demo for a specific child: `http://127.0.0.1:5290/?demo=instant&tab=quest&child=kai`
 
 ## Scripts
 
@@ -47,6 +55,7 @@ If Supabase is not configured yet, the product still opens cleanly in demo mode 
 - public marketing site
 - guided onboarding flow
 - parent dashboard with child-by-child weekly targets and recommendations
+- child-facing Quest Hub with mission board, world map, reward shelf, and rhythm checklist
 - multi-child switching
 - course library with lesson progress, quiz state, and sequential progression
 - weekly playlists
@@ -62,7 +71,7 @@ If Supabase is not configured yet, the product still opens cleanly in demo mode 
 - `src/components/` - public site, onboarding, dashboard, and tab components
 - `src/data/kidwizData.js` - content model for worlds, stories, family rituals, and demo profiles
 - `src/lib/demoState.js` - local demo state bootstrap and persistence helpers
-- `src/lib/progression.js` - playlist, badge, recommendation, and track-progression logic
+- `src/lib/progression.js` - playlist, mission board, world map, badge, recommendation, and track-progression logic
 - `src/lib/supabaseClient.js` - optional Supabase auth wiring
 - `docs/PROJECT.md` - living product and architecture document
 

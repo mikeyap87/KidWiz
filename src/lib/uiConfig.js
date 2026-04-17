@@ -5,8 +5,8 @@ import {
   Brain,
   Flame,
   Heart,
-  House,
   LayoutDashboard,
+  Map,
   MessagesSquare,
   NotebookPen,
   PiggyBank,
@@ -23,7 +23,7 @@ import { createElement } from "react";
 
 export const tabItems = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { id: "overview", label: "Home", icon: House },
+  { id: "overview", label: "Quest Hub", icon: Map },
   { id: "courses", label: "Courses", icon: Brain },
   { id: "stories", label: "Stories", icon: BookOpen },
   { id: "coach", label: "Coach", icon: Bot },

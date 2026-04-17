@@ -23,8 +23,10 @@ import { PublicSite } from "./components/PublicSite";
 import { StoriesTab } from "./components/StoriesTab";
 import { STORAGE_KEY, createDefaultState, loadSavedState } from "./lib/demoState";
 import {
+  buildQuestWorldRows,
   buildSuggestedPlaylistForChild,
   buildSuggestedPlaylists,
+  buildWeeklyMissionBoard,
   deriveEarnedBadgeIds,
   findLessonById,
   findTrackByLessonId,
@@ -60,10 +62,85 @@ function clampTargetValue(key, value) {
   return Math.min(range.max, Math.max(range.min, value));
 }
 
+function getRequestedTab(tabValue) {
+  const normalized = tabValue?.toLowerCase();
+
+  if (!normalized) {
+    return "dashboard";
+  }
+
+  const aliases = {
+    dashboard: "dashboard",
+    home: "overview",
+    overview: "overview",
+    quest: "overview",
+    "quest-hub": "overview",
+    courses: "courses",
+    stories: "stories",
+    coach: "coach",
+    journal: "journal",
+    family: "family",
+  };
+
+  return aliases[normalized] ?? "dashboard";
+}
+
+function getInitialBootstrap() {
+  const savedState = loadSavedState();
+
+  if (typeof window === "undefined") {
+    return {
+      appState: savedState,
+      authMessage: "",
+      shouldClearQuery: false,
+    };
+  }
+
+  const searchParams = new URLSearchParams(window.location.search);
+  const demoMode = searchParams.get("demo");
+
+  if (demoMode !== "instant" && demoMode !== "guided") {
+    return {
+      appState: savedState,
+      authMessage: "",
+      shouldClearQuery: false,
+    };
+  }
+
+  const requestedChildId = searchParams.get("child");
+  const validChildId = childProfiles.some((child) => child.id === requestedChildId)
+    ? requestedChildId
+    : childProfiles[0].id;
+  const requestedTab = getRequestedTab(searchParams.get("tab"));
+
+  return {
+    appState: {
+      ...createDefaultState(),
+      session: {
+        type: "demo",
+        role: "parent",
+        email:
+          demoMode === "instant"
+            ? "hello@family.kidwiz.demo"
+            : "planner@kidwiz.demo",
+      },
+      onboardingComplete: demoMode === "instant",
+      activeTab: demoMode === "instant" ? requestedTab : "dashboard",
+      selectedChildId: validChildId,
+    },
+    authMessage:
+      demoMode === "instant"
+        ? "KidWiz opened from a direct local demo link."
+        : "KidWiz opened in guided setup from a direct local demo link.",
+    shouldClearQuery: true,
+  };
+}
+
 function App() {
-  const [appState, setAppState] = useState(() => loadSavedState());
+  const [bootstrap] = useState(() => getInitialBootstrap());
+  const [appState, setAppState] = useState(bootstrap.appState);
   const [authEmail, setAuthEmail] = useState("");
-  const [authMessage, setAuthMessage] = useState("");
+  const [authMessage, setAuthMessage] = useState(bootstrap.authMessage);
   const [authBusy, setAuthBusy] = useState(false);
   const [childJournalDraft, setChildJournalDraft] = useState("");
   const [childJournalMood, setChildJournalMood] = useState("proud");
@@ -119,6 +196,11 @@ function App() {
 
     return () => subscription.unsubscribe();
   }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || !bootstrap.shouldClearQuery) return;
+    window.history.replaceState({}, "", window.location.pathname);
+  }, [bootstrap.shouldClearQuery]);
 
   const visibleTracks = getVisibleTracks(appState.bodyBoundariesUnlocked);
   const selectedChild =
@@ -190,9 +272,13 @@ function App() {
     };
   });
 
-  const strongestTrack = [...trackProgressRows].sort(
-    (left, right) => right.progress - left.progress,
-  )[0];
+  const recommendedLesson = getRecommendedLesson({
+    visibleTracks,
+    assignedTrackIds,
+    playlistLessonIds: childPlaylistLessonIds,
+    completedLessonIds: childCompletedLessonIds,
+    weeklyTarget: selectedWeeklyTarget,
+  });
   const nextRitual =
     familyRituals[childCompletedLessonIds.length % familyRituals.length];
   const todayLabel = formatTodayLabel();
@@ -225,6 +311,25 @@ function App() {
   );
   const nextBadge =
     badgeCatalog.find((badge) => !earnedBadgeIds.includes(badge.id)) ?? null;
+  const questWorldRows = buildQuestWorldRows({
+    visibleTracks,
+    completedLessonIds: childCompletedLessonIds,
+    weeklyTarget: selectedWeeklyTarget,
+    assignedTrackIds,
+  });
+  const missionBoard = buildWeeklyMissionBoard({
+    child: selectedChild,
+    selectedGoalIds: appState.selectedGoalIds,
+    visibleTracks,
+    weeklyTarget: selectedWeeklyTarget,
+    completedLessonIds: childCompletedLessonIds,
+    storyChoices: childStoryChoices,
+    childJournalEntries,
+    completedJourneyIds: childCompletedJourneyIds,
+    recommendedLesson,
+    nextBadge,
+    nextRitual,
+  });
 
   const suggestedPreviewPlaylists = childProfiles.map((child) => ({
     child,
@@ -699,6 +804,28 @@ function App() {
     }));
   }
 
+  function handleOpenStory(storyId) {
+    updateAppState((current) => ({
+      ...current,
+      activeTab: "stories",
+      selectedStoryId: storyId ?? current.selectedStoryId,
+    }));
+  }
+
+  function handleOpenJournal() {
+    updateAppState((current) => ({
+      ...current,
+      activeTab: "journal",
+    }));
+  }
+
+  function handleOpenFamily() {
+    updateAppState((current) => ({
+      ...current,
+      activeTab: "family",
+    }));
+  }
+
   const canAdvanceOnboarding =
     appState.onboardingStep === 0 ? appState.selectedGoalIds.length >= 2 : true;
   const currentTab =
@@ -870,17 +997,19 @@ function App() {
                 <OverviewTab
                   childCompletedJourneyIds={childCompletedJourneyIds}
                   dailyJourneys={dailyJourneys}
-                  earnedBadges={earnedBadges}
-                  nextBadge={nextBadge}
-                  nextRitual={nextRitual}
+                  earnedBadgesCount={earnedBadges.length}
+                  missionBoard={missionBoard}
+                  onOpenFamily={handleOpenFamily}
+                  onOpenJournal={handleOpenJournal}
                   onOpenLesson={handleOpenLesson}
+                  onOpenStory={handleOpenStory}
+                  onSelectTrack={handleSelectTrack}
                   onToggleJourney={handleToggleJourney}
                   overviewPlaylistPreview={overviewPlaylistPreview}
+                  questWorldRows={questWorldRows}
                   selectedChild={selectedChild}
                   selectedGoals={selectedGoals}
-                  strongestTrack={strongestTrack}
                   todayLabel={todayLabel}
-                  trackProgressRows={trackProgressRows}
                   weeklyCompletion={weeklyCompletion}
                 />
               ) : null}
