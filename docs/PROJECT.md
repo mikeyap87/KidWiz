@@ -57,6 +57,7 @@ KidWiz aims to close that gap by giving families one place to build:
 - trend tracking that compares the current week against archived local snapshots for each child and the family overall
 - daily rhythm checklist with visible completion inside the Quest Hub
 - guided lesson flow for each course track with track-specific playbooks, visual practice panels, authored scenario cards, interactive move storyboards, age-band aware prompts, coach cues, activity milestones, quiz checkpoints, and a parent follow-through loop
+- lazy-loaded public, onboarding, and tab-level screen modules with polished loading states so the local product stays responsive as more curriculum ships
 - sequential lesson progression within tracks
 - track statuses such as ready, in progress, checkpoint ready, and complete
 - per-child weekly playlists with add/remove controls
@@ -91,8 +92,9 @@ The value is:
 
 ### Frontend
 
-- `src/App.jsx` now acts mainly as the state container and app shell.
+- `src/App.jsx` now acts mainly as the state container and app shell, and lazy-loads the public site, onboarding flow, and tab-level screens.
 - `src/components/` contains the public site, onboarding flow, dashboard, and tab-level UI modules.
+- `src/components/CoursesTab.jsx` now owns the lesson-experience builder import so course-only lesson logic loads with the course screen instead of the entry bundle.
 - `src/data/kidwizData.js` acts as the current content source for demo profiles, course tracks, lessons, quest worlds, stories, playlists, badges, rituals, and setup options.
 - `src/App.css` contains the full visual system and responsive layout.
 
@@ -172,6 +174,7 @@ The Family Hub now includes local controls to:
 - The course experience now changes its lesson copy by child age band so younger and older learners do not get the exact same framing.
 - The course experience now includes authored age-band scenario cards and track-themed visual accents so the panels feel more like curriculum and less like generic UI.
 - The course experience now includes a play-the-move storyboard so the chosen practice option becomes a short visual narrative instead of a detached selection.
+- The app shell now lazy-loads public, onboarding, and in-app screens so the main bundle stays below the earlier warning threshold while the curriculum continues to expand.
 - Sensitive topics stay behind a parent unlock.
 - AI is positioned as bounded and supportive, not as an unrestricted social chatbot.
 - The app supports demo mode by default so product design can move before backend work is finished.
@@ -190,8 +193,8 @@ The Family Hub now includes local controls to:
 1. Add real Supabase schema for parents, children, tracks, journals, progress, and unlock settings.
 2. Persist weekly snapshots, parent reports, and simulation history outside the browser so trends survive across devices.
 3. Replace the shared track playbooks with richer authored lesson variants, stronger age-banding, and deeper media or interaction types that fit each track.
-4. Split the app into route-level screens and smaller components as the product settles.
-5. Add route-level code splitting and bundle trimming so the app loads faster as content keeps expanding.
+4. Keep trimming the local bundle by splitting demo bootstrap state and curriculum data as content keeps expanding.
+5. Split the app into route-level screens and smaller components as the product settles.
 6. Add a server-side AI orchestration layer with moderation, age banding, and audit logs.
 7. Replace the static course content model with a more scalable curriculum structure and content authoring approach.
 8. Add billing and subscription controls.

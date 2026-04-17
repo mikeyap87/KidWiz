@@ -176,6 +176,39 @@
   background: #f2f6f8;
 }
 
+.site-loading-shell {
+  min-height: 100svh;
+  display: grid;
+  align-content: center;
+  padding: 48px 0;
+}
+
+.site-loading-card {
+  width: min(520px, 100%);
+  padding: 24px;
+  border: 1px solid rgba(17, 21, 31, 0.08);
+  background: rgba(255, 255, 255, 0.92);
+  display: grid;
+  gap: 12px;
+}
+
+.site-loading-name,
+.site-loading-copy {
+  margin: 0;
+  color: #11151f;
+}
+
+.site-loading-name {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.site-loading-copy {
+  margin-top: 4px;
+  color: rgba(17, 21, 31, 0.66);
+  line-height: 1.58;
+}
+
 .hero-band {
   min-height: 84svh;
   background-position: center;
@@ -871,6 +904,18 @@
 .app-main {
   display: grid;
   gap: 24px;
+}
+
+.workspace-loading-band {
+  display: grid;
+  align-content: center;
+  gap: 12px;
+  min-height: 240px;
+}
+
+.workspace-loading-band .panel-copy {
+  margin: 0;
+  max-width: 420px;
 }
 
 .workspace-band {

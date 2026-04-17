@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Suspense, lazy, useEffect, useState } from "react";
 import { Bot } from "lucide-react";
 import {
   badgeCatalog,
@@ -12,17 +12,7 @@ import {
   storyEpisodes,
   weeklyRhythms,
 } from "./data/kidwizData";
-import { CoachTab } from "./components/CoachTab";
-import { CoursesTab } from "./components/CoursesTab";
-import { DashboardTab } from "./components/DashboardTab";
-import { FamilyTab } from "./components/FamilyTab";
-import { JournalTab } from "./components/JournalTab";
-import { OnboardingFlow } from "./components/OnboardingFlow";
-import { OverviewTab } from "./components/OverviewTab";
-import { PublicSite } from "./components/PublicSite";
-import { StoriesTab } from "./components/StoriesTab";
 import { STORAGE_KEY, createDefaultState, loadSavedState } from "./lib/demoState";
-import { buildLessonExperience } from "./lib/lessonExperience";
 import {
   buildQuestWorldRows,
   buildParentWeeklyReport,
@@ -46,6 +36,95 @@ import {
   supabase,
 } from "./lib/supabaseClient";
 import "./App.css";
+
+function lazyNamed(importer, exportName) {
+  return lazy(() =>
+    importer().then((module) => ({
+      default: module[exportName],
+    })),
+  );
+}
+
+const CoachTab = lazyNamed(() => import("./components/CoachTab"), "CoachTab");
+const CoursesTab = lazyNamed(
+  () => import("./components/CoursesTab"),
+  "CoursesTab",
+);
+const DashboardTab = lazyNamed(
+  () => import("./components/DashboardTab"),
+  "DashboardTab",
+);
+const FamilyTab = lazyNamed(() => import("./components/FamilyTab"), "FamilyTab");
+const JournalTab = lazyNamed(
+  () => import("./components/JournalTab"),
+  "JournalTab",
+);
+const OnboardingFlow = lazyNamed(
+  () => import("./components/OnboardingFlow"),
+  "OnboardingFlow",
+);
+const OverviewTab = lazyNamed(
+  () => import("./components/OverviewTab"),
+  "OverviewTab",
+);
+const PublicSite = lazyNamed(
+  () => import("./components/PublicSite"),
+  "PublicSite",
+);
+const StoriesTab = lazyNamed(
+  () => import("./components/StoriesTab"),
+  "StoriesTab",
+);
+
+function SiteLoading() {
+  return (
+    <div className="site-shell">
+      <div className="page-width site-loading-shell">
+        <div className="site-loading-card">
+          <div className="brand-lockup">
+            <div className="brand-badge">KW</div>
+            <div>
+              <p className="site-loading-name">KidWiz</p>
+              <p className="site-loading-copy">
+                Loading the family learning studio.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function WorkspaceLoading({ activeTab, title, copy }) {
+  const activeLabel =
+    tabItems.find((item) => item.id === activeTab)?.label ?? "KidWiz";
+  const resolvedTitle = title ?? `Loading ${activeLabel}`;
+  const resolvedCopy = copy ?? "Getting this KidWiz space ready.";
+
+  return (
+    <section className="workspace-band workspace-loading-band">
+      <div className="panel-head">
+        <Bot size={18} />
+        <h2>{resolvedTitle}</h2>
+      </div>
+      <p className="panel-copy">{resolvedCopy}</p>
+    </section>
+  );
+}
+
+function OnboardingLoading() {
+  return (
+    <div className="onboarding-shell">
+      <div className="page-width">
+        <WorkspaceLoading
+          title="Loading family setup"
+          copy="Getting your KidWiz rhythm, goals, and first week ready."
+        />
+      </div>
+    </div>
+  );
+}
 
 function formatTodayLabel() {
   return new Intl.DateTimeFormat("en-US", {
@@ -312,16 +391,6 @@ function App() {
   });
   const nextRitual =
     familyRituals[childCompletedLessonIds.length % familyRituals.length];
-  const activeLessonExperience = buildLessonExperience({
-    childAge: selectedChild.age,
-    childName: selectedChild.name,
-    coachMode: coachResponseMode,
-    celebrationStyle: selectedCelebrationStyle,
-    lesson: activeLesson,
-    nextRitual,
-    practiceChoiceId: activeLessonPracticeChoiceId,
-    track: activeTrack,
-  });
   const todayLabel = formatTodayLabel();
   const weeklyCompletion =
     (childCompletedJourneyIds.length / Math.max(1, 5)) * 100;
@@ -842,16 +911,16 @@ function App() {
     setParentJournalDraft("");
   }
 
-  function handleOpenParentNoteStarter() {
-    setParentJournalDraft(activeLessonExperience.parentNoteStarter);
+  function handleOpenParentNoteStarter(starter = "") {
+    setParentJournalDraft(starter);
     updateAppState((current) => ({
       ...current,
       activeTab: "journal",
     }));
   }
 
-  function handleOpenChildReflectionStarter() {
-    setChildJournalDraft(activeLessonExperience.childReflectionStarter);
+  function handleOpenChildReflectionStarter(starter = "") {
+    setChildJournalDraft(starter);
     updateAppState((current) => ({
       ...current,
       activeTab: "journal",
@@ -1135,48 +1204,52 @@ function App() {
   return (
     <div className="page-shell">
       {!appState.session ? (
-        <PublicSite
-          authBusy={authBusy}
-          authEmail={authEmail}
-          authMessage={authMessage}
-          onAuthEmailChange={setAuthEmail}
-          onDemoStart={handleDemoStart}
-          onMagicLinkSubmit={handleMagicLinkSubmit}
-          visibleTracks={visibleTracks}
-        />
+        <Suspense fallback={<SiteLoading />}>
+          <PublicSite
+            authBusy={authBusy}
+            authEmail={authEmail}
+            authMessage={authMessage}
+            onAuthEmailChange={setAuthEmail}
+            onDemoStart={handleDemoStart}
+            onMagicLinkSubmit={handleMagicLinkSubmit}
+            visibleTracks={visibleTracks}
+          />
+        </Suspense>
       ) : !appState.onboardingComplete ? (
-        <OnboardingFlow
-          canAdvance={canAdvanceOnboarding}
-          celebrationStyleId={appState.celebrationStyleId}
-          coachStyleId={appState.coachStyleId}
-          onBack={handleBackOnboarding}
-          onFinish={handleFinishOnboarding}
-          onNext={handleAdvanceOnboarding}
-          onSelectCelebrationStyle={(styleId) =>
-            updateAppState((current) => ({
-              ...current,
-              celebrationStyleId: styleId,
-            }))
-          }
-          onSelectCoachStyle={(styleId) =>
-            updateAppState((current) => ({
-              ...current,
-              coachStyleId: styleId,
-            }))
-          }
-          onSelectRhythm={(rhythmId) =>
-            updateAppState((current) => ({
-              ...current,
-              weeklyRhythmId: rhythmId,
-            }))
-          }
-          onToggleGoal={handleToggleGoal}
-          previewPlaylists={suggestedPreviewPlaylists}
-          selectedGoalIds={appState.selectedGoalIds}
-          selectedGoals={selectedGoals}
-          step={appState.onboardingStep}
-          weeklyRhythmId={appState.weeklyRhythmId}
-        />
+        <Suspense fallback={<OnboardingLoading />}>
+          <OnboardingFlow
+            canAdvance={canAdvanceOnboarding}
+            celebrationStyleId={appState.celebrationStyleId}
+            coachStyleId={appState.coachStyleId}
+            onBack={handleBackOnboarding}
+            onFinish={handleFinishOnboarding}
+            onNext={handleAdvanceOnboarding}
+            onSelectCelebrationStyle={(styleId) =>
+              updateAppState((current) => ({
+                ...current,
+                celebrationStyleId: styleId,
+              }))
+            }
+            onSelectCoachStyle={(styleId) =>
+              updateAppState((current) => ({
+                ...current,
+                coachStyleId: styleId,
+              }))
+            }
+            onSelectRhythm={(rhythmId) =>
+              updateAppState((current) => ({
+                ...current,
+                weeklyRhythmId: rhythmId,
+              }))
+            }
+            onToggleGoal={handleToggleGoal}
+            previewPlaylists={suggestedPreviewPlaylists}
+            selectedGoalIds={appState.selectedGoalIds}
+            selectedGoals={selectedGoals}
+            step={appState.onboardingStep}
+            weeklyRhythmId={appState.weeklyRhythmId}
+          />
+        </Suspense>
       ) : (
         <div className="app-shell">
           <header className="app-topbar">
@@ -1275,177 +1348,184 @@ function App() {
             </aside>
 
             <main className="app-main">
-              {appState.activeTab === "dashboard" ? (
-                <DashboardTab
-                  childSummaries={childSummaries}
-                  familyMetrics={familyMetrics}
-                  onAdjustWeeklyTarget={handleAdjustWeeklyTarget}
-                  onChangeFocusTrack={handleChangeFocusTrack}
-                  onOpenFamily={handleOpenFamily}
-                  onOpenLesson={handleOpenLessonForChild}
-                  onOpenStory={handleOpenStory}
-                  onSelectChild={(childId) =>
-                    updateAppState((current) => ({
-                      ...current,
-                      selectedChildId: childId,
-                    }))
-                  }
-                  selectedChildId={selectedChild.id}
-                  visibleTracks={visibleTracks}
-                  weeklyReport={weeklyReport}
-                />
-              ) : null}
+              <Suspense
+                fallback={<WorkspaceLoading activeTab={appState.activeTab} />}
+              >
+                {appState.activeTab === "dashboard" ? (
+                  <DashboardTab
+                    childSummaries={childSummaries}
+                    familyMetrics={familyMetrics}
+                    onAdjustWeeklyTarget={handleAdjustWeeklyTarget}
+                    onChangeFocusTrack={handleChangeFocusTrack}
+                    onOpenFamily={handleOpenFamily}
+                    onOpenLesson={handleOpenLessonForChild}
+                    onOpenStory={handleOpenStory}
+                    onSelectChild={(childId) =>
+                      updateAppState((current) => ({
+                        ...current,
+                        selectedChildId: childId,
+                      }))
+                    }
+                    selectedChildId={selectedChild.id}
+                    visibleTracks={visibleTracks}
+                    weeklyReport={weeklyReport}
+                  />
+                ) : null}
 
-              {appState.activeTab === "overview" ? (
-                <OverviewTab
-                  childCompletedJourneyIds={childCompletedJourneyIds}
-                  dailyJourneys={dailyJourneys}
-                  earnedBadgesCount={earnedBadges.length}
-                  missionBoard={missionBoard}
-                  onOpenFamily={handleOpenFamily}
-                  onOpenJournal={handleOpenJournal}
-                  onOpenLesson={handleOpenLesson}
-                  onOpenStory={handleOpenStory}
-                  onSelectTrack={handleSelectTrack}
-                  onToggleJourney={handleToggleJourney}
-                  overviewPlaylistPreview={overviewPlaylistPreview}
-                  questWorldRows={questWorldRows}
-                  selectedChild={selectedChild}
-                  selectedGoals={selectedGoals}
-                  todayLabel={todayLabel}
-                  weeklyCompletion={weeklyCompletion}
-                />
-              ) : null}
+                {appState.activeTab === "overview" ? (
+                  <OverviewTab
+                    childCompletedJourneyIds={childCompletedJourneyIds}
+                    dailyJourneys={dailyJourneys}
+                    earnedBadgesCount={earnedBadges.length}
+                    missionBoard={missionBoard}
+                    onOpenFamily={handleOpenFamily}
+                    onOpenJournal={handleOpenJournal}
+                    onOpenLesson={handleOpenLesson}
+                    onOpenStory={handleOpenStory}
+                    onSelectTrack={handleSelectTrack}
+                    onToggleJourney={handleToggleJourney}
+                    overviewPlaylistPreview={overviewPlaylistPreview}
+                    questWorldRows={questWorldRows}
+                    selectedChild={selectedChild}
+                    selectedGoals={selectedGoals}
+                    todayLabel={todayLabel}
+                    weeklyCompletion={weeklyCompletion}
+                  />
+                ) : null}
 
-              {appState.activeTab === "courses" ? (
-                <CoursesTab
-                  activeLesson={activeLesson}
-                  activeLessonAnswer={activeLessonAnswer}
-                  activeLessonExperience={activeLessonExperience}
-                  activeLessonMilestoneIds={activeLessonMilestoneIds}
-                  activeTrack={activeTrack}
-                  answeredCorrectly={answeredCorrectly}
-                  answeredOption={answeredOption}
-                  childCompletedJourneyIds={childCompletedJourneyIds}
-                  childCompletedLessonIds={childCompletedLessonIds}
-                  childPlaylistLessonIds={childPlaylistLessonIds}
-                  coachResponseMode={coachResponseMode}
-                  onAnswer={handleQuizAnswer}
-                  onChangeCoachMode={setCoachResponseMode}
-                  onOpenChildReflectionStarter={handleOpenChildReflectionStarter}
-                  onOpenParentNoteStarter={handleOpenParentNoteStarter}
-                  onSelectLesson={(lessonId) =>
-                    updateAppState((current) => ({
-                      ...current,
-                      selectedLessonId: lessonId,
-                    }))
-                  }
-                  onSelectPracticeChoice={handleSelectLessonPracticeChoice}
-                  onSelectTrack={handleSelectTrack}
-                  onToggleJourney={handleToggleJourney}
-                  onToggleComplete={handleToggleLessonComplete}
-                  onToggleLessonMilestone={handleToggleLessonMilestone}
-                  onTogglePlaylist={handleTogglePlaylistLesson}
-                  trackProgressRows={trackProgressRows}
-                  visibleTracks={visibleTracks}
-                />
-              ) : null}
+                {appState.activeTab === "courses" ? (
+                  <CoursesTab
+                    activeLesson={activeLesson}
+                    activeLessonAnswer={activeLessonAnswer}
+                    activeLessonMilestoneIds={activeLessonMilestoneIds}
+                    activeLessonPracticeChoiceId={activeLessonPracticeChoiceId}
+                    activeTrack={activeTrack}
+                    answeredCorrectly={answeredCorrectly}
+                    answeredOption={answeredOption}
+                    childCompletedJourneyIds={childCompletedJourneyIds}
+                    childCompletedLessonIds={childCompletedLessonIds}
+                    childPlaylistLessonIds={childPlaylistLessonIds}
+                    coachResponseMode={coachResponseMode}
+                    nextRitual={nextRitual}
+                    onAnswer={handleQuizAnswer}
+                    onChangeCoachMode={setCoachResponseMode}
+                    onOpenChildReflectionStarter={handleOpenChildReflectionStarter}
+                    onOpenParentNoteStarter={handleOpenParentNoteStarter}
+                    onSelectLesson={(lessonId) =>
+                      updateAppState((current) => ({
+                        ...current,
+                        selectedLessonId: lessonId,
+                      }))
+                    }
+                    onSelectPracticeChoice={handleSelectLessonPracticeChoice}
+                    onSelectTrack={handleSelectTrack}
+                    onToggleJourney={handleToggleJourney}
+                    onToggleComplete={handleToggleLessonComplete}
+                    onToggleLessonMilestone={handleToggleLessonMilestone}
+                    onTogglePlaylist={handleTogglePlaylistLesson}
+                    selectedCelebrationStyle={selectedCelebrationStyle}
+                    selectedChild={selectedChild}
+                    trackProgressRows={trackProgressRows}
+                    visibleTracks={visibleTracks}
+                  />
+                ) : null}
 
-              {appState.activeTab === "stories" ? (
-                <StoriesTab
-                  activeStory={activeStory}
-                  activeStoryChoice={activeStoryChoice}
-                  childStoryChoices={childStoryChoices}
-                  onSelectChoice={handleSelectStoryChoice}
-                  onSelectStory={(storyId) =>
-                    updateAppState((current) => ({
-                      ...current,
-                      selectedStoryId: storyId,
-                      activeTab: "stories",
-                    }))
-                  }
-                  storyEpisodes={storyEpisodes}
-                />
-              ) : null}
+                {appState.activeTab === "stories" ? (
+                  <StoriesTab
+                    activeStory={activeStory}
+                    activeStoryChoice={activeStoryChoice}
+                    childStoryChoices={childStoryChoices}
+                    onSelectChoice={handleSelectStoryChoice}
+                    onSelectStory={(storyId) =>
+                      updateAppState((current) => ({
+                        ...current,
+                        selectedStoryId: storyId,
+                        activeTab: "stories",
+                      }))
+                    }
+                    storyEpisodes={storyEpisodes}
+                  />
+                ) : null}
 
-              {appState.activeTab === "coach" ? (
-                <CoachTab
-                  activeLesson={activeLesson}
-                  activeTrack={activeTrack}
-                  coachCards={coachCards}
-                  coachResponseMode={coachResponseMode}
-                  onChangeCoachMode={setCoachResponseMode}
-                  selectedChild={selectedChild}
-                  selectedCoachStyle={selectedCoachStyle}
-                  selectedGoals={selectedGoals}
-                />
-              ) : null}
+                {appState.activeTab === "coach" ? (
+                  <CoachTab
+                    activeLesson={activeLesson}
+                    activeTrack={activeTrack}
+                    coachCards={coachCards}
+                    coachResponseMode={coachResponseMode}
+                    onChangeCoachMode={setCoachResponseMode}
+                    selectedChild={selectedChild}
+                    selectedCoachStyle={selectedCoachStyle}
+                    selectedGoals={selectedGoals}
+                  />
+                ) : null}
 
-              {appState.activeTab === "journal" ? (
-                <JournalTab
-                  childJournalDraft={childJournalDraft}
-                  childJournalEntries={childJournalEntries}
-                  childJournalMood={childJournalMood}
-                  moodOptions={moodOptions}
-                  onChildDraftChange={setChildJournalDraft}
-                  onChildMoodChange={setChildJournalMood}
-                  onParentDraftChange={setParentJournalDraft}
-                  onSaveChildJournal={handleSaveChildJournal}
-                  onSaveParentJournal={handleSaveParentJournal}
-                  parentJournalDraft={parentJournalDraft}
-                  parentJournalEntries={appState.parentJournalEntries}
-                  selectedChild={selectedChild}
-                />
-              ) : null}
+                {appState.activeTab === "journal" ? (
+                  <JournalTab
+                    childJournalDraft={childJournalDraft}
+                    childJournalEntries={childJournalEntries}
+                    childJournalMood={childJournalMood}
+                    moodOptions={moodOptions}
+                    onChildDraftChange={setChildJournalDraft}
+                    onChildMoodChange={setChildJournalMood}
+                    onParentDraftChange={setParentJournalDraft}
+                    onSaveChildJournal={handleSaveChildJournal}
+                    onSaveParentJournal={handleSaveParentJournal}
+                    parentJournalDraft={parentJournalDraft}
+                    parentJournalEntries={appState.parentJournalEntries}
+                    selectedChild={selectedChild}
+                  />
+                ) : null}
 
-              {appState.activeTab === "family" ? (
-                <FamilyTab
-                  appState={appState}
-                  assignedTrackIds={assignedTrackIds}
-                  familyToolsMessage={familyToolsMessage}
-                  onArchiveAndStartFreshWeek={handleArchiveAndStartFreshWeek}
-                  onChangeCelebrationStyle={(styleId) =>
-                    updateAppState((current) => ({
-                      ...current,
-                      celebrationStyleId: styleId,
-                    }))
-                  }
-                  onChangeCoachStyle={(styleId) =>
-                    updateAppState((current) => ({
-                      ...current,
-                      coachStyleId: styleId,
-                    }))
-                  }
-                  onChangeRhythm={(rhythmId) =>
-                    updateAppState((current) => ({
-                      ...current,
-                      weeklyRhythmId: rhythmId,
-                    }))
-                  }
-                  onArchiveCurrentWeek={handleArchiveCurrentWeek}
-                  onGenerateFreshWeek={handleGenerateFreshWeek}
-                  onResetDemo={handleResetDemo}
-                  onResetWeeklyHistory={handleResetWeeklyHistory}
-                  onRestartOnboarding={() =>
-                    updateAppState((current) => ({
-                      ...current,
-                      onboardingComplete: false,
-                      onboardingStep: 0,
-                    }))
-                  }
-                  onToggleBodyBoundaries={handleToggleBodyBoundaries}
-                  onToggleGoal={handleToggleGoal}
-                  onToggleTrackAssignment={handleToggleTrackAssignment}
-                  selectedCelebrationStyle={selectedCelebrationStyle}
-                  selectedChild={selectedChild}
-                  selectedCoachStyle={selectedCoachStyle}
-                  selectedGoals={selectedGoals}
-                  selectedRhythm={selectedRhythm}
-                  trackProgressRows={trackProgressRows}
-                  visibleTracks={visibleTracks}
-                  weeklyHistoryByChild={appState.weeklyHistoryByChild}
-                />
-              ) : null}
+                {appState.activeTab === "family" ? (
+                  <FamilyTab
+                    appState={appState}
+                    assignedTrackIds={assignedTrackIds}
+                    familyToolsMessage={familyToolsMessage}
+                    onArchiveAndStartFreshWeek={handleArchiveAndStartFreshWeek}
+                    onChangeCelebrationStyle={(styleId) =>
+                      updateAppState((current) => ({
+                        ...current,
+                        celebrationStyleId: styleId,
+                      }))
+                    }
+                    onChangeCoachStyle={(styleId) =>
+                      updateAppState((current) => ({
+                        ...current,
+                        coachStyleId: styleId,
+                      }))
+                    }
+                    onChangeRhythm={(rhythmId) =>
+                      updateAppState((current) => ({
+                        ...current,
+                        weeklyRhythmId: rhythmId,
+                      }))
+                    }
+                    onArchiveCurrentWeek={handleArchiveCurrentWeek}
+                    onGenerateFreshWeek={handleGenerateFreshWeek}
+                    onResetDemo={handleResetDemo}
+                    onResetWeeklyHistory={handleResetWeeklyHistory}
+                    onRestartOnboarding={() =>
+                      updateAppState((current) => ({
+                        ...current,
+                        onboardingComplete: false,
+                        onboardingStep: 0,
+                      }))
+                    }
+                    onToggleBodyBoundaries={handleToggleBodyBoundaries}
+                    onToggleGoal={handleToggleGoal}
+                    onToggleTrackAssignment={handleToggleTrackAssignment}
+                    selectedCelebrationStyle={selectedCelebrationStyle}
+                    selectedChild={selectedChild}
+                    selectedCoachStyle={selectedCoachStyle}
+                    selectedGoals={selectedGoals}
+                    selectedRhythm={selectedRhythm}
+                    trackProgressRows={trackProgressRows}
+                    visibleTracks={visibleTracks}
+                    weeklyHistoryByChild={appState.weeklyHistoryByChild}
+                  />
+                ) : null}
+              </Suspense>
             </main>
           </div>
         </div>

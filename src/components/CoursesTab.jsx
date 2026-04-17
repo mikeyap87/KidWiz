@@ -11,14 +11,15 @@ import {
   Target,
   Users,
 } from "lucide-react";
+import { buildLessonExperience } from "../lib/lessonExperience";
 import { TrackGlyph } from "../lib/uiConfig";
 import { isLessonUnlocked } from "../lib/progression";
 
 export function CoursesTab({
   activeLesson,
   activeLessonAnswer,
-  activeLessonExperience,
   activeLessonMilestoneIds,
+  activeLessonPracticeChoiceId,
   activeTrack,
   answeredCorrectly,
   answeredOption,
@@ -26,6 +27,7 @@ export function CoursesTab({
   childCompletedLessonIds,
   childPlaylistLessonIds,
   coachResponseMode,
+  nextRitual,
   onAnswer,
   onChangeCoachMode,
   onOpenChildReflectionStarter,
@@ -37,9 +39,21 @@ export function CoursesTab({
   onToggleComplete,
   onToggleLessonMilestone,
   onTogglePlaylist,
+  selectedCelebrationStyle,
+  selectedChild,
   trackProgressRows,
   visibleTracks,
 }) {
+  const activeLessonExperience = buildLessonExperience({
+    childAge: selectedChild.age,
+    childName: selectedChild.name,
+    coachMode: coachResponseMode,
+    celebrationStyle: selectedCelebrationStyle,
+    lesson: activeLesson,
+    nextRitual,
+    practiceChoiceId: activeLessonPracticeChoiceId,
+    track: activeTrack,
+  });
   const lessonIndex = activeTrack.lessons.findIndex(
     (lesson) => lesson.id === activeLesson.id,
   );
@@ -532,7 +546,11 @@ export function CoursesTab({
             </button>
             <button
               className="inline-action"
-              onClick={onOpenChildReflectionStarter}
+              onClick={() =>
+                onOpenChildReflectionStarter(
+                  activeLessonExperience.childReflectionStarter,
+                )
+              }
               type="button"
             >
               <Sparkles size={14} />
@@ -540,7 +558,9 @@ export function CoursesTab({
             </button>
             <button
               className="inline-action"
-              onClick={onOpenParentNoteStarter}
+              onClick={() =>
+                onOpenParentNoteStarter(activeLessonExperience.parentNoteStarter)
+              }
               type="button"
             >
               <NotebookPen size={14} />

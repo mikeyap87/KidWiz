@@ -9,6 +9,7 @@ KidWiz is a modern children's education SaaS concept that combines traditional l
 - a Quest Hub with world-map navigation, weekly missions, and visible rewards
 - a parent weekly report layer with action plans, conversation prompts, and stateful trend history
 - eight course tracks with multi-lesson arcs, guided lesson flows, track-specific playbooks, visual practice panels, age-band aware lesson copy, authored scenario cards, and interactive move storyboards
+- lazy-loaded public, onboarding, and app-screen modules with in-product loading states so the local build stays fast as content grows
 - expanded Brave Heart, Money Moves, and Home Team content depth
 - weekly playlists, badges, progress bars, coach prompts, parent controls, and Family Hub archive tools
 - branching story practice, private journals, and a parent family hub
@@ -77,6 +78,7 @@ If Supabase is not configured yet, the product still opens cleanly in demo mode 
 - `src/data/kidwizData.js` - content model for worlds, stories, family rituals, and demo profiles
 - `src/lib/demoState.js` - local demo state bootstrap and persistence helpers
 - `src/lib/progression.js` - playlist, mission board, world map, badge, recommendation, and track-progression logic
+- `src/lib/lessonExperience.js` - course-only lesson experience builder, now loaded with the Courses screen chunk
 - `src/lib/supabaseClient.js` - optional Supabase auth wiring
 - `docs/PROJECT.md` - living product and architecture document
 
@@ -86,5 +88,5 @@ If Supabase is not configured yet, the product still opens cleanly in demo mode 
 - add a server-side AI layer for bounded tutoring and summaries
 - introduce billing and subscription controls
 - break the app shell into smaller route-level screens and components once the product shape stabilizes
-- add route-level code splitting to trim the current main bundle
+- keep trimming the local bundle by splitting demo data and bootstrap state as the curriculum grows
 - deepen lesson authoring so each track gets richer interactive practice variations, stronger media moments, and more sharply authored age-banded lesson content
