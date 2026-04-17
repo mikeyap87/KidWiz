@@ -7,10 +7,10 @@ KidWiz is a modern children's education SaaS concept that combines traditional l
 - a guided family onboarding flow for goals, rhythm, and coach style
 - a fully navigable demo application for family learning
 - a Quest Hub with world-map navigation, weekly missions, and visible rewards
-- a parent weekly report layer with action plans, conversation prompts, and trend history
+- a parent weekly report layer with action plans, conversation prompts, and stateful trend history
 - eight course tracks with multi-lesson arcs
 - expanded Brave Heart, Money Moves, and Home Team content depth
-- weekly playlists, badges, progress bars, coach prompts, and parent controls
+- weekly playlists, badges, progress bars, coach prompts, parent controls, and Family Hub archive tools
 - branching story practice, private journals, and a parent family hub
 
 ## Quick Start
@@ -33,6 +33,8 @@ Useful local review shortcuts:
 
 - public site: `http://127.0.0.1:5290/`
 - instant Quest Hub demo: `http://127.0.0.1:5290/?demo=instant&tab=quest`
+- instant dashboard demo: `http://127.0.0.1:5290/?demo=instant&tab=dashboard`
+- Family Hub demo: `http://127.0.0.1:5290/?demo=instant&tab=family`
 - guided onboarding demo: `http://127.0.0.1:5290/?demo=guided`
 - instant demo for a specific child: `http://127.0.0.1:5290/?demo=instant&tab=quest&child=kai`
 
@@ -56,7 +58,7 @@ If Supabase is not configured yet, the product still opens cleanly in demo mode 
 
 - public marketing site
 - guided onboarding flow
-- parent dashboard with child-by-child weekly targets, weekly report summaries, trend comparisons, and recommendations
+- parent dashboard with child-by-child weekly targets, weekly report summaries, archived trend comparisons, and recommendations
 - child-facing Quest Hub with mission board, world map, reward shelf, and rhythm checklist
 - multi-child switching
 - course library with lesson progress, quiz state, and sequential progression
@@ -65,7 +67,7 @@ If Supabase is not configured yet, the product still opens cleanly in demo mode 
 - Spark Coach demo layer with different coaching modes
 - child journal and parent notes
 - parent controls for goals, rhythm, celebration style, track assignment, and sensitive-topic unlocks
-- local reset and fresh-week testing tools
+- local save-week, archive-week, fresh-week, and reset testing tools in the Family Hub
 
 ## Project Structure
 
@@ -79,7 +81,8 @@ If Supabase is not configured yet, the product still opens cleanly in demo mode 
 
 ## Next Good Moves
 
-- connect Supabase tables for real parent accounts, child profiles, journals, and progress
+- connect Supabase tables for real parent accounts, child profiles, journals, progress, and weekly snapshots
 - add a server-side AI layer for bounded tutoring and summaries
 - introduce billing and subscription controls
 - break the app shell into smaller route-level screens and components once the product shape stabilizes
+- add route-level code splitting to trim the current main bundle

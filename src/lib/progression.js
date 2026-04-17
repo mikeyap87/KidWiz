@@ -3,7 +3,6 @@ import {
   childProfiles,
   courseCatalog,
   questWorldCatalog,
-  starterWeeklyHistoryByChild,
   storyEpisodes,
 } from "../data/kidwizData";
 
@@ -491,14 +490,18 @@ function getMomentumState(score) {
   };
 }
 
-function buildChildTrendSeries(summary) {
-  const history = starterWeeklyHistoryByChild[summary.child.id] ?? [];
+function buildChildTrendSeries(summary, weeklyHistoryByChild) {
+  const history = weeklyHistoryByChild?.[summary.child.id] ?? [];
   const currentSnapshot = {
     weekLabel: "This week",
     readinessScore: summary.overallTargetProgress,
     lessonTargetProgress: summary.lessonTargetProgress,
     storyTargetProgress: summary.storyTargetProgress,
     reflectionTargetProgress: summary.reflectionTargetProgress,
+    completedLessonsTotal: summary.completedLessons,
+    completedStoriesTotal: summary.completedStories,
+    reflectionsTotal: summary.journalCount,
+    badgesTotal: summary.badgesEarned,
     focusTrackId: summary.weeklyTarget.focusTrackId,
     strongestTrackId: summary.strongestTrack.id,
     supportTrackId: summary.supportTrack.id,
@@ -547,6 +550,7 @@ export function buildParentWeeklyReport({
   selectedCoachStyle,
   selectedGoals,
   selectedRhythm,
+  weeklyHistoryByChild,
 }) {
   const averageTargetProgress = Math.round(
     childSummaries.reduce(
@@ -564,7 +568,7 @@ export function buildParentWeeklyReport({
       (left, right) => left.overallTargetProgress - right.overallTargetProgress,
     )[0] ?? childSummaries[0];
   const childTrendRows = childSummaries.map((summary) => {
-    const trendSeries = buildChildTrendSeries(summary);
+    const trendSeries = buildChildTrendSeries(summary, weeklyHistoryByChild);
     const previousSnapshot = trendSeries.at(-2) ?? null;
     const currentSnapshot = trendSeries.at(-1) ?? null;
     const delta = (currentSnapshot?.readinessScore ?? 0) - (previousSnapshot?.readinessScore ?? 0);

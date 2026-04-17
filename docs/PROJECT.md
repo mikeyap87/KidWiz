@@ -54,7 +54,7 @@ KidWiz aims to close that gap by giving families one place to build:
 - world-themed progression model that reframes course tracks as explorable regions
 - weekly mission system for lessons, stories, reflections, and family rituals
 - expanded branching story library across confidence, money, and family repair scenarios
-- trend tracking that compares the current week against prior demo snapshots for each child and the family overall
+- trend tracking that compares the current week against archived local snapshots for each child and the family overall
 - daily rhythm checklist with visible completion inside the Quest Hub
 - guided lesson and quiz flow for each course track
 - sequential lesson progression within tracks
@@ -64,7 +64,7 @@ KidWiz aims to close that gap by giving families one place to build:
 - badge system based on local progress state
 - Spark Coach tab with bounded coaching modes
 - child journal and parent notes
-- family hub with trust center, unlock controls, goal editing, rhythm controls, and local testing tools
+- family hub with trust center, unlock controls, goal editing, rhythm controls, archived history visibility, and local testing tools for saving or resetting weekly snapshots
 
 ## Business Value
 
@@ -126,14 +126,24 @@ The live app shell currently uses in-browser demo state for:
 - parent journal entries
 - assigned tracks by child
 - sensitive topic unlock state
+- weekly history snapshots by child, including archived totals used for trend comparisons
 
 This is stored in `localStorage` so a reviewer can interact with the experience without backend setup.
 
 For faster local QA, the app also supports direct demo boot URLs such as:
 
 - `/?demo=instant&tab=quest`
+- `/?demo=instant&tab=dashboard`
+- `/?demo=instant&tab=family`
 - `/?demo=guided`
 - `/?demo=instant&tab=quest&child=kai`
+
+The Family Hub now includes local controls to:
+
+- save the current week into trend history without resetting progress
+- archive the current week and start a fresh week with rotated focus tracks and fresh playlists
+- reset saved history back to the seeded demo baseline
+- restart onboarding or fully reset the local demo state
 
 ## Setup
 
@@ -152,6 +162,7 @@ For faster local QA, the app also supports direct demo boot URLs such as:
 - The local product now includes an onboarding flow instead of skipping straight into the app.
 - The local product now includes a quest-style child home experience instead of a plain dashboard-style landing screen.
 - The parent dashboard now includes a weekly report plus historical trend comparison rather than only raw metrics and controls.
+- Historical trend comparison is now driven by archived local snapshots instead of a fixed read-only seed.
 - Sensitive topics stay behind a parent unlock.
 - AI is positioned as bounded and supportive, not as an unrestricted social chatbot.
 - The app supports demo mode by default so product design can move before backend work is finished.
@@ -168,9 +179,10 @@ For faster local QA, the app also supports direct demo boot URLs such as:
 ## Next Priorities
 
 1. Add real Supabase schema for parents, children, tracks, journals, progress, and unlock settings.
-2. Turn the static demo trend history into generated weekly snapshots that can be reviewed, reset, and simulated from the Family Hub.
+2. Persist weekly snapshots, parent reports, and simulation history outside the browser so trends survive across devices.
 3. Split the app into route-level screens and smaller components as the product settles.
-4. Add a server-side AI orchestration layer with moderation, age banding, and audit logs.
-5. Replace the static course content model with a more scalable curriculum structure and content authoring approach.
-6. Add billing and subscription controls.
-7. Define the first launch age band more tightly and decide whether the sensitive track belongs in V1 or V2.
+4. Add route-level code splitting and bundle trimming so the app loads faster as content keeps expanding.
+5. Add a server-side AI orchestration layer with moderation, age banding, and audit logs.
+6. Replace the static course content model with a more scalable curriculum structure and content authoring approach.
+7. Add billing and subscription controls.
+8. Define the first launch age band more tightly and decide whether the sensitive track belongs in V1 or V2.

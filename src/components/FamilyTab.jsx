@@ -1,6 +1,16 @@
-import { Bot, Brain, Compass, RefreshCw, ShieldCheck, Users } from "lucide-react";
+import {
+  Archive,
+  Bot,
+  Brain,
+  Compass,
+  History,
+  RefreshCw,
+  ShieldCheck,
+  Users,
+} from "lucide-react";
 import {
   celebrationStyles,
+  childProfiles,
   familyGoals,
   familyRituals,
   trustSignals,
@@ -11,11 +21,15 @@ import {
 export function FamilyTab({
   appState,
   assignedTrackIds,
+  familyToolsMessage,
+  onArchiveAndStartFreshWeek,
+  onArchiveCurrentWeek,
   onChangeCelebrationStyle,
   onChangeCoachStyle,
   onChangeRhythm,
   onGenerateFreshWeek,
   onResetDemo,
+  onResetWeeklyHistory,
   onRestartOnboarding,
   onToggleBodyBoundaries,
   onToggleGoal,
@@ -27,6 +41,7 @@ export function FamilyTab({
   selectedRhythm,
   trackProgressRows,
   visibleTracks,
+  weeklyHistoryByChild,
 }) {
   return (
     <section className="workspace-band">
@@ -184,8 +199,21 @@ export function FamilyTab({
             <h2>Local testing tools</h2>
           </div>
           <div className="tool-list">
+            <button className="inline-action" onClick={onArchiveCurrentWeek} type="button">
+              Save current week to history
+            </button>
+            <button
+              className="inline-action"
+              onClick={onArchiveAndStartFreshWeek}
+              type="button"
+            >
+              Archive and start fresh week
+            </button>
             <button className="inline-action" onClick={onGenerateFreshWeek} type="button">
               Generate fresh week
+            </button>
+            <button className="inline-action" onClick={onResetWeeklyHistory} type="button">
+              Reset saved history
             </button>
             <button className="inline-action" onClick={onRestartOnboarding} type="button">
               Restart onboarding
@@ -195,6 +223,8 @@ export function FamilyTab({
             </button>
           </div>
 
+          {familyToolsMessage ? <p className="panel-copy">{familyToolsMessage}</p> : null}
+
           <div className="ritual-list">
             {familyRituals.map((ritual) => (
               <div key={ritual.title} className="ritual-row">
@@ -202,6 +232,71 @@ export function FamilyTab({
                 <span>{ritual.copy}</span>
               </div>
             ))}
+          </div>
+        </article>
+      </div>
+
+      <div className="family-grid family-grid-secondary">
+        <article className="surface-panel">
+          <div className="panel-head">
+            <History size={18} />
+            <h2>Saved trend history</h2>
+          </div>
+
+          <div className="ritual-list">
+            {Object.entries(weeklyHistoryByChild).map(([childId, history]) => {
+              const childName =
+                childProfiles.find((child) => child.id === childId)?.name ?? childId;
+              const latestSnapshot = history.at(-1);
+
+              return (
+                <div key={childId} className="ritual-row">
+                  <strong>
+                    {childName}: {history.length} saved week{history.length === 1 ? "" : "s"}
+                  </strong>
+                  <span>
+                    {latestSnapshot
+                      ? `${latestSnapshot.weekLabel} · ${latestSnapshot.readinessScore}% readiness · focus ${
+                          visibleTracks.find(
+                            (track) => track.id === latestSnapshot.focusTrackId,
+                          )?.title ?? "track"
+                        }`
+                      : "No weekly snapshots saved yet."}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </article>
+
+        <article className="surface-panel">
+          <div className="panel-head">
+            <Archive size={18} />
+            <h2>How local snapshots work</h2>
+          </div>
+
+          <div className="trust-list">
+            <div className="trust-row">
+              <strong>Save current week</strong>
+              <span>
+                Archives the current totals so the dashboard can compare the next week
+                against a real baseline.
+              </span>
+            </div>
+            <div className="trust-row">
+              <strong>Archive and start fresh week</strong>
+              <span>
+                Saves the current week, rotates focus tracks, refreshes playlists, and
+                clears the daily rhythm checklist for the next local cycle.
+              </span>
+            </div>
+            <div className="trust-row">
+              <strong>Reset saved history</strong>
+              <span>
+                Returns the trend view to the KidWiz demo baseline without wiping the
+                rest of the product state.
+              </span>
+            </div>
           </div>
         </article>
       </div>

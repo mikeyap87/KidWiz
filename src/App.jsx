@@ -53,6 +53,13 @@ function formatTodayLabel() {
   }).format(new Date());
 }
 
+function formatArchiveWeekLabel() {
+  return `Saved ${new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "numeric",
+  }).format(new Date())}`;
+}
+
 function clampTargetValue(key, value) {
   const ranges = {
     lessons: { min: 1, max: 7 },
@@ -85,6 +92,20 @@ function getRequestedTab(tabValue) {
   };
 
   return aliases[normalized] ?? "dashboard";
+}
+
+function getNextFocusTrackId(trackIds, currentFocusTrackId) {
+  if (!trackIds.length) {
+    return currentFocusTrackId;
+  }
+
+  const currentIndex = trackIds.indexOf(currentFocusTrackId);
+
+  if (currentIndex === -1) {
+    return trackIds[0];
+  }
+
+  return trackIds[(currentIndex + 1) % trackIds.length];
 }
 
 function getInitialBootstrap() {
@@ -148,6 +169,7 @@ function App() {
   const [childJournalMood, setChildJournalMood] = useState("proud");
   const [parentJournalDraft, setParentJournalDraft] = useState("");
   const [coachResponseMode, setCoachResponseMode] = useState("gentle");
+  const [familyToolsMessage, setFamilyToolsMessage] = useState("");
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -394,17 +416,32 @@ function App() {
       storyChoices,
       bodyBoundariesUnlocked: appState.bodyBoundariesUnlocked,
     });
+    const latestWeeklySnapshot =
+      (appState.weeklyHistoryByChild?.[child.id] ?? []).at(-1) ?? null;
+    const weeklyLessonCount = Math.max(
+      0,
+      completedLessons.length - (latestWeeklySnapshot?.completedLessonsTotal ?? 0),
+    );
+    const weeklyStoryCount = Math.max(
+      0,
+      Object.keys(storyChoices).length -
+        (latestWeeklySnapshot?.completedStoriesTotal ?? 0),
+    );
+    const weeklyReflectionCount = Math.max(
+      0,
+      journalEntries.length - (latestWeeklySnapshot?.reflectionsTotal ?? 0),
+    );
     const lessonTargetProgress = Math.min(
       100,
-      Math.round((completedLessons.length / weeklyTarget.lessons) * 100),
+      Math.round((weeklyLessonCount / weeklyTarget.lessons) * 100),
     );
     const storyTargetProgress = Math.min(
       100,
-      Math.round((Object.keys(storyChoices).length / weeklyTarget.stories) * 100),
+      Math.round((weeklyStoryCount / weeklyTarget.stories) * 100),
     );
     const reflectionTargetProgress = Math.min(
       100,
-      Math.round((journalEntries.length / weeklyTarget.reflections) * 100),
+      Math.round((weeklyReflectionCount / weeklyTarget.reflections) * 100),
     );
 
     return {
@@ -417,6 +454,9 @@ function App() {
       completedStories: Object.keys(storyChoices).length,
       journalCount: journalEntries.length,
       badgesEarned: childBadgeIds.length,
+      weeklyLessonCount,
+      weeklyStoryCount,
+      weeklyReflectionCount,
       weeklyTarget,
       lessonTargetProgress,
       storyTargetProgress,
@@ -456,6 +496,7 @@ function App() {
     selectedCoachStyle,
     selectedGoals,
     selectedRhythm,
+    weeklyHistoryByChild: appState.weeklyHistoryByChild,
   });
 
   const coachCards = [
@@ -767,14 +808,175 @@ function App() {
   }
 
   function handleGenerateFreshWeek() {
+    updateAppState((current) => {
+      const nextVisibleTracks = getVisibleTracks(current.bodyBoundariesUnlocked);
+      const nextWeeklyTargetsByChild = Object.fromEntries(
+        childProfiles.map((child) => {
+          const currentTarget = current.weeklyTargetsByChild?.[child.id] ?? {
+            lessons: 3,
+            stories: 2,
+            reflections: 2,
+            focusTrackId: nextVisibleTracks[0]?.id,
+          };
+          const assignedVisibleTrackIds = (
+            current.assignedTrackIdsByChild?.[child.id] ?? []
+          ).filter((trackId) =>
+            nextVisibleTracks.some((track) => track.id === trackId),
+          );
+          const focusPool = assignedVisibleTrackIds.length
+            ? assignedVisibleTrackIds
+            : nextVisibleTracks.map((track) => track.id);
+
+          return [
+            child.id,
+            {
+              ...currentTarget,
+              focusTrackId: getNextFocusTrackId(
+                focusPool,
+                currentTarget.focusTrackId,
+              ),
+            },
+          ];
+        }),
+      );
+
+      return {
+        ...current,
+        weeklyTargetsByChild: nextWeeklyTargetsByChild,
+        playlistLessonIdsByChild: buildSuggestedPlaylists(
+          current.selectedGoalIds,
+          current.bodyBoundariesUnlocked,
+          nextWeeklyTargetsByChild,
+        ),
+        completedJourneyIdsByChild: Object.fromEntries(
+          childProfiles.map((child) => [child.id, []]),
+        ),
+        lessonQuizAnswersByChild: Object.fromEntries(
+          childProfiles.map((child) => [child.id, {}]),
+        ),
+      };
+    });
+    setFamilyToolsMessage(
+      "Fresh week generated. Focus tracks rotated, playlists refreshed, and daily rhythm reset.",
+    );
+  }
+
+  function buildArchivedSnapshotsMap(weekLabel) {
+    return Object.fromEntries(
+      childSummaries.map((summary) => [
+        summary.child.id,
+        {
+          weekLabel,
+          readinessScore: summary.overallTargetProgress,
+          lessonTargetProgress: summary.lessonTargetProgress,
+          storyTargetProgress: summary.storyTargetProgress,
+          reflectionTargetProgress: summary.reflectionTargetProgress,
+          completedLessonsTotal: summary.completedLessons,
+          completedStoriesTotal: summary.completedStories,
+          reflectionsTotal: summary.journalCount,
+          badgesTotal: summary.badgesEarned,
+          focusTrackId: summary.weeklyTarget.focusTrackId,
+          strongestTrackId: summary.strongestTrack.id,
+          supportTrackId: summary.supportTrack.id,
+          note: summary.supportMessage,
+        },
+      ]),
+    );
+  }
+
+  function appendArchivedSnapshots(currentHistory, snapshotsByChild) {
+    return Object.fromEntries(
+      childProfiles.map((child) => [
+        child.id,
+        [
+          ...((currentHistory?.[child.id] ?? []).slice(-7)),
+          snapshotsByChild[child.id],
+        ],
+      ]),
+    );
+  }
+
+  function handleArchiveCurrentWeek() {
+    const weekLabel = formatArchiveWeekLabel();
+    const snapshotsByChild = buildArchivedSnapshotsMap(weekLabel);
+
     updateAppState((current) => ({
       ...current,
-      playlistLessonIdsByChild: buildSuggestedPlaylists(
-        current.selectedGoalIds,
-        current.bodyBoundariesUnlocked,
-        current.weeklyTargetsByChild,
+      weeklyHistoryByChild: appendArchivedSnapshots(
+        current.weeklyHistoryByChild,
+        snapshotsByChild,
       ),
     }));
+    setFamilyToolsMessage("Current week saved into local trend history.");
+  }
+
+  function handleArchiveAndStartFreshWeek() {
+    const weekLabel = formatArchiveWeekLabel();
+    const snapshotsByChild = buildArchivedSnapshotsMap(weekLabel);
+
+    updateAppState((current) => {
+      const nextVisibleTracks = getVisibleTracks(current.bodyBoundariesUnlocked);
+      const nextWeeklyTargetsByChild = Object.fromEntries(
+        childProfiles.map((child) => {
+          const currentTarget = current.weeklyTargetsByChild?.[child.id] ?? {
+            lessons: 3,
+            stories: 2,
+            reflections: 2,
+            focusTrackId: nextVisibleTracks[0]?.id,
+          };
+          const assignedVisibleTrackIds = (
+            current.assignedTrackIdsByChild?.[child.id] ?? []
+          ).filter((trackId) =>
+            nextVisibleTracks.some((track) => track.id === trackId),
+          );
+          const focusPool = assignedVisibleTrackIds.length
+            ? assignedVisibleTrackIds
+            : nextVisibleTracks.map((track) => track.id);
+
+          return [
+            child.id,
+            {
+              ...currentTarget,
+              focusTrackId: getNextFocusTrackId(
+                focusPool,
+                currentTarget.focusTrackId,
+              ),
+            },
+          ];
+        }),
+      );
+
+      return {
+        ...current,
+        weeklyHistoryByChild: appendArchivedSnapshots(
+          current.weeklyHistoryByChild,
+          snapshotsByChild,
+        ),
+        weeklyTargetsByChild: nextWeeklyTargetsByChild,
+        playlistLessonIdsByChild: buildSuggestedPlaylists(
+          current.selectedGoalIds,
+          current.bodyBoundariesUnlocked,
+          nextWeeklyTargetsByChild,
+        ),
+        completedJourneyIdsByChild: Object.fromEntries(
+          childProfiles.map((child) => [child.id, []]),
+        ),
+        lessonQuizAnswersByChild: Object.fromEntries(
+          childProfiles.map((child) => [child.id, {}]),
+        ),
+      };
+    });
+    setFamilyToolsMessage(
+      "Week archived and a fresh local week is ready with new focus tracks and reset rhythm.",
+    );
+  }
+
+  function handleResetWeeklyHistory() {
+    updateAppState((current) => ({
+      ...current,
+      weeklyHistoryByChild: createDefaultState().weeklyHistoryByChild,
+    }));
+    setFamilyToolsMessage("Saved weekly history reset to the KidWiz demo baseline.");
   }
 
   function handleResetDemo() {
@@ -795,6 +997,7 @@ function App() {
     setAuthMessage("Local KidWiz demo reset.");
     setChildJournalDraft("");
     setParentJournalDraft("");
+    setFamilyToolsMessage("");
   }
 
   function handleToggleBodyBoundaries() {
@@ -1117,6 +1320,8 @@ function App() {
                 <FamilyTab
                   appState={appState}
                   assignedTrackIds={assignedTrackIds}
+                  familyToolsMessage={familyToolsMessage}
+                  onArchiveAndStartFreshWeek={handleArchiveAndStartFreshWeek}
                   onChangeCelebrationStyle={(styleId) =>
                     updateAppState((current) => ({
                       ...current,
@@ -1135,8 +1340,10 @@ function App() {
                       weeklyRhythmId: rhythmId,
                     }))
                   }
+                  onArchiveCurrentWeek={handleArchiveCurrentWeek}
                   onGenerateFreshWeek={handleGenerateFreshWeek}
                   onResetDemo={handleResetDemo}
+                  onResetWeeklyHistory={handleResetWeeklyHistory}
                   onRestartOnboarding={() =>
                     updateAppState((current) => ({
                       ...current,
@@ -1154,6 +1361,7 @@ function App() {
                   selectedRhythm={selectedRhythm}
                   trackProgressRows={trackProgressRows}
                   visibleTracks={visibleTracks}
+                  weeklyHistoryByChild={appState.weeklyHistoryByChild}
                 />
               ) : null}
             </main>

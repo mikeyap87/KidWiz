@@ -11,6 +11,7 @@ import {
   starterParentJournalEntries,
   starterPlaylistLessonIdsByChild,
   starterStoryChoicesByChild,
+  starterWeeklyHistoryByChild,
   starterWeeklyTargetsByChild,
   storyEpisodes,
   weeklyRhythms,
@@ -42,6 +43,7 @@ export function createDefaultState() {
     parentJournalEntries: starterParentJournalEntries,
     assignedTrackIdsByChild: starterAssignedTrackIdsByChild,
     weeklyTargetsByChild: starterWeeklyTargetsByChild,
+    weeklyHistoryByChild: starterWeeklyHistoryByChild,
     lessonQuizAnswersByChild: Object.fromEntries(
       childProfiles.map((child) => [child.id, {}]),
     ),
@@ -94,6 +96,10 @@ export function loadSavedState() {
       weeklyTargetsByChild: {
         ...defaults.weeklyTargetsByChild,
         ...(parsed.weeklyTargetsByChild ?? {}),
+      },
+      weeklyHistoryByChild: {
+        ...defaults.weeklyHistoryByChild,
+        ...(parsed.weeklyHistoryByChild ?? {}),
       },
       lessonQuizAnswersByChild: {
         ...defaults.lessonQuizAnswersByChild,
