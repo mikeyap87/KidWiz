@@ -1329,6 +1329,7 @@ function App() {
                     appState={appState}
                     assignedTrackIds={assignedTrackIds}
                     familyToolsMessage={familyToolsMessage}
+                    onAdjustWeeklyTarget={handleAdjustWeeklyTarget}
                     onArchiveAndStartFreshWeek={handleArchiveAndStartFreshWeek}
                     onChangeCelebrationStyle={(styleId) =>
                       updateAppState((current) => ({
@@ -1336,6 +1337,7 @@ function App() {
                         celebrationStyleId: styleId,
                       }))
                     }
+                    onChangeFocusTrack={handleChangeFocusTrack}
                     onChangeCoachStyle={(styleId) =>
                       updateAppState((current) => ({
                         ...current,

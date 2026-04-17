@@ -131,6 +131,17 @@ export function DashboardTab({
     }
   }
 
+  function handlePlanningNudge(summary, action) {
+    if (action.type === "focus" && action.trackId) {
+      onChangeFocusTrack(summary.child.id, action.trackId);
+      return;
+    }
+
+    if (action.type === "target" && action.key && action.delta) {
+      onAdjustWeeklyTarget(summary.child.id, action.key, action.delta);
+    }
+  }
+
   return (
     <section className="workspace-band">
       <div className="section-heading section-heading-tight">
@@ -531,6 +542,26 @@ export function DashboardTab({
                 </div>
               ))}
             </div>
+
+            {summary.planningNudge ? (
+              <div className="dashboard-planning-card">
+                <p>Planning nudge</p>
+                <strong>{summary.planningNudge.title}</strong>
+                <span>{summary.planningNudge.copy}</span>
+                <div className="dashboard-planning-actions">
+                  {summary.planningNudge.actions.map((action) => (
+                    <button
+                      key={action.label}
+                      className="inline-action"
+                      onClick={() => handlePlanningNudge(summary, action)}
+                      type="button"
+                    >
+                      {action.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ) : null}
 
             <div className="dashboard-child-footer">
               <Sparkles size={16} />

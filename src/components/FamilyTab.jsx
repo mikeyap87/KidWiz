@@ -17,7 +17,7 @@ import {
   coachStyles,
 } from "../data/kidwizData";
 import { trustSignals } from "../data/kidwizMarketingData";
-import { getTrackProgress } from "../lib/progression";
+import { buildChildSummary, getTrackProgress } from "../lib/progression";
 
 export function FamilyTab({
   appState,
@@ -28,6 +28,8 @@ export function FamilyTab({
   onChangeCelebrationStyle,
   onChangeCoachStyle,
   onChangeRhythm,
+  onAdjustWeeklyTarget,
+  onChangeFocusTrack,
   onGenerateFreshWeek,
   onResetDemo,
   onResetWeeklyHistory,
@@ -43,6 +45,32 @@ export function FamilyTab({
   visibleTracks,
   weeklyHistoryByChild,
 }) {
+  const selectedChildSummary = buildChildSummary({
+    bodyBoundariesUnlocked: appState.bodyBoundariesUnlocked,
+    selectedGoalIds: appState.selectedGoalIds,
+    child: selectedChild,
+    visibleTracks,
+    weeklyHistoryByChild: appState.weeklyHistoryByChild,
+    assignedTrackIdsByChild: appState.assignedTrackIdsByChild,
+    completedJourneyIdsByChild: appState.completedJourneyIdsByChild,
+    completedLessonIdsByChild: appState.completedLessonIdsByChild,
+    childJournalEntriesByChild: appState.childJournalEntriesByChild,
+    playlistLessonIdsByChild: appState.playlistLessonIdsByChild,
+    storyChoicesByChild: appState.storyChoicesByChild,
+    weeklyTargetsByChild: appState.weeklyTargetsByChild,
+  });
+
+  function handlePlanningAction(action) {
+    if (action.type === "focus" && action.trackId) {
+      onChangeFocusTrack(selectedChild.id, action.trackId);
+      return;
+    }
+
+    if (action.type === "target" && action.key && action.delta) {
+      onAdjustWeeklyTarget(selectedChild.id, action.key, action.delta);
+    }
+  }
+
   return (
     <section className="workspace-band">
       <div className="section-heading section-heading-tight">
@@ -195,6 +223,38 @@ export function FamilyTab({
               );
             })}
           </div>
+        </article>
+
+        <article className="surface-panel">
+          <div className="panel-head">
+            <Bot size={18} />
+            <h2>{selectedChild.name}&apos;s planning nudges</h2>
+          </div>
+
+          {selectedChildSummary.planningNudge ? (
+            <div className="planning-nudge-card">
+              <p>{selectedChildSummary.planningNudge.title}</p>
+              <strong>{selectedChildSummary.signal?.title ?? "Recent child signal"}</strong>
+              <span>{selectedChildSummary.planningNudge.copy}</span>
+              <div className="tool-list planning-nudge-actions">
+                {selectedChildSummary.planningNudge.actions.map((action) => (
+                  <button
+                    key={action.label}
+                    className="inline-action"
+                    onClick={() => handlePlanningAction(action)}
+                    type="button"
+                  >
+                    {action.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <p className="panel-copy">
+              No planning nudge is active right now. Keep watching recent stories
+              and reflections to see when KidWiz suggests a target or focus-track shift.
+            </p>
+          )}
         </article>
 
         <article className="surface-panel">

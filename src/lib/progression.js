@@ -773,6 +773,83 @@ export function getWeeklyTargetForChild({
   };
 }
 
+export function buildPlanningNudge(summary, visibleTracks) {
+  if (!summary?.signal) {
+    return null;
+  }
+
+  const currentFocusTrack = visibleTracks.find(
+    (track) => track.id === summary.weeklyTarget.focusTrackId,
+  );
+  const currentFocusMatchesSignal = currentFocusTrack?.goalIds?.some((goalId) =>
+    summary.signal.goalIds?.includes(goalId),
+  );
+  const suggestedFocusTrack = visibleTracks.find(
+    (track) =>
+      track.id !== summary.weeklyTarget.focusTrackId &&
+      track.goalIds?.some((goalId) => summary.signal.goalIds?.includes(goalId)),
+  );
+
+  const actions = [];
+
+  if (!currentFocusMatchesSignal && suggestedFocusTrack) {
+    actions.push({
+      type: "focus",
+      label: `Shift focus to ${suggestedFocusTrack.title}`,
+      trackId: suggestedFocusTrack.id,
+    });
+  }
+
+  if (
+    summary.signal.source === "journal" &&
+    summary.signal.mood === "wobbly" &&
+    summary.weeklyTarget.reflections < 3
+  ) {
+    actions.push({
+      type: "target",
+      key: "reflections",
+      delta: 1,
+      label: "Add 1 reflection",
+    });
+  }
+
+  if (
+    summary.signal.source === "story" &&
+    summary.weeklyTarget.reflections < 3 &&
+    summary.weeklyReflectionCount < summary.weeklyTarget.reflections
+  ) {
+    actions.push({
+      type: "target",
+      key: "reflections",
+      delta: 1,
+      label: "Raise reflection target",
+    });
+  }
+
+  if (
+    summary.signal.source === "journal" &&
+    summary.signal.mood === "curious" &&
+    summary.weeklyTarget.stories < 3
+  ) {
+    actions.push({
+      type: "target",
+      key: "stories",
+      delta: 1,
+      label: "Add 1 story practice",
+    });
+  }
+
+  if (!actions.length) {
+    return null;
+  }
+
+  return {
+    title: `${summary.child.name}'s recent signal is worth planning around`,
+    copy: summary.signal.parentCopy,
+    actions: actions.slice(0, 2),
+  };
+}
+
 export function buildChildSummary({
   bodyBoundariesUnlocked,
   selectedGoalIds,
@@ -859,7 +936,7 @@ export function buildChildSummary({
     ),
   );
 
-  return {
+  const summary = {
     child,
     strongestTrack: strongest,
     supportTrack: support,
@@ -885,6 +962,11 @@ export function buildChildSummary({
         ? `${child.supportSpot} ${signal.reason} points toward ${recommendedLesson.lesson.title}.`
         : `${child.supportSpot} Next best move: ${recommendedLesson.lesson.title}.`
       : `${child.supportSpot} Current visible tracks look complete in the demo state.`,
+  };
+
+  return {
+    ...summary,
+    planningNudge: buildPlanningNudge(summary, visibleTracks),
   };
 }
 

@@ -997,6 +997,50 @@
   background: rgba(63, 208, 201, 0.08);
 }
 
+.dashboard-planning-card,
+.planning-nudge-card {
+  display: grid;
+  gap: 8px;
+  margin-top: 18px;
+  padding: 16px;
+  border: 1px solid rgba(63, 208, 201, 0.16);
+  background: rgba(63, 208, 201, 0.08);
+}
+
+.dashboard-planning-card p,
+.dashboard-planning-card strong,
+.dashboard-planning-card span,
+.planning-nudge-card p,
+.planning-nudge-card strong,
+.planning-nudge-card span {
+  margin: 0;
+}
+
+.dashboard-planning-card p,
+.planning-nudge-card p {
+  color: rgba(246, 248, 251, 0.6);
+  font-size: 0.82rem;
+}
+
+.dashboard-planning-card strong,
+.planning-nudge-card strong {
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.dashboard-planning-card span,
+.planning-nudge-card span {
+  color: rgba(246, 248, 251, 0.76);
+  line-height: 1.55;
+}
+
+.dashboard-planning-actions,
+.planning-nudge-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
 .mobile-resume-meta {
   gap: 8px;
 }
