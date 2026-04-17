@@ -73,6 +73,7 @@ If Supabase is not configured yet, the product still opens cleanly in demo mode 
 - Spark Coach demo layer with different coaching modes
 - child journal and parent notes
 - guided empty and success states in courses, stories, and journals so child-facing flows feel more complete
+- signal-driven lesson recommendations that react to recent story choices and child reflection mood
 - parent controls for goals, rhythm, celebration style, track assignment, and sensitive-topic unlocks
 - local save-week, archive-week, fresh-week, and reset testing tools in the Family Hub
 

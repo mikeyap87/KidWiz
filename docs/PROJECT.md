@@ -196,6 +196,7 @@ The Family Hub now includes local controls to:
 - Mobile resume progress and archive snapshot generation now share the same child-summary model, reducing repeated logic and making parent-facing progress cues more consistent.
 - The mobile home layer now includes a clearer “Today’s best move” explanation plus a parent note so the first screen communicates both learner momentum and the next family adjustment.
 - Child-facing course, story, and journal screens now include stronger empty or success guidance so they feel like finished learning loops instead of neutral data views.
+- Recent story choices and child reflection mood now feed forward into lesson recommendations and parent-facing planning copy, so the product behaves more like one connected learning loop.
 - Sensitive topics stay behind a parent unlock.
 - AI is positioned as bounded and supportive, not as an unrestricted social chatbot.
 - The app supports demo mode by default so product design can move before backend work is finished.

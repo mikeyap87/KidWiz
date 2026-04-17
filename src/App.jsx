@@ -1230,6 +1230,7 @@ function App() {
                     onSelectTrack={handleSelectTrack}
                     onToggleJourney={handleToggleJourney}
                     recommendedLesson={recommendedLesson}
+                    selectedSignal={selectedChildWorkspace.signal}
                     selectedChild={selectedChild}
                     selectedGoals={selectedGoals}
                     selectedWeeklyTarget={selectedWeeklyTarget}

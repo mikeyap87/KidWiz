@@ -24,6 +24,10 @@ export function findLessonById(lessonId) {
   return track?.lessons.find((lesson) => lesson.id === lessonId) ?? null;
 }
 
+export function findStoryById(storyId) {
+  return storyEpisodes.find((story) => story.id === storyId) ?? null;
+}
+
 export function findQuestWorld(trackId) {
   return questWorldCatalog.find((world) => world.trackId === trackId) ?? null;
 }
@@ -237,6 +241,57 @@ export function getRecommendedStory({ selectedGoalIds, storyChoices }) {
   );
 }
 
+function getJournalSignalGoalIds(entry) {
+  const moodGoalMap = {
+    proud: ["confidence", "money", "reading"],
+    curious: ["reading", "digital", "money"],
+    steady: ["focus", "friendships"],
+    grateful: ["friendships", "confidence"],
+    wobbly: ["confidence", "friendships", "focus"],
+  };
+
+  return moodGoalMap[entry?.mood] ?? [];
+}
+
+export function deriveChildSignal({ storyChoices, childJournalEntries }) {
+  const latestJournalEntry = childJournalEntries?.[0] ?? null;
+  const latestStoryId = Object.keys(storyChoices ?? {}).at(-1) ?? null;
+  const latestStory = latestStoryId ? findStoryById(latestStoryId) : null;
+  const signalGoalIds = Array.from(
+    new Set([
+      ...getJournalSignalGoalIds(latestJournalEntry),
+      ...(latestStory?.goalIds ?? []),
+    ]),
+  );
+
+  if (latestJournalEntry) {
+    return {
+      goalIds: signalGoalIds,
+      source: "journal",
+      reason: "Reflection follow-through",
+      title: `${latestJournalEntry.mood} reflection`,
+      copy: latestJournalEntry.body,
+      parentCopy:
+        latestStory && latestStory.focus
+          ? `Recent reflection and story practice both point toward ${latestStory.focus.toLowerCase()} support.`
+          : "Recent reflection suggests the next lesson should stay close to the child's current emotional signal.",
+    };
+  }
+
+  if (latestStory) {
+    return {
+      goalIds: signalGoalIds,
+      source: "story",
+      reason: "Story follow-through",
+      title: latestStory.title,
+      copy: latestStory.reflectionPrompt,
+      parentCopy: `Recent story practice points toward ${latestStory.focus.toLowerCase()} and is ready for lesson follow-through.`,
+    };
+  }
+
+  return null;
+}
+
 function getQuestPriority(row, focusTrackId) {
   if (row.id === focusTrackId) {
     return 0;
@@ -318,6 +373,7 @@ export function buildWeeklyMissionBoard({
   recommendedLesson,
   nextBadge,
   nextRitual,
+  signal,
 }) {
   const focusTrack = visibleTracks.find(
     (track) => track.id === weeklyTarget?.focusTrackId,
@@ -375,7 +431,9 @@ export function buildWeeklyMissionBoard({
       id: "reflection-spark",
       eyebrow: `${child.companionName} reflection`,
       title: "Save one clear reflection",
-      copy: `${child.companionName} helps ${child.name} turn a proud moment, wobble, or question into memory.`,
+      copy: signal?.source === "story"
+        ? `Use the journal to turn ${signal.title.toLowerCase()} into language the family can remember.`
+        : `${child.companionName} helps ${child.name} turn a proud moment, wobble, or question into memory.`,
       progress: reflectionProgress,
       target: weeklyTarget.reflections,
       ctaLabel: "Open journal",
@@ -621,6 +679,14 @@ export function buildParentWeeklyReport({
       title: `${strongestSummary.child.name} is carrying the strongest rhythm`,
       copy: `${strongestSummary.child.name} is ${strongestSummary.overallTargetProgress}% through this week's targets and looks strongest in ${strongestSummary.strongestTrack.title}.`,
     },
+    ...(supportSummary.signal
+      ? [
+          {
+            title: `${supportSummary.child.name}'s recent signal is shaping the next move`,
+            copy: supportSummary.signal.parentCopy,
+          },
+        ]
+      : []),
     {
       title: "The family learning system is defined",
       copy: `${selectedRhythm.title} plus ${selectedCoachStyle.title.toLowerCase()} coaching and ${selectedCelebrationStyle.title.toLowerCase()} reinforcement is giving the week a clear shape.`,
@@ -639,7 +705,9 @@ export function buildParentWeeklyReport({
       ? `${summary.recommendedLesson.track.title}: ${summary.recommendedLesson.lesson.title}`
       : `${summary.child.name} has cleared the visible lesson queue`,
     copy: summary.recommendedLesson
-      ? `${summary.recommendedLesson.reason}. ${summary.recommendedLesson.lesson.parentCue}`
+      ? summary.signal
+        ? `${summary.signal.parentCopy} ${summary.recommendedLesson.lesson.parentCue}`
+        : `${summary.recommendedLesson.reason}. ${summary.recommendedLesson.lesson.parentCue}`
       : summary.supportMessage,
     ctaLabel: summary.recommendedLesson ? "Open lesson" : "View child",
     actionType: summary.recommendedLesson ? "lesson" : "child",
@@ -737,12 +805,17 @@ export function buildChildSummary({
   }));
   const strongest = [...rows].sort((left, right) => right.progress - left.progress)[0];
   const support = [...rows].sort((left, right) => left.progress - right.progress)[0];
+  const signal = deriveChildSignal({
+    storyChoices,
+    childJournalEntries: journalEntries,
+  });
   const recommendedLesson = getRecommendedLesson({
     visibleTracks,
     assignedTrackIds: assignedIds,
     playlistLessonIds,
     completedLessonIds: completedLessons,
     weeklyTarget,
+    signal,
   });
   const recommendedStory = getRecommendedStory({
     selectedGoalIds,
@@ -792,6 +865,7 @@ export function buildChildSummary({
     supportTrack: support,
     recommendedLesson,
     recommendedStory,
+    signal,
     completedLessons: completedLessons.length,
     completedStories: Object.keys(storyChoices).length,
     journalCount: journalEntries.length,
@@ -807,7 +881,9 @@ export function buildChildSummary({
       (lessonTargetProgress + storyTargetProgress + reflectionTargetProgress) / 3,
     ),
     supportMessage: recommendedLesson
-      ? `${child.supportSpot} Next best move: ${recommendedLesson.lesson.title}.`
+      ? signal
+        ? `${child.supportSpot} ${signal.reason} points toward ${recommendedLesson.lesson.title}.`
+        : `${child.supportSpot} Next best move: ${recommendedLesson.lesson.title}.`
       : `${child.supportSpot} Current visible tracks look complete in the demo state.`,
   };
 }
@@ -885,6 +961,8 @@ export function buildSelectedChildWorkspace({
     familyChatDone,
     focusTrackTitle,
     childReflectionStarter,
+    signalTitle: summary.signal?.title ?? null,
+    signalParentCopy: summary.signal?.parentCopy ?? null,
     pulseRows: [
       {
         id: "lessons",
@@ -962,10 +1040,32 @@ export function getRecommendedLesson({
   playlistLessonIds,
   completedLessonIds,
   weeklyTarget,
+  signal,
 }) {
   const focusTrack = visibleTracks.find(
     (track) => track.id === weeklyTarget?.focusTrackId,
   );
+
+  if (
+    signal?.goalIds?.length &&
+    (!focusTrack ||
+      !focusTrack.goalIds?.some((goalId) => signal.goalIds.includes(goalId)))
+  ) {
+    const signalTracks = visibleTracks.filter((track) =>
+      track.goalIds?.some((goalId) => signal.goalIds.includes(goalId)),
+    );
+    const signalResult = pickAvailableLessonFromTracks(
+      signalTracks,
+      completedLessonIds,
+    );
+
+    if (signalResult) {
+      return {
+        ...signalResult,
+        reason: signal.reason,
+      };
+    }
+  }
 
   if (focusTrack) {
     const lesson = getNextTrackLesson(focusTrack, completedLessonIds);

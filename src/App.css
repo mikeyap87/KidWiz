@@ -952,7 +952,8 @@
 }
 
 .mobile-best-move,
-.mobile-parent-note {
+.mobile-parent-note,
+.mobile-signal-card {
   display: grid;
   gap: 6px;
   padding: 14px;
@@ -963,26 +964,37 @@
 .mobile-best-move p,
 .mobile-best-move strong,
 .mobile-best-move span,
+.mobile-signal-card p,
+.mobile-signal-card strong,
+.mobile-signal-card span,
 .mobile-parent-note strong,
 .mobile-parent-note span {
   margin: 0;
 }
 
 .mobile-best-move p,
+.mobile-signal-card p,
 .mobile-parent-note strong {
   color: rgba(246, 248, 251, 0.64);
   font-size: 0.8rem;
 }
 
-.mobile-best-move strong {
+.mobile-best-move strong,
+.mobile-signal-card strong {
   font-size: 1rem;
   line-height: 1.3;
 }
 
 .mobile-best-move span,
+.mobile-signal-card span,
 .mobile-parent-note span {
   color: rgba(246, 248, 251, 0.76);
   line-height: 1.52;
+}
+
+.mobile-signal-card {
+  border-color: rgba(63, 208, 201, 0.18);
+  background: rgba(63, 208, 201, 0.08);
 }
 
 .mobile-resume-meta {

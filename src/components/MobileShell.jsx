@@ -88,6 +88,14 @@ export function MobileShell({
             {selectedCoachStyle.title.toLowerCase()} this week.
           </p>
 
+          {selectedChildWorkspace.signalTitle ? (
+            <div className="mobile-signal-card">
+              <p>Why this moved up</p>
+              <strong>{selectedChildWorkspace.signalTitle}</strong>
+              <span>{selectedChildWorkspace.signalParentCopy}</span>
+            </div>
+          ) : null}
+
           <div className="summary-chip-row mobile-resume-meta">
             <span className="summary-chip">{selectedChildWorkspace.focusTrackTitle}</span>
             <span className="summary-chip">
@@ -215,9 +223,9 @@ export function MobileShell({
           <div className="mobile-parent-note">
             <strong>Parent note</strong>
             <span>
-              {selectedChild.name} is pacing at {selectedChildOverallTargetProgress}% of
-              this week&apos;s plan. Open Family Hub if you want to rebalance the
-              targets or rotate the focus track.
+              {selectedChildWorkspace.signalParentCopy
+                ? selectedChildWorkspace.signalParentCopy
+                : `${selectedChild.name} is pacing at ${selectedChildOverallTargetProgress}% of this week's plan. Open Family Hub if you want to rebalance the targets or rotate the focus track.`}
             </span>
           </div>
 

@@ -57,6 +57,7 @@ export function OverviewTab({
   onSelectTrack,
   onToggleJourney,
   recommendedLesson,
+  selectedSignal,
   selectedWeeklyTarget,
   selectedChild,
   selectedGoals,
@@ -139,6 +140,7 @@ export function OverviewTab({
         recommendedLesson,
         nextBadge: earnedBadgesCount.nextBadge,
         nextRitual,
+        signal: selectedSignal,
       }),
     [
       appState.selectedGoalIds,
@@ -149,6 +151,7 @@ export function OverviewTab({
       earnedBadgesCount,
       nextRitual,
       recommendedLesson,
+      selectedSignal,
       selectedChild,
       selectedWeeklyTarget,
       visibleTracks,
@@ -196,6 +199,12 @@ export function OverviewTab({
                 {goal.title}
               </span>
             ))}
+            {selectedSignal?.title ? (
+              <span className="summary-chip quest-goal-chip">
+                <Sparkles size={14} />
+                {selectedSignal.title}
+              </span>
+            ) : null}
           </div>
 
           <div className="quest-stat-grid">
