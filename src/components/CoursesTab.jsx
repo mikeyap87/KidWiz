@@ -258,8 +258,8 @@ export function CoursesTab({
 
           <div className="detail-pills">
             <span>{activeLessonExperience.trackPlaybookLabel}</span>
+            <span>{activeLessonExperience.ageLens.label}</span>
             <span>{activeLesson.activity}</span>
-            <span>{activeLessonExperience.familyMissionTitle}</span>
           </div>
 
           <div className="mode-toggle-row">
@@ -279,6 +279,7 @@ export function CoursesTab({
 
           <p className="coach-callout">{activeLesson.coachModes[coachResponseMode]}</p>
           <p className="lesson-subcopy">{activeLessonExperience.headerCopy}</p>
+          <p className="lesson-age-note">{activeLessonExperience.ageLens.summary}</p>
 
           <div className="practice-panel">
             <div className="panel-head">

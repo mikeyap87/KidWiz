@@ -56,7 +56,7 @@ KidWiz aims to close that gap by giving families one place to build:
 - expanded branching story library across confidence, money, and family repair scenarios
 - trend tracking that compares the current week against archived local snapshots for each child and the family overall
 - daily rhythm checklist with visible completion inside the Quest Hub
-- guided lesson flow for each course track with track-specific playbooks, visual practice panels, coach cues, activity milestones, quiz checkpoints, and a parent follow-through loop
+- guided lesson flow for each course track with track-specific playbooks, visual practice panels, age-band aware prompts, coach cues, activity milestones, quiz checkpoints, and a parent follow-through loop
 - sequential lesson progression within tracks
 - track statuses such as ready, in progress, checkpoint ready, and complete
 - per-child weekly playlists with add/remove controls
@@ -169,6 +169,7 @@ The Family Hub now includes local controls to:
 - The lesson experience now includes guided micro-steps and a parent follow-through loop instead of stopping at a single quiz interaction.
 - The course experience now uses track-specific lesson playbooks so confidence, money, family, digital safety, and academic tracks no longer share the same teaching frame.
 - The course experience now includes visual practice panels with saved lesson choices so each track feels interactive in its own way.
+- The course experience now changes its lesson copy by child age band so younger and older learners do not get the exact same framing.
 - Sensitive topics stay behind a parent unlock.
 - AI is positioned as bounded and supportive, not as an unrestricted social chatbot.
 - The app supports demo mode by default so product design can move before backend work is finished.

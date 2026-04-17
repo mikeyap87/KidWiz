@@ -1941,11 +1941,16 @@
 .panel-copy,
 .lesson-copy,
 .lesson-subcopy,
+.lesson-age-note,
 .story-body,
 .coach-callout {
   margin: 16px 0 0;
   color: rgba(246, 248, 251, 0.76);
   line-height: 1.62;
+}
+
+.lesson-age-note {
+  color: #83fff0;
 }
 
 .track-detail-grid {

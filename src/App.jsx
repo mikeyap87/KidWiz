@@ -313,6 +313,7 @@ function App() {
   const nextRitual =
     familyRituals[childCompletedLessonIds.length % familyRituals.length];
   const activeLessonExperience = buildLessonExperience({
+    childAge: selectedChild.age,
     childName: selectedChild.name,
     coachMode: coachResponseMode,
     celebrationStyle: selectedCelebrationStyle,

@@ -18,6 +18,24 @@ function buildPracticePanel(variant, title, prompt, helper, options, unselectedN
   };
 }
 
+function getAgeLens(childAge) {
+  if (childAge <= 8) {
+    return {
+      id: "younger",
+      label: "Age 6-8 lens",
+      summary:
+        "Shorter steps, concrete examples, and a nearby grown-up to anchor the skill.",
+    };
+  }
+
+  return {
+    id: "older",
+    label: "Age 9-12 lens",
+    summary:
+      "More ownership, clearer tradeoffs, and stronger self-explanation built into the practice.",
+  };
+}
+
 function buildCommonStarters({
   childName,
   track,
@@ -36,6 +54,60 @@ function buildCommonStarters({
       `Celebrate with ${celebrationStyle.title.toLowerCase()}: ${celebrationLine}`,
       `Loop it into ${nextRitual.title}: ${nextRitual.copy}`,
     ].join(" "),
+  };
+}
+
+const youngerReflectionPrompts = {
+  "wonder-lab": "The clue I noticed first was...",
+  "story-studio": "The line I liked best was...",
+  "brave-heart": "One brave thing I could try is...",
+  "money-moves": "The money choice I would try is...",
+  "home-team": "The sentence I could say at home is...",
+  "digital-detectives": "The clue that would make me pause is...",
+  "focus-forge": "The tiny first step I could start with is...",
+  "body-boundaries": "The boundary line I can say clearly is...",
+};
+
+const olderReflectionPrompts = {
+  "wonder-lab": "What evidence would make me change my mind next time?",
+  "story-studio": "What exact word or detail made the writing stronger?",
+  "brave-heart": "Which brave move would build the most confidence through action?",
+  "money-moves": "Which tradeoff best matches what matters most right now?",
+  "home-team": "Which line would improve trust fastest in a real conversation?",
+  "digital-detectives": "Which clue should change my next move online, and why?",
+  "focus-forge": "Which tiny-start move would lower friction the most, and why?",
+  "body-boundaries": "Which boundary line feels strongest and what support move follows it?",
+};
+
+function getReflectionPromptForAge(trackId, basePrompt, ageLensId) {
+  if (ageLensId === "younger") {
+    return youngerReflectionPrompts[trackId] ?? basePrompt;
+  }
+
+  return olderReflectionPrompts[trackId] ?? basePrompt;
+}
+
+function adjustPracticePanelForAge(practicePanel, ageLensId) {
+  const isYounger = ageLensId === "younger";
+
+  return {
+    ...practicePanel,
+    prompt: `${practicePanel.prompt} ${
+      isYounger
+        ? "Pick the move that feels easiest to try first."
+        : "Pick the move that best matches the strategy you want to test."
+    }`,
+    helper: `${practicePanel.helper} ${
+      isYounger
+        ? "Keep it concrete with one real example from today."
+        : "Push for the reason behind the choice, not only the pick."
+    }`,
+    options: practicePanel.options.map((option) => ({
+      ...option,
+      copy: isYounger
+        ? option.copy
+        : `${option.copy} Then explain why this move fits best.`,
+    })),
   };
 }
 
@@ -794,22 +866,58 @@ export function buildLessonExperience(context) {
   const baseExperience = builder(context);
   const practiceBuilder =
     practicePanelBuilders[context.track.id] ?? buildWonderLabPracticePanel;
-  const practicePanel = practiceBuilder(context);
+  const ageLens = getAgeLens(context.childAge);
+  const practicePanel = adjustPracticePanelForAge(
+    practiceBuilder(context),
+    ageLens.id,
+  );
   const selectedPracticeChoice =
     practicePanel.options.find((option) => option.id === context.practiceChoiceId) ?? null;
   const practiceChoiceNote = selectedPracticeChoice
     ? `${selectedPracticeChoice.title}. ${selectedPracticeChoice.outcome}`
     : practicePanel.unselectedNote;
+  const reflectionPrompt = getReflectionPromptForAge(
+    context.track.id,
+    baseExperience.reflectionPrompt,
+    ageLens.id,
+  );
+  const proofCopy = `${baseExperience.proofCopy} ${
+    ageLens.id === "younger"
+      ? "Keep the example close to today and let a grown-up stay nearby while the child practices it."
+      : "Ask the child to explain why the move fits the situation, not only whether it worked."
+  }`;
+  const parentPrompts = baseExperience.parentPrompts.map((prompt, index) => {
+    if (index !== 1) {
+      return prompt;
+    }
+
+    return {
+      ...prompt,
+      text: `${prompt.text} ${
+        ageLens.id === "younger"
+          ? "Keep it concrete with one example from this week."
+          : "Push for the reasoning behind the choice."
+      }`,
+    };
+  });
 
   return {
     ...baseExperience,
+    ageLens,
+    proofCopy,
+    reflectionPrompt,
+    parentPrompts,
     practicePanel,
     practiceChoiceNote,
     selectedPracticeChoice,
     childReflectionStarter: selectedPracticeChoice
-      ? `${baseExperience.childReflectionStarter} Practice move: ${practiceChoiceNote}`
-      : baseExperience.childReflectionStarter,
-    parentNoteStarter: [baseExperience.parentNoteStarter, `Practice move: ${practiceChoiceNote}`]
+      ? `${context.childName} reflection: ${reflectionPrompt} Practice move: ${practiceChoiceNote}`
+      : `${context.childName} reflection: ${reflectionPrompt}`,
+    parentNoteStarter: [
+      baseExperience.parentNoteStarter,
+      `Age lens: ${ageLens.label}. ${ageLens.summary}`,
+      `Practice move: ${practiceChoiceNote}`,
+    ]
       .filter(Boolean)
       .join(" "),
   };
