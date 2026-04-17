@@ -7,6 +7,17 @@ function buildLessonStage(id, label, title, copy) {
   };
 }
 
+function buildPracticePanel(variant, title, prompt, helper, options, unselectedNote) {
+  return {
+    variant,
+    title,
+    prompt,
+    helper,
+    options,
+    unselectedNote,
+  };
+}
+
 function buildCommonStarters({
   childName,
   track,
@@ -26,6 +37,270 @@ function buildCommonStarters({
       `Loop it into ${nextRitual.title}: ${nextRitual.copy}`,
     ].join(" "),
   };
+}
+
+function buildWonderLabPracticePanel({ lesson }) {
+  return buildPracticePanel(
+    "cards",
+    "Experiment board",
+    `Which test path fits ${lesson.title.toLowerCase()} best?`,
+    "Pick the move that feels strongest so the lesson has one clear experiment path.",
+    [
+      {
+        id: "clue-first",
+        eyebrow: "Clue first",
+        title: "Circle the strongest clue",
+        copy: "Start by naming the clue that matters before making the guess.",
+        outcome: "This choice builds better evidence language before the answer lands.",
+      },
+      {
+        id: "predict-then-test",
+        eyebrow: "Predict",
+        title: "Say the guess out loud",
+        copy: "Make the first prediction visible, then test whether it holds up.",
+        outcome: "This choice turns the lesson into a real experiment instead of quiet guessing.",
+      },
+      {
+        id: "revise-with-proof",
+        eyebrow: "Revise",
+        title: "Change the idea with proof",
+        copy: "Use the result to improve the first idea without treating the first guess like failure.",
+        outcome: "This choice trains revision and evidence over perfection.",
+      },
+    ],
+    "No experiment path saved yet.",
+  );
+}
+
+function buildStoryStudioPracticePanel({ lesson }) {
+  return buildPracticePanel(
+    "script",
+    "Line workshop",
+    `Which writing move sharpens ${lesson.title.toLowerCase()} most?`,
+    "Choose the line move that feels strongest, then carry that language into the journal.",
+    [
+      {
+        id: "strong-verb",
+        eyebrow: "Verb swap",
+        title: "\"Swap the flat verb for one that moves.\"",
+        copy: "Push the sentence by changing the weakest verb first.",
+        outcome: "This choice helps the writing feel more alive without adding clutter.",
+      },
+      {
+        id: "specific-detail",
+        eyebrow: "Detail",
+        title: "\"Add one detail the reader can picture.\"",
+        copy: "Pick a concrete image instead of another general sentence.",
+        outcome: "This choice improves clarity and voice at the same time.",
+      },
+      {
+        id: "emotion-shift",
+        eyebrow: "Feeling shift",
+        title: "\"Show the feeling change inside the action.\"",
+        copy: "Let the sentence show what changed, not just what happened.",
+        outcome: "This choice makes the scene land with more emotional range.",
+      },
+    ],
+    "No writing move saved yet.",
+  );
+}
+
+function buildBraveHeartPracticePanel() {
+  return buildPracticePanel(
+    "ladder",
+    "Brave move ladder",
+    "Which brave move feels possible today?",
+    "Save one rung on the ladder so confidence feels actionable instead of abstract.",
+    [
+      {
+        id: "tiny-line",
+        step: "1",
+        title: "Say the brave line once",
+        copy: "Use the sentence in a low-stakes moment first.",
+        outcome: "This choice builds belief through repetition before the bigger moment arrives.",
+      },
+      {
+        id: "one-small-step",
+        step: "2",
+        title: "Take the smallest visible step",
+        copy: "Raise your hand, walk over, ask one question, or start the first rep.",
+        outcome: "This choice turns bravery into one doable action, not a giant leap.",
+      },
+      {
+        id: "bounce-back-line",
+        step: "3",
+        title: "Use the recovery line after a wobble",
+        copy: "Plan the sentence you will use if the first try feels rough.",
+        outcome: "This choice teaches that confidence includes repair, not just bold starts.",
+      },
+    ],
+    "No brave move saved yet.",
+  );
+}
+
+function buildMoneyMovesPracticePanel() {
+  return buildPracticePanel(
+    "tradeoff",
+    "Tradeoff board",
+    "Which money choice teaches the clearest tradeoff?",
+    "Choose the option that best shows how one yes usually means one no somewhere else.",
+    [
+      {
+        id: "save-first",
+        eyebrow: "Save",
+        title: "Keep the fun extra for later",
+        copy: "Protect the longer goal even if the shorter reward looks tempting.",
+        outcome: "This choice makes delayed reward visible and intentional.",
+      },
+      {
+        id: "value-now",
+        eyebrow: "Value",
+        title: "Spend on the stronger value",
+        copy: "Choose the option that gives the best use, not only the lowest number.",
+        outcome: "This choice teaches value, not just cheapness.",
+      },
+      {
+        id: "split-choice",
+        eyebrow: "Balance",
+        title: "Split the choice into save and spend",
+        copy: "Keep part for later and spend part with intention.",
+        outcome: "This choice shows that tradeoffs can be balanced instead of all-or-nothing.",
+      },
+    ],
+    "No money choice saved yet.",
+  );
+}
+
+function buildHomeTeamPracticePanel() {
+  return buildPracticePanel(
+    "dialogue",
+    "Conversation rehearsal",
+    "Which home-team line would you try first?",
+    "Save the sentence that feels honest enough to use with a real person at home.",
+    [
+      {
+        id: "repair-line",
+        speaker: "Repair",
+        title: "\"I want to fix this. Can I try again?\"",
+        copy: "Best when the moment needs repair before explanation.",
+        outcome: "This choice lowers defensiveness and opens the door to repair.",
+      },
+      {
+        id: "listening-line",
+        speaker: "Listen",
+        title: "\"Tell me your side first. I want to get it right.\"",
+        copy: "Best when the other person needs to feel heard before the problem gets solved.",
+        outcome: "This choice builds safety and perspective-taking.",
+      },
+      {
+        id: "boundary-line",
+        speaker: "Boundary",
+        title: "\"I want to talk, but I need a calmer minute first.\"",
+        copy: "Best when the conversation needs a pause without shutting down.",
+        outcome: "This choice protects the relationship and the tone at the same time.",
+      },
+    ],
+    "No family sentence saved yet.",
+  );
+}
+
+function buildDigitalDetectivesPracticePanel() {
+  return buildPracticePanel(
+    "scan",
+    "Safety scan board",
+    "Which clue would make you pause first online?",
+    "Pick the signal that should trigger the quickest stop-and-check response.",
+    [
+      {
+        id: "privacy-clue",
+        signal: "Privacy",
+        title: "Someone asks for personal info fast",
+        copy: "Name, school, address, or private photos should trigger an immediate pause.",
+        outcome: "This choice strengthens boundary awareness before oversharing happens.",
+      },
+      {
+        id: "truth-clue",
+        signal: "Truth",
+        title: "The story wants a fast emotional reaction",
+        copy: "When the post pushes panic or outrage first, slow down before sharing it.",
+        outcome: "This choice teaches verification before amplification.",
+      },
+      {
+        id: "kindness-clue",
+        signal: "Kindness",
+        title: "The comment thread starts turning mean",
+        copy: "Pause before joining, forwarding, or piling on.",
+        outcome: "This choice keeps digital safety tied to character, not just privacy.",
+      },
+    ],
+    "No digital safety clue saved yet.",
+  );
+}
+
+function buildFocusForgePracticePanel() {
+  return buildPracticePanel(
+    "planner",
+    "Momentum planner",
+    "Which tiny-start plan would help most today?",
+    "Save one tiny-start pattern so the next hard beginning has a ready-made plan.",
+    [
+      {
+        id: "one-minute-start",
+        step: "01",
+        title: "Start with one minute only",
+        copy: "Make the promise small enough that starting feels easier than avoiding.",
+        outcome: "This choice lowers friction and gets motion started fast.",
+      },
+      {
+        id: "materials-first",
+        step: "02",
+        title: "Lay out the materials first",
+        copy: "Set up the desk, pencil, tab, or notebook before the work clock begins.",
+        outcome: "This choice reduces activation energy before focus is even required.",
+      },
+      {
+        id: "visible-finish",
+        step: "03",
+        title: "Choose a tiny visible finish",
+        copy: "Define one clear stopping point you can actually reach today.",
+        outcome: "This choice builds momentum through finishable wins.",
+      },
+    ],
+    "No momentum plan saved yet.",
+  );
+}
+
+function buildBodyBoundariesPracticePanel() {
+  return buildPracticePanel(
+    "script",
+    "Boundary line rehearsal",
+    "Which boundary line feels clearest to say out loud?",
+    "Choose the line that feels calm, direct, and easiest to remember in a real moment.",
+    [
+      {
+        id: "stop-line",
+        eyebrow: "Stop",
+        title: "\"No. I don't want that.\"",
+        copy: "Use when the boundary needs to be short and unmistakable.",
+        outcome: "This choice prioritizes clarity over politeness when safety matters.",
+      },
+      {
+        id: "move-away",
+        eyebrow: "Leave",
+        title: "\"I'm leaving now and telling a grown-up.\"",
+        copy: "Use when the safest next move is getting distance and support.",
+        outcome: "This choice ties the boundary to an action, not only a sentence.",
+      },
+      {
+        id: "trusted-help",
+        eyebrow: "Help",
+        title: "\"I need help with something that didn't feel okay.\"",
+        copy: "Use when the child needs a ready-made support line for a trusted adult.",
+        outcome: "This choice makes help-seeking feel concrete and sayable.",
+      },
+    ],
+    "No boundary line saved yet.",
+  );
 }
 
 function buildWonderLabExperience(context) {
@@ -503,7 +778,39 @@ const lessonExperienceBuilders = {
   "body-boundaries": buildBodyBoundariesExperience,
 };
 
+const practicePanelBuilders = {
+  "wonder-lab": buildWonderLabPracticePanel,
+  "story-studio": buildStoryStudioPracticePanel,
+  "brave-heart": buildBraveHeartPracticePanel,
+  "money-moves": buildMoneyMovesPracticePanel,
+  "home-team": buildHomeTeamPracticePanel,
+  "digital-detectives": buildDigitalDetectivesPracticePanel,
+  "focus-forge": buildFocusForgePracticePanel,
+  "body-boundaries": buildBodyBoundariesPracticePanel,
+};
+
 export function buildLessonExperience(context) {
   const builder = lessonExperienceBuilders[context.track.id] ?? buildWonderLabExperience;
-  return builder(context);
+  const baseExperience = builder(context);
+  const practiceBuilder =
+    practicePanelBuilders[context.track.id] ?? buildWonderLabPracticePanel;
+  const practicePanel = practiceBuilder(context);
+  const selectedPracticeChoice =
+    practicePanel.options.find((option) => option.id === context.practiceChoiceId) ?? null;
+  const practiceChoiceNote = selectedPracticeChoice
+    ? `${selectedPracticeChoice.title}. ${selectedPracticeChoice.outcome}`
+    : practicePanel.unselectedNote;
+
+  return {
+    ...baseExperience,
+    practicePanel,
+    practiceChoiceNote,
+    selectedPracticeChoice,
+    childReflectionStarter: selectedPracticeChoice
+      ? `${baseExperience.childReflectionStarter} Practice move: ${practiceChoiceNote}`
+      : baseExperience.childReflectionStarter,
+    parentNoteStarter: [baseExperience.parentNoteStarter, `Practice move: ${practiceChoiceNote}`]
+      .filter(Boolean)
+      .join(" "),
+  };
 }

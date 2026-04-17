@@ -2057,12 +2057,136 @@
 }
 
 .lesson-momentum,
+.practice-panel,
 .lesson-proof-panel,
 .lesson-follow-through,
 .lesson-complete-strip {
   margin-top: 22px;
   padding-top: 22px;
   border-top: 1px solid rgba(246, 248, 251, 0.08);
+}
+
+.practice-panel-helper,
+.practice-selection-note {
+  margin: 14px 0 0;
+  color: rgba(246, 248, 251, 0.66);
+  line-height: 1.55;
+}
+
+.practice-options {
+  display: grid;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.practice-options-cards,
+.practice-options-tradeoff,
+.practice-options-script {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.practice-options-dialogue,
+.practice-options-scan,
+.practice-options-ladder,
+.practice-options-planner {
+  grid-template-columns: 1fr;
+}
+
+.practice-option {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid rgba(246, 248, 251, 0.08);
+  background: rgba(246, 248, 251, 0.03);
+  color: #f6f8fb;
+  border-radius: 8px;
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    background 180ms ease;
+}
+
+.practice-option:hover {
+  transform: translateY(-1px);
+}
+
+.practice-option.is-selected {
+  border-color: rgba(131, 255, 240, 0.34);
+  background: rgba(23, 197, 179, 0.12);
+}
+
+.practice-option p,
+.practice-option strong,
+.practice-option span,
+.practice-option em {
+  display: block;
+  margin: 0;
+}
+
+.practice-option p {
+  color: rgba(246, 248, 251, 0.58);
+  font-size: 0.82rem;
+}
+
+.practice-option strong {
+  margin-top: 8px;
+  line-height: 1.45;
+}
+
+.practice-option span,
+.practice-option em {
+  margin-top: 8px;
+  color: rgba(246, 248, 251, 0.72);
+  line-height: 1.5;
+  font-style: normal;
+}
+
+.practice-option-card p,
+.practice-option-script p {
+  color: #83fff0;
+}
+
+.practice-option-step {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.practice-step-badge,
+.practice-signal-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 42px;
+  min-height: 42px;
+  padding: 0 10px;
+  border-radius: 8px;
+  background: rgba(217, 255, 107, 0.12);
+  color: #d9ff6b;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.practice-option-dialogue,
+.practice-option-scan {
+  display: grid;
+  gap: 10px;
+}
+
+.practice-option-dialogue p,
+.practice-option-scan p {
+  color: #83fff0;
+}
+
+.practice-option-script strong {
+  font-size: 1rem;
+}
+
+.practice-selection-note {
+  color: #83fff0;
 }
 
 .lesson-momentum-head {
@@ -2572,7 +2696,10 @@
 
   .dashboard-metric-row,
   .dashboard-report-stat-grid,
-  .dashboard-insight-grid {
+  .dashboard-insight-grid,
+  .practice-options-cards,
+  .practice-options-tradeoff,
+  .practice-options-script {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -2582,6 +2709,13 @@
 
   .story-layout {
     display: grid;
+  }
+
+  .practice-options-cards,
+  .practice-options-tradeoff,
+  .practice-options-script,
+  .practice-option-step {
+    grid-template-columns: 1fr;
   }
 }
 

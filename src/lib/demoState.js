@@ -47,6 +47,9 @@ export function createDefaultState() {
     lessonMilestoneIdsByChild: Object.fromEntries(
       childProfiles.map((child) => [child.id, {}]),
     ),
+    lessonPracticeChoiceIdsByChild: Object.fromEntries(
+      childProfiles.map((child) => [child.id, {}]),
+    ),
     lessonQuizAnswersByChild: Object.fromEntries(
       childProfiles.map((child) => [child.id, {}]),
     ),
@@ -107,6 +110,10 @@ export function loadSavedState() {
       lessonMilestoneIdsByChild: {
         ...defaults.lessonMilestoneIdsByChild,
         ...(parsed.lessonMilestoneIdsByChild ?? {}),
+      },
+      lessonPracticeChoiceIdsByChild: {
+        ...defaults.lessonPracticeChoiceIdsByChild,
+        ...(parsed.lessonPracticeChoiceIdsByChild ?? {}),
       },
       lessonQuizAnswersByChild: {
         ...defaults.lessonQuizAnswersByChild,

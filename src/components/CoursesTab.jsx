@@ -31,6 +31,7 @@ export function CoursesTab({
   onOpenChildReflectionStarter,
   onOpenParentNoteStarter,
   onSelectLesson,
+  onSelectPracticeChoice,
   onSelectTrack,
   onToggleJourney,
   onToggleComplete,
@@ -46,6 +47,7 @@ export function CoursesTab({
   const lessonComplete = childCompletedLessonIds.includes(activeLesson.id);
   const familyChatDone = childCompletedJourneyIds.includes("family-chat");
   const lessonStages = activeLessonExperience.stages;
+  const practicePanel = activeLessonExperience.practicePanel;
   const lessonStageCount = lessonStages.filter((stage) =>
     activeLessonMilestoneIds.includes(stage.id),
   ).length;
@@ -62,6 +64,94 @@ export function CoursesTab({
     : lessonReadyToCelebrate
       ? "Celebrate lesson"
       : "Mark complete anyway";
+
+  function renderPracticeOption(option) {
+    const selected = activeLessonExperience.selectedPracticeChoice?.id === option.id;
+    const sharedClassName = `practice-option ${selected ? "is-selected" : ""}`;
+
+    if (practicePanel.variant === "dialogue") {
+      return (
+        <button
+          key={option.id}
+          className={`${sharedClassName} practice-option-dialogue`}
+          onClick={() => onSelectPracticeChoice(option.id)}
+          type="button"
+        >
+          <p>{option.speaker}</p>
+          <strong>{option.title}</strong>
+          <span>{option.copy}</span>
+          <em>{option.outcome}</em>
+        </button>
+      );
+    }
+
+    if (practicePanel.variant === "ladder" || practicePanel.variant === "planner") {
+      return (
+        <button
+          key={option.id}
+          className={`${sharedClassName} practice-option-step`}
+          onClick={() => onSelectPracticeChoice(option.id)}
+          type="button"
+        >
+          <div className="practice-step-badge">{option.step}</div>
+          <div>
+            <p>{practicePanel.variant === "planner" ? "Tiny start" : "Brave step"}</p>
+            <strong>{option.title}</strong>
+            <span>{option.copy}</span>
+            <em>{option.outcome}</em>
+          </div>
+        </button>
+      );
+    }
+
+    if (practicePanel.variant === "scan") {
+      return (
+        <button
+          key={option.id}
+          className={`${sharedClassName} practice-option-scan`}
+          onClick={() => onSelectPracticeChoice(option.id)}
+          type="button"
+        >
+          <div className="practice-signal-chip">{option.signal}</div>
+          <div>
+            <strong>{option.title}</strong>
+            <span>{option.copy}</span>
+            <em>{option.outcome}</em>
+          </div>
+        </button>
+      );
+    }
+
+    if (practicePanel.variant === "script") {
+      return (
+        <button
+          key={option.id}
+          className={`${sharedClassName} practice-option-script`}
+          onClick={() => onSelectPracticeChoice(option.id)}
+          type="button"
+        >
+          <p>{option.eyebrow}</p>
+          <strong>{option.title}</strong>
+          <span>{option.copy}</span>
+          <em>{option.outcome}</em>
+        </button>
+      );
+    }
+
+    return (
+      <button
+        key={option.id}
+        className={`${sharedClassName} practice-option-card`}
+        onClick={() => onSelectPracticeChoice(option.id)}
+        type="button"
+      >
+        <p>{option.eyebrow}</p>
+        <strong>{option.title}</strong>
+        <span>{option.copy}</span>
+        <em>{option.outcome}</em>
+      </button>
+    );
+  }
 
   return (
     <section className="workspace-band">
@@ -189,6 +279,27 @@ export function CoursesTab({
 
           <p className="coach-callout">{activeLesson.coachModes[coachResponseMode]}</p>
           <p className="lesson-subcopy">{activeLessonExperience.headerCopy}</p>
+
+          <div className="practice-panel">
+            <div className="panel-head">
+              <Rocket size={18} />
+              <h2>{practicePanel.title}</h2>
+            </div>
+            <p className="panel-copy">{practicePanel.prompt}</p>
+            <p className="practice-panel-helper">{practicePanel.helper}</p>
+
+            <div
+              className={`practice-options practice-options-${practicePanel.variant}`}
+            >
+              {practicePanel.options.map((option) => renderPracticeOption(option))}
+            </div>
+
+            <p className="practice-selection-note">
+              {activeLessonExperience.selectedPracticeChoice
+                ? `Saved practice move: ${activeLessonExperience.practiceChoiceNote}`
+                : practicePanel.unselectedNote}
+            </p>
+          </div>
 
           <div className="lesson-momentum">
             <div className="lesson-momentum-head">

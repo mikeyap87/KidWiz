@@ -56,7 +56,7 @@ KidWiz aims to close that gap by giving families one place to build:
 - expanded branching story library across confidence, money, and family repair scenarios
 - trend tracking that compares the current week against archived local snapshots for each child and the family overall
 - daily rhythm checklist with visible completion inside the Quest Hub
-- guided lesson flow for each course track with track-specific playbooks, coach cues, activity milestones, quiz checkpoints, and a parent follow-through loop
+- guided lesson flow for each course track with track-specific playbooks, visual practice panels, coach cues, activity milestones, quiz checkpoints, and a parent follow-through loop
 - sequential lesson progression within tracks
 - track statuses such as ready, in progress, checkpoint ready, and complete
 - per-child weekly playlists with add/remove controls
@@ -122,6 +122,7 @@ The live app shell currently uses in-browser demo state for:
 - completed lessons by child
 - completed daily journey items
 - guided lesson milestone state by child and lesson
+- saved lesson practice choices by child and lesson
 - quiz answers by child and lesson
 - child journal entries by child
 - parent journal entries
@@ -167,6 +168,7 @@ The Family Hub now includes local controls to:
 - Historical trend comparison is now driven by archived local snapshots instead of a fixed read-only seed.
 - The lesson experience now includes guided micro-steps and a parent follow-through loop instead of stopping at a single quiz interaction.
 - The course experience now uses track-specific lesson playbooks so confidence, money, family, digital safety, and academic tracks no longer share the same teaching frame.
+- The course experience now includes visual practice panels with saved lesson choices so each track feels interactive in its own way.
 - Sensitive topics stay behind a parent unlock.
 - AI is positioned as bounded and supportive, not as an unrestricted social chatbot.
 - The app supports demo mode by default so product design can move before backend work is finished.
@@ -184,7 +186,7 @@ The Family Hub now includes local controls to:
 
 1. Add real Supabase schema for parents, children, tracks, journals, progress, and unlock settings.
 2. Persist weekly snapshots, parent reports, and simulation history outside the browser so trends survive across devices.
-3. Replace the shared track playbooks with richer authored lesson variants, stronger age-banding, and media or interaction types that fit each track.
+3. Replace the shared track playbooks with richer authored lesson variants, stronger age-banding, and deeper media or interaction types that fit each track.
 4. Split the app into route-level screens and smaller components as the product settles.
 5. Add route-level code splitting and bundle trimming so the app loads faster as content keeps expanding.
 6. Add a server-side AI orchestration layer with moderation, age banding, and audit logs.

@@ -267,6 +267,8 @@ function App() {
     appState.lessonQuizAnswersByChild[selectedChild.id] ?? {};
   const childLessonMilestones =
     appState.lessonMilestoneIdsByChild[selectedChild.id] ?? {};
+  const childLessonPracticeChoices =
+    appState.lessonPracticeChoiceIdsByChild[selectedChild.id] ?? {};
   const assignedTrackIds =
     appState.assignedTrackIdsByChild[selectedChild.id] ?? [];
   const selectedWeeklyTarget =
@@ -278,6 +280,7 @@ function App() {
     };
   const activeLessonAnswer = childQuizAnswers[activeLesson.id];
   const activeLessonMilestoneIds = childLessonMilestones[activeLesson.id] ?? [];
+  const activeLessonPracticeChoiceId = childLessonPracticeChoices[activeLesson.id];
   const answeredOption = activeLesson.quiz.options[activeLessonAnswer];
   const answeredCorrectly =
     activeLessonAnswer === activeLesson.quiz.correctIndex;
@@ -315,6 +318,7 @@ function App() {
     celebrationStyle: selectedCelebrationStyle,
     lesson: activeLesson,
     nextRitual,
+    practiceChoiceId: activeLessonPracticeChoiceId,
     track: activeTrack,
   });
   const todayLabel = formatTodayLabel();
@@ -774,6 +778,17 @@ function App() {
     );
   }
 
+  function handleSelectLessonPracticeChoice(choiceId) {
+    patchChildCollection(
+      "lessonPracticeChoiceIdsByChild",
+      selectedChild.id,
+      (current = {}) => ({
+        ...current,
+        [activeLesson.id]: current[activeLesson.id] === choiceId ? null : choiceId,
+      }),
+    );
+  }
+
   function handleSelectStoryChoice(choiceId) {
     patchChildCollection(
       "storyChoicesByChild",
@@ -900,6 +915,9 @@ function App() {
         lessonMilestoneIdsByChild: Object.fromEntries(
           childProfiles.map((child) => [child.id, {}]),
         ),
+        lessonPracticeChoiceIdsByChild: Object.fromEntries(
+          childProfiles.map((child) => [child.id, {}]),
+        ),
         lessonQuizAnswersByChild: Object.fromEntries(
           childProfiles.map((child) => [child.id, {}]),
         ),
@@ -1011,6 +1029,9 @@ function App() {
           childProfiles.map((child) => [child.id, []]),
         ),
         lessonMilestoneIdsByChild: Object.fromEntries(
+          childProfiles.map((child) => [child.id, {}]),
+        ),
+        lessonPracticeChoiceIdsByChild: Object.fromEntries(
           childProfiles.map((child) => [child.id, {}]),
         ),
         lessonQuizAnswersByChild: Object.fromEntries(
@@ -1318,6 +1339,7 @@ function App() {
                       selectedLessonId: lessonId,
                     }))
                   }
+                  onSelectPracticeChoice={handleSelectLessonPracticeChoice}
                   onSelectTrack={handleSelectTrack}
                   onToggleJourney={handleToggleJourney}
                   onToggleComplete={handleToggleLessonComplete}
