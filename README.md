@@ -1,11 +1,13 @@
 # KidWiz
 
-KidWiz is a modern children's education SaaS concept that combines traditional learning with real-life growth skills. The current build includes:
+KidWiz is a modern children's education SaaS concept that combines traditional learning with real-life growth skills. The current local build now includes:
 
 - a polished public-facing website
 - a parent login entry with optional Supabase magic-link auth
+- a guided family onboarding flow for goals, rhythm, and coach style
 - a fully navigable demo application for family learning
-- learning worlds for academics, confidence, money, relationships, and family growth
+- eight course tracks with multi-lesson arcs
+- weekly playlists, badges, progress bars, coach prompts, and parent controls
 - branching story practice, private journals, and a parent family hub
 
 ## Quick Start
@@ -40,6 +42,19 @@ KidWiz supports two modes today:
 
 If Supabase is not configured yet, the product still opens cleanly in demo mode so design, flows, and content can be reviewed.
 
+## Current Local Product Shape
+
+- public marketing site
+- guided onboarding flow
+- multi-child switching
+- course library with lesson progress and quiz state
+- weekly playlists
+- branching story choices
+- Spark Coach demo layer with different coaching modes
+- child journal and parent notes
+- parent controls for goals, rhythm, celebration style, track assignment, and sensitive-topic unlocks
+- local reset and fresh-week testing tools
+
 ## Project Structure
 
 - `src/App.jsx` - main public site and application shell
@@ -52,4 +67,4 @@ If Supabase is not configured yet, the product still opens cleanly in demo mode 
 - connect Supabase tables for real parent accounts, child profiles, journals, and progress
 - add a server-side AI layer for bounded tutoring and summaries
 - introduce billing and subscription controls
-- break the app shell into smaller route-level screens once the product shape stabilizes
+- break the app shell into smaller route-level screens and components once the product shape stabilizes
