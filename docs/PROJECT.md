@@ -59,6 +59,7 @@ KidWiz aims to close that gap by giving families one place to build:
 - guided lesson flow for each course track with track-specific playbooks, visual practice panels, authored scenario cards, interactive move storyboards, age-band aware prompts, coach cues, activity milestones, quiz checkpoints, and a parent follow-through loop
 - lazy-loaded public, onboarding, and tab-level screen modules with polished loading states so the local product stays responsive as more curriculum ships
 - a mobile-first in-app shell with learner switching and sticky section navigation, replacing the old stacked-sidebar behavior on smaller screens
+- a child-specific mobile resume strip and quick-action rail so a parent can jump straight into the next lesson, story, reflection, or family prompt
 - sequential lesson progression within tracks
 - track statuses such as ready, in progress, checkpoint ready, and complete
 - per-child weekly playlists with add/remove controls
@@ -95,6 +96,7 @@ The value is:
 
 - `src/App.jsx` now acts mainly as the state container and app shell, and lazy-loads the public site, onboarding flow, and tab-level screens.
 - `src/App.jsx` now also renders a mobile-only learner rail and sticky section nav so app switching stays easy on phones and small tablets.
+- `src/App.jsx` now also surfaces child-specific mobile resume and quick-action controls, driven by the same recommendation and weekly-progress logic as the rest of the product.
 - `src/components/` contains the public site, onboarding flow, dashboard, and tab-level UI modules.
 - `src/components/CoursesTab.jsx` now owns the lesson-experience builder import so course-only lesson logic loads with the course screen instead of the entry bundle.
 - `src/data/kidwizData.js` acts as the current content source for demo profiles, course tracks, lessons, quest worlds, stories, playlists, badges, rituals, and setup options.
@@ -178,6 +180,7 @@ The Family Hub now includes local controls to:
 - The course experience now includes a play-the-move storyboard so the chosen practice option becomes a short visual narrative instead of a detached selection.
 - The app shell now lazy-loads public, onboarding, and in-app screens so the main bundle stays below the earlier warning threshold while the curriculum continues to expand.
 - The app shell now swaps the old stacked mobile sidebar for a learner switcher plus sticky section rail so the product feels intentional on phones.
+- The mobile shell now shows a recommended next lesson plus quick actions for story, reflection, and family follow-through, using the same progress signals that drive the dashboard and quest systems.
 - Sensitive topics stay behind a parent unlock.
 - AI is positioned as bounded and supportive, not as an unrestricted social chatbot.
 - The app supports demo mode by default so product design can move before backend work is finished.
@@ -197,7 +200,7 @@ The Family Hub now includes local controls to:
 2. Persist weekly snapshots, parent reports, and simulation history outside the browser so trends survive across devices.
 3. Replace the shared track playbooks with richer authored lesson variants, stronger age-banding, and deeper media or interaction types that fit each track.
 4. Keep trimming the local bundle by splitting demo bootstrap state and curriculum data as content keeps expanding.
-5. Deepen the mobile shell with child-specific quick actions, lesson resume, and clearer parent-only controls.
+5. Add parent-only guardrails and clearer protected actions inside the mobile shell.
 6. Add a server-side AI orchestration layer with moderation, age banding, and audit logs.
 7. Replace the static course content model with a more scalable curriculum structure and content authoring approach.
 8. Add billing and subscription controls.

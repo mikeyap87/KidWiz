@@ -807,7 +807,8 @@
 }
 
 .app-mobile-learner-shell,
-.app-mobile-nav-shell {
+.app-mobile-nav-shell,
+.app-mobile-action-shell {
   display: none;
 }
 
@@ -902,6 +903,122 @@
 .mobile-tab-chip.is-active {
   border-color: rgba(217, 255, 107, 0.42);
   background: rgba(217, 255, 107, 0.08);
+}
+
+.mobile-resume-strip {
+  display: grid;
+  gap: 14px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(246, 248, 251, 0.08);
+}
+
+.mobile-resume-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.mobile-resume-head h3,
+.mobile-resume-copy,
+.mobile-quick-action p,
+.mobile-quick-action strong,
+.mobile-quick-action em {
+  margin: 0;
+}
+
+.mobile-resume-head h3 {
+  font-size: 1.2rem;
+  line-height: 1.18;
+}
+
+.mobile-progress-pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: rgba(217, 255, 107, 0.08);
+  border: 1px solid rgba(217, 255, 107, 0.28);
+  color: #d9ff6b;
+  font-size: 0.82rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.mobile-resume-copy {
+  color: rgba(246, 248, 251, 0.76);
+  line-height: 1.58;
+}
+
+.mobile-resume-meta {
+  gap: 8px;
+}
+
+.mobile-resume-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.mobile-shell-button {
+  min-width: 168px;
+}
+
+.mobile-quick-action-eyebrow {
+  margin-bottom: 12px;
+}
+
+.mobile-quick-action-grid {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.mobile-quick-action-grid::-webkit-scrollbar {
+  display: none;
+}
+
+.mobile-quick-action {
+  flex: 0 0 224px;
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  min-height: 148px;
+  padding: 16px;
+  border: 1px solid rgba(246, 248, 251, 0.1);
+  background: rgba(246, 248, 251, 0.04);
+  color: #f6f8fb;
+  font: inherit;
+  cursor: pointer;
+  border-radius: 8px;
+  text-align: left;
+}
+
+.mobile-quick-action-top {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(246, 248, 251, 0.68);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.mobile-quick-action strong {
+  font-size: 1rem;
+  line-height: 1.28;
+}
+
+.mobile-quick-action p {
+  color: rgba(246, 248, 251, 0.76);
+  line-height: 1.52;
+}
+
+.mobile-quick-action em {
+  color: #d9ff6b;
+  font-size: 0.82rem;
+  font-style: normal;
 }
 
 .app-sidebar {
@@ -2909,6 +3026,11 @@
     padding-bottom: 8px;
   }
 
+  .app-mobile-action-shell {
+    display: grid;
+    padding-top: 16px;
+  }
+
   .app-sidebar {
     display: none;
   }
@@ -2950,6 +3072,11 @@
   }
 
   .mobile-learner-summary {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .mobile-resume-head {
     flex-direction: column;
     align-items: stretch;
   }
@@ -3011,6 +3138,14 @@
 
   .app-mobile-learner-shell {
     padding: 16px;
+  }
+
+  .mobile-shell-button {
+    width: 100%;
+  }
+
+  .mobile-quick-action {
+    flex-basis: 208px;
   }
 
   .mobile-profile-chip {

@@ -1,5 +1,11 @@
 import { Suspense, lazy, useEffect, useState } from "react";
-import { Bot } from "lucide-react";
+import {
+  ArrowRight,
+  BookOpen,
+  Bot,
+  NotebookPen,
+  Users,
+} from "lucide-react";
 import {
   badgeCatalog,
   celebrationStyles,
@@ -389,6 +395,10 @@ function App() {
     completedLessonIds: childCompletedLessonIds,
     weeklyTarget: selectedWeeklyTarget,
   });
+  const recommendedStory = getRecommendedStory({
+    selectedGoalIds: appState.selectedGoalIds,
+    storyChoices: childStoryChoices,
+  });
   const nextRitual =
     familyRituals[childCompletedLessonIds.length % familyRituals.length];
   const todayLabel = formatTodayLabel();
@@ -440,6 +450,22 @@ function App() {
     nextBadge,
     nextRitual,
   });
+  const latestWeeklySnapshot =
+    (appState.weeklyHistoryByChild?.[selectedChild.id] ?? []).at(-1) ?? null;
+  const weeklyLessonCount = Math.max(
+    0,
+    childCompletedLessonIds.length - (latestWeeklySnapshot?.completedLessonsTotal ?? 0),
+  );
+  const weeklyStoryCount = Math.max(
+    0,
+    Object.keys(childStoryChoices).length -
+      (latestWeeklySnapshot?.completedStoriesTotal ?? 0),
+  );
+  const weeklyReflectionCount = Math.max(
+    0,
+    childJournalEntries.length - (latestWeeklySnapshot?.reflectionsTotal ?? 0),
+  );
+  const familyChatDone = childCompletedJourneyIds.includes("family-chat");
 
   const suggestedPreviewPlaylists = childProfiles.map((child) => ({
     child,
@@ -584,6 +610,52 @@ function App() {
     selectedRhythm,
     weeklyHistoryByChild: appState.weeklyHistoryByChild,
   });
+  const selectedChildSummary =
+    childSummaries.find((summary) => summary.child.id === selectedChild.id) ?? null;
+  const focusTrackTitle =
+    visibleTracks.find((track) => track.id === selectedWeeklyTarget.focusTrackId)
+      ?.title ??
+    recommendedLesson?.track.title ??
+    activeTrack.title;
+  const childReflectionStarter =
+    recommendedStory?.reflectionPrompt ??
+    `What is one small move ${selectedChild.name} feels proud of today?`;
+  const mobileQuickActions = [
+    {
+      id: "story",
+      label: "Story branch",
+      title: recommendedStory?.title ?? "Open a story choice",
+      copy: recommendedStory
+        ? `Practice ${recommendedStory.focus.toLowerCase()} and unlock a family debrief.`
+        : "Open a story choice for today's practice moment.",
+      meta: `${weeklyStoryCount}/${selectedWeeklyTarget.stories} stories this week`,
+      icon: BookOpen,
+      onClick: () => handleOpenStory(recommendedStory?.id, selectedChild.id),
+    },
+    {
+      id: "reflection",
+      label: "Reflection",
+      title: `${selectedChild.companionName} check-in`,
+      copy:
+        weeklyReflectionCount > 0
+          ? "Capture today's proud moment, wobble, or question before it slips away."
+          : `Start ${selectedChild.name}'s first reflection for this week.`,
+      meta: `${weeklyReflectionCount}/${selectedWeeklyTarget.reflections} reflections`,
+      icon: NotebookPen,
+      onClick: () => handleOpenChildReflectionStarter(childReflectionStarter),
+    },
+    {
+      id: "family",
+      label: "Family prompt",
+      title: familyChatDone ? "Family chat logged" : nextRitual.title,
+      copy: familyChatDone
+        ? "This week's family prompt is already done. Open Family Hub to plan the next ritual."
+        : nextRitual.copy,
+      meta: familyChatDone ? "1/1 family prompts this week" : "Open Family Hub",
+      icon: Users,
+      onClick: handleOpenFamily,
+    },
+  ];
 
   const coachCards = [
     {
@@ -1325,6 +1397,58 @@ function App() {
                 </button>
               ))}
             </div>
+
+            <div className="mobile-resume-strip">
+              <div className="mobile-resume-head">
+                <div>
+                  <p className="eyebrow eyebrow-dark">Resume for {selectedChild.name}</p>
+                  <h3>
+                    {recommendedLesson?.lesson.title ?? "Choose the next lesson"}
+                  </h3>
+                </div>
+                <div className="mobile-progress-pill">
+                  <span>
+                    {weeklyLessonCount}/{selectedWeeklyTarget.lessons} lessons
+                  </span>
+                </div>
+              </div>
+
+              <p className="mobile-resume-copy">
+                {recommendedLesson
+                  ? `${recommendedLesson.reason} in ${recommendedLesson.track.title}. ${recommendedLesson.lesson.summary}`
+                  : `${selectedChild.supportSpot} Open the course library to pick the next lesson.`}
+              </p>
+
+              <div className="summary-chip-row mobile-resume-meta">
+                <span className="summary-chip">{focusTrackTitle}</span>
+                <span className="summary-chip">
+                  {selectedChildSummary?.overallTargetProgress ?? 0}% week plan
+                </span>
+                <span className="summary-chip">{selectedChild.todayTheme}</span>
+              </div>
+
+              <div className="mobile-resume-actions">
+                <button
+                  className="solid-button mobile-shell-button"
+                  onClick={() =>
+                    recommendedLesson
+                      ? handleOpenLesson(recommendedLesson.lesson.id)
+                      : handleSelectTab("courses")
+                  }
+                  type="button"
+                >
+                  {recommendedLesson ? "Resume lesson" : "Open courses"}
+                  <ArrowRight size={16} />
+                </button>
+                <button
+                  className="ghost-button ghost-button-dark mobile-shell-button"
+                  onClick={() => handleSelectTab("dashboard")}
+                  type="button"
+                >
+                  See weekly plan
+                </button>
+              </div>
+            </div>
           </section>
 
           <div className="app-mobile-nav-shell">
@@ -1350,6 +1474,34 @@ function App() {
               </nav>
             </div>
           </div>
+
+          <section className="page-width app-mobile-action-shell">
+            <p className="eyebrow eyebrow-dark mobile-quick-action-eyebrow">
+              Quick actions for {selectedChild.name}
+            </p>
+            <div className="mobile-quick-action-grid">
+              {mobileQuickActions.map((action) => {
+                const Icon = action.icon;
+
+                return (
+                  <button
+                    key={action.id}
+                    className="mobile-quick-action"
+                    onClick={action.onClick}
+                    type="button"
+                  >
+                    <div className="mobile-quick-action-top">
+                      <Icon size={16} />
+                      <span>{action.label}</span>
+                    </div>
+                    <strong>{action.title}</strong>
+                    <p>{action.copy}</p>
+                    <em>{action.meta}</em>
+                  </button>
+                );
+              })}
+            </div>
+          </section>
 
           <div className="page-width app-layout">
             <aside className="app-sidebar">
