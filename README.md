@@ -8,7 +8,7 @@ KidWiz is a modern children's education SaaS concept that combines traditional l
 - a fully navigable demo application for family learning
 - a Quest Hub with world-map navigation, weekly missions, and visible rewards
 - a parent weekly report layer with action plans, conversation prompts, and stateful trend history
-- eight course tracks with multi-lesson arcs, guided lesson flows, track-specific playbooks, visual practice panels, age-band aware lesson copy, and authored scenario cards
+- eight course tracks with multi-lesson arcs, guided lesson flows, track-specific playbooks, visual practice panels, age-band aware lesson copy, authored scenario cards, and interactive move storyboards
 - expanded Brave Heart, Money Moves, and Home Team content depth
 - weekly playlists, badges, progress bars, coach prompts, parent controls, and Family Hub archive tools
 - branching story practice, private journals, and a parent family hub
@@ -62,7 +62,7 @@ If Supabase is not configured yet, the product still opens cleanly in demo mode 
 - parent dashboard with child-by-child weekly targets, weekly report summaries, archived trend comparisons, and recommendations
 - child-facing Quest Hub with mission board, world map, reward shelf, and rhythm checklist
 - multi-child switching
-- course library with lesson progress, track-specific lesson playbooks, visual practice panels, authored scenario cards, age-band aware prompts, guided milestones, quiz checkpoints, and sequential progression
+- course library with lesson progress, track-specific lesson playbooks, visual practice panels, authored scenario cards, interactive move storyboards, age-band aware prompts, guided milestones, quiz checkpoints, and sequential progression
 - weekly playlists
 - branching story choices across confidence, money, relationships, and digital safety
 - Spark Coach demo layer with different coaching modes

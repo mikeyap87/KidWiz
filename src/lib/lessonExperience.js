@@ -368,6 +368,41 @@ function getAuthoredScenarioSet(trackId, ageLensId) {
   );
 }
 
+function buildChoiceStoryboard({ ageLens, practicePanel, scenarioSet, selectedPracticeChoice }) {
+  const moveTitle = selectedPracticeChoice?.title ?? "Choose a practice move";
+  const moveCopy =
+    selectedPracticeChoice?.copy ??
+    "Pick one move in the practice panel to preview how the lesson could play out.";
+  const resultCopy =
+    selectedPracticeChoice?.outcome ??
+    practicePanel.unselectedNote;
+
+  return {
+    title: "Play the move",
+    helper:
+      ageLens.id === "younger"
+        ? "See the moment, the move, and what might change after you try it."
+        : "Use the preview to connect the situation, the chosen strategy, and the likely result.",
+    beats: [
+      {
+        label: "Scene",
+        title: scenarioSet.spotlight.title,
+        copy: scenarioSet.spotlight.copy,
+      },
+      {
+        label: "Move",
+        title: moveTitle,
+        copy: moveCopy,
+      },
+      {
+        label: "Change",
+        title: ageLens.id === "younger" ? "What could get better" : "Likely result",
+        copy: resultCopy,
+      },
+    ],
+  };
+}
+
 function buildCommonStarters({
   childName,
   track,
@@ -1234,10 +1269,17 @@ export function buildLessonExperience(context) {
       }`,
     };
   });
+  const choiceStoryboard = buildChoiceStoryboard({
+    ageLens,
+    practicePanel,
+    scenarioSet,
+    selectedPracticeChoice,
+  });
 
   return {
     ...baseExperience,
     ageLens,
+    choiceStoryboard,
     scenarioSet,
     visualTheme,
     proofCopy,

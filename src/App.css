@@ -2063,6 +2063,7 @@
 
 .lesson-momentum,
 .practice-panel,
+.choice-storyboard,
 .lesson-proof-panel,
 .lesson-follow-through,
 .lesson-complete-strip {
@@ -2246,6 +2247,43 @@
 
 .practice-selection-note {
   color: #83fff0;
+}
+
+.choice-storyboard-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.choice-storyboard-beat {
+  padding: 14px;
+  border: 1px solid var(--practice-accent, rgba(131, 255, 240, 0.24));
+  background: var(--practice-surface, rgba(23, 197, 179, 0.12));
+  border-radius: 8px;
+}
+
+.choice-storyboard-beat p,
+.choice-storyboard-beat strong,
+.choice-storyboard-beat span {
+  display: block;
+  margin: 0;
+}
+
+.choice-storyboard-beat p {
+  color: rgba(246, 248, 251, 0.58);
+  font-size: 0.82rem;
+}
+
+.choice-storyboard-beat strong {
+  margin-top: 8px;
+  line-height: 1.45;
+}
+
+.choice-storyboard-beat span {
+  margin-top: 8px;
+  color: rgba(246, 248, 251, 0.78);
+  line-height: 1.55;
 }
 
 .lesson-momentum-head {
@@ -2756,6 +2794,7 @@
   .dashboard-metric-row,
   .dashboard-report-stat-grid,
   .dashboard-insight-grid,
+  .choice-storyboard-grid,
   .practice-options-cards,
   .practice-options-tradeoff,
   .practice-options-script,
@@ -2775,6 +2814,7 @@
   .practice-options-tradeoff,
   .practice-options-script,
   .practice-option-step,
+  .choice-storyboard-grid,
   .practice-scene-grid {
     grid-template-columns: 1fr;
   }

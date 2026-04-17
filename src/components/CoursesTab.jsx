@@ -332,6 +332,30 @@ export function CoursesTab({
             </p>
           </div>
 
+          <div
+            className="choice-storyboard"
+            style={{
+              "--practice-accent": activeLessonExperience.visualTheme.accent,
+              "--practice-surface": activeLessonExperience.visualTheme.surface,
+            }}
+          >
+            <div className="panel-head">
+              <ScrollText size={18} />
+              <h2>{activeLessonExperience.choiceStoryboard.title}</h2>
+            </div>
+            <p className="panel-copy">{activeLessonExperience.choiceStoryboard.helper}</p>
+
+            <div className="choice-storyboard-grid">
+              {activeLessonExperience.choiceStoryboard.beats.map((beat) => (
+                <div key={beat.label} className="choice-storyboard-beat">
+                  <p>{beat.label}</p>
+                  <strong>{beat.title}</strong>
+                  <span>{beat.copy}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
           <div className="lesson-momentum">
             <div className="lesson-momentum-head">
               <div>
