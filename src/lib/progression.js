@@ -691,6 +691,115 @@ export function buildParentWeeklyReport({
   };
 }
 
+export function buildChildSummaries({
+  bodyBoundariesUnlocked,
+  selectedGoalIds,
+  visibleTracks = getVisibleTracks(bodyBoundariesUnlocked),
+  weeklyHistoryByChild,
+  assignedTrackIdsByChild,
+  completedJourneyIdsByChild,
+  completedLessonIdsByChild,
+  childJournalEntriesByChild,
+  playlistLessonIdsByChild,
+  storyChoicesByChild,
+  weeklyTargetsByChild,
+}) {
+  return childProfiles.map((child) => {
+    const completedLessons = completedLessonIdsByChild?.[child.id] ?? [];
+    const playlistLessonIds = playlistLessonIdsByChild?.[child.id] ?? [];
+    const completedJourneys = completedJourneyIdsByChild?.[child.id] ?? [];
+    const storyChoices = storyChoicesByChild?.[child.id] ?? {};
+    const journalEntries = childJournalEntriesByChild?.[child.id] ?? [];
+    const assignedIds = assignedTrackIdsByChild?.[child.id] ?? [];
+    const weeklyTarget = weeklyTargetsByChild?.[child.id] ?? {
+      lessons: 3,
+      stories: 2,
+      reflections: 2,
+      focusTrackId: visibleTracks[0]?.id,
+    };
+    const rows = visibleTracks.map((track) => ({
+      ...track,
+      progress: getTrackProgress(child, track, completedLessons),
+      status: getTrackStatus(track, completedLessons),
+    }));
+    const strongest = [...rows].sort((left, right) => right.progress - left.progress)[0];
+    const support = [...rows].sort((left, right) => left.progress - right.progress)[0];
+    const recommendedLesson = getRecommendedLesson({
+      visibleTracks,
+      assignedTrackIds: assignedIds,
+      playlistLessonIds,
+      completedLessonIds: completedLessons,
+      weeklyTarget,
+    });
+    const recommendedStory = getRecommendedStory({
+      selectedGoalIds,
+      storyChoices,
+    });
+    const childBadgeIds = deriveEarnedBadgeIds({
+      completedLessonIds: completedLessons,
+      playlistLessonIds,
+      childJournalEntries: journalEntries,
+      completedJourneyIds: completedJourneys,
+      storyChoices,
+      bodyBoundariesUnlocked,
+    });
+    const latestWeeklySnapshot =
+      (weeklyHistoryByChild?.[child.id] ?? []).at(-1) ?? null;
+    const weeklyLessonCount = Math.max(
+      0,
+      completedLessons.length - (latestWeeklySnapshot?.completedLessonsTotal ?? 0),
+    );
+    const weeklyStoryCount = Math.max(
+      0,
+      Object.keys(storyChoices).length -
+        (latestWeeklySnapshot?.completedStoriesTotal ?? 0),
+    );
+    const weeklyReflectionCount = Math.max(
+      0,
+      journalEntries.length - (latestWeeklySnapshot?.reflectionsTotal ?? 0),
+    );
+    const lessonTargetProgress = Math.min(
+      100,
+      Math.round((weeklyLessonCount / Math.max(1, weeklyTarget.lessons)) * 100),
+    );
+    const storyTargetProgress = Math.min(
+      100,
+      Math.round((weeklyStoryCount / Math.max(1, weeklyTarget.stories)) * 100),
+    );
+    const reflectionTargetProgress = Math.min(
+      100,
+      Math.round(
+        (weeklyReflectionCount / Math.max(1, weeklyTarget.reflections)) * 100,
+      ),
+    );
+
+    return {
+      child,
+      strongestTrack: strongest,
+      supportTrack: support,
+      recommendedLesson,
+      recommendedStory,
+      completedLessons: completedLessons.length,
+      completedStories: Object.keys(storyChoices).length,
+      journalCount: journalEntries.length,
+      badgesEarned: childBadgeIds.length,
+      weeklyLessonCount,
+      weeklyStoryCount,
+      weeklyReflectionCount,
+      weeklyTarget,
+      lessonTargetProgress,
+      storyTargetProgress,
+      reflectionTargetProgress,
+      overallTargetProgress: Math.round(
+        (lessonTargetProgress + storyTargetProgress + reflectionTargetProgress) / 3,
+      ),
+      supportMessage: recommendedLesson
+        ? `${child.supportSpot} Next best move: ${recommendedLesson.lesson.title}.`
+        : `${child.supportSpot} Current visible tracks look complete in the demo state.`,
+    };
+  });
+}
+
 function pickAvailableLessonFromTracks(tracks, completedLessonIds) {
   for (const track of tracks) {
     const lesson = getNextTrackLesson(track, completedLessonIds);

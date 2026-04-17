@@ -1,13 +1,21 @@
+import { useMemo } from "react";
 import {
   celebrationStyles,
+  childProfiles,
   familyGoals,
   weeklyRhythms,
   coachStyles,
 } from "../data/kidwizData";
 import { trustSignals } from "../data/kidwizMarketingData";
+import {
+  buildSuggestedPlaylistForChild,
+  findLessonById,
+  findTrackByLessonId,
+} from "../lib/progression";
 import { GoalGlyph } from "../lib/uiConfig";
 
 export function OnboardingFlow({
+  bodyBoundariesUnlocked,
   canAdvance,
   celebrationStyleId,
   coachStyleId,
@@ -18,12 +26,37 @@ export function OnboardingFlow({
   onSelectCoachStyle,
   onSelectRhythm,
   onToggleGoal,
-  previewPlaylists,
   selectedGoalIds,
   selectedGoals,
   step,
+  weeklyTargetsByChild,
   weeklyRhythmId,
 }) {
+  const previewPlaylists = useMemo(
+    () =>
+      childProfiles.map((child) => ({
+        child,
+        lessons: buildSuggestedPlaylistForChild(
+          selectedGoalIds,
+          child.id,
+          bodyBoundariesUnlocked,
+          weeklyTargetsByChild?.[child.id],
+        )
+          .map((lessonId) => {
+            const lesson = findLessonById(lessonId);
+            const track = findTrackByLessonId(lessonId);
+            return lesson
+              ? {
+                  ...lesson,
+                  trackTitle: track?.title ?? "",
+                }
+              : null;
+          })
+          .filter(Boolean),
+      })),
+    [bodyBoundariesUnlocked, selectedGoalIds, weeklyTargetsByChild],
+  );
+
   return (
     <div className="onboarding-shell">
       <div className="page-width onboarding-layout">

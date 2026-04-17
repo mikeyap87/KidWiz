@@ -17,6 +17,7 @@ import {
   coachStyles,
 } from "../data/kidwizData";
 import { trustSignals } from "../data/kidwizMarketingData";
+import { getTrackProgress } from "../lib/progression";
 
 export function FamilyTab({
   appState,
@@ -39,7 +40,6 @@ export function FamilyTab({
   selectedCoachStyle,
   selectedGoals,
   selectedRhythm,
-  trackProgressRows,
   visibleTracks,
   weeklyHistoryByChild,
 }) {
@@ -176,7 +176,11 @@ export function FamilyTab({
           <div className="assign-grid">
             {visibleTracks.map((track) => {
               const assigned = assignedTrackIds.includes(track.id);
-              const progress = trackProgressRows.find((item) => item.id === track.id);
+              const progress = getTrackProgress(
+                selectedChild,
+                track,
+                appState.completedLessonIdsByChild[selectedChild.id] ?? [],
+              );
 
               return (
                 <button
@@ -186,7 +190,7 @@ export function FamilyTab({
                   type="button"
                 >
                   <strong>{track.title}</strong>
-                  <span>{progress?.progress ?? 0}% progress</span>
+                  <span>{progress}% progress</span>
                 </button>
               );
             })}

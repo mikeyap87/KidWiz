@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import {
   ArrowRight,
   BookOpen,
@@ -9,6 +10,14 @@ import {
   Target,
   Users,
 } from "lucide-react";
+import { badgeCatalog } from "../data/kidwizData";
+import {
+  buildQuestWorldRows,
+  buildWeeklyMissionBoard,
+  deriveEarnedBadgeIds,
+  findLessonById,
+  findTrackByLessonId,
+} from "../lib/progression";
 import { GoalGlyph, TrackGlyph } from "../lib/uiConfig";
 
 function renderMissionAction(mission, handlers) {
@@ -35,23 +44,116 @@ function renderMissionAction(mission, handlers) {
 }
 
 export function OverviewTab({
+  appState,
   childCompletedJourneyIds,
-  dailyJourneys,
-  earnedBadgesCount,
-  missionBoard,
+  childCompletedLessonIds,
+  childJournalEntries,
+  childPlaylistLessonIds,
+  childStoryChoices,
   onOpenFamily,
   onOpenJournal,
   onOpenLesson,
   onOpenStory,
   onSelectTrack,
   onToggleJourney,
-  overviewPlaylistPreview,
-  questWorldRows,
+  recommendedLesson,
+  selectedWeeklyTarget,
   selectedChild,
   selectedGoals,
   todayLabel,
+  visibleTracks,
+  nextRitual,
+  dailyJourneys,
   weeklyCompletion,
 }) {
+  const overviewPlaylistPreview = useMemo(
+    () =>
+      childPlaylistLessonIds
+        .map((lessonId) => {
+          const lesson = findLessonById(lessonId);
+          const track = findTrackByLessonId(lessonId);
+          return lesson
+            ? {
+                ...lesson,
+                trackTitle: track?.title ?? "",
+              }
+            : null;
+        })
+        .filter(Boolean)
+        .slice(0, 4),
+    [childPlaylistLessonIds],
+  );
+  const earnedBadgesCount = useMemo(
+    () => {
+      const earnedBadgeIds = deriveEarnedBadgeIds({
+        completedLessonIds: childCompletedLessonIds,
+        playlistLessonIds: childPlaylistLessonIds,
+        childJournalEntries,
+        completedJourneyIds: childCompletedJourneyIds,
+        storyChoices: childStoryChoices,
+        bodyBoundariesUnlocked: appState.bodyBoundariesUnlocked,
+      });
+
+      return {
+        count: earnedBadgeIds.length,
+        nextBadge:
+          badgeCatalog.find((badge) => !earnedBadgeIds.includes(badge.id)) ?? null,
+      };
+    },
+    [
+      appState.bodyBoundariesUnlocked,
+      childCompletedJourneyIds,
+      childCompletedLessonIds,
+      childJournalEntries,
+      childPlaylistLessonIds,
+      childStoryChoices,
+    ],
+  );
+  const questWorldRows = useMemo(
+    () =>
+      buildQuestWorldRows({
+        visibleTracks,
+        completedLessonIds: childCompletedLessonIds,
+        weeklyTarget: selectedWeeklyTarget,
+        assignedTrackIds: appState.assignedTrackIdsByChild[selectedChild.id] ?? [],
+      }),
+    [
+      appState.assignedTrackIdsByChild,
+      childCompletedLessonIds,
+      selectedChild.id,
+      selectedWeeklyTarget,
+      visibleTracks,
+    ],
+  );
+  const missionBoard = useMemo(
+    () =>
+      buildWeeklyMissionBoard({
+        child: selectedChild,
+        selectedGoalIds: appState.selectedGoalIds,
+        visibleTracks,
+        weeklyTarget: selectedWeeklyTarget,
+        completedLessonIds: childCompletedLessonIds,
+        storyChoices: childStoryChoices,
+        childJournalEntries,
+        completedJourneyIds: childCompletedJourneyIds,
+        recommendedLesson,
+        nextBadge: earnedBadgesCount.nextBadge,
+        nextRitual,
+      }),
+    [
+      appState.selectedGoalIds,
+      childCompletedJourneyIds,
+      childCompletedLessonIds,
+      childJournalEntries,
+      childStoryChoices,
+      earnedBadgesCount,
+      nextRitual,
+      recommendedLesson,
+      selectedChild,
+      selectedWeeklyTarget,
+      visibleTracks,
+    ],
+  );
   const questHandlers = {
     onOpenFamily,
     onOpenJournal,
@@ -230,7 +332,7 @@ export function OverviewTab({
             <div className="quest-reward-grid">
               <div className="signal-card quest-side-card">
                 <p>Badges earned</p>
-                <strong>{earnedBadgesCount}</strong>
+                <strong>{earnedBadgesCount.count}</strong>
                 <span>Current local badge wall progress for {selectedChild.name}.</span>
               </div>
               <div className="signal-card quest-side-card">

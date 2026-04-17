@@ -76,7 +76,7 @@ If Supabase is not configured yet, the product still opens cleanly in demo mode 
 
 ## Project Structure
 
-- `src/App.jsx` - top-level state and app routing
+- `src/App.jsx` - top-level state, mobile shell, and app routing with lighter first-load derivation
 - `src/components/` - public site, onboarding, dashboard, and tab components
 - `src/data/kidwizData.js` - core curriculum, worlds, rituals, badges, and child/profile data used by the app shell
 - `src/data/kidwizMarketingData.js` - public-site and trust-copy data for lazy marketing and setup surfaces
@@ -92,5 +92,5 @@ If Supabase is not configured yet, the product still opens cleanly in demo mode 
 - connect Supabase tables for real parent accounts, child profiles, journals, progress, and weekly snapshots
 - add a server-side AI layer for bounded tutoring and summaries
 - introduce billing and subscription controls
-- keep trimming the local bundle by pushing more tab-specific derivation and data behind lazy screen boundaries
+- keep trimming the local bundle by pushing the remaining shell-only recommendation and archive helpers behind lazy screen boundaries or async state utilities
 - deepen lesson authoring so each track gets richer interactive practice variations, stronger media moments, and more sharply authored age-banded lesson content

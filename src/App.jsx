@@ -7,7 +7,6 @@ import {
   Users,
 } from "lucide-react";
 import {
-  badgeCatalog,
   celebrationStyles,
   childProfiles,
   coachStyles,
@@ -20,18 +19,11 @@ import {
 } from "./data/kidwizData";
 import { STORAGE_KEY, createDefaultState, loadSavedState } from "./lib/demoState";
 import {
-  buildQuestWorldRows,
-  buildParentWeeklyReport,
-  buildSuggestedPlaylistForChild,
+  buildChildSummaries,
   buildSuggestedPlaylists,
-  buildWeeklyMissionBoard,
-  deriveEarnedBadgeIds,
-  findLessonById,
   findTrackByLessonId,
   getRecommendedLesson,
   getRecommendedStory,
-  getTrackProgress,
-  getTrackStatus,
   getVisibleTracks,
 } from "./lib/progression";
 import { moodOptions, tabItems } from "./lib/uiConfig";
@@ -373,21 +365,6 @@ function App() {
     (choice) => choice.id === childStoryChoices[activeStory.id],
   );
 
-  const trackProgressRows = visibleTracks.map((track) => {
-    const progress = getTrackProgress(selectedChild, track, childCompletedLessonIds);
-    const completedLessons = track.lessons.filter((lesson) =>
-      childCompletedLessonIds.includes(lesson.id),
-    ).length;
-
-    return {
-      ...track,
-      progress,
-      completedLessons,
-      assigned: assignedTrackIds.includes(track.id),
-      status: getTrackStatus(track, childCompletedLessonIds),
-    };
-  });
-
   const recommendedLesson = getRecommendedLesson({
     visibleTracks,
     assignedTrackIds,
@@ -404,52 +381,6 @@ function App() {
   const todayLabel = formatTodayLabel();
   const weeklyCompletion =
     (childCompletedJourneyIds.length / Math.max(1, 5)) * 100;
-  const overviewPlaylistPreview = childPlaylistLessonIds
-    .map((lessonId) => {
-      const lesson = findLessonById(lessonId);
-      const track = findTrackByLessonId(lessonId);
-      return lesson
-        ? {
-            ...lesson,
-            trackTitle: track?.title ?? "",
-          }
-        : null;
-    })
-    .filter(Boolean)
-    .slice(0, 4);
-
-  const earnedBadgeIds = deriveEarnedBadgeIds({
-    completedLessonIds: childCompletedLessonIds,
-    playlistLessonIds: childPlaylistLessonIds,
-    childJournalEntries,
-    completedJourneyIds: childCompletedJourneyIds,
-    storyChoices: childStoryChoices,
-    bodyBoundariesUnlocked: appState.bodyBoundariesUnlocked,
-  });
-  const earnedBadges = badgeCatalog.filter((badge) =>
-    earnedBadgeIds.includes(badge.id),
-  );
-  const nextBadge =
-    badgeCatalog.find((badge) => !earnedBadgeIds.includes(badge.id)) ?? null;
-  const questWorldRows = buildQuestWorldRows({
-    visibleTracks,
-    completedLessonIds: childCompletedLessonIds,
-    weeklyTarget: selectedWeeklyTarget,
-    assignedTrackIds,
-  });
-  const missionBoard = buildWeeklyMissionBoard({
-    child: selectedChild,
-    selectedGoalIds: appState.selectedGoalIds,
-    visibleTracks,
-    weeklyTarget: selectedWeeklyTarget,
-    completedLessonIds: childCompletedLessonIds,
-    storyChoices: childStoryChoices,
-    childJournalEntries,
-    completedJourneyIds: childCompletedJourneyIds,
-    recommendedLesson,
-    nextBadge,
-    nextRitual,
-  });
   const latestWeeklySnapshot =
     (appState.weeklyHistoryByChild?.[selectedChild.id] ?? []).at(-1) ?? null;
   const weeklyLessonCount = Math.max(
@@ -466,152 +397,23 @@ function App() {
     childJournalEntries.length - (latestWeeklySnapshot?.reflectionsTotal ?? 0),
   );
   const familyChatDone = childCompletedJourneyIds.includes("family-chat");
-
-  const suggestedPreviewPlaylists = childProfiles.map((child) => ({
-    child,
-    lessons: buildSuggestedPlaylistForChild(
-      appState.selectedGoalIds,
-      child.id,
-      appState.bodyBoundariesUnlocked,
-      appState.weeklyTargetsByChild?.[child.id],
-    )
-      .map((lessonId) => {
-        const lesson = findLessonById(lessonId);
-        const track = findTrackByLessonId(lessonId);
-        return lesson
-          ? {
-              ...lesson,
-              trackTitle: track?.title ?? "",
-            }
-          : null;
-      })
-      .filter(Boolean),
-  }));
-
-  const childSummaries = childProfiles.map((child) => {
-    const completedLessons = appState.completedLessonIdsByChild[child.id] ?? [];
-    const playlistLessonIds = appState.playlistLessonIdsByChild[child.id] ?? [];
-    const completedJourneys =
-      appState.completedJourneyIdsByChild[child.id] ?? [];
-    const storyChoices = appState.storyChoicesByChild[child.id] ?? {};
-    const journalEntries = appState.childJournalEntriesByChild[child.id] ?? [];
-    const assignedIds = appState.assignedTrackIdsByChild[child.id] ?? [];
-    const weeklyTarget = appState.weeklyTargetsByChild[child.id] ?? {
-      lessons: 3,
-      stories: 2,
-      reflections: 2,
-      focusTrackId: visibleTracks[0].id,
-    };
-    const rows = visibleTracks.map((track) => ({
-      ...track,
-      progress: getTrackProgress(child, track, completedLessons),
-      status: getTrackStatus(track, completedLessons),
-    }));
-    const strongest = [...rows].sort((left, right) => right.progress - left.progress)[0];
-    const support = [...rows].sort((left, right) => left.progress - right.progress)[0];
-    const recommendedLesson = getRecommendedLesson({
-      visibleTracks,
-      assignedTrackIds: assignedIds,
-      playlistLessonIds,
-      completedLessonIds: completedLessons,
-      weeklyTarget,
-    });
-    const recommendedStory = getRecommendedStory({
-      selectedGoalIds: appState.selectedGoalIds,
-      storyChoices,
-    });
-    const childBadgeIds = deriveEarnedBadgeIds({
-      completedLessonIds: completedLessons,
-      playlistLessonIds,
-      childJournalEntries: journalEntries,
-      completedJourneyIds: completedJourneys,
-      storyChoices,
-      bodyBoundariesUnlocked: appState.bodyBoundariesUnlocked,
-    });
-    const latestWeeklySnapshot =
-      (appState.weeklyHistoryByChild?.[child.id] ?? []).at(-1) ?? null;
-    const weeklyLessonCount = Math.max(
-      0,
-      completedLessons.length - (latestWeeklySnapshot?.completedLessonsTotal ?? 0),
-    );
-    const weeklyStoryCount = Math.max(
-      0,
-      Object.keys(storyChoices).length -
-        (latestWeeklySnapshot?.completedStoriesTotal ?? 0),
-    );
-    const weeklyReflectionCount = Math.max(
-      0,
-      journalEntries.length - (latestWeeklySnapshot?.reflectionsTotal ?? 0),
-    );
-    const lessonTargetProgress = Math.min(
-      100,
-      Math.round((weeklyLessonCount / weeklyTarget.lessons) * 100),
-    );
-    const storyTargetProgress = Math.min(
-      100,
-      Math.round((weeklyStoryCount / weeklyTarget.stories) * 100),
-    );
-    const reflectionTargetProgress = Math.min(
-      100,
-      Math.round((weeklyReflectionCount / weeklyTarget.reflections) * 100),
-    );
-
-    return {
-      child,
-      strongestTrack: strongest,
-      supportTrack: support,
-      recommendedLesson,
-      recommendedStory,
-      completedLessons: completedLessons.length,
-      completedStories: Object.keys(storyChoices).length,
-      journalCount: journalEntries.length,
-      badgesEarned: childBadgeIds.length,
-      weeklyLessonCount,
-      weeklyStoryCount,
-      weeklyReflectionCount,
-      weeklyTarget,
-      lessonTargetProgress,
-      storyTargetProgress,
-      reflectionTargetProgress,
-      overallTargetProgress: Math.round(
-        (lessonTargetProgress + storyTargetProgress + reflectionTargetProgress) / 3,
-      ),
-      supportMessage: recommendedLesson
-        ? `${child.supportSpot} Next best move: ${recommendedLesson.lesson.title}.`
-        : `${child.supportSpot} Current visible tracks look complete in the demo state.`,
-    };
-  });
-
-  const familyMetrics = {
-    lessonsDone: childSummaries.reduce(
-      (total, summary) => total + summary.completedLessons,
-      0,
+  const lessonTargetProgress = Math.min(
+    100,
+    Math.round((weeklyLessonCount / Math.max(1, selectedWeeklyTarget.lessons)) * 100),
+  );
+  const storyTargetProgress = Math.min(
+    100,
+    Math.round((weeklyStoryCount / Math.max(1, selectedWeeklyTarget.stories)) * 100),
+  );
+  const reflectionTargetProgress = Math.min(
+    100,
+    Math.round(
+      (weeklyReflectionCount / Math.max(1, selectedWeeklyTarget.reflections)) * 100,
     ),
-    storiesDone: childSummaries.reduce(
-      (total, summary) => total + summary.completedStories,
-      0,
-    ),
-    reflectionsSaved: childSummaries.reduce(
-      (total, summary) => total + summary.journalCount,
-      0,
-    ),
-    badgesEarned: childSummaries.reduce(
-      (total, summary) => total + summary.badgesEarned,
-      0,
-    ),
-  };
-  const weeklyReport = buildParentWeeklyReport({
-    childSummaries,
-    familyMetrics,
-    nextRitual,
-    selectedCelebrationStyle,
-    selectedCoachStyle,
-    selectedGoals,
-    selectedRhythm,
-    weeklyHistoryByChild: appState.weeklyHistoryByChild,
-  });
-  const selectedChildSummary =
-    childSummaries.find((summary) => summary.child.id === selectedChild.id) ?? null;
+  );
+  const selectedChildOverallTargetProgress = Math.round(
+    (lessonTargetProgress + storyTargetProgress + reflectionTargetProgress) / 3,
+  );
   const focusTrackTitle =
     visibleTracks.find((track) => track.id === selectedWeeklyTarget.focusTrackId)
       ?.title ??
@@ -1076,7 +878,21 @@ function App() {
     );
   }
 
-  function buildArchivedSnapshotsMap(weekLabel) {
+  function buildArchivedSnapshotsMap(weekLabel, sourceState = appState) {
+    const childSummaries = buildChildSummaries({
+      bodyBoundariesUnlocked: sourceState.bodyBoundariesUnlocked,
+      selectedGoalIds: sourceState.selectedGoalIds,
+      visibleTracks: getVisibleTracks(sourceState.bodyBoundariesUnlocked),
+      weeklyHistoryByChild: sourceState.weeklyHistoryByChild,
+      assignedTrackIdsByChild: sourceState.assignedTrackIdsByChild,
+      completedJourneyIdsByChild: sourceState.completedJourneyIdsByChild,
+      completedLessonIdsByChild: sourceState.completedLessonIdsByChild,
+      childJournalEntriesByChild: sourceState.childJournalEntriesByChild,
+      playlistLessonIdsByChild: sourceState.playlistLessonIdsByChild,
+      storyChoicesByChild: sourceState.storyChoicesByChild,
+      weeklyTargetsByChild: sourceState.weeklyTargetsByChild,
+    });
+
     return Object.fromEntries(
       childSummaries.map((summary) => [
         summary.child.id,
@@ -1310,6 +1126,7 @@ function App() {
       ) : !appState.onboardingComplete ? (
         <Suspense fallback={<OnboardingLoading />}>
           <OnboardingFlow
+            bodyBoundariesUnlocked={appState.bodyBoundariesUnlocked}
             canAdvance={canAdvanceOnboarding}
             celebrationStyleId={appState.celebrationStyleId}
             coachStyleId={appState.coachStyleId}
@@ -1335,10 +1152,10 @@ function App() {
               }))
             }
             onToggleGoal={handleToggleGoal}
-            previewPlaylists={suggestedPreviewPlaylists}
             selectedGoalIds={appState.selectedGoalIds}
             selectedGoals={selectedGoals}
             step={appState.onboardingStep}
+            weeklyTargetsByChild={appState.weeklyTargetsByChild}
             weeklyRhythmId={appState.weeklyRhythmId}
           />
         </Suspense>
@@ -1428,7 +1245,7 @@ function App() {
               <div className="summary-chip-row mobile-resume-meta">
                 <span className="summary-chip">{focusTrackTitle}</span>
                 <span className="summary-chip">
-                  {selectedChildSummary?.overallTargetProgress ?? 0}% week plan
+                  {selectedChildOverallTargetProgress}% week plan
                 </span>
                 <span className="summary-chip">{selectedChild.todayTheme}</span>
               </div>
@@ -1622,37 +1439,45 @@ function App() {
               >
                 {appState.activeTab === "dashboard" ? (
                   <DashboardTab
-                    childSummaries={childSummaries}
-                    familyMetrics={familyMetrics}
+                    appState={appState}
+                    nextRitual={nextRitual}
                     onAdjustWeeklyTarget={handleAdjustWeeklyTarget}
                     onChangeFocusTrack={handleChangeFocusTrack}
                     onOpenFamily={handleOpenFamily}
                     onOpenLesson={handleOpenLessonForChild}
                     onOpenStory={handleOpenStory}
                     onSelectChild={handleSelectChild}
+                    selectedCelebrationStyle={selectedCelebrationStyle}
+                    selectedCoachStyle={selectedCoachStyle}
+                    selectedGoals={selectedGoals}
                     selectedChildId={selectedChild.id}
+                    selectedRhythm={selectedRhythm}
                     visibleTracks={visibleTracks}
-                    weeklyReport={weeklyReport}
                   />
                 ) : null}
 
                 {appState.activeTab === "overview" ? (
                   <OverviewTab
+                    appState={appState}
                     childCompletedJourneyIds={childCompletedJourneyIds}
+                    childCompletedLessonIds={childCompletedLessonIds}
+                    childJournalEntries={childJournalEntries}
+                    childPlaylistLessonIds={childPlaylistLessonIds}
+                    childStoryChoices={childStoryChoices}
                     dailyJourneys={dailyJourneys}
-                    earnedBadgesCount={earnedBadges.length}
-                    missionBoard={missionBoard}
+                    nextRitual={nextRitual}
                     onOpenFamily={handleOpenFamily}
                     onOpenJournal={handleOpenJournal}
                     onOpenLesson={handleOpenLesson}
                     onOpenStory={handleOpenStory}
                     onSelectTrack={handleSelectTrack}
                     onToggleJourney={handleToggleJourney}
-                    overviewPlaylistPreview={overviewPlaylistPreview}
-                    questWorldRows={questWorldRows}
+                    recommendedLesson={recommendedLesson}
                     selectedChild={selectedChild}
                     selectedGoals={selectedGoals}
+                    selectedWeeklyTarget={selectedWeeklyTarget}
                     todayLabel={todayLabel}
+                    visibleTracks={visibleTracks}
                     weeklyCompletion={weeklyCompletion}
                   />
                 ) : null}
@@ -1687,9 +1512,9 @@ function App() {
                     onToggleComplete={handleToggleLessonComplete}
                     onToggleLessonMilestone={handleToggleLessonMilestone}
                     onTogglePlaylist={handleTogglePlaylistLesson}
+                    assignedTrackIds={assignedTrackIds}
                     selectedCelebrationStyle={selectedCelebrationStyle}
                     selectedChild={selectedChild}
-                    trackProgressRows={trackProgressRows}
                     visibleTracks={visibleTracks}
                   />
                 ) : null}
@@ -1784,7 +1609,6 @@ function App() {
                     selectedCoachStyle={selectedCoachStyle}
                     selectedGoals={selectedGoals}
                     selectedRhythm={selectedRhythm}
-                    trackProgressRows={trackProgressRows}
                     visibleTracks={visibleTracks}
                     weeklyHistoryByChild={appState.weeklyHistoryByChild}
                   />

@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import {
   ArrowDownRight,
   ArrowUpRight,
@@ -13,6 +14,7 @@ import {
   Target,
   Users,
 } from "lucide-react";
+import { buildChildSummaries, buildParentWeeklyReport } from "../lib/progression";
 
 function TrendDelta({ deltaLabel, deltaTone }) {
   const Icon =
@@ -31,18 +33,83 @@ function TrendDelta({ deltaLabel, deltaTone }) {
 }
 
 export function DashboardTab({
-  childSummaries,
-  familyMetrics,
+  appState,
+  nextRitual,
   onAdjustWeeklyTarget,
   onChangeFocusTrack,
   onOpenFamily,
   onOpenLesson,
   onOpenStory,
   onSelectChild,
+  selectedCelebrationStyle,
+  selectedCoachStyle,
+  selectedGoals,
   selectedChildId,
+  selectedRhythm,
   visibleTracks,
-  weeklyReport,
 }) {
+  const childSummaries = useMemo(
+    () =>
+      buildChildSummaries({
+        bodyBoundariesUnlocked: appState.bodyBoundariesUnlocked,
+        selectedGoalIds: appState.selectedGoalIds,
+        visibleTracks,
+        weeklyHistoryByChild: appState.weeklyHistoryByChild,
+        assignedTrackIdsByChild: appState.assignedTrackIdsByChild,
+        completedJourneyIdsByChild: appState.completedJourneyIdsByChild,
+        completedLessonIdsByChild: appState.completedLessonIdsByChild,
+        childJournalEntriesByChild: appState.childJournalEntriesByChild,
+        playlistLessonIdsByChild: appState.playlistLessonIdsByChild,
+        storyChoicesByChild: appState.storyChoicesByChild,
+        weeklyTargetsByChild: appState.weeklyTargetsByChild,
+      }),
+    [appState, visibleTracks],
+  );
+  const familyMetrics = useMemo(
+    () => ({
+      lessonsDone: childSummaries.reduce(
+        (total, summary) => total + summary.completedLessons,
+        0,
+      ),
+      storiesDone: childSummaries.reduce(
+        (total, summary) => total + summary.completedStories,
+        0,
+      ),
+      reflectionsSaved: childSummaries.reduce(
+        (total, summary) => total + summary.journalCount,
+        0,
+      ),
+      badgesEarned: childSummaries.reduce(
+        (total, summary) => total + summary.badgesEarned,
+        0,
+      ),
+    }),
+    [childSummaries],
+  );
+  const weeklyReport = useMemo(
+    () =>
+      buildParentWeeklyReport({
+        childSummaries,
+        familyMetrics,
+        nextRitual,
+        selectedCelebrationStyle,
+        selectedCoachStyle,
+        selectedGoals,
+        selectedRhythm,
+        weeklyHistoryByChild: appState.weeklyHistoryByChild,
+      }),
+    [
+      appState.weeklyHistoryByChild,
+      childSummaries,
+      familyMetrics,
+      nextRitual,
+      selectedCelebrationStyle,
+      selectedCoachStyle,
+      selectedGoals,
+      selectedRhythm,
+    ],
+  );
+
   function handleReportAction(item) {
     if (item.actionType === "lesson" && item.lessonId) {
       onOpenLesson(item.childId, item.lessonId);

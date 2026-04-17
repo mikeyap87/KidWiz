@@ -100,6 +100,7 @@ The value is:
 - `src/App.jsx` now also surfaces child-specific mobile resume and quick-action controls, driven by the same recommendation and weekly-progress logic as the rest of the product.
 - `src/App.jsx` now also includes a parent-only mobile control strip that routes settings work into Family Hub and keeps the sensitive-track toggle in a clearly protected area.
 - `src/components/` contains the public site, onboarding flow, dashboard, and tab-level UI modules.
+- Dashboard, quest-hub, onboarding-preview, family assignment, and course track-progress derivation now run inside their lazy screen modules instead of being precomputed by the app shell on every load.
 - `src/data/kidwizMarketingData.js` now owns public-site and trust-copy content so those lazy surfaces no longer share the same all-purpose data module as the main app shell.
 - `src/data/kidwizDemoSeedData.js` now owns the seeded local demo state so bootstrap defaults are cleaner to evolve without bloating the shared data module.
 - `src/components/CoursesTab.jsx` now owns the lesson-experience builder import so course-only lesson logic loads with the course screen instead of the entry bundle.
@@ -187,6 +188,7 @@ The Family Hub now includes local controls to:
 - The mobile shell now shows a recommended next lesson plus quick actions for story, reflection, and family follow-through, using the same progress signals that drive the dashboard and quest systems.
 - The mobile shell now separates child next steps from parent-only controls so protected settings and sensitive-topic access feel deliberately gated.
 - Marketing/trust content and starter demo seed content now live in their own data modules so lazy surfaces and bootstrap data have cleaner boundaries as the product grows.
+- Dashboard summaries, weekly reports, quest boards, onboarding previews, and track-progress rows now compute inside lazy-loaded screens so the entry bundle stays focused on the shell and active learner controls.
 - Sensitive topics stay behind a parent unlock.
 - AI is positioned as bounded and supportive, not as an unrestricted social chatbot.
 - The app supports demo mode by default so product design can move before backend work is finished.
@@ -205,8 +207,8 @@ The Family Hub now includes local controls to:
 1. Add real Supabase schema for parents, children, tracks, journals, progress, and unlock settings.
 2. Persist weekly snapshots, parent reports, and simulation history outside the browser so trends survive across devices.
 3. Replace the shared track playbooks with richer authored lesson variants, stronger age-banding, and deeper media or interaction types that fit each track.
-4. Keep trimming the local bundle by pushing more tab-specific derivation and data behind lazy screen boundaries.
-5. Split the remaining curriculum and stateful derivation out of the app shell where practical, especially for dashboard and quest-only logic.
+4. Keep trimming the local bundle by moving the remaining shell-owned recommendation, archive, and active-lesson helpers behind lazy boundaries or async bootstrap helpers.
+5. Split the remaining curriculum and stateful derivation out of the app shell where practical, especially around mobile resume state and archive generation.
 6. Add a server-side AI orchestration layer with moderation, age banding, and audit logs.
 7. Replace the static course content model with a more scalable curriculum structure and content authoring approach.
 8. Add billing and subscription controls.

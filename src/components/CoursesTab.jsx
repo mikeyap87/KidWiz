@@ -12,8 +12,8 @@ import {
   Users,
 } from "lucide-react";
 import { buildLessonExperience } from "../lib/lessonExperience";
+import { getTrackProgress, getTrackStatus, isLessonUnlocked } from "../lib/progression";
 import { TrackGlyph } from "../lib/uiConfig";
-import { isLessonUnlocked } from "../lib/progression";
 
 export function CoursesTab({
   activeLesson,
@@ -39,11 +39,17 @@ export function CoursesTab({
   onToggleComplete,
   onToggleLessonMilestone,
   onTogglePlaylist,
+  assignedTrackIds,
   selectedCelebrationStyle,
   selectedChild,
-  trackProgressRows,
   visibleTracks,
 }) {
+  const trackProgressRows = visibleTracks.map((track) => ({
+    ...track,
+    progress: getTrackProgress(selectedChild, track, childCompletedLessonIds),
+    assigned: assignedTrackIds.includes(track.id),
+    status: getTrackStatus(track, childCompletedLessonIds),
+  }));
   const activeLessonExperience = buildLessonExperience({
     childAge: selectedChild.age,
     childName: selectedChild.name,
