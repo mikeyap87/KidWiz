@@ -32,7 +32,7 @@ KidWiz aims to close that gap by giving families one place to build:
 - CRO-focused public website with parent outcome messaging, demo CTAs, trust positioning, and clearer product/prototype proof
 - parent email entry flow with optional Supabase magic-link auth
 - demo-mode fallback when auth is not configured
-- guided family onboarding for goal selection, weekly rhythm, coach style, and celebration style
+- guided family onboarding with a parent decision guide, goal selection, weekly rhythm, coach style, celebration style, first-week launch plan, child-by-child targets, and a ready-to-say parent script
 - parent dashboard with per-child weekly targets, focus tracks, progress, and recommended next lessons
 - parent weekly report layer with highlights, child-specific action plans, family conversation prompts, and trend history
 - parent Daily Brief with a first move, family context, and a ready-to-say parent script for tonight
@@ -115,6 +115,7 @@ The value is:
 - The always-mounted mobile learner shell now lives in its own component so the app shell stays easier to evolve and the mobile-first experience can grow without bloating `App.jsx`.
 - `src/App.jsx` now also includes a parent-only mobile control strip that routes settings work into Family Hub and keeps the sensitive-track toggle in a clearly protected area.
 - `src/components/` contains the public site, onboarding flow, dashboard, and tab-level UI modules.
+- `src/components/OnboardingFlow.jsx` owns the parent setup experience, including the decision guidance strip, selected-priority limits, launch-plan summary, child preview cards, and first-week parent script.
 - `src/components/MobileShell.jsx` owns the mobile learner summary, weekly pulse, quick actions, and parent control rail.
 - Dashboard, quest-hub, onboarding-preview, family assignment, and course track-progress derivation now run inside their lazy screen modules instead of being precomputed by the app shell on every load.
 - Selected-child workspace state and archive snapshots now derive from shared progression helpers so the shell, dashboard, and save-week flows stay aligned.
@@ -191,6 +192,7 @@ The Family Hub now includes local controls to:
 - The first build is intentionally web-first.
 - The current product foundation is parent-led rather than child-signup-first.
 - The local product now includes an onboarding flow instead of skipping straight into the app.
+- Onboarding now behaves like a parent launch-plan builder instead of only a setup picker: it limits the first week to two or three priorities, explains each decision, previews child targets, and gives parents an opening script before the dashboard loads.
 - The local product now includes a quest-style child home experience instead of a plain dashboard-style landing screen.
 - The parent dashboard now includes a weekly report plus historical trend comparison rather than only raw metrics and controls.
 - Historical trend comparison is now driven by archived local snapshots instead of a fixed read-only seed.

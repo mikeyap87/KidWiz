@@ -623,6 +623,60 @@
   background: rgba(217, 255, 107, 0.08);
 }
 
+.onboarding-guidance-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 18px;
+  border: 1px solid rgba(217, 255, 107, 0.18);
+  background: rgba(217, 255, 107, 0.07);
+}
+
+.onboarding-guidance-strip h2,
+.onboarding-guidance-strip p {
+  margin: 0;
+}
+
+.onboarding-guidance-strip h2 {
+  margin-top: 6px;
+  font-size: 1.3rem;
+}
+
+.onboarding-guidance-strip p:not(.eyebrow) {
+  margin-top: 8px;
+  color: rgba(246, 248, 251, 0.74);
+  line-height: 1.55;
+}
+
+.onboarding-guidance-strip > span {
+  flex: 0 0 auto;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(246, 248, 251, 0.08);
+  color: #f6f8fb;
+  font-size: 0.88rem;
+  font-weight: 800;
+}
+
+.onboarding-choice-note {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1px solid rgba(246, 248, 251, 0.08);
+  background: rgba(246, 248, 251, 0.04);
+}
+
+.onboarding-choice-note strong {
+  flex: 0 0 auto;
+}
+
+.onboarding-choice-note span {
+  color: rgba(246, 248, 251, 0.72);
+  line-height: 1.5;
+}
+
 .choice-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -660,6 +714,11 @@
   margin: 0;
   color: rgba(246, 248, 251, 0.72);
   line-height: 1.58;
+}
+
+.choice-tile:disabled {
+  cursor: not-allowed;
+  opacity: 0.48;
 }
 
 .choice-tile.is-selected,
@@ -725,6 +784,58 @@
   gap: 16px;
 }
 
+.onboarding-launch-plan {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 0.7fr);
+  gap: 16px;
+  padding: 22px;
+  border: 1px solid rgba(63, 208, 201, 0.22);
+  background: rgba(63, 208, 201, 0.08);
+}
+
+.onboarding-launch-copy h2,
+.onboarding-launch-copy p,
+.onboarding-script-card p,
+.onboarding-script-card strong,
+.onboarding-script-card span {
+  margin: 0;
+}
+
+.onboarding-launch-copy h2 {
+  margin-top: 8px;
+  font-size: 1.55rem;
+}
+
+.onboarding-launch-copy p:not(.eyebrow) {
+  margin-top: 10px;
+  color: rgba(246, 248, 251, 0.74);
+  line-height: 1.58;
+}
+
+.onboarding-script-card {
+  display: grid;
+  gap: 10px;
+  padding: 18px;
+  border: 1px solid rgba(246, 248, 251, 0.1);
+  background: rgba(246, 248, 251, 0.05);
+}
+
+.onboarding-script-card p {
+  color: rgba(246, 248, 251, 0.6);
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.onboarding-script-card strong {
+  line-height: 1.5;
+}
+
+.onboarding-script-card span {
+  color: rgba(246, 248, 251, 0.68);
+  line-height: 1.5;
+}
+
 .preview-panel,
 .surface-panel,
 .hero-surface,
@@ -756,6 +867,24 @@
   margin-top: 8px;
   color: rgba(246, 248, 251, 0.72);
   line-height: 1.55;
+}
+
+.onboarding-target-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.onboarding-target-row span {
+  margin: 0;
+  min-height: 30px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(246, 248, 251, 0.08);
+  color: #f6f8fb;
+  font-size: 0.82rem;
+  font-weight: 800;
 }
 
 .preview-lesson-list {
@@ -823,6 +952,47 @@
   margin: 12px 0 0;
   color: rgba(246, 248, 251, 0.74);
   line-height: 1.58;
+}
+
+.onboarding-plan-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.onboarding-plan-row {
+  padding-top: 12px;
+  border-top: 1px solid rgba(246, 248, 251, 0.08);
+}
+
+.onboarding-plan-row:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.onboarding-plan-row span,
+.onboarding-plan-row strong,
+.onboarding-plan-row p {
+  display: block;
+  margin: 0;
+}
+
+.onboarding-plan-row span {
+  color: rgba(246, 248, 251, 0.56);
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.onboarding-plan-row strong {
+  margin-top: 5px;
+  color: #f6f8fb;
+}
+
+.onboarding-plan-row p {
+  margin-top: 6px;
+  color: rgba(246, 248, 251, 0.68);
+  line-height: 1.45;
 }
 
 .promise-list {
@@ -5331,6 +5501,7 @@
   .data-model-head,
   .dashboard-report-grid,
   .dashboard-trend-overview,
+  .onboarding-launch-plan,
   .quest-hero-band,
   .quest-main-grid,
   .overview-hero-grid,
@@ -5394,6 +5565,8 @@
   .story-skill-next,
   .lesson-momentum-head,
   .learning-path-head,
+  .onboarding-choice-note,
+  .onboarding-guidance-strip,
   .lesson-stage-row,
   .lesson-follow-row {
     flex-direction: column;

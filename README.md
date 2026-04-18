@@ -4,7 +4,7 @@ KidWiz is a modern children's education SaaS concept that combines traditional l
 
 - a polished public-facing website
 - a parent login entry with optional Supabase magic-link auth
-- a guided family onboarding flow for goals, rhythm, and coach style
+- a guided family onboarding flow with a parent decision guide, goals, rhythm, coach style, celebration style, and first-week launch plan
 - a fully navigable demo application for family learning
 - a Quest Hub with world-map navigation, weekly missions, a Kid Daily Quest Brief, and visible rewards
 - a parent weekly report layer with action plans, conversation prompts, and stateful trend history
@@ -63,7 +63,7 @@ If Supabase is not configured yet, the product still opens cleanly in demo mode 
 ## Current Local Product Shape
 
 - CRO-focused public marketing site with sharper parent outcomes, trust positioning, and demo entry points
-- guided onboarding flow
+- guided onboarding flow that turns parent setup choices into a first-week launch plan, child-by-child targets, and a ready-to-say parent script
 - parent dashboard with child-by-child weekly targets, weekly report summaries, archived trend comparisons, and recommendations
 - a parent Daily Brief that turns the week into one clear first move, family context, and a ready-to-say parent script
 - a Parent Progress Narrative that turns metrics into a warm weekly story about growth, tender spots, and next steps
@@ -99,6 +99,7 @@ If Supabase is not configured yet, the product still opens cleanly in demo mode 
 
 - `src/App.jsx` - top-level state, mobile shell, and app routing with lighter first-load derivation
 - `src/components/` - public site, onboarding, dashboard, and tab components
+- `src/components/OnboardingFlow.jsx` - parent setup flow with goal selection, rhythm choices, launch-plan summary, and first-week preview
 - `src/components/MobileShell.jsx` - extracted mobile learner shell, section nav, quick actions, and parent control rail
 - `src/data/kidwizData.js` - core curriculum, worlds, rituals, badges, and child/profile data used by the app shell
 - `src/data/kidwizMarketingData.js` - public-site and trust-copy data for lazy marketing and setup surfaces
