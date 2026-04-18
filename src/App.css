@@ -355,6 +355,130 @@
   font-size: 1.05rem;
 }
 
+.conversion-band {
+  padding: 24px 0;
+  background: #11151f;
+}
+
+.conversion-proof-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.conversion-proof-card {
+  min-height: 150px;
+  padding: 18px;
+  border: 1px solid rgba(217, 255, 107, 0.18);
+  background: rgba(246, 248, 251, 0.06);
+}
+
+.conversion-proof-card h2,
+.conversion-proof-card p,
+.preview-path-card h3,
+.preview-path-card p,
+.outcome-card p,
+.outcome-card h3,
+.outcome-card span {
+  overflow-wrap: anywhere;
+}
+
+.conversion-proof-card h2 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 1rem;
+}
+
+.conversion-proof-card p {
+  margin: 12px 0 0;
+  color: rgba(246, 248, 251, 0.72);
+  line-height: 1.56;
+}
+
+.preview-path-band,
+.outcome-band {
+  padding: 88px 0;
+  background: #f7fafc;
+}
+
+.preview-path-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 34px;
+  align-items: start;
+}
+
+.preview-path-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.preview-path-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 20px;
+  align-items: center;
+  min-height: 156px;
+  padding: 22px;
+  border: 1px solid rgba(17, 21, 31, 0.08);
+  background: #ffffff;
+}
+
+.outcome-card p {
+  margin: 0 0 10px;
+  color: #ff6b4a;
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.preview-path-card h3 {
+  margin: 0 0 10px;
+  color: #ff6b4a;
+  font-size: 0.82rem;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.preview-path-card p {
+  margin: 0;
+  color: #11151f;
+  font-size: 1.2rem;
+  line-height: 1.36;
+}
+
+.outcome-band {
+  border-top: 1px solid rgba(17, 21, 31, 0.08);
+}
+
+.outcome-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 34px;
+}
+
+.outcome-card {
+  min-height: 228px;
+  padding: 22px;
+  border: 1px solid rgba(17, 21, 31, 0.08);
+  background: #ffffff;
+}
+
+.outcome-card h3 {
+  margin: 0;
+  color: #11151f;
+  font-size: 1.38rem;
+  line-height: 1.2;
+}
+
+.outcome-card span {
+  display: block;
+  margin-top: 16px;
+  color: rgba(12, 16, 24, 0.72);
+  line-height: 1.6;
+}
+
 .feature-band,
 .course-band,
 .story-band,
@@ -5206,7 +5330,9 @@
 
 @media (max-width: 1120px) {
   .feature-grid,
+  .conversion-proof-grid,
   .course-showcase,
+  .outcome-grid,
   .track-grid,
   .dashboard-summary-grid,
   .dashboard-report-stat-grid,
@@ -5223,6 +5349,7 @@
   }
 
   .trust-layout,
+  .preview-path-layout,
   .spark-safety-head,
   .daily-brief-main,
   .daily-brief-grid,
@@ -5298,6 +5425,7 @@
   .topbar,
   .app-topbar-inner,
   .hero-login-row,
+  .preview-path-card,
   .coach-hero,
   .story-layout,
   .story-skill-head,
@@ -5361,8 +5489,10 @@
   }
 
   .hero-stat-row,
+  .conversion-proof-grid,
   .feature-grid,
   .course-showcase,
+  .outcome-grid,
   .dashboard-summary-grid,
   .daily-brief-spotlight,
   .quest-daily-reasons,
@@ -5410,6 +5540,14 @@
 
   .hero-login-row {
     display: grid;
+  }
+
+  .preview-path-card {
+    grid-template-columns: 1fr;
+  }
+
+  .preview-path-card .solid-button {
+    width: 100%;
   }
 
   .story-layout {

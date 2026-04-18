@@ -2,6 +2,9 @@ import { ArrowRight } from "lucide-react";
 import { storyEpisodes } from "../data/kidwizData";
 import {
   appHighlights,
+  conversionProofPoints,
+  demoPathways,
+  familyOutcomes,
   heroStats,
   siteImages,
   trustSignals,
@@ -46,15 +49,15 @@ export function PublicSite({
         </div>
 
         <div className="hero-content page-width">
-          <p className="eyebrow">A children's learning universe for real life</p>
+          <p className="eyebrow">Family learning for real life</p>
           <h1>
-            School skills, life skills, and family wisdom in one beautiful
-            product.
+            Help your child build school skills, confidence, and life judgment
+            in one guided week.
           </h1>
           <p className="hero-copy">
-            KidWiz now includes guided family onboarding, deeper course arcs,
-            weekly playlists, badges, journals, parent controls, branching
-            stories, and a bounded AI-style coach experience for local review.
+            KidWiz gives parents a clear setup path and children a playful
+            daily quest system across lessons, stories, journals, badges, and
+            family conversations.
           </p>
 
           <div className="hero-actions">
@@ -83,7 +86,7 @@ export function PublicSite({
             </div>
             <p className="login-note">
               {authMessage ||
-                "Supabase is optional right now. Local demo mode keeps everything testable while we shape the product."}
+                "Preview the product without child data, or use magic-link login when Supabase is configured."}
             </p>
           </form>
 
@@ -95,6 +98,66 @@ export function PublicSite({
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="conversion-band">
+        <div className="page-width conversion-proof-grid">
+          {conversionProofPoints.map((point) => (
+            <article key={point.title} className="conversion-proof-card">
+              <h2>{point.title}</h2>
+              <p>{point.copy}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="preview-path-band">
+        <div className="page-width preview-path-layout">
+          <div className="section-heading">
+            <p className="eyebrow eyebrow-dark">Choose your preview</p>
+            <h2>Start where the decision actually happens.</h2>
+            <p>
+              Parents can review the setup flow first or jump into a complete
+              family week with enough depth to understand the product loop.
+            </p>
+          </div>
+
+          <div className="preview-path-grid">
+            {demoPathways.map((pathway) => (
+              <article key={pathway.title} className="preview-path-card">
+                <div>
+                  <h3>{pathway.title}</h3>
+                  <p>{pathway.copy}</p>
+                </div>
+                <button
+                  className="solid-button"
+                  onClick={() => onDemoStart(pathway.demoMode)}
+                  type="button"
+                >
+                  {pathway.cta}
+                  <ArrowRight size={16} />
+                </button>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="outcome-band">
+        <div className="page-width section-heading">
+          <p className="eyebrow eyebrow-dark">Why families come back</p>
+          <h2>Each screen answers a different family job.</h2>
+        </div>
+
+        <div className="page-width outcome-grid">
+          {familyOutcomes.map((outcome) => (
+            <article key={outcome.label} className="outcome-card">
+              <p>{outcome.label}</p>
+              <h3>{outcome.title}</h3>
+              <span>{outcome.copy}</span>
+            </article>
+          ))}
         </div>
       </section>
 

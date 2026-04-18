@@ -29,7 +29,7 @@ KidWiz aims to close that gap by giving families one place to build:
 
 ## Core Features In This Build
 
-- immersive public website with strong KidWiz positioning
+- immersive public website with stronger CRO messaging, parent proof cues, and clear preview paths
 - parent email entry flow with optional Supabase magic-link auth
 - demo-mode fallback when auth is not configured
 - guided family onboarding for goal selection, weekly rhythm, coach style, and celebration style
@@ -189,6 +189,7 @@ The Family Hub now includes local controls to:
 
 - KidWiz lives in its own isolated folder: `KidWiz`.
 - The first build is intentionally web-first.
+- The public site now routes visitors into either a parent setup preview or a seeded full demo week so the first conversion decision is clearer.
 - The current product foundation is parent-led rather than child-signup-first.
 - The local product now includes an onboarding flow instead of skipping straight into the app.
 - The local product now includes a quest-style child home experience instead of a plain dashboard-style landing screen.

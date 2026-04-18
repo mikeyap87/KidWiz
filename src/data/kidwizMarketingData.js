@@ -8,9 +8,65 @@ export const siteImages = {
 };
 
 export const heroStats = [
+  { label: "First preview", value: "no setup required" },
   { label: "Guided tracks", value: "8 course arcs" },
-  { label: "Story branches", value: "21 child choices" },
   { label: "Family loops", value: "playlists, badges, journals" },
+];
+
+export const conversionProofPoints = [
+  {
+    title: "Parent-led from the first click",
+    copy:
+      "Start with goals, rhythm, coach style, and sensitive-topic controls before a child enters the experience.",
+  },
+  {
+    title: "Built for repeat weeks",
+    copy:
+      "Daily quests, playlists, journals, stories, badges, and parent reports create a clear reason to come back.",
+  },
+  {
+    title: "AI kept in a support role",
+    copy:
+      "Coach guidance is framed around bounded practice, summaries, and parent-visible next steps.",
+  },
+];
+
+export const demoPathways = [
+  {
+    title: "Parent Setup Preview",
+    copy:
+      "Choose family goals, weekly rhythm, coach tone, and celebration style before seeing the app.",
+    cta: "Plan the setup",
+    demoMode: "guided",
+  },
+  {
+    title: "Full Demo Week",
+    copy:
+      "Jump into a seeded family week with courses, quests, stories, journals, controls, and reports already active.",
+    cta: "Open the demo week",
+    demoMode: "instant",
+  },
+];
+
+export const familyOutcomes = [
+  {
+    label: "For parents",
+    title: "A calmer way to know what to do next",
+    copy:
+      "The dashboard turns progress, reflections, story choices, and nudges into a practical first move for tonight.",
+  },
+  {
+    label: "For children",
+    title: "A next mission that feels playful",
+    copy:
+      "The Quest Hub gives each child one visible mission, one reason it matters, and rewards tied to real growth.",
+  },
+  {
+    label: "For the family",
+    title: "A weekly conversation instead of scattered apps",
+    copy:
+      "Family meetings, share previews, and progress narratives make learning easier to talk about at home.",
+  },
 ];
 
 export const appHighlights = [
