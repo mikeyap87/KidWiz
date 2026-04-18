@@ -1411,6 +1411,127 @@ export function buildChildCelebrationReel({
   };
 }
 
+export function buildChildAchievementPortfolio({
+  child,
+  completedLessonIds,
+  completedJourneyIds,
+  childJournalEntries,
+  storyChoices,
+  earnedBadges,
+  selectedGoals,
+  nextBadge,
+}) {
+  const storyCount = Object.keys(storyChoices ?? {}).length;
+  const familyChatDone = completedJourneyIds.includes("family-chat");
+  const trackCounts = completedLessonIds.reduce((counts, lessonId) => {
+    const track = findTrackByLessonId(lessonId);
+
+    if (!track) {
+      return counts;
+    }
+
+    return {
+      ...counts,
+      [track.id]: {
+        track,
+        count: (counts[track.id]?.count ?? 0) + 1,
+      },
+    };
+  }, {});
+  const strongestTrack =
+    Object.values(trackCounts).sort((a, b) => b.count - a.count)[0]?.track ?? null;
+  const latestReflection = childJournalEntries.at(-1);
+  const reflectionSnippet = latestReflection?.text
+    ? latestReflection.text.length > 96
+      ? `${latestReflection.text.slice(0, 96)}...`
+      : latestReflection.text
+    : "";
+  const topGoal = selectedGoals[0];
+  const totalArtifacts =
+    completedLessonIds.length +
+    storyCount +
+    childJournalEntries.length +
+    earnedBadges.length +
+    (familyChatDone ? 1 : 0);
+  const identityLine =
+    totalArtifacts > 0
+      ? `${child.name} is becoming a ${child.levelTitle.toLowerCase()} who practices ${topGoal?.title.toLowerCase() ?? "real-life skills"} with courage and reflection.`
+      : `${child.name}'s portfolio is ready for the first proof of growth.`;
+
+  const proofCards = [
+    {
+      label: "Skill proof",
+      title: strongestTrack?.title ?? "First skill proof",
+      copy: strongestTrack
+        ? `${completedLessonIds.length} lesson win${completedLessonIds.length === 1 ? "" : "s"} point toward ${strongestTrack.project.toLowerCase()}`
+        : "Complete one lesson to add the first portfolio artifact.",
+      tone: strongestTrack ? "good" : "neutral",
+    },
+    {
+      label: "Voice proof",
+      title: latestReflection?.mood ?? "Reflection waiting",
+      copy: latestReflection
+        ? `${child.name} turned a ${latestReflection.mood} moment into words: "${reflectionSnippet}"`
+        : "Save a reflection to capture what the week felt like from the inside.",
+      tone: latestReflection ? "warn" : "neutral",
+    },
+    {
+      label: "Choice proof",
+      title: `${storyCount} story choice${storyCount === 1 ? "" : "s"}`,
+      copy:
+        storyCount > 0
+          ? "Branching story practice is becoming a record of decisions before real life asks for them."
+          : "Choose a story branch to add a decision-making artifact.",
+      tone: storyCount > 0 ? "good" : "neutral",
+    },
+    {
+      label: "Home proof",
+      title: familyChatDone ? "Family chat logged" : "Family ritual open",
+      copy: familyChatDone
+        ? "One learning moment made it into a family conversation."
+        : "Complete a family prompt to connect practice back to home life.",
+      tone: familyChatDone ? "good" : "warn",
+    },
+  ];
+
+  const keepsakes = [
+    {
+      label: "Badge shelf",
+      value:
+        earnedBadges.length > 0
+          ? earnedBadges.map((badge) => badge.title).slice(0, 3).join(", ")
+          : nextBadge
+            ? `Next keepsake: ${nextBadge.title}`
+            : "Badge wall ready",
+    },
+    {
+      label: "Best parent share line",
+      value:
+        totalArtifacts > 0
+          ? `I noticed you kept practicing even when the skill was still new.`
+          : `I am excited to see what you try first.`,
+    },
+    {
+      label: "Companion note",
+      value: `${child.companionName} is watching for effort, repair, reflection, and brave starts.`,
+    },
+  ];
+
+  return {
+    title: `${child.name}'s Achievement Portfolio`,
+    identityLine,
+    totalArtifacts,
+    subtitle:
+      totalArtifacts > 0
+        ? `${totalArtifacts} portfolio artifact${totalArtifacts === 1 ? "" : "s"} from this local week.`
+        : "No artifacts yet, but the portfolio is ready.",
+    proofCards,
+    keepsakes,
+    sharePrompt:
+      "Save one sentence tonight: what grew, what felt hard, and what small move is worth repeating.",
+  };
+}
+
 function formatJoinedList(items) {
   if (items.length <= 1) {
     return items[0] ?? "";

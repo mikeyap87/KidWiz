@@ -13,6 +13,7 @@ import {
 import { badgeCatalog } from "../data/kidwizData";
 import {
   buildChildCelebrationReel,
+  buildChildAchievementPortfolio,
   buildKidDailyQuestBrief,
   buildQuestWorldRows,
   buildWeeklyMissionBoard,
@@ -86,7 +87,7 @@ export function OverviewTab({
         .slice(0, 4),
     [childPlaylistLessonIds],
   );
-  const earnedBadgesCount = useMemo(
+  const earnedBadgesSummary = useMemo(
     () => {
       const earnedBadgeIds = deriveEarnedBadgeIds({
         completedLessonIds: childCompletedLessonIds,
@@ -96,9 +97,13 @@ export function OverviewTab({
         storyChoices: childStoryChoices,
         bodyBoundariesUnlocked: appState.bodyBoundariesUnlocked,
       });
+      const earnedBadges = badgeCatalog.filter((badge) =>
+        earnedBadgeIds.includes(badge.id),
+      );
 
       return {
         count: earnedBadgeIds.length,
+        earnedBadges,
         nextBadge:
           badgeCatalog.find((badge) => !earnedBadgeIds.includes(badge.id)) ?? null,
       };
@@ -140,7 +145,7 @@ export function OverviewTab({
         childJournalEntries,
         completedJourneyIds: childCompletedJourneyIds,
         recommendedLesson,
-        nextBadge: earnedBadgesCount.nextBadge,
+        nextBadge: earnedBadgesSummary.nextBadge,
         nextRitual,
         signal: selectedSignal,
       }),
@@ -150,7 +155,7 @@ export function OverviewTab({
       childCompletedLessonIds,
       childJournalEntries,
       childStoryChoices,
-      earnedBadgesCount,
+      earnedBadgesSummary,
       nextRitual,
       recommendedLesson,
       selectedSignal,
@@ -190,16 +195,38 @@ export function OverviewTab({
         completedJourneyIds: childCompletedJourneyIds,
         childJournalEntries,
         storyChoices: childStoryChoices,
-        earnedBadgeCount: earnedBadgesCount.count,
-        nextBadge: earnedBadgesCount.nextBadge,
+        earnedBadgeCount: earnedBadgesSummary.count,
+        nextBadge: earnedBadgesSummary.nextBadge,
       }),
     [
       childCompletedJourneyIds,
       childCompletedLessonIds,
       childJournalEntries,
       childStoryChoices,
-      earnedBadgesCount,
+      earnedBadgesSummary,
       selectedChild,
+    ],
+  );
+  const achievementPortfolio = useMemo(
+    () =>
+      buildChildAchievementPortfolio({
+        child: selectedChild,
+        completedLessonIds: childCompletedLessonIds,
+        completedJourneyIds: childCompletedJourneyIds,
+        childJournalEntries,
+        storyChoices: childStoryChoices,
+        earnedBadges: earnedBadgesSummary.earnedBadges,
+        selectedGoals,
+        nextBadge: earnedBadgesSummary.nextBadge,
+      }),
+    [
+      childCompletedJourneyIds,
+      childCompletedLessonIds,
+      childJournalEntries,
+      childStoryChoices,
+      earnedBadgesSummary,
+      selectedChild,
+      selectedGoals,
     ],
   );
 
@@ -395,6 +422,47 @@ export function OverviewTab({
         </div>
       </section>
 
+      <section className="achievement-portfolio-panel">
+        <div className="achievement-portfolio-main">
+          <div>
+            <div className="panel-head">
+              <Star size={18} />
+              <h2>{achievementPortfolio.title}</h2>
+            </div>
+            <div className="achievement-portfolio-copy">
+              <p>{achievementPortfolio.subtitle}</p>
+              <h3>{achievementPortfolio.identityLine}</h3>
+              <span>{achievementPortfolio.sharePrompt}</span>
+            </div>
+          </div>
+
+          <div className="achievement-artifact-score">
+            <p>Portfolio artifacts</p>
+            <strong>{achievementPortfolio.totalArtifacts}</strong>
+            <span>Proof from lessons, stories, reflections, badges, and family practice.</span>
+          </div>
+        </div>
+
+        <div className="achievement-proof-grid">
+          {achievementPortfolio.proofCards.map((card) => (
+            <article key={card.label} className={`achievement-proof-card is-${card.tone}`}>
+              <p>{card.label}</p>
+              <strong>{card.title}</strong>
+              <span>{card.copy}</span>
+            </article>
+          ))}
+        </div>
+
+        <div className="achievement-keepsake-grid">
+          {achievementPortfolio.keepsakes.map((keepsake) => (
+            <article key={keepsake.label} className="achievement-keepsake-card">
+              <p>{keepsake.label}</p>
+              <strong>{keepsake.value}</strong>
+            </article>
+          ))}
+        </div>
+      </section>
+
       <div className="quest-main-grid">
         <section className="surface-panel quest-mission-panel">
           <div className="panel-head">
@@ -461,7 +529,7 @@ export function OverviewTab({
             <div className="quest-reward-grid">
               <div className="signal-card quest-side-card">
                 <p>Badges earned</p>
-                <strong>{earnedBadgesCount.count}</strong>
+                <strong>{earnedBadgesSummary.count}</strong>
                 <span>Current local badge wall progress for {selectedChild.name}.</span>
               </div>
               <div className="signal-card quest-side-card">

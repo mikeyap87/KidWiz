@@ -41,6 +41,7 @@ KidWiz aims to close that gap by giving families one place to build:
 - Quest Hub for the child experience with a world map, weekly mission board, reward shelf, and guided rhythm checklist
 - Kid Daily Quest Brief with one next mission, one reason it matters, one unlock, and one confidence prompt for the selected child
 - Child Celebration Reel that turns lessons, stories, reflections, badges, and family practice into a visible weekly win moment
+- Child Achievement Portfolio that converts lessons, journals, stories, badges, and family rituals into proof cards, keepsakes, and parent-share language
 - multi-child switching inside the app shell
 - seven always-available course tracks:
   - Wonder Lab
@@ -214,6 +215,7 @@ The Family Hub now includes local controls to:
 - Dashboard now includes a parent review queue so reflections, story signals, planning nudges, and family follow-up appear together instead of staying scattered across tabs.
 - Quest Hub now includes a Kid Daily Quest Brief so the child gets the same signal-aware clarity as the parent, translated into playful next-step language.
 - Quest Hub now includes a Child Celebration Reel so children can see what they built this week across lessons, stories, reflections, badges, and family practice.
+- Quest Hub now includes a Child Achievement Portfolio so weekly activity becomes a durable growth record parents and children can revisit together.
 - Courses now include a Learning Path Map so every track shows locked, unlocked, next, playlist, and completed lesson states with a parent cue beside the active lesson.
 - Stories now include a Story Skill Debrief after each saved choice so a branch turns into a named skill, parent question, child reflection, and recommended next lesson.
 - Journal now includes an Insight Coach so child reflections become parent-readable patterns and suggested practice instead of a static list of notes.
