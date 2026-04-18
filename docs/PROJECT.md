@@ -59,7 +59,7 @@ KidWiz aims to close that gap by giving families one place to build:
 - expanded branching story library across confidence, money, and family repair scenarios
 - trend tracking that compares the current week against archived local snapshots for each child and the family overall
 - daily rhythm checklist with visible completion inside the Quest Hub
-- guided lesson flow for each course track with track-specific playbooks, visual practice panels, authored scenario cards, interactive move storyboards, age-band aware prompts, coach cues, activity milestones, quiz checkpoints, and a parent follow-through loop
+- guided lesson flow for each course track with Learning Path Maps, track-specific playbooks, visual practice panels, authored scenario cards, interactive move storyboards, age-band aware prompts, coach cues, activity milestones, quiz checkpoints, and a parent follow-through loop
 - lazy-loaded public, onboarding, and tab-level screen modules with polished loading states so the local product stays responsive as more curriculum ships
 - a mobile-first in-app shell with learner switching and sticky section navigation, replacing the old stacked-sidebar behavior on smaller screens
 - a child-specific mobile resume strip and quick-action rail so a parent can jump straight into the next lesson, story, reflection, or family prompt
@@ -205,6 +205,7 @@ The Family Hub now includes local controls to:
 - Dashboard now includes a parent Daily Brief that explains what happened, why it matters, what to do first, and what to say tonight.
 - Dashboard now includes a parent review queue so reflections, story signals, planning nudges, and family follow-up appear together instead of staying scattered across tabs.
 - Quest Hub now includes a Kid Daily Quest Brief so the child gets the same signal-aware clarity as the parent, translated into playful next-step language.
+- Courses now include a Learning Path Map so every track shows locked, unlocked, next, playlist, and completed lesson states with a parent cue beside the active lesson.
 - Sensitive topics stay behind a parent unlock.
 - AI is positioned as bounded and supportive, not as an unrestricted social chatbot.
 - The app supports demo mode by default so product design can move before backend work is finished.

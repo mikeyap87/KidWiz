@@ -8,7 +8,7 @@ KidWiz is a modern children's education SaaS concept that combines traditional l
 - a fully navigable demo application for family learning
 - a Quest Hub with world-map navigation, weekly missions, a Kid Daily Quest Brief, and visible rewards
 - a parent weekly report layer with action plans, conversation prompts, and stateful trend history
-- eight course tracks with multi-lesson arcs, guided lesson flows, track-specific playbooks, visual practice panels, age-band aware lesson copy, authored scenario cards, and interactive move storyboards
+- eight course tracks with multi-lesson arcs, Learning Path Maps, guided lesson flows, track-specific playbooks, visual practice panels, age-band aware lesson copy, authored scenario cards, and interactive move storyboards
 - lazy-loaded public, onboarding, and app-screen modules with in-product loading states so the local build stays fast as content grows
 - a mobile weekly-pulse strip that makes lesson, story, and reflection targets readable at a glance
 - a mobile-first in-app shell with learner switching and sticky section navigation instead of a collapsed desktop sidebar
@@ -69,7 +69,7 @@ If Supabase is not configured yet, the product still opens cleanly in demo mode 
 - child-facing Quest Hub with mission board, world map, reward shelf, and rhythm checklist
 - a Kid Daily Quest Brief that gives the selected child one next mission, one reason, one unlock, and one confidence prompt
 - multi-child switching
-- course library with lesson progress, track-specific lesson playbooks, visual practice panels, authored scenario cards, interactive move storyboards, age-band aware prompts, guided milestones, quiz checkpoints, and sequential progression
+- course library with lesson progress, Learning Path Maps, track-specific lesson playbooks, visual practice panels, authored scenario cards, interactive move storyboards, age-band aware prompts, guided milestones, quiz checkpoints, and sequential progression
 - weekly playlists
 - branching story choices across confidence, money, relationships, and digital safety
 - Spark Coach demo layer with different coaching modes

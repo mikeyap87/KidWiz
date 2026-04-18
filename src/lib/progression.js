@@ -102,6 +102,45 @@ export function getTrackStatus(track, completedLessonIds) {
   };
 }
 
+export function buildLearningPathMap({
+  activeLessonId,
+  completedLessonIds,
+  playlistLessonIds,
+  track,
+}) {
+  const nextOpenLesson = getNextTrackLesson(track, completedLessonIds);
+
+  return {
+    nextOpenLesson,
+    checkpointLabel: nextOpenLesson
+      ? `Next checkpoint: ${nextOpenLesson.title}`
+      : `Capstone ready: ${track.project}`,
+    rows: track.lessons.map((lesson, index) => {
+      const complete = completedLessonIds.includes(lesson.id);
+      const unlocked = complete || isLessonUnlocked(track, lesson.id, completedLessonIds);
+      const queued = playlistLessonIds.includes(lesson.id);
+      const isNext = nextOpenLesson?.id === lesson.id;
+
+      return {
+        lesson,
+        index,
+        complete,
+        unlocked,
+        queued,
+        isActive: activeLessonId === lesson.id,
+        isNext,
+        stateLabel: complete
+          ? "Complete"
+          : isNext
+            ? "Next"
+            : unlocked
+              ? "Unlocked"
+              : "Locked",
+      };
+    }),
+  };
+}
+
 function countCompletedLessons(track, completedLessonIds) {
   return track.lessons.filter((lesson) => completedLessonIds.includes(lesson.id)).length;
 }

@@ -12,7 +12,12 @@ import {
   Users,
 } from "lucide-react";
 import { buildLessonExperience } from "../lib/lessonExperience";
-import { getTrackProgress, getTrackStatus, isLessonUnlocked } from "../lib/progression";
+import {
+  buildLearningPathMap,
+  getTrackProgress,
+  getTrackStatus,
+  isLessonUnlocked,
+} from "../lib/progression";
 import { TrackGlyph } from "../lib/uiConfig";
 
 export function CoursesTab({
@@ -63,6 +68,12 @@ export function CoursesTab({
   const lessonIndex = activeTrack.lessons.findIndex(
     (lesson) => lesson.id === activeLesson.id,
   );
+  const learningPathMap = buildLearningPathMap({
+    activeLessonId: activeLesson.id,
+    completedLessonIds: childCompletedLessonIds,
+    playlistLessonIds: childPlaylistLessonIds,
+    track: activeTrack,
+  });
   const nextLesson = activeTrack.lessons[lessonIndex + 1] ?? null;
   const lessonComplete = childCompletedLessonIds.includes(activeLesson.id);
   const familyChatDone = childCompletedJourneyIds.includes("family-chat");
@@ -255,6 +266,58 @@ export function CoursesTab({
             <div>
               <p>Capstone</p>
               <strong>{activeTrack.project}</strong>
+            </div>
+          </div>
+
+          <div className="learning-path-map">
+            <div className="learning-path-head">
+              <div>
+                <p>Learning path map</p>
+                <strong>{learningPathMap.checkpointLabel}</strong>
+              </div>
+              <span>
+                {trackProgressRows.find((row) => row.id === activeTrack.id)?.status.detail}
+              </span>
+            </div>
+
+            <div className="learning-path-rail">
+              {learningPathMap.rows.map((row) => (
+                <button
+                  key={row.lesson.id}
+                  className={`learning-path-step ${
+                    row.complete ? "is-complete" : ""
+                  } ${row.isNext ? "is-next" : ""} ${
+                    row.isActive ? "is-active" : ""
+                  } ${!row.unlocked ? "is-locked" : ""}`}
+                  disabled={!row.unlocked}
+                  onClick={() => onSelectLesson(row.lesson.id)}
+                  type="button"
+                >
+                  <span className="learning-path-dot">
+                    {row.complete ? (
+                      <Check size={14} />
+                    ) : row.unlocked ? (
+                      row.index + 1
+                    ) : (
+                      <Lock size={12} />
+                    )}
+                  </span>
+                  <span className="learning-path-copy">
+                    <em>{row.stateLabel}</em>
+                    <strong>{row.lesson.title}</strong>
+                    <small>{row.queued ? "In playlist" : row.lesson.duration}</small>
+                  </span>
+                </button>
+              ))}
+            </div>
+
+            <div className="learning-path-follow">
+              <p>Parent cue</p>
+              <strong>{activeLesson.parentCue}</strong>
+              <span>
+                Use this after the checkpoint so the lesson turns into one small
+                home conversation instead of staying on screen.
+              </span>
             </div>
           </div>
 
