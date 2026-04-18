@@ -90,6 +90,7 @@ If Supabase is not configured yet, the product still opens cleanly in demo mode 
 - Family Meeting Builder that turns child signals into a 10-minute guided conversation and ready-to-say script
 - Parent Safety & Trust Review that summarizes sensitive access, coach boundaries, journal privacy, and parent controls
 - Parent Consent & Privacy Center that previews exportable child data, consent status, deletion needs, and retention decisions
+- Curriculum Depth Console that scores track coverage across lessons, quiz checks, story support, age bands, and parent cues
 - Launch Readiness Console that separates the polished local product from production needs like auth, database, AI safety, privacy, billing, QA, and analytics
 - Production Data Model Console that maps local product features to future SaaS records for families, children, learning, journals, AI safety, consent, and billing
 - local save-week, archive-week, fresh-week, and reset testing tools in the Family Hub

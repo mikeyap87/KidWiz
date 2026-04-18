@@ -1,5 +1,6 @@
 import {
   Archive,
+  BookOpen,
   Bot,
   Brain,
   Compass,
@@ -24,6 +25,7 @@ import {
 import { trustSignals } from "../data/kidwizMarketingData";
 import {
   buildChildSummary,
+  buildCurriculumDepthConsole,
   buildFamilyMeetingBuilder,
   buildJournalInsightCoach,
   buildLaunchReadinessConsole,
@@ -128,6 +130,7 @@ export function FamilyTab({
     selectedChild,
     visibleTracks,
   });
+  const curriculumDepth = buildCurriculumDepthConsole();
   const launchReadiness = buildLaunchReadinessConsole();
   const productionDataModel = buildProductionDataModelConsole();
 
@@ -274,6 +277,66 @@ export function FamilyTab({
           <p>Production privacy actions</p>
           {parentPrivacyCenter.parentActions.map((action) => (
             <span key={action}>{action}</span>
+          ))}
+        </div>
+      </section>
+
+      <section className="curriculum-depth-panel">
+        <div className="curriculum-depth-main">
+          <div>
+            <div className="panel-head">
+              <BookOpen size={18} />
+              <h2>{curriculumDepth.title}</h2>
+            </div>
+            <div className="curriculum-depth-copy">
+              <p>{curriculumDepth.score}% average coverage score</p>
+              <h3>Curriculum expansion should be measured by depth, not just feature count.</h3>
+              <span>{curriculumDepth.copy}</span>
+            </div>
+          </div>
+
+          <div className="curriculum-depth-score">
+            <p>Coverage score</p>
+            <strong>{curriculumDepth.score}%</strong>
+            <span>Lessons, quizzes, story support, and parent cues combined.</span>
+          </div>
+        </div>
+
+        <div className="curriculum-summary-grid">
+          {curriculumDepth.summaryRows.map((row) => (
+            <article key={row.label} className="curriculum-summary-card">
+              <p>{row.label}</p>
+              <strong>{row.value}</strong>
+              <span>{row.copy}</span>
+            </article>
+          ))}
+        </div>
+
+        <div className="curriculum-track-grid">
+          {curriculumDepth.rows.map((row) => (
+            <article key={row.id} className={`curriculum-track-card is-${row.tone}`}>
+              <div className="curriculum-track-head">
+                <div>
+                  <p>{row.ageBand}{row.sensitive ? " · parent unlocked" : ""}</p>
+                  <strong>{row.title}</strong>
+                </div>
+                <span>{row.score}%</span>
+              </div>
+              <div className="curriculum-track-metrics">
+                <span>{row.lessonCount} lessons</span>
+                <span>{row.quizCount} quizzes</span>
+                <span>{row.storyCount} stories</span>
+                <span>{row.parentCueCount} parent cues</span>
+              </div>
+              <small>{row.copy}</small>
+            </article>
+          ))}
+        </div>
+
+        <div className="curriculum-next-list">
+          <p>Next curriculum moves</p>
+          {curriculumDepth.nextMoves.map((move) => (
+            <span key={move}>{move}</span>
           ))}
         </div>
       </section>

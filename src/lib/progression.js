@@ -1011,6 +1011,95 @@ export function buildProductionDataModelConsole() {
   };
 }
 
+export function buildCurriculumDepthConsole() {
+  const rows = courseCatalog.map((track) => {
+    const lessonCount = track.lessons.length;
+    const quizCount = track.lessons.filter((lesson) => lesson.quiz).length;
+    const parentCueCount = track.lessons.filter((lesson) => lesson.parentCue).length;
+    const storyCount = storyEpisodes.filter((story) =>
+      story.goalIds.some((goalId) => track.goalIds.includes(goalId)),
+    ).length;
+    const lessonDepth =
+      lessonCount >= 5 ? "Deep" : lessonCount >= 3 ? "Solid" : "Thin";
+    const tone =
+      lessonCount >= 5 && storyCount >= 2
+        ? "good"
+        : lessonCount >= 3
+          ? "warn"
+          : "neutral";
+    const score = Math.min(
+      100,
+      Math.round(
+        lessonCount * 10 +
+          quizCount * 4 +
+          parentCueCount * 3 +
+          Math.min(storyCount, 3) * 6,
+      ),
+    );
+
+    return {
+      id: track.id,
+      title: track.title,
+      ageBand: track.ageBand,
+      lessonCount,
+      quizCount,
+      parentCueCount,
+      storyCount,
+      lessonDepth,
+      score,
+      tone,
+      sensitive: Boolean(track.sensitive),
+      copy:
+        storyCount > 0
+          ? `${track.title} connects to ${storyCount} branching story signal${storyCount === 1 ? "" : "s"} and ${parentCueCount} parent cue${parentCueCount === 1 ? "" : "s"}.`
+          : `${track.title} needs story support so practice does not stay isolated inside lessons.`,
+    };
+  });
+  const lessonTotal = rows.reduce((total, row) => total + row.lessonCount, 0);
+  const quizTotal = rows.reduce((total, row) => total + row.quizCount, 0);
+  const averageScore = Math.round(
+    rows.reduce((total, row) => total + row.score, 0) / rows.length,
+  );
+  const thinTracks = rows.filter((row) => row.lessonDepth !== "Deep");
+
+  return {
+    title: "Curriculum Depth Console",
+    score: averageScore,
+    copy:
+      "A product-quality view of which KidWiz tracks have enough lessons, quiz checkpoints, story support, age-banding, and parent follow-through to feel launch-worthy.",
+    summaryRows: [
+      {
+        label: "Tracks",
+        value: rows.length,
+        copy: "Including one parent-unlocked sensitive track.",
+      },
+      {
+        label: "Lessons",
+        value: lessonTotal,
+        copy: "Authored local lessons across academics and life skills.",
+      },
+      {
+        label: "Quiz checks",
+        value: quizTotal,
+        copy: "Every launch track should keep a lightweight proof point.",
+      },
+      {
+        label: "Depth score",
+        value: `${averageScore}%`,
+        copy: "Simple coverage score for prioritizing content expansion.",
+      },
+    ],
+    rows,
+    nextMoves: [
+      thinTracks.length > 0
+        ? `Expand ${thinTracks.map((track) => track.title).slice(0, 3).join(", ")} before calling the curriculum broad enough for launch.`
+        : "Keep adding richer interaction formats now that lesson coverage is broad.",
+      "Add at least one branching story or roleplay for each major life-skill track.",
+      "Create a content QA checklist for age fit, parent cue quality, quiz clarity, and sensitive-topic review.",
+    ],
+  };
+}
+
 export function buildSparkTutorSafetyStudio({
   activeLesson,
   activeTrack,

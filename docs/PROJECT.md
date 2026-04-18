@@ -79,6 +79,7 @@ KidWiz aims to close that gap by giving families one place to build:
 - Family Meeting Builder that turns child signals into a 10-minute agenda, parent script, ritual close, and completion action
 - Parent Safety & Trust Review that summarizes sensitive-track status, coach boundaries, journal privacy, and parent controls
 - Parent Consent & Privacy Center that previews exportable child data, sensitive-topic consent, AI tutoring consent needs, deletion scope, and retention decisions
+- Curriculum Depth Console that scores track coverage across lesson depth, quiz checkpoints, story support, age bands, and parent follow-through
 - Launch Readiness Console that clearly marks what is local-demo ready and what still needs production auth, database, AI safety, privacy, billing, QA, and analytics work
 - Production Data Model Console that maps local product behavior to future SaaS records across accounts, children, learning progress, journals, AI safety, consent, and billing
 
@@ -224,6 +225,7 @@ The Family Hub now includes local controls to:
 - Family Hub now includes a Family Meeting Builder so signals from journals, stories, and progress become a practical 10-minute home conversation.
 - Family Hub now includes a Parent Safety & Trust Review so parents can quickly see sensitive access, AI boundaries, journal privacy, and available controls.
 - Family Hub now includes a Parent Consent & Privacy Center so export, deletion, consent, and retention decisions are visible before backend work begins.
+- Family Hub now includes a Curriculum Depth Console so curriculum expansion can be prioritized by coverage and gaps instead of adding content blindly.
 - Family Hub now includes a Launch Readiness Console so prototype polish stays separate from production infrastructure decisions.
 - Family Hub now includes a Production Data Model Console so local prototype behavior can become a real schema plan without starting backend work too early.
 - Coach now includes a Spark Tutor Safety Studio so future AI behavior can be reviewed locally before any real model or child data is connected.
