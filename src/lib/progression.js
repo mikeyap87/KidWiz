@@ -727,6 +727,74 @@ export function buildParentTrustReview({
   };
 }
 
+export function buildLaunchReadinessConsole() {
+  const rows = [
+    {
+      label: "Auth",
+      status: "Demo-ready",
+      readiness: "Production needed",
+      copy: "The local login path is useful for testing, but real parent accounts, child profiles, and roles still need persisted auth.",
+      tone: "warn",
+    },
+    {
+      label: "Database",
+      status: "Demo-only",
+      readiness: "Production needed",
+      copy: "Progress, journals, reports, unlocks, and weekly history currently live in browser storage for fast local iteration.",
+      tone: "warn",
+    },
+    {
+      label: "AI safety",
+      status: "Bounded design",
+      readiness: "Production needed",
+      copy: "Spark is framed as guided learning support, but server-side moderation, prompt review, and audit logs are not wired yet.",
+      tone: "warn",
+    },
+    {
+      label: "Privacy",
+      status: "Parent-visible",
+      readiness: "Needs policy",
+      copy: "Child journals and family notes need export, deletion, retention, consent, and privacy policy decisions before launch.",
+      tone: "warn",
+    },
+    {
+      label: "Billing",
+      status: "Not started",
+      readiness: "Future",
+      copy: "Subscription plans, checkout, trials, invoices, and cancellation flows are intentionally outside this local prototype.",
+      tone: "neutral",
+    },
+    {
+      label: "QA",
+      status: "Local checks",
+      readiness: "Growing",
+      copy: "Lint, build, and browser checks are run locally after feature passes; automated regression coverage should come next.",
+      tone: "good",
+    },
+    {
+      label: "Analytics",
+      status: "Not started",
+      readiness: "Future",
+      copy: "Learning engagement, feature usage, and parent outcome dashboards still need an event model and privacy-safe tracking.",
+      tone: "neutral",
+    },
+  ];
+  const readyCount = rows.filter((row) => row.tone === "good").length;
+
+  return {
+    score: Math.round((readyCount / rows.length) * 100),
+    title: "Launch Readiness Console",
+    copy:
+      "A plain-English view of what KidWiz can prove locally today and what still needs backend, privacy, safety, billing, analytics, and automated QA work before families depend on it.",
+    rows,
+    nextSteps: [
+      "Create the production data model for families, children, courses, journals, progress, unlocks, and audit events.",
+      "Add server-side AI safety rails for moderation, age-aware routing, prompt logs, and parent-reviewable coach activity.",
+      "Define child privacy controls for consent, retention, exports, deletion, sensitive-topic access, and parent visibility.",
+    ],
+  };
+}
+
 function getQuestPriority(row, focusTrackId) {
   if (row.id === focusTrackId) {
     return 0;

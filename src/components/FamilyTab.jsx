@@ -6,6 +6,7 @@ import {
   History,
   MessageCircle,
   RefreshCw,
+  Rocket,
   ShieldCheck,
   Users,
 } from "lucide-react";
@@ -22,6 +23,7 @@ import {
   buildChildSummary,
   buildFamilyMeetingBuilder,
   buildJournalInsightCoach,
+  buildLaunchReadinessConsole,
   buildParentTrustReview,
   buildStorySkillDebrief,
   findStoryById,
@@ -115,6 +117,7 @@ export function FamilyTab({
     selectedCoachStyle,
     visibleTracks,
   });
+  const launchReadiness = buildLaunchReadinessConsole();
 
   function handlePlanningAction(action) {
     if (action.type === "focus" && action.trackId) {
@@ -207,6 +210,51 @@ export function FamilyTab({
               <span>{row.copy}</span>
             </article>
           ))}
+        </div>
+      </section>
+
+      <section className="launch-readiness-panel">
+        <div className="launch-readiness-main">
+          <div>
+            <div className="panel-head">
+              <Rocket size={18} />
+              <h2>{launchReadiness.title}</h2>
+            </div>
+            <div className="launch-readiness-copy">
+              <p>{launchReadiness.score}% infrastructure readiness</p>
+              <h3>The product experience is rich; the production foundation is the next mountain.</h3>
+              <span>{launchReadiness.copy}</span>
+            </div>
+          </div>
+
+          <div className="launch-readiness-score">
+            <p>Local prototype</p>
+            <strong>{launchReadiness.score}%</strong>
+            <span>Honest launch posture before backend work begins.</span>
+          </div>
+        </div>
+
+        <div className="launch-readiness-grid">
+          {launchReadiness.rows.map((row) => (
+            <article
+              key={row.label}
+              className={`launch-readiness-card is-${row.tone}`}
+            >
+              <p>{row.label}</p>
+              <strong>{row.status}</strong>
+              <span>{row.readiness}</span>
+              <small>{row.copy}</small>
+            </article>
+          ))}
+        </div>
+
+        <div className="launch-readiness-next">
+          <p>Best next production moves</p>
+          <div>
+            {launchReadiness.nextSteps.map((step) => (
+              <span key={step}>{step}</span>
+            ))}
+          </div>
         </div>
       </section>
 

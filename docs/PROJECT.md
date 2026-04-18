@@ -76,6 +76,7 @@ KidWiz aims to close that gap by giving families one place to build:
 - family hub with trust center, unlock controls, goal editing, rhythm controls, archived history visibility, and local testing tools for saving or resetting weekly snapshots
 - Family Meeting Builder that turns child signals into a 10-minute agenda, parent script, ritual close, and completion action
 - Parent Safety & Trust Review that summarizes sensitive-track status, coach boundaries, journal privacy, and parent controls
+- Launch Readiness Console that clearly marks what is local-demo ready and what still needs production auth, database, AI safety, privacy, billing, QA, and analytics work
 
 ## Business Value
 
@@ -216,6 +217,7 @@ The Family Hub now includes local controls to:
 - Journal now includes an Insight Coach so child reflections become parent-readable patterns and suggested practice instead of a static list of notes.
 - Family Hub now includes a Family Meeting Builder so signals from journals, stories, and progress become a practical 10-minute home conversation.
 - Family Hub now includes a Parent Safety & Trust Review so parents can quickly see sensitive access, AI boundaries, journal privacy, and available controls.
+- Family Hub now includes a Launch Readiness Console so prototype polish stays separate from production infrastructure decisions.
 - Sensitive topics stay behind a parent unlock.
 - AI is positioned as bounded and supportive, not as an unrestricted social chatbot.
 - The app supports demo mode by default so product design can move before backend work is finished.
