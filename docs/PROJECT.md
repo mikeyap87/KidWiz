@@ -75,6 +75,7 @@ KidWiz aims to close that gap by giving families one place to build:
 - child journal and parent notes with a Journal Insight Coach for mood patterns, likely needs, parent response ideas, and next practice
 - family hub with trust center, unlock controls, goal editing, rhythm controls, archived history visibility, and local testing tools for saving or resetting weekly snapshots
 - Family Meeting Builder that turns child signals into a 10-minute agenda, parent script, ritual close, and completion action
+- Parent Safety & Trust Review that summarizes sensitive-track status, coach boundaries, journal privacy, and parent controls
 
 ## Business Value
 
@@ -214,6 +215,7 @@ The Family Hub now includes local controls to:
 - Stories now include a Story Skill Debrief after each saved choice so a branch turns into a named skill, parent question, child reflection, and recommended next lesson.
 - Journal now includes an Insight Coach so child reflections become parent-readable patterns and suggested practice instead of a static list of notes.
 - Family Hub now includes a Family Meeting Builder so signals from journals, stories, and progress become a practical 10-minute home conversation.
+- Family Hub now includes a Parent Safety & Trust Review so parents can quickly see sensitive access, AI boundaries, journal privacy, and available controls.
 - Sensitive topics stay behind a parent unlock.
 - AI is positioned as bounded and supportive, not as an unrestricted social chatbot.
 - The app supports demo mode by default so product design can move before backend work is finished.

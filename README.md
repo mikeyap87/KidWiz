@@ -86,6 +86,7 @@ If Supabase is not configured yet, the product still opens cleanly in demo mode 
 - a parent review queue that gathers unresolved nudges, story signals, fresh reflections, and family follow-up into one calm dashboard inbox
 - parent controls for goals, rhythm, celebration style, track assignment, and sensitive-topic unlocks
 - Family Meeting Builder that turns child signals into a 10-minute guided conversation and ready-to-say script
+- Parent Safety & Trust Review that summarizes sensitive access, coach boundaries, journal privacy, and parent controls
 - local save-week, archive-week, fresh-week, and reset testing tools in the Family Hub
 
 ## Project Structure

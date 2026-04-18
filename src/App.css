@@ -3986,6 +3986,97 @@
   line-height: 1.4;
 }
 
+.parent-trust-review-panel {
+  display: grid;
+  gap: 16px;
+  margin: 22px 0;
+  padding: 20px;
+  border: 1px solid rgba(63, 208, 201, 0.16);
+  background:
+    linear-gradient(135deg, rgba(63, 208, 201, 0.1), rgba(246, 248, 251, 0.04)),
+    rgba(246, 248, 251, 0.03);
+}
+
+.parent-trust-review-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 0.32fr);
+  gap: 16px;
+  align-items: stretch;
+}
+
+.parent-trust-review-copy {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.parent-trust-review-copy p,
+.parent-trust-review-copy h3,
+.parent-trust-review-copy span,
+.parent-trust-score p,
+.parent-trust-score strong,
+.parent-trust-score span,
+.parent-trust-card p,
+.parent-trust-card strong,
+.parent-trust-card span {
+  margin: 0;
+}
+
+.parent-trust-review-copy p,
+.parent-trust-score p,
+.parent-trust-card p {
+  color: rgba(246, 248, 251, 0.58);
+  font-size: 0.82rem;
+}
+
+.parent-trust-review-copy h3 {
+  font-size: 1.34rem;
+  line-height: 1.32;
+}
+
+.parent-trust-review-copy span,
+.parent-trust-score span,
+.parent-trust-card span {
+  color: rgba(246, 248, 251, 0.76);
+  line-height: 1.56;
+}
+
+.parent-trust-score,
+.parent-trust-card {
+  border: 1px solid rgba(246, 248, 251, 0.08);
+  background: rgba(11, 15, 22, 0.24);
+}
+
+.parent-trust-score {
+  display: grid;
+  align-content: center;
+  gap: 8px;
+  padding: 16px;
+  text-align: center;
+}
+
+.parent-trust-score strong {
+  color: #83fff0;
+  font-size: 2.35rem;
+  line-height: 1;
+}
+
+.parent-trust-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.parent-trust-card {
+  display: grid;
+  gap: 8px;
+  padding: 14px;
+}
+
+.parent-trust-card strong {
+  line-height: 1.4;
+}
+
 .summary-chip-button {
   min-height: 38px;
 }
@@ -4088,6 +4179,7 @@
   .quest-celebration-reel,
   .journal-insight-main,
   .family-meeting-main,
+  .parent-trust-review-main,
   .dashboard-report-grid,
   .dashboard-trend-overview,
   .quest-hero-band,
@@ -4218,6 +4310,7 @@
   .quest-celebration-frames,
   .journal-insight-grid,
   .family-meeting-agenda,
+  .parent-trust-grid,
   .review-queue-grid,
   .story-progress-strip,
   .story-strip,

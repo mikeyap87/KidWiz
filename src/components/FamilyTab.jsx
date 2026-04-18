@@ -22,6 +22,7 @@ import {
   buildChildSummary,
   buildFamilyMeetingBuilder,
   buildJournalInsightCoach,
+  buildParentTrustReview,
   buildStorySkillDebrief,
   findStoryById,
   getTrackProgress,
@@ -107,6 +108,13 @@ export function FamilyTab({
     storyDebrief,
     summary: selectedChildSummary,
   });
+  const parentTrustReview = buildParentTrustReview({
+    appState,
+    assignedTrackIds,
+    selectedChild,
+    selectedCoachStyle,
+    visibleTracks,
+  });
 
   function handlePlanningAction(action) {
     if (action.type === "focus" && action.trackId) {
@@ -165,6 +173,38 @@ export function FamilyTab({
               <p>{item.time}</p>
               <strong>{item.title}</strong>
               <span>{item.copy}</span>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="parent-trust-review-panel">
+        <div className="parent-trust-review-main">
+          <div>
+            <div className="panel-head">
+              <ShieldCheck size={18} />
+              <h2>{parentTrustReview.title}</h2>
+            </div>
+            <div className="parent-trust-review-copy">
+              <p>{parentTrustReview.score}% review readiness</p>
+              <h3>Parents can see what is protected before the product becomes production-backed.</h3>
+              <span>{parentTrustReview.copy}</span>
+            </div>
+          </div>
+
+          <div className="parent-trust-score">
+            <p>Trust posture</p>
+            <strong>{parentTrustReview.score}%</strong>
+            <span>{appState.bodyBoundariesUnlocked ? "Sensitive access is parent-opened." : "Sensitive access is locked."}</span>
+          </div>
+        </div>
+
+        <div className="parent-trust-grid">
+          {parentTrustReview.rows.map((row) => (
+            <article key={row.label} className="parent-trust-card">
+              <p>{row.label}</p>
+              <strong>{row.status}</strong>
+              <span>{row.copy}</span>
             </article>
           ))}
         </div>

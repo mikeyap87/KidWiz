@@ -667,6 +667,66 @@ export function buildFamilyMeetingBuilder({
   };
 }
 
+export function buildParentTrustReview({
+  appState,
+  assignedTrackIds,
+  selectedChild,
+  selectedCoachStyle,
+  visibleTracks,
+}) {
+  const sensitiveTrackVisible = visibleTracks.some((track) => track.sensitive);
+  const assignedSensitiveTrack = visibleTracks.some(
+    (track) => track.sensitive && assignedTrackIds.includes(track.id),
+  );
+  const childJournalCount =
+    appState.childJournalEntriesByChild?.[selectedChild.id]?.length ?? 0;
+  const parentNoteCount = appState.parentJournalEntries?.length ?? 0;
+
+  const rows = [
+    {
+      label: "Sensitive topics",
+      status: sensitiveTrackVisible ? "Parent unlocked" : "Locked",
+      copy: sensitiveTrackVisible
+        ? assignedSensitiveTrack
+          ? "The sensitive track is visible and assigned, so parent review should stay active."
+          : "The sensitive track is visible but not assigned to this child."
+        : "Body and Boundaries stays hidden until a parent unlocks it.",
+    },
+    {
+      label: "Spark Coach boundaries",
+      status: selectedCoachStyle.title,
+      copy: "Coach mode changes tone and support style, while KidWiz keeps AI positioned as bounded learning guidance.",
+    },
+    {
+      label: "Journal privacy",
+      status: `${childJournalCount} child note${childJournalCount === 1 ? "" : "s"}`,
+      copy:
+        parentNoteCount > 0
+          ? "Child reflections and parent notes are separate in this local demo state."
+          : "Parent notes are empty, so the parent memory layer has room to grow.",
+    },
+    {
+      label: "Parent controls",
+      status: "Active",
+      copy: "Goals, rhythm, celebration, assigned tracks, weekly history, and sensitive access are parent-controlled here.",
+    },
+  ];
+
+  const readyCount = rows.filter((row) =>
+    ["Parent unlocked", "Locked", "Active"].includes(row.status) ||
+    row.status === selectedCoachStyle.title ||
+    row.status.includes("note"),
+  ).length;
+
+  return {
+    score: Math.round((readyCount / rows.length) * 100),
+    title: "Parent Safety & Trust Review",
+    copy:
+      "A quick parent-facing check of what is protected, what is visible, and what adults can control before real accounts and backend storage are added.",
+    rows,
+  };
+}
+
 function getQuestPriority(row, focusTrackId) {
   if (row.id === focusTrackId) {
     return 0;
