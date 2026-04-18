@@ -795,6 +795,94 @@ export function buildLaunchReadinessConsole() {
   };
 }
 
+export function buildSparkTutorSafetyStudio({
+  activeLesson,
+  activeTrack,
+  selectedChild,
+  selectedCoachStyle,
+  coachResponseMode,
+}) {
+  const sensitiveTrack = Boolean(activeTrack?.sensitive);
+  const ageBand = activeTrack?.ageBand ?? `${selectedChild.age}-12`;
+  const modeLabels = {
+    gentle: "soft reassurance",
+    playful: "imaginative practice",
+    stretch: "bigger ownership",
+  };
+  const guardrails = [
+    {
+      label: "Age fit",
+      status: `Age ${selectedChild.age} inside ${ageBand}`,
+      copy: "The tutor keeps vocabulary, examples, and challenge level aligned to the active track and child profile.",
+      tone: "good",
+    },
+    {
+      label: "Learning scope",
+      status: activeLesson.title,
+      copy: "Spark answers inside the current lesson goal instead of becoming an open-ended chatbot.",
+      tone: "good",
+    },
+    {
+      label: "Sensitive routing",
+      status: sensitiveTrack ? "Parent-opened track" : "General track",
+      copy: sensitiveTrack
+        ? "Sensitive questions stay age-banded, parent-visible, and grounded in trusted-adult support."
+        : "Sensitive or medical questions would be redirected to a trusted adult and parent review.",
+      tone: sensitiveTrack ? "warn" : "good",
+    },
+    {
+      label: "Parent visibility",
+      status: "Reviewable",
+      copy: "The production version should save prompt summaries, safety decisions, and coach actions for parent review.",
+      tone: "warn",
+    },
+  ];
+
+  const samplePrompts = [
+    {
+      label: "Allowed learning prompt",
+      childPrompt: `Can you help me practice ${activeLesson.title.toLowerCase()}?`,
+      decision: "Answer with lesson support",
+      response: `${selectedChild.name}, let's use ${selectedCoachStyle.title.toLowerCase()} energy and try one small step. ${activeLesson.coachModes[coachResponseMode]} Then choose one sentence you could actually use today.`,
+      parentLog: `${selectedChild.name} practiced ${activeTrack.title} with ${modeLabels[coachResponseMode]} support and the ${selectedCoachStyle.title.toLowerCase()} family setting.`,
+      tone: "good",
+    },
+    {
+      label: "Confidence wobble",
+      childPrompt: "What if I mess up and everyone notices?",
+      decision: "Coach with reassurance",
+      response: "Messing up is information, not proof that you cannot do it. Name the smallest next move, try it once, and then check what changed.",
+      parentLog: `${selectedChild.name} asked for confidence support during ${activeLesson.title}.`,
+      tone: "good",
+    },
+    {
+      label: "Needs adult help",
+      childPrompt: "I have a private safety question and I do not want to tell anyone.",
+      decision: "Pause and involve a trusted adult",
+      response: "You do not have to handle safety questions alone. Choose a trusted grown-up now, and KidWiz can help you write the first sentence.",
+      parentLog: "Spark should flag this as a parent-review moment and avoid giving private safety advice alone.",
+      tone: "warn",
+    },
+  ];
+
+  return {
+    title: "Spark Tutor Safety Studio",
+    posture: sensitiveTrack
+      ? "Sensitive track support is parent-opened and review-first."
+      : "General learning support stays bounded to the active lesson.",
+    copy:
+      "A local mock of how KidWiz can make AI tutoring useful without making it unsupervised: every response has a lesson scope, safety decision, and parent-readable summary.",
+    guardrails,
+    samplePrompts,
+    moderationChecklist: [
+      "Keep the answer inside the active lesson and selected family coaching style.",
+      "Use age-aware language and avoid adult topics unless the parent unlocked the track.",
+      "Redirect medical, sexual, self-harm, abuse, or secrecy-heavy questions to a trusted adult and parent review.",
+      "Save a parent-readable summary instead of exposing a raw private transcript by default.",
+    ],
+  };
+}
+
 function getQuestPriority(row, focusTrackId) {
   if (row.id === focusTrackId) {
     return 0;

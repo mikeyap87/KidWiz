@@ -74,7 +74,7 @@ If Supabase is not configured yet, the product still opens cleanly in demo mode 
 - course library with lesson progress, Learning Path Maps, track-specific lesson playbooks, visual practice panels, authored scenario cards, interactive move storyboards, age-band aware prompts, guided milestones, quiz checkpoints, and sequential progression
 - weekly playlists
 - branching story choices across confidence, money, relationships, and digital safety with skill debriefs after saved choices
-- Spark Coach demo layer with different coaching modes
+- Spark Coach demo layer with different coaching modes and a Tutor Safety Studio for bounded AI mock prompts, safety decisions, and parent summaries
 - child journal and parent notes
 - Journal Insight Coach that turns saved child reflections into mood patterns, likely needs, parent response ideas, and next practice
 - guided empty and success states in courses, stories, and journals so child-facing flows feel more complete

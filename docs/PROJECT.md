@@ -71,7 +71,7 @@ KidWiz aims to close that gap by giving families one place to build:
 - per-child weekly playlists with add/remove controls
 - branching story episodes with richer choices, Story Skill Debriefs, parent questions, child reflections, and lesson follow-through
 - badge system based on local progress state
-- Spark Coach tab with bounded coaching modes
+- Spark Coach tab with bounded coaching modes and a Tutor Safety Studio for mock AI prompts, guardrail decisions, and parent-visible summaries
 - child journal and parent notes with a Journal Insight Coach for mood patterns, likely needs, parent response ideas, and next practice
 - family hub with trust center, unlock controls, goal editing, rhythm controls, archived history visibility, and local testing tools for saving or resetting weekly snapshots
 - Family Meeting Builder that turns child signals into a 10-minute agenda, parent script, ritual close, and completion action
@@ -218,6 +218,7 @@ The Family Hub now includes local controls to:
 - Family Hub now includes a Family Meeting Builder so signals from journals, stories, and progress become a practical 10-minute home conversation.
 - Family Hub now includes a Parent Safety & Trust Review so parents can quickly see sensitive access, AI boundaries, journal privacy, and available controls.
 - Family Hub now includes a Launch Readiness Console so prototype polish stays separate from production infrastructure decisions.
+- Coach now includes a Spark Tutor Safety Studio so future AI behavior can be reviewed locally before any real model or child data is connected.
 - Sensitive topics stay behind a parent unlock.
 - AI is positioned as bounded and supportive, not as an unrestricted social chatbot.
 - The app supports demo mode by default so product design can move before backend work is finished.

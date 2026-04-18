@@ -3743,6 +3743,163 @@
   margin-bottom: 0;
 }
 
+.spark-safety-panel {
+  display: grid;
+  gap: 16px;
+  margin-top: 22px;
+  padding: 20px;
+  border: 1px solid rgba(63, 208, 201, 0.16);
+  background:
+    linear-gradient(135deg, rgba(63, 208, 201, 0.1), rgba(255, 214, 102, 0.08)),
+    rgba(246, 248, 251, 0.03);
+}
+
+.spark-safety-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 0.32fr);
+  gap: 16px;
+  align-items: stretch;
+}
+
+.spark-safety-head p,
+.spark-safety-head span,
+.spark-guardrail-card p,
+.spark-guardrail-card strong,
+.spark-guardrail-card span,
+.spark-prompt-card p,
+.spark-prompt-card strong,
+.spark-prompt-card blockquote,
+.spark-prompt-card span,
+.spark-moderation-checklist p,
+.spark-moderation-checklist span {
+  margin: 0;
+}
+
+.spark-safety-head > div > p {
+  max-width: 820px;
+  margin-top: 14px;
+  color: rgba(246, 248, 251, 0.76);
+  line-height: 1.58;
+}
+
+.spark-safety-head > span {
+  display: grid;
+  align-content: center;
+  min-height: 112px;
+  padding: 16px;
+  border: 1px solid rgba(246, 248, 251, 0.08);
+  background: rgba(11, 15, 22, 0.24);
+  color: #83fff0;
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: center;
+}
+
+.spark-guardrail-grid,
+.spark-prompt-lab {
+  display: grid;
+  gap: 12px;
+}
+
+.spark-guardrail-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.spark-prompt-lab {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.spark-guardrail-card,
+.spark-prompt-card,
+.spark-moderation-checklist {
+  border: 1px solid rgba(246, 248, 251, 0.08);
+  background: rgba(11, 15, 22, 0.24);
+}
+
+.spark-guardrail-card {
+  display: grid;
+  gap: 8px;
+  min-height: 154px;
+  padding: 14px;
+}
+
+.spark-guardrail-card p,
+.spark-prompt-card p,
+.spark-moderation-checklist p {
+  color: rgba(246, 248, 251, 0.58);
+  font-size: 0.82rem;
+}
+
+.spark-guardrail-card span,
+.spark-response-box span,
+.spark-parent-log span,
+.spark-moderation-checklist span {
+  color: rgba(246, 248, 251, 0.76);
+  line-height: 1.55;
+}
+
+.spark-guardrail-card.is-good {
+  border-color: rgba(131, 255, 240, 0.22);
+}
+
+.spark-guardrail-card.is-warn,
+.spark-prompt-card.is-warn {
+  border-color: rgba(255, 214, 102, 0.24);
+}
+
+.spark-prompt-card {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+  padding: 16px;
+}
+
+.spark-prompt-card.is-good {
+  border-color: rgba(131, 255, 240, 0.18);
+}
+
+.spark-prompt-card-head {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.spark-prompt-card-head svg {
+  flex: 0 0 auto;
+  margin-top: 2px;
+  color: #83fff0;
+}
+
+.spark-prompt-card.is-warn .spark-prompt-card-head svg {
+  color: #ffd666;
+}
+
+.spark-prompt-card blockquote {
+  padding: 12px;
+  border-left: 3px solid rgba(63, 208, 201, 0.55);
+  background: rgba(246, 248, 251, 0.04);
+  color: rgba(246, 248, 251, 0.86);
+  line-height: 1.5;
+}
+
+.spark-response-box,
+.spark-parent-log {
+  display: grid;
+  gap: 6px;
+  padding: 12px;
+  background: rgba(246, 248, 251, 0.04);
+}
+
+.spark-parent-log {
+  border: 1px dashed rgba(255, 214, 102, 0.3);
+}
+
+.spark-moderation-checklist {
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+}
+
 .journal-layout {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
@@ -4321,6 +4478,7 @@
   }
 
   .trust-layout,
+  .spark-safety-head,
   .daily-brief-main,
   .daily-brief-grid,
   .progress-narrative-main,
@@ -4480,6 +4638,8 @@
   .dashboard-metric-row,
   .dashboard-report-stat-grid,
   .dashboard-insight-grid,
+  .spark-guardrail-grid,
+  .spark-prompt-lab,
   .choice-storyboard-grid,
   .story-skill-grid,
   .practice-options-cards,
@@ -4576,6 +4736,11 @@
   .dashboard-metric-row,
   .dashboard-report-stat-grid,
   .dashboard-insight-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .spark-guardrail-grid,
+  .spark-prompt-lab {
     grid-template-columns: 1fr;
   }
 
