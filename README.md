@@ -66,6 +66,7 @@ If Supabase is not configured yet, the product still opens cleanly in demo mode 
 - guided onboarding flow
 - parent dashboard with child-by-child weekly targets, weekly report summaries, archived trend comparisons, and recommendations
 - a parent Daily Brief that turns the week into one clear first move, family context, and a ready-to-say parent script
+- a Parent Progress Narrative that turns metrics into a warm weekly story about growth, tender spots, and next steps
 - child-facing Quest Hub with mission board, world map, reward shelf, and rhythm checklist
 - a Kid Daily Quest Brief that gives the selected child one next mission, one reason, one unlock, and one confidence prompt
 - multi-child switching

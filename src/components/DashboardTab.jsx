@@ -18,6 +18,7 @@ import {
 import {
   buildChildSummaries,
   buildParentDailyBrief,
+  buildParentProgressNarrative,
   buildParentReviewQueue,
   buildParentWeeklyReport,
 } from "../lib/progression";
@@ -138,6 +139,17 @@ export function DashboardTab({
         weeklyReport,
       }),
     [childSummaries, nextRitual, reviewQueue, selectedRhythm, weeklyReport],
+  );
+  const progressNarrative = useMemo(
+    () =>
+      buildParentProgressNarrative({
+        childSummaries,
+        familyMetrics,
+        selectedGoals,
+        selectedRhythm,
+        weeklyReport,
+      }),
+    [childSummaries, familyMetrics, selectedGoals, selectedRhythm, weeklyReport],
   );
 
   function handleReportAction(item) {
@@ -312,6 +324,33 @@ export function DashboardTab({
               <span key={line}>{line}</span>
             ))}
           </article>
+        </div>
+      </section>
+
+      <section className="surface-panel progress-narrative-panel">
+        <div className="progress-narrative-main">
+          <div>
+            <div className="panel-head">
+              <NotebookPen size={18} />
+              <h2>{progressNarrative.eyebrow}</h2>
+            </div>
+            <div className="progress-narrative-copy">
+              <p>{weeklyReport.readinessLabel}</p>
+              <h2>{progressNarrative.title}</h2>
+              {progressNarrative.paragraphs.map((paragraph) => (
+                <span key={paragraph}>{paragraph}</span>
+              ))}
+            </div>
+          </div>
+
+          <div className="progress-narrative-share">
+            {progressNarrative.shareLines.map((line) => (
+              <article key={line.label} className="progress-narrative-line">
+                <p>{line.label}</p>
+                <strong>{line.value}</strong>
+              </article>
+            ))}
+          </div>
         </div>
       </section>
 

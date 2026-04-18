@@ -36,6 +36,7 @@ KidWiz aims to close that gap by giving families one place to build:
 - parent dashboard with per-child weekly targets, focus tracks, progress, and recommended next lessons
 - parent weekly report layer with highlights, child-specific action plans, family conversation prompts, and trend history
 - parent Daily Brief with a first move, family context, and a ready-to-say parent script for tonight
+- Parent Progress Narrative that translates dashboard metrics into a warm weekly story parents can read or share
 - parent review queue that gathers unresolved planning nudges, recent story practice, fresh child reflections, and family follow-up into one action inbox
 - Quest Hub for the child experience with a world map, weekly mission board, reward shelf, and guided rhythm checklist
 - Kid Daily Quest Brief with one next mission, one reason it matters, one unlock, and one confidence prompt for the selected child
@@ -204,6 +205,7 @@ The Family Hub now includes local controls to:
 - Dashboard and Family Hub now turn those same child signals into concrete planning nudges, including focus-track shifts and target adjustments parents can apply directly.
 - Planning nudges now support accept and dismiss behavior, so local product state can remember which recommendations the parent already handled.
 - Dashboard now includes a parent Daily Brief that explains what happened, why it matters, what to do first, and what to say tonight.
+- Dashboard now includes a Parent Progress Narrative so family metrics become a readable story about what grew, what is tender, and what to try next.
 - Dashboard now includes a parent review queue so reflections, story signals, planning nudges, and family follow-up appear together instead of staying scattered across tabs.
 - Quest Hub now includes a Kid Daily Quest Brief so the child gets the same signal-aware clarity as the parent, translated into playful next-step language.
 - Courses now include a Learning Path Map so every track shows locked, unlocked, next, playlist, and completed lesson states with a parent cue beside the active lesson.

@@ -566,6 +566,51 @@ export function buildParentDailyBrief({
   };
 }
 
+export function buildParentProgressNarrative({
+  childSummaries,
+  familyMetrics,
+  selectedGoals,
+  selectedRhythm,
+  weeklyReport,
+}) {
+  const strongestSummary =
+    [...childSummaries].sort(
+      (left, right) => right.overallTargetProgress - left.overallTargetProgress,
+    )[0] ?? childSummaries[0];
+  const tenderSummary =
+    [...childSummaries].sort(
+      (left, right) => left.overallTargetProgress - right.overallTargetProgress,
+    )[0] ?? childSummaries[0];
+  const goalPhrase = formatJoinedList(
+    selectedGoals.map((goal) => goal.title.toLowerCase()),
+  );
+
+  return {
+    eyebrow: "Parent progress narrative",
+    title: `This week, ${strongestSummary.child.name} showed growth and ${tenderSummary.child.name} showed where support can get more specific.`,
+    paragraphs: [
+      `KidWiz is seeing real practice take shape around ${goalPhrase || "your family goals"}. Across the family, there are ${familyMetrics.lessonsDone} completed lessons, ${familyMetrics.storiesDone} story choices, ${familyMetrics.reflectionsSaved} reflections, and ${familyMetrics.badgesEarned} badges.`,
+      `${strongestSummary.child.name} looks strongest in ${strongestSummary.strongestTrack.title}, which means the current rhythm is giving at least one child a reliable place to build confidence.`,
+      `${tenderSummary.child.name} may need the next move to be smaller and more concrete in ${tenderSummary.supportTrack.title}. ${tenderSummary.signal?.parentCopy ?? tenderSummary.supportMessage}`,
+      `${selectedRhythm.title} is still the right frame: keep the next step visible, celebrate effort quickly, and use one family conversation to turn screen practice into home language.`,
+    ],
+    shareLines: [
+      {
+        label: "What grew",
+        value: `${strongestSummary.child.name}'s strongest momentum is ${strongestSummary.strongestTrack.title}.`,
+      },
+      {
+        label: "What is tender",
+        value: `${tenderSummary.child.name} needs support in ${tenderSummary.supportTrack.title}.`,
+      },
+      {
+        label: "What to try next",
+        value: weeklyReport.actionPlan[0]?.title ?? weeklyReport.focusCopy,
+      },
+    ],
+  };
+}
+
 export function buildFamilyMeetingBuilder({
   child,
   familyChatDone,

@@ -2036,6 +2036,64 @@
   display: block;
 }
 
+.progress-narrative-panel {
+  margin-top: 24px;
+  background:
+    linear-gradient(135deg, rgba(246, 248, 251, 0.05), rgba(255, 209, 90, 0.08)),
+    rgba(246, 248, 251, 0.035);
+}
+
+.progress-narrative-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.42fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.progress-narrative-copy {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.progress-narrative-copy p,
+.progress-narrative-copy h2,
+.progress-narrative-copy span,
+.progress-narrative-line p,
+.progress-narrative-line strong {
+  margin: 0;
+}
+
+.progress-narrative-copy p,
+.progress-narrative-line p {
+  color: rgba(246, 248, 251, 0.58);
+  font-size: 0.82rem;
+}
+
+.progress-narrative-copy h2 {
+  font-size: 1.48rem;
+  line-height: 1.32;
+}
+
+.progress-narrative-copy span,
+.progress-narrative-line strong {
+  color: rgba(246, 248, 251, 0.76);
+  line-height: 1.62;
+}
+
+.progress-narrative-share {
+  display: grid;
+  gap: 12px;
+}
+
+.progress-narrative-line {
+  display: grid;
+  gap: 8px;
+  padding: 14px;
+  border: 1px solid rgba(246, 248, 251, 0.08);
+  background: rgba(11, 15, 22, 0.24);
+}
+
 .review-queue-panel {
   margin-top: 24px;
   background:
@@ -3933,6 +3991,7 @@
   .trust-layout,
   .daily-brief-main,
   .daily-brief-grid,
+  .progress-narrative-main,
   .quest-daily-brief,
   .journal-insight-main,
   .family-meeting-main,
