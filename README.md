@@ -69,6 +69,7 @@ If Supabase is not configured yet, the product still opens cleanly in demo mode 
 - a Parent Progress Narrative that turns metrics into a warm weekly story about growth, tender spots, and next steps
 - child-facing Quest Hub with mission board, world map, reward shelf, and rhythm checklist
 - a Kid Daily Quest Brief that gives the selected child one next mission, one reason, one unlock, and one confidence prompt
+- a Child Celebration Reel that turns weekly lessons, stories, reflections, badges, and family practice into visible wins
 - multi-child switching
 - course library with lesson progress, Learning Path Maps, track-specific lesson playbooks, visual practice panels, authored scenario cards, interactive move storyboards, age-band aware prompts, guided milestones, quiz checkpoints, and sequential progression
 - weekly playlists

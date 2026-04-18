@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { badgeCatalog } from "../data/kidwizData";
 import {
+  buildChildCelebrationReel,
   buildKidDailyQuestBrief,
   buildQuestWorldRows,
   buildWeeklyMissionBoard,
@@ -181,6 +182,26 @@ export function OverviewTab({
       weeklyCompletion,
     ],
   );
+  const celebrationReel = useMemo(
+    () =>
+      buildChildCelebrationReel({
+        child: selectedChild,
+        completedLessonIds: childCompletedLessonIds,
+        completedJourneyIds: childCompletedJourneyIds,
+        childJournalEntries,
+        storyChoices: childStoryChoices,
+        earnedBadgeCount: earnedBadgesCount.count,
+        nextBadge: earnedBadgesCount.nextBadge,
+      }),
+    [
+      childCompletedJourneyIds,
+      childCompletedLessonIds,
+      childJournalEntries,
+      childStoryChoices,
+      earnedBadgesCount,
+      selectedChild,
+    ],
+  );
 
   return (
     <section className="workspace-band quest-hub-shell">
@@ -341,6 +362,34 @@ export function OverviewTab({
             <article key={row.label} className="quest-daily-reason">
               <p>{row.label}</p>
               <strong>{row.value}</strong>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="quest-celebration-reel">
+        <div className="quest-celebration-copy">
+          <div className="panel-head">
+            <Gem size={18} />
+            <h2>Celebration reel</h2>
+          </div>
+          <h3>{celebrationReel.title}</h3>
+          <p>{celebrationReel.copy}</p>
+          <span>{celebrationReel.familyLine}</span>
+        </div>
+
+        <div className="quest-celebration-score">
+          <p>Total wins</p>
+          <strong>{celebrationReel.totalWins}</strong>
+          <span>{selectedChild.companionName} is saving these wins for the week.</span>
+        </div>
+
+        <div className="quest-celebration-frames">
+          {celebrationReel.frames.map((frame) => (
+            <article key={frame.label} className="quest-celebration-frame">
+              <p>{frame.label}</p>
+              <strong>{frame.value}</strong>
+              <span>{frame.copy}</span>
             </article>
           ))}
         </div>

@@ -1679,6 +1679,98 @@
   padding: 14px;
 }
 
+.quest-celebration-reel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(180px, 0.24fr);
+  gap: 14px;
+  margin-top: 24px;
+  padding: 20px;
+  border: 1px solid rgba(255, 209, 90, 0.18);
+  background:
+    linear-gradient(135deg, rgba(255, 209, 90, 0.13), rgba(255, 107, 74, 0.1)),
+    rgba(8, 10, 16, 0.42);
+}
+
+.quest-celebration-copy {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+}
+
+.quest-celebration-copy h3,
+.quest-celebration-copy p,
+.quest-celebration-copy span,
+.quest-celebration-score p,
+.quest-celebration-score strong,
+.quest-celebration-score span,
+.quest-celebration-frame p,
+.quest-celebration-frame strong,
+.quest-celebration-frame span {
+  margin: 0;
+}
+
+.quest-celebration-copy h3 {
+  font-size: 1.42rem;
+  line-height: 1.28;
+}
+
+.quest-celebration-copy p,
+.quest-celebration-copy span,
+.quest-celebration-score span,
+.quest-celebration-frame span {
+  color: rgba(246, 248, 251, 0.76);
+  line-height: 1.56;
+}
+
+.quest-celebration-copy span {
+  color: #f6f8fb;
+  font-weight: 700;
+}
+
+.quest-celebration-score,
+.quest-celebration-frame {
+  border: 1px solid rgba(246, 248, 251, 0.08);
+  background: rgba(11, 15, 22, 0.24);
+}
+
+.quest-celebration-score {
+  display: grid;
+  align-content: center;
+  gap: 8px;
+  padding: 16px;
+  text-align: center;
+}
+
+.quest-celebration-score p,
+.quest-celebration-frame p {
+  color: rgba(246, 248, 251, 0.58);
+  font-size: 0.82rem;
+}
+
+.quest-celebration-score strong {
+  color: #ffd15a;
+  font-size: 2.4rem;
+  line-height: 1;
+}
+
+.quest-celebration-frames {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.quest-celebration-frame {
+  display: grid;
+  gap: 8px;
+  padding: 14px;
+}
+
+.quest-celebration-frame strong {
+  color: #ffd15a;
+  font-size: 1.5rem;
+}
+
 .quest-main-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.08fr) minmax(300px, 0.92fr);
@@ -3993,6 +4085,7 @@
   .daily-brief-grid,
   .progress-narrative-main,
   .quest-daily-brief,
+  .quest-celebration-reel,
   .journal-insight-main,
   .family-meeting-main,
   .dashboard-report-grid,
@@ -4122,6 +4215,7 @@
   .dashboard-summary-grid,
   .daily-brief-spotlight,
   .quest-daily-reasons,
+  .quest-celebration-frames,
   .journal-insight-grid,
   .family-meeting-agenda,
   .review-queue-grid,

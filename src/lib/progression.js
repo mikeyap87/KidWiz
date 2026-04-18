@@ -908,6 +908,77 @@ export function buildKidDailyQuestBrief({
   };
 }
 
+export function buildChildCelebrationReel({
+  child,
+  completedLessonIds,
+  completedJourneyIds,
+  childJournalEntries,
+  storyChoices,
+  earnedBadgeCount,
+  nextBadge,
+}) {
+  const storyCount = Object.keys(storyChoices ?? {}).length;
+  const familyChatDone = completedJourneyIds.includes("family-chat");
+  const totalWins =
+    completedLessonIds.length +
+    storyCount +
+    childJournalEntries.length +
+    earnedBadgeCount +
+    (familyChatDone ? 1 : 0);
+  const frames = [
+    {
+      label: "Lessons built",
+      value: completedLessonIds.length,
+      copy:
+        completedLessonIds.length > 0
+          ? `${child.name} turned practice into real lesson progress.`
+          : "Start one lesson to add the first build moment.",
+    },
+    {
+      label: "Stories chosen",
+      value: storyCount,
+      copy:
+        storyCount > 0
+          ? "Story choices became real-life rehearsal."
+          : "Choose one story branch to unlock a practice win.",
+    },
+    {
+      label: "Reflections saved",
+      value: childJournalEntries.length,
+      copy:
+        childJournalEntries.length > 0
+          ? "Journal notes turned feelings into language."
+          : "Save one reflection to grow the memory trail.",
+    },
+    {
+      label: "Badges earned",
+      value: earnedBadgeCount,
+      copy:
+        earnedBadgeCount > 0
+          ? `${child.name}'s badge wall is growing.`
+          : nextBadge
+            ? `${nextBadge.title} is the next badge to chase.`
+            : "The current badge wall is ready for review.",
+    },
+  ];
+
+  return {
+    title:
+      totalWins > 0
+        ? `${child.name}, look what you built this week.`
+        : `${child.name}, your first weekly win is waiting.`,
+    copy:
+      totalWins > 0
+        ? `${child.companionName} counted ${totalWins} win${totalWins === 1 ? "" : "s"} across lessons, stories, reflections, badges, and family practice.`
+        : `${child.companionName} is ready to celebrate the first small step.`,
+    totalWins,
+    familyLine: familyChatDone
+      ? "Family chat is logged, so one lesson made it all the way home."
+      : "Finish one family chat to make the week feel complete.",
+    frames,
+  };
+}
+
 function formatJoinedList(items) {
   if (items.length <= 1) {
     return items[0] ?? "";
