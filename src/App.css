@@ -3461,6 +3461,98 @@
   line-height: 1.5;
 }
 
+.story-skill-debrief {
+  display: grid;
+  gap: 14px;
+  margin-top: 24px;
+  padding: 18px;
+  border: 1px solid rgba(131, 255, 240, 0.18);
+  background:
+    linear-gradient(135deg, rgba(63, 208, 201, 0.1), rgba(242, 141, 192, 0.08)),
+    rgba(246, 248, 251, 0.03);
+}
+
+.story-skill-head,
+.story-skill-next {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.story-skill-head p,
+.story-skill-head h3,
+.story-skill-head span,
+.story-skill-card p,
+.story-skill-card strong,
+.story-skill-next p,
+.story-skill-next strong,
+.story-skill-next span {
+  margin: 0;
+}
+
+.story-skill-head p,
+.story-skill-card p,
+.story-skill-next p {
+  color: rgba(246, 248, 251, 0.58);
+  font-size: 0.82rem;
+}
+
+.story-skill-head h3 {
+  margin-top: 7px;
+  font-size: 1.2rem;
+}
+
+.story-skill-head span {
+  color: #83fff0;
+  font-size: 0.84rem;
+  font-weight: 700;
+  line-height: 1.45;
+  text-align: right;
+}
+
+.story-skill-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.story-skill-card,
+.story-skill-next {
+  border: 1px solid rgba(246, 248, 251, 0.08);
+  background: rgba(11, 15, 22, 0.24);
+}
+
+.story-skill-card {
+  display: grid;
+  gap: 8px;
+  padding: 14px;
+}
+
+.story-skill-card svg {
+  color: #ffd15a;
+}
+
+.story-skill-card strong,
+.story-skill-next strong,
+.story-skill-next span {
+  line-height: 1.5;
+}
+
+.story-skill-next {
+  padding: 14px;
+}
+
+.story-skill-next strong,
+.story-skill-next span {
+  display: block;
+  margin-top: 8px;
+}
+
+.story-skill-next span {
+  color: rgba(246, 248, 251, 0.72);
+}
+
 .coach-hero {
   padding: 22px;
   border: 1px solid rgba(246, 248, 251, 0.08);
@@ -3734,6 +3826,8 @@
   .hero-login-row,
   .coach-hero,
   .story-layout,
+  .story-skill-head,
+  .story-skill-next,
   .lesson-momentum-head,
   .learning-path-head,
   .lesson-stage-row,
@@ -3744,6 +3838,10 @@
 
   .learning-path-head span {
     max-width: none;
+    text-align: left;
+  }
+
+  .story-skill-head span {
     text-align: left;
   }
 
@@ -3813,6 +3911,7 @@
   .dashboard-report-stat-grid,
   .dashboard-insight-grid,
   .choice-storyboard-grid,
+  .story-skill-grid,
   .practice-options-cards,
   .practice-options-tradeoff,
   .practice-options-script,
@@ -3826,6 +3925,7 @@
 
   .story-layout {
     display: grid;
+    grid-template-columns: 1fr;
   }
 
   .practice-options-cards,
@@ -3833,6 +3933,7 @@
   .practice-options-script,
   .practice-option-step,
   .choice-storyboard-grid,
+  .story-skill-grid,
   .practice-scene-grid {
     grid-template-columns: 1fr;
   }

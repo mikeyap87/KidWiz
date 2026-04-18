@@ -1,12 +1,25 @@
+import { ArrowRight, BookOpen, Sparkles } from "lucide-react";
+import { buildStorySkillDebrief } from "../lib/progression";
+
 export function StoriesTab({
   activeStory,
   activeStoryChoice,
+  childCompletedLessonIds,
   childStoryChoices,
+  onOpenLesson,
   onSelectChoice,
   onSelectStory,
+  selectedChild,
   storyEpisodes,
+  visibleTracks,
 }) {
   const completedStoryCount = Object.keys(childStoryChoices).length;
+  const skillDebrief = buildStorySkillDebrief({
+    story: activeStory,
+    choice: activeStoryChoice,
+    visibleTracks,
+    completedLessonIds: childCompletedLessonIds,
+  });
 
   return (
     <section className="workspace-band">
@@ -105,6 +118,60 @@ export function StoriesTab({
                 : "Choose a path to reveal the family follow-up cue."}
             </span>
           </div>
+
+          {skillDebrief ? (
+            <div className="story-skill-debrief">
+              <div className="story-skill-head">
+                <div>
+                  <p>Story Skill Debrief</p>
+                  <h3>{skillDebrief.title}</h3>
+                </div>
+                <span>{selectedChild.name}&apos;s saved choice</span>
+              </div>
+
+              <div className="story-skill-grid">
+                <article className="story-skill-card">
+                  <Sparkles size={18} />
+                  <p>What it means</p>
+                  <strong>{skillDebrief.meaning}</strong>
+                </article>
+                <article className="story-skill-card">
+                  <BookOpen size={18} />
+                  <p>Parent question</p>
+                  <strong>{skillDebrief.parentQuestion}</strong>
+                </article>
+                <article className="story-skill-card">
+                  <Sparkles size={18} />
+                  <p>Child reflection</p>
+                  <strong>{skillDebrief.childReflection}</strong>
+                </article>
+              </div>
+
+              <div className="story-skill-next">
+                <div>
+                  <p>Recommended lesson follow-through</p>
+                  <strong>
+                    {skillDebrief.recommendedLesson
+                      ? skillDebrief.recommendedLesson.lesson.title
+                      : "Track complete"}
+                  </strong>
+                  <span>{skillDebrief.nextStepCopy}</span>
+                </div>
+                {skillDebrief.recommendedLesson ? (
+                  <button
+                    className="inline-action"
+                    onClick={() =>
+                      onOpenLesson(skillDebrief.recommendedLesson.lesson.id)
+                    }
+                    type="button"
+                  >
+                    Open lesson
+                    <ArrowRight size={14} />
+                  </button>
+                ) : null}
+              </div>
+            </div>
+          ) : null}
         </section>
       </div>
     </section>

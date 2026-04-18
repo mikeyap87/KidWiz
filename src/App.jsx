@@ -1368,7 +1368,9 @@ function App() {
                   <StoriesTab
                     activeStory={activeStory}
                     activeStoryChoice={activeStoryChoice}
+                    childCompletedLessonIds={childCompletedLessonIds}
                     childStoryChoices={childStoryChoices}
+                    onOpenLesson={handleOpenLesson}
                     onSelectChoice={handleSelectStoryChoice}
                     onSelectStory={(storyId) =>
                       updateAppState((current) => ({
@@ -1377,7 +1379,9 @@ function App() {
                         activeTab: "stories",
                       }))
                     }
+                    selectedChild={selectedChild}
                     storyEpisodes={storyEpisodes}
+                    visibleTracks={visibleTracks}
                   />
                 ) : null}
 

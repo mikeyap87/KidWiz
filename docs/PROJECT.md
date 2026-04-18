@@ -67,7 +67,7 @@ KidWiz aims to close that gap by giving families one place to build:
 - sequential lesson progression within tracks
 - track statuses such as ready, in progress, checkpoint ready, and complete
 - per-child weekly playlists with add/remove controls
-- branching story episodes with richer choices and parent debrief prompts
+- branching story episodes with richer choices, Story Skill Debriefs, parent questions, child reflections, and lesson follow-through
 - badge system based on local progress state
 - Spark Coach tab with bounded coaching modes
 - child journal and parent notes
@@ -206,6 +206,7 @@ The Family Hub now includes local controls to:
 - Dashboard now includes a parent review queue so reflections, story signals, planning nudges, and family follow-up appear together instead of staying scattered across tabs.
 - Quest Hub now includes a Kid Daily Quest Brief so the child gets the same signal-aware clarity as the parent, translated into playful next-step language.
 - Courses now include a Learning Path Map so every track shows locked, unlocked, next, playlist, and completed lesson states with a parent cue beside the active lesson.
+- Stories now include a Story Skill Debrief after each saved choice so a branch turns into a named skill, parent question, child reflection, and recommended next lesson.
 - Sensitive topics stay behind a parent unlock.
 - AI is positioned as bounded and supportive, not as an unrestricted social chatbot.
 - The app supports demo mode by default so product design can move before backend work is finished.

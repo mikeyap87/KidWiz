@@ -280,6 +280,43 @@ export function getRecommendedStory({ selectedGoalIds, storyChoices }) {
   );
 }
 
+export function buildStorySkillDebrief({
+  story,
+  choice,
+  visibleTracks,
+  completedLessonIds,
+}) {
+  if (!story || !choice) {
+    return null;
+  }
+
+  const matchingTrack =
+    visibleTracks.find((track) =>
+      track.goalIds?.some((goalId) => story.goalIds?.includes(goalId)),
+    ) ?? visibleTracks[0];
+  const nextLesson = matchingTrack
+    ? getNextTrackLesson(matchingTrack, completedLessonIds)
+    : null;
+
+  return {
+    skillLabel: story.focus,
+    title: `Skill practiced: ${story.focus}`,
+    meaning: `${choice.title} shows how a child might handle ${story.focus.toLowerCase()} when the moment feels real instead of theoretical.`,
+    parentQuestion: choice.parentCue,
+    childReflection: story.reflectionPrompt,
+    recommendedLesson: nextLesson
+      ? {
+          lesson: nextLesson,
+          track: matchingTrack,
+          reason: `Keep practicing ${story.focus.toLowerCase()} in ${matchingTrack.title}.`,
+        }
+      : null,
+    nextStepCopy: nextLesson
+      ? `${nextLesson.title} is the closest lesson follow-through for this story signal.`
+      : `${matchingTrack?.title ?? "This track"} looks complete in the current local state.`,
+  };
+}
+
 function getJournalSignalGoalIds(entry) {
   const moodGoalMap = {
     proud: ["confidence", "money", "reading"],
