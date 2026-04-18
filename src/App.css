@@ -4383,6 +4383,151 @@
   gap: 8px;
 }
 
+.data-model-panel {
+  display: grid;
+  gap: 16px;
+  margin: 22px 0;
+  padding: 20px;
+  border: 1px solid rgba(120, 212, 106, 0.16);
+  background:
+    linear-gradient(135deg, rgba(120, 212, 106, 0.1), rgba(63, 208, 201, 0.07)),
+    rgba(246, 248, 251, 0.03);
+}
+
+.data-model-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 0.42fr);
+  gap: 16px;
+  align-items: stretch;
+}
+
+.data-model-head p,
+.data-model-flow p,
+.data-model-flow span,
+.data-model-card p,
+.data-model-card strong,
+.data-model-card span,
+.data-model-card small,
+.data-model-card ul,
+.data-model-card li,
+.data-model-questions p,
+.data-model-questions span {
+  margin: 0;
+}
+
+.data-model-head > div > p {
+  max-width: 780px;
+  margin-top: 14px;
+  color: rgba(246, 248, 251, 0.76);
+  line-height: 1.58;
+}
+
+.data-model-flow,
+.data-model-card,
+.data-model-questions {
+  border: 1px solid rgba(246, 248, 251, 0.08);
+  background: rgba(11, 15, 22, 0.24);
+}
+
+.data-model-flow {
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+}
+
+.data-model-flow p,
+.data-model-card p,
+.data-model-questions p {
+  color: rgba(246, 248, 251, 0.58);
+  font-size: 0.82rem;
+}
+
+.data-model-flow span,
+.data-model-card small,
+.data-model-questions span {
+  color: rgba(246, 248, 251, 0.76);
+  line-height: 1.55;
+}
+
+.data-model-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.data-model-card {
+  display: grid;
+  gap: 10px;
+  align-content: start;
+  min-height: 226px;
+  padding: 14px;
+}
+
+.data-model-card strong {
+  display: block;
+  margin-top: 6px;
+  color: #f6f8fb;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 0.92rem;
+  overflow-wrap: anywhere;
+}
+
+.data-model-card > span {
+  width: fit-content;
+  padding: 5px 8px;
+  border-radius: 999px;
+  color: rgba(11, 15, 22, 0.9);
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.data-model-card.is-good {
+  border-color: rgba(131, 255, 240, 0.18);
+}
+
+.data-model-card.is-good > span {
+  background: #83fff0;
+}
+
+.data-model-card.is-warn {
+  border-color: rgba(255, 214, 102, 0.22);
+}
+
+.data-model-card.is-warn > span {
+  background: #ffd666;
+}
+
+.data-model-card.is-neutral {
+  border-color: rgba(246, 248, 251, 0.12);
+}
+
+.data-model-card.is-neutral > span {
+  background: rgba(246, 248, 251, 0.74);
+}
+
+.data-model-card ul {
+  display: grid;
+  gap: 6px;
+  padding: 0;
+  list-style: none;
+}
+
+.data-model-card li {
+  padding: 6px 8px;
+  border-radius: 8px;
+  background: rgba(246, 248, 251, 0.04);
+  color: rgba(246, 248, 251, 0.76);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 0.78rem;
+  overflow-wrap: anywhere;
+}
+
+.data-model-questions {
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+}
+
 .summary-chip-button {
   min-height: 38px;
 }
@@ -4488,6 +4633,7 @@
   .family-meeting-main,
   .parent-trust-review-main,
   .launch-readiness-main,
+  .data-model-head,
   .dashboard-report-grid,
   .dashboard-trend-overview,
   .quest-hero-band,
@@ -4620,6 +4766,7 @@
   .family-meeting-agenda,
   .parent-trust-grid,
   .launch-readiness-grid,
+  .data-model-grid,
   .review-queue-grid,
   .story-progress-strip,
   .story-strip,

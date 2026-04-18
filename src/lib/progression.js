@@ -795,6 +795,101 @@ export function buildLaunchReadinessConsole() {
   };
 }
 
+export function buildProductionDataModelConsole() {
+  const domains = [
+    {
+      label: "Family account",
+      table: "families",
+      records: ["family_id", "plan_id", "timezone", "created_at"],
+      source: "Onboarding, rhythm, family goals",
+      priority: "MVP",
+      tone: "good",
+    },
+    {
+      label: "Parent access",
+      table: "parent_profiles",
+      records: ["user_id", "family_id", "role", "notification_prefs"],
+      source: "Login, parent controls, review queues",
+      priority: "MVP",
+      tone: "good",
+    },
+    {
+      label: "Child profile",
+      table: "child_profiles",
+      records: ["child_id", "family_id", "age_band", "coach_style"],
+      source: "Learner switcher, age-aware lessons",
+      priority: "MVP",
+      tone: "good",
+    },
+    {
+      label: "Learning progress",
+      table: "lesson_progress",
+      records: ["child_id", "lesson_id", "status", "completed_at"],
+      source: "Courses, playlists, path maps, badges",
+      priority: "MVP",
+      tone: "good",
+    },
+    {
+      label: "Reflections",
+      table: "journal_entries",
+      records: ["entry_id", "child_id", "mood", "visibility"],
+      source: "Child journal and parent notes",
+      priority: "Privacy",
+      tone: "warn",
+    },
+    {
+      label: "Story choices",
+      table: "story_choice_events",
+      records: ["child_id", "story_id", "choice_id", "skill_signal"],
+      source: "Stories and skill debriefs",
+      priority: "MVP",
+      tone: "good",
+    },
+    {
+      label: "AI safety",
+      table: "ai_safety_events",
+      records: ["event_id", "child_id", "decision", "parent_review"],
+      source: "Spark Tutor Safety Studio",
+      priority: "Safety",
+      tone: "warn",
+    },
+    {
+      label: "Consent",
+      table: "consent_records",
+      records: ["family_id", "scope", "granted_by", "expires_at"],
+      source: "Sensitive-topic unlocks and privacy controls",
+      priority: "Safety",
+      tone: "warn",
+    },
+    {
+      label: "Billing",
+      table: "subscriptions",
+      records: ["family_id", "stripe_customer_id", "status", "renewal_at"],
+      source: "Future plan and payment flows",
+      priority: "Later",
+      tone: "neutral",
+    },
+  ];
+
+  return {
+    title: "Production Data Model Console",
+    copy:
+      "A founder-and-engineering map from the local KidWiz experience to the records a real SaaS backend will need before launch.",
+    domains,
+    flow: [
+      "Parent creates family account",
+      "Children and consent settings attach to the family",
+      "Lessons, stories, journals, and AI safety events write child-scoped records",
+      "Reports, nudges, badges, and weekly snapshots read from the same trusted source",
+    ],
+    openQuestions: [
+      "Which journal entries should be private to the child, parent-visible, or parent-requested?",
+      "How long should AI safety event summaries and prompt metadata be retained?",
+      "Should billing ownership live at the family level only, or support schools and group buyers later?",
+    ],
+  };
+}
+
 export function buildSparkTutorSafetyStudio({
   activeLesson,
   activeTrack,

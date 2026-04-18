@@ -77,6 +77,7 @@ KidWiz aims to close that gap by giving families one place to build:
 - Family Meeting Builder that turns child signals into a 10-minute agenda, parent script, ritual close, and completion action
 - Parent Safety & Trust Review that summarizes sensitive-track status, coach boundaries, journal privacy, and parent controls
 - Launch Readiness Console that clearly marks what is local-demo ready and what still needs production auth, database, AI safety, privacy, billing, QA, and analytics work
+- Production Data Model Console that maps local product behavior to future SaaS records across accounts, children, learning progress, journals, AI safety, consent, and billing
 
 ## Business Value
 
@@ -218,6 +219,7 @@ The Family Hub now includes local controls to:
 - Family Hub now includes a Family Meeting Builder so signals from journals, stories, and progress become a practical 10-minute home conversation.
 - Family Hub now includes a Parent Safety & Trust Review so parents can quickly see sensitive access, AI boundaries, journal privacy, and available controls.
 - Family Hub now includes a Launch Readiness Console so prototype polish stays separate from production infrastructure decisions.
+- Family Hub now includes a Production Data Model Console so local prototype behavior can become a real schema plan without starting backend work too early.
 - Coach now includes a Spark Tutor Safety Studio so future AI behavior can be reviewed locally before any real model or child data is connected.
 - Sensitive topics stay behind a parent unlock.
 - AI is positioned as bounded and supportive, not as an unrestricted social chatbot.

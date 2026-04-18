@@ -3,6 +3,7 @@ import {
   Bot,
   Brain,
   Compass,
+  Database,
   History,
   MessageCircle,
   RefreshCw,
@@ -25,6 +26,7 @@ import {
   buildJournalInsightCoach,
   buildLaunchReadinessConsole,
   buildParentTrustReview,
+  buildProductionDataModelConsole,
   buildStorySkillDebrief,
   findStoryById,
   getTrackProgress,
@@ -118,6 +120,7 @@ export function FamilyTab({
     visibleTracks,
   });
   const launchReadiness = buildLaunchReadinessConsole();
+  const productionDataModel = buildProductionDataModelConsole();
 
   function handlePlanningAction(action) {
     if (action.type === "focus" && action.trackId) {
@@ -255,6 +258,52 @@ export function FamilyTab({
               <span key={step}>{step}</span>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="data-model-panel">
+        <div className="data-model-head">
+          <div>
+            <div className="panel-head">
+              <Database size={18} />
+              <h2>{productionDataModel.title}</h2>
+            </div>
+            <p>{productionDataModel.copy}</p>
+          </div>
+          <div className="data-model-flow">
+            <p>Source-of-truth flow</p>
+            {productionDataModel.flow.map((step, index) => (
+              <span key={step}>{index + 1}. {step}</span>
+            ))}
+          </div>
+        </div>
+
+        <div className="data-model-grid">
+          {productionDataModel.domains.map((domain) => (
+            <article
+              key={domain.table}
+              className={`data-model-card is-${domain.tone}`}
+            >
+              <div>
+                <p>{domain.label}</p>
+                <strong>{domain.table}</strong>
+              </div>
+              <span>{domain.priority}</span>
+              <small>{domain.source}</small>
+              <ul>
+                {domain.records.map((record) => (
+                  <li key={record}>{record}</li>
+                ))}
+              </ul>
+            </article>
+          ))}
+        </div>
+
+        <div className="data-model-questions">
+          <p>Open architecture questions</p>
+          {productionDataModel.openQuestions.map((question) => (
+            <span key={question}>{question}</span>
+          ))}
         </div>
       </section>
 
