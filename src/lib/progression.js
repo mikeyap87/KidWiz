@@ -727,6 +727,127 @@ export function buildParentTrustReview({
   };
 }
 
+export function buildParentPrivacyCenter({
+  appState,
+  assignedTrackIds,
+  selectedChild,
+  visibleTracks,
+}) {
+  const childJournalCount =
+    appState.childJournalEntriesByChild?.[selectedChild.id]?.length ?? 0;
+  const parentNoteCount = appState.parentJournalEntries?.length ?? 0;
+  const lessonCount =
+    appState.completedLessonIdsByChild?.[selectedChild.id]?.length ?? 0;
+  const storyChoiceCount = Object.keys(
+    appState.storyChoicesByChild?.[selectedChild.id] ?? {},
+  ).length;
+  const weeklySnapshotCount =
+    appState.weeklyHistoryByChild?.[selectedChild.id]?.length ?? 0;
+  const playlistCount =
+    appState.playlistLessonIdsByChild?.[selectedChild.id]?.length ?? 0;
+  const sensitiveTrackVisible = visibleTracks.some((track) => track.sensitive);
+  const assignedSensitiveTrack = visibleTracks.some(
+    (track) => track.sensitive && assignedTrackIds.includes(track.id),
+  );
+  const exportItemCount =
+    childJournalCount +
+    parentNoteCount +
+    lessonCount +
+    storyChoiceCount +
+    weeklySnapshotCount +
+    playlistCount;
+
+  const dataRows = [
+    {
+      label: "Child reflections",
+      count: childJournalCount,
+      policy: "Exportable, deletable, privacy-reviewed",
+      copy: "Child journal entries need a production visibility setting before launch.",
+      tone: childJournalCount > 0 ? "warn" : "neutral",
+    },
+    {
+      label: "Parent notes",
+      count: parentNoteCount,
+      policy: "Parent-owned",
+      copy: "Parent notes should stay separate from child-authored reflections.",
+      tone: parentNoteCount > 0 ? "good" : "neutral",
+    },
+    {
+      label: "Learning progress",
+      count: lessonCount,
+      policy: "Exportable progress history",
+      copy: "Completed lessons, playlist state, and badges should remain portable.",
+      tone: "good",
+    },
+    {
+      label: "Story practice",
+      count: storyChoiceCount,
+      policy: "Skill signal, not diagnosis",
+      copy: "Story choices should be stored as learning signals, never labels on the child.",
+      tone: "good",
+    },
+    {
+      label: "Weekly snapshots",
+      count: weeklySnapshotCount,
+      policy: "Retention decision needed",
+      copy: "Archived weekly reports need a clear retention window and delete path.",
+      tone: weeklySnapshotCount > 0 ? "warn" : "neutral",
+    },
+    {
+      label: "Playlists",
+      count: playlistCount,
+      policy: "Parent-adjustable",
+      copy: "Recommended lessons should be explainable and editable by adults.",
+      tone: "good",
+    },
+  ];
+
+  const consentRows = [
+    {
+      label: "Sensitive-topic access",
+      status: sensitiveTrackVisible ? "Parent unlocked" : "Locked",
+      copy: assignedSensitiveTrack
+        ? "Body and Boundaries is visible and assigned, so consent should be logged with timestamp and parent identity."
+        : sensitiveTrackVisible
+          ? "Body and Boundaries is visible but not assigned to this child."
+          : "Body and Boundaries stays hidden until a parent opens it.",
+      tone: sensitiveTrackVisible ? "warn" : "good",
+    },
+    {
+      label: "AI tutoring",
+      status: "Mock only",
+      copy: "Real AI should require moderation, parent-readable summaries, and retention settings before child use.",
+      tone: "warn",
+    },
+    {
+      label: "Exports",
+      status: `${exportItemCount} local item${exportItemCount === 1 ? "" : "s"}`,
+      copy: "The production product should let parents export child data in a readable family archive.",
+      tone: exportItemCount > 0 ? "good" : "neutral",
+    },
+    {
+      label: "Deletion",
+      status: "Preview only",
+      copy: "Local reset tools exist, but production needs scoped delete requests, confirmation, and recovery windows.",
+      tone: "warn",
+    },
+  ];
+
+  return {
+    title: "Parent Consent & Privacy Center",
+    copy:
+      "A parent-readable privacy preview for what KidWiz stores locally today, what consent decisions matter, and what export or deletion controls a production build should provide.",
+    exportItemCount,
+    dataRows,
+    consentRows,
+    parentActions: [
+      "Preview a family export that separates child reflections, parent notes, learning progress, stories, and safety events.",
+      "Request deletion for one child profile, one journal category, or the full family account with confirmation windows.",
+      "Review sensitive-topic and AI tutoring consent before unlocking age-banded experiences.",
+    ],
+  };
+}
+
 export function buildLaunchReadinessConsole() {
   const rows = [
     {

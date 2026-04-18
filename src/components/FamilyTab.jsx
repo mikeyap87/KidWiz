@@ -4,7 +4,9 @@ import {
   Brain,
   Compass,
   Database,
+  FileText,
   History,
+  LockKeyhole,
   MessageCircle,
   RefreshCw,
   Rocket,
@@ -25,6 +27,7 @@ import {
   buildFamilyMeetingBuilder,
   buildJournalInsightCoach,
   buildLaunchReadinessConsole,
+  buildParentPrivacyCenter,
   buildParentTrustReview,
   buildProductionDataModelConsole,
   buildStorySkillDebrief,
@@ -117,6 +120,12 @@ export function FamilyTab({
     assignedTrackIds,
     selectedChild,
     selectedCoachStyle,
+    visibleTracks,
+  });
+  const parentPrivacyCenter = buildParentPrivacyCenter({
+    appState,
+    assignedTrackIds,
+    selectedChild,
     visibleTracks,
   });
   const launchReadiness = buildLaunchReadinessConsole();
@@ -212,6 +221,59 @@ export function FamilyTab({
               <strong>{row.status}</strong>
               <span>{row.copy}</span>
             </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="privacy-center-panel">
+        <div className="privacy-center-main">
+          <div>
+            <div className="panel-head">
+              <LockKeyhole size={18} />
+              <h2>{parentPrivacyCenter.title}</h2>
+            </div>
+            <div className="privacy-center-copy">
+              <p>{parentPrivacyCenter.exportItemCount} local export item previews</p>
+              <h3>Parents should understand the family data story before KidWiz stores anything in production.</h3>
+              <span>{parentPrivacyCenter.copy}</span>
+            </div>
+          </div>
+
+          <div className="privacy-export-card">
+            <FileText size={20} />
+            <p>Export preview</p>
+            <strong>{parentPrivacyCenter.exportItemCount}</strong>
+            <span>Child-scoped local records ready to map into a future family archive.</span>
+          </div>
+        </div>
+
+        <div className="privacy-data-grid">
+          {parentPrivacyCenter.dataRows.map((row) => (
+            <article key={row.label} className={`privacy-data-card is-${row.tone}`}>
+              <div>
+                <p>{row.label}</p>
+                <strong>{row.count}</strong>
+              </div>
+              <span>{row.policy}</span>
+              <small>{row.copy}</small>
+            </article>
+          ))}
+        </div>
+
+        <div className="privacy-consent-grid">
+          {parentPrivacyCenter.consentRows.map((row) => (
+            <article key={row.label} className={`privacy-consent-card is-${row.tone}`}>
+              <p>{row.label}</p>
+              <strong>{row.status}</strong>
+              <span>{row.copy}</span>
+            </article>
+          ))}
+        </div>
+
+        <div className="privacy-action-list">
+          <p>Production privacy actions</p>
+          {parentPrivacyCenter.parentActions.map((action) => (
+            <span key={action}>{action}</span>
           ))}
         </div>
       </section>
