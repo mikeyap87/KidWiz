@@ -4,7 +4,7 @@ KidWiz is a modern children's education SaaS concept that combines traditional l
 
 - a polished public-facing website
 - a parent login entry with optional Supabase magic-link auth
-- a guided family onboarding flow for goals, rhythm, and coach style
+- a guided family onboarding flow for family name, goals, rhythm, coach style, celebration style, and a parent setup brief
 - a fully navigable demo application for family learning
 - a Quest Hub with world-map navigation, weekly missions, a Kid Daily Quest Brief, and visible rewards
 - a parent weekly report layer with action plans, conversation prompts, and stateful trend history
@@ -63,7 +63,7 @@ If Supabase is not configured yet, the product still opens cleanly in demo mode 
 ## Current Local Product Shape
 
 - CRO-focused public marketing site with sharper parent outcomes, trust positioning, and demo entry points
-- guided onboarding flow
+- guided onboarding flow with editable family name, setup receipt, and first-week parent brief
 - parent dashboard with child-by-child weekly targets, weekly report summaries, archived trend comparisons, and recommendations
 - a parent Daily Brief that turns the week into one clear first move, family context, and a ready-to-say parent script
 - a Parent Progress Narrative that turns metrics into a warm weekly story about growth, tender spots, and next steps

@@ -19,8 +19,10 @@ export function OnboardingFlow({
   canAdvance,
   celebrationStyleId,
   coachStyleId,
+  familyName,
   onBack,
   onFinish,
+  onFamilyNameChange,
   onNext,
   onSelectCelebrationStyle,
   onSelectCoachStyle,
@@ -56,6 +58,35 @@ export function OnboardingFlow({
       })),
     [bodyBoundariesUnlocked, selectedGoalIds, weeklyTargetsByChild],
   );
+  const selectedRhythm =
+    weeklyRhythms.find((rhythm) => rhythm.id === weeklyRhythmId) ??
+    weeklyRhythms[0];
+  const selectedCoachStyle =
+    coachStyles.find((style) => style.id === coachStyleId) ?? coachStyles[1];
+  const selectedCelebrationStyle =
+    celebrationStyles.find((style) => style.id === celebrationStyleId) ??
+    celebrationStyles[0];
+  const selectedGoalTitles = selectedGoals.map((goal) => goal.title);
+  const setupReadinessItems = [
+    {
+      label: "Family goals",
+      value: selectedGoalTitles.length
+        ? selectedGoalTitles.join(", ")
+        : "Choose at least two",
+    },
+    {
+      label: "Weekly rhythm",
+      value: selectedRhythm.title,
+    },
+    {
+      label: "Coach tone",
+      value: selectedCoachStyle.title,
+    },
+    {
+      label: "Celebration style",
+      value: selectedCelebrationStyle.title,
+    },
+  ];
 
   return (
     <div className="onboarding-shell">
@@ -85,23 +116,44 @@ export function OnboardingFlow({
           </div>
 
           {step === 0 ? (
-            <div className="choice-grid">
-              {familyGoals.map((goal) => (
-                <button
-                  key={goal.id}
-                  className={`choice-tile ${
-                    selectedGoalIds.includes(goal.id) ? "is-selected" : ""
-                  }`}
-                  onClick={() => onToggleGoal(goal.id)}
-                  type="button"
-                >
-                  <div className="choice-tile-icon">
-                    <GoalGlyph goalId={goal.id} />
-                  </div>
-                  <h3>{goal.title}</h3>
-                  <p>{goal.copy}</p>
-                </button>
-              ))}
+            <div className="onboarding-step-stack">
+              <label className="family-name-field">
+                <span>Family name</span>
+                <input
+                  type="text"
+                  value={familyName}
+                  onChange={(event) => onFamilyNameChange(event.target.value)}
+                  placeholder="Aster House"
+                  maxLength={36}
+                />
+              </label>
+
+              <div className="onboarding-progress-note">
+                <strong>{selectedGoalIds.length}/3 priorities selected</strong>
+                <span>
+                  Pick two or three. KidWiz uses them to shape the first weekly
+                  playlist and parent prompts.
+                </span>
+              </div>
+
+              <div className="choice-grid">
+                {familyGoals.map((goal) => (
+                  <button
+                    key={goal.id}
+                    className={`choice-tile ${
+                      selectedGoalIds.includes(goal.id) ? "is-selected" : ""
+                    }`}
+                    onClick={() => onToggleGoal(goal.id)}
+                    type="button"
+                  >
+                    <div className="choice-tile-icon">
+                      <GoalGlyph goalId={goal.id} />
+                    </div>
+                    <h3>{goal.title}</h3>
+                    <p>{goal.copy}</p>
+                  </button>
+                ))}
+              </div>
             </div>
           ) : null}
 
@@ -165,22 +217,41 @@ export function OnboardingFlow({
           ) : null}
 
           {step === 2 ? (
-            <div className="preview-grid">
-              {previewPlaylists.map(({ child, lessons }) => (
-                <article key={child.id} className="preview-panel">
-                  <p>{child.name}</p>
-                  <h3>{child.todayTheme}</h3>
-                  <span>{child.supportSpot}</span>
-                  <div className="preview-lesson-list">
-                    {lessons.map((lesson) => (
-                      <div key={lesson.id} className="preview-lesson-row">
-                        <strong>{lesson.title}</strong>
-                        <span>{lesson.trackTitle}</span>
-                      </div>
-                    ))}
-                  </div>
-                </article>
-              ))}
+            <div className="onboarding-step-stack">
+              <section className="setup-brief">
+                <div>
+                  <p className="eyebrow eyebrow-dark">Parent setup brief</p>
+                  <h2>{familyName || "Your family"} is ready for the first week.</h2>
+                  <p>
+                    Start with {selectedRhythm.title.toLowerCase()},{" "}
+                    {selectedCoachStyle.title.toLowerCase()} support, and{" "}
+                    {selectedCelebrationStyle.title.toLowerCase()} so the first
+                    session opens with a clear parent plan.
+                  </p>
+                </div>
+                <div className="setup-brief-actions">
+                  <span>Tonight&apos;s first move</span>
+                  <strong>Open the dashboard, choose one child, and start the first playlist lesson.</strong>
+                </div>
+              </section>
+
+              <div className="preview-grid">
+                {previewPlaylists.map(({ child, lessons }) => (
+                  <article key={child.id} className="preview-panel">
+                    <p>{child.name}</p>
+                    <h3>{child.todayTheme}</h3>
+                    <span>{child.supportSpot}</span>
+                    <div className="preview-lesson-list">
+                      {lessons.map((lesson) => (
+                        <div key={lesson.id} className="preview-lesson-row">
+                          <strong>{lesson.title}</strong>
+                          <span>{lesson.trackTitle}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </article>
+                ))}
+              </div>
             </div>
           ) : null}
 
@@ -213,17 +284,19 @@ export function OnboardingFlow({
 
         <aside className="onboarding-side">
           <div className="sidebar-block onboarding-summary">
-            <p className="eyebrow eyebrow-dark">Selected priorities</p>
-            <div className="summary-chip-row">
-              {selectedGoals.map((goal) => (
-                <span key={goal.id} className="summary-chip">
-                  {goal.title}
-                </span>
+            <p className="eyebrow eyebrow-dark">Setup receipt</p>
+            <h2>{familyName || "Your family"}</h2>
+            <div className="setup-receipt-list">
+              {setupReadinessItems.map((item) => (
+                <div key={item.label} className="setup-receipt-row">
+                  <span>{item.label}</span>
+                  <strong>{item.value}</strong>
+                </div>
               ))}
             </div>
             <p>
-              Pick at least two goals. KidWiz uses these to build the first weekly
-              playlist and coach prompts for each child.
+              Parents can adjust these later in Family Hub. Launch keeps the setup
+              flexible instead of locking the family into one path.
             </p>
           </div>
 

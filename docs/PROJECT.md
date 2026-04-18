@@ -32,7 +32,7 @@ KidWiz aims to close that gap by giving families one place to build:
 - CRO-focused public website with parent outcome messaging, demo CTAs, trust positioning, and clearer product/prototype proof
 - parent email entry flow with optional Supabase magic-link auth
 - demo-mode fallback when auth is not configured
-- guided family onboarding for goal selection, weekly rhythm, coach style, and celebration style
+- guided family onboarding for family name, goal selection, weekly rhythm, coach style, celebration style, and a parent setup brief
 - parent dashboard with per-child weekly targets, focus tracks, progress, and recommended next lessons
 - parent weekly report layer with highlights, child-specific action plans, family conversation prompts, and trend history
 - parent Daily Brief with a first move, family context, and a ready-to-say parent script for tonight
@@ -140,6 +140,7 @@ The live app shell currently uses in-browser demo state for:
 
 - session mode
 - onboarding completion and setup preferences
+- editable family name
 - selected family goals
 - weekly rhythm, coach style, and celebration style
 - weekly targets by child
@@ -191,6 +192,7 @@ The Family Hub now includes local controls to:
 - The first build is intentionally web-first.
 - The current product foundation is parent-led rather than child-signup-first.
 - The local product now includes an onboarding flow instead of skipping straight into the app.
+- Parent onboarding now captures an editable family name and shows a setup receipt plus first-week parent brief before launch.
 - The local product now includes a quest-style child home experience instead of a plain dashboard-style landing screen.
 - The parent dashboard now includes a weekly report plus historical trend comparison rather than only raw metrics and controls.
 - Historical trend comparison is now driven by archived local snapshots instead of a fixed read-only seed.

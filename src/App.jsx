@@ -601,6 +601,7 @@ function App() {
   function handleFinishOnboarding() {
     updateAppState((current) => ({
       ...current,
+      familyName: current.familyName.trim() || "Aster House",
       onboardingComplete: true,
       onboardingStep: 2,
       activeTab: "dashboard",
@@ -1137,8 +1138,15 @@ function App() {
             canAdvance={canAdvanceOnboarding}
             celebrationStyleId={appState.celebrationStyleId}
             coachStyleId={appState.coachStyleId}
+            familyName={appState.familyName}
             onBack={handleBackOnboarding}
             onFinish={handleFinishOnboarding}
+            onFamilyNameChange={(familyName) =>
+              updateAppState((current) => ({
+                ...current,
+                familyName,
+              }))
+            }
             onNext={handleAdvanceOnboarding}
             onSelectCelebrationStyle={(styleId) =>
               updateAppState((current) => ({

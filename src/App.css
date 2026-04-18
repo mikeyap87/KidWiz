@@ -629,6 +629,68 @@
   gap: 16px;
 }
 
+.onboarding-step-stack {
+  display: grid;
+  gap: 16px;
+}
+
+.family-name-field {
+  display: grid;
+  gap: 8px;
+  max-width: 420px;
+}
+
+.family-name-field span {
+  color: rgba(246, 248, 251, 0.72);
+  font-size: 0.86rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.family-name-field input {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 14px;
+  border: 1px solid rgba(246, 248, 251, 0.14);
+  border-radius: 8px;
+  background: rgba(246, 248, 251, 0.06);
+  color: #f6f8fb;
+  font: inherit;
+  outline: none;
+}
+
+.family-name-field input:focus {
+  border-color: rgba(217, 255, 107, 0.58);
+  box-shadow: 0 0 0 3px rgba(217, 255, 107, 0.14);
+}
+
+.onboarding-progress-note {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 16px;
+  border: 1px solid rgba(63, 208, 201, 0.24);
+  background: rgba(63, 208, 201, 0.08);
+}
+
+.onboarding-progress-note strong,
+.onboarding-progress-note span {
+  display: block;
+}
+
+.onboarding-progress-note strong {
+  color: #f6f8fb;
+  font-size: 0.95rem;
+}
+
+.onboarding-progress-note span {
+  max-width: 560px;
+  color: rgba(246, 248, 251, 0.74);
+  line-height: 1.5;
+}
+
 .choice-tile {
   min-height: 200px;
   padding: 18px;
@@ -723,6 +785,56 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
+}
+
+.setup-brief {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 260px;
+  gap: 18px;
+  align-items: center;
+  padding: 22px;
+  border: 1px solid rgba(217, 255, 107, 0.2);
+  background:
+    linear-gradient(135deg, rgba(217, 255, 107, 0.1), rgba(63, 208, 201, 0.08)),
+    rgba(246, 248, 251, 0.04);
+}
+
+.setup-brief h2,
+.setup-brief p,
+.setup-brief-actions span,
+.setup-brief-actions strong {
+  margin: 0;
+}
+
+.setup-brief h2 {
+  margin-top: 8px;
+  font-size: clamp(1.4rem, 2vw, 2rem);
+}
+
+.setup-brief p {
+  margin-top: 10px;
+  color: rgba(246, 248, 251, 0.76);
+  line-height: 1.58;
+}
+
+.setup-brief-actions {
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+  border: 1px solid rgba(246, 248, 251, 0.1);
+  background: rgba(11, 15, 22, 0.5);
+}
+
+.setup-brief-actions span {
+  color: rgba(246, 248, 251, 0.62);
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.setup-brief-actions strong {
+  line-height: 1.45;
 }
 
 .preview-panel,
@@ -823,6 +935,33 @@
   margin: 12px 0 0;
   color: rgba(246, 248, 251, 0.74);
   line-height: 1.58;
+}
+
+.onboarding-summary h2 {
+  margin: 8px 0 14px;
+  font-size: 1.3rem;
+}
+
+.setup-receipt-list {
+  display: grid;
+  gap: 12px;
+}
+
+.setup-receipt-row {
+  display: grid;
+  gap: 5px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(246, 248, 251, 0.08);
+}
+
+.setup-receipt-row span {
+  color: rgba(246, 248, 251, 0.58);
+  font-size: 0.82rem;
+}
+
+.setup-receipt-row strong {
+  color: #f6f8fb;
+  line-height: 1.4;
 }
 
 .promise-list {
@@ -5337,9 +5476,15 @@
   .learning-layout,
   .journal-layout,
   .dashboard-child-grid,
+  .setup-brief,
   .onboarding-layout,
   .onboarding-choice-columns {
     grid-template-columns: 1fr;
+  }
+
+  .onboarding-progress-note {
+    align-items: start;
+    flex-direction: column;
   }
 
   .app-layout {
