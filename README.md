@@ -83,6 +83,7 @@ If Supabase is not configured yet, the product still opens cleanly in demo mode 
 - accept/dismiss controls for planning nudges so parents can treat recommendations like actionable inbox items instead of repeated alerts
 - a parent review queue that gathers unresolved nudges, story signals, fresh reflections, and family follow-up into one calm dashboard inbox
 - parent controls for goals, rhythm, celebration style, track assignment, and sensitive-topic unlocks
+- Family Meeting Builder that turns child signals into a 10-minute guided conversation and ready-to-say script
 - local save-week, archive-week, fresh-week, and reset testing tools in the Family Hub
 
 ## Project Structure

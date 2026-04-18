@@ -1459,6 +1459,7 @@ function App() {
                     }
                     onToggleBodyBoundaries={handleToggleBodyBoundaries}
                     onToggleGoal={handleToggleGoal}
+                    onToggleJourney={handleToggleJourney}
                     onToggleTrackAssignment={handleToggleTrackAssignment}
                     selectedCelebrationStyle={selectedCelebrationStyle}
                     selectedChild={selectedChild}

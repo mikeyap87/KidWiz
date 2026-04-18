@@ -3754,6 +3754,88 @@
   margin-top: 18px;
 }
 
+.family-meeting-panel {
+  display: grid;
+  gap: 16px;
+  margin: 22px 0;
+  padding: 20px;
+  border: 1px solid rgba(120, 212, 106, 0.16);
+  background:
+    linear-gradient(135deg, rgba(120, 212, 106, 0.1), rgba(242, 141, 192, 0.08)),
+    rgba(246, 248, 251, 0.03);
+}
+
+.family-meeting-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 0.45fr);
+  gap: 16px;
+}
+
+.family-meeting-copy {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.family-meeting-copy p,
+.family-meeting-copy h3,
+.family-meeting-copy span,
+.family-meeting-script p,
+.family-meeting-script span,
+.family-meeting-step p,
+.family-meeting-step strong,
+.family-meeting-step span {
+  margin: 0;
+}
+
+.family-meeting-copy p,
+.family-meeting-script p,
+.family-meeting-step p {
+  color: rgba(246, 248, 251, 0.58);
+  font-size: 0.82rem;
+}
+
+.family-meeting-copy h3 {
+  font-size: 1.38rem;
+  line-height: 1.32;
+}
+
+.family-meeting-copy span,
+.family-meeting-script span,
+.family-meeting-step span {
+  color: rgba(246, 248, 251, 0.76);
+  line-height: 1.56;
+}
+
+.family-meeting-script,
+.family-meeting-step {
+  border: 1px solid rgba(246, 248, 251, 0.08);
+  background: rgba(11, 15, 22, 0.24);
+}
+
+.family-meeting-script {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  padding: 16px;
+}
+
+.family-meeting-agenda {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.family-meeting-step {
+  display: grid;
+  gap: 8px;
+  padding: 14px;
+}
+
+.family-meeting-step strong {
+  line-height: 1.4;
+}
+
 .summary-chip-button {
   min-height: 38px;
 }
@@ -3853,6 +3935,7 @@
   .daily-brief-grid,
   .quest-daily-brief,
   .journal-insight-main,
+  .family-meeting-main,
   .dashboard-report-grid,
   .dashboard-trend-overview,
   .quest-hero-band,
@@ -3981,6 +4064,7 @@
   .daily-brief-spotlight,
   .quest-daily-reasons,
   .journal-insight-grid,
+  .family-meeting-agenda,
   .review-queue-grid,
   .story-progress-strip,
   .story-strip,

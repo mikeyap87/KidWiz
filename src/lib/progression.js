@@ -566,6 +566,62 @@ export function buildParentDailyBrief({
   };
 }
 
+export function buildFamilyMeetingBuilder({
+  child,
+  familyChatDone,
+  journalInsight,
+  nextRitual,
+  selectedRhythm,
+  storyDebrief,
+  summary,
+}) {
+  const anchor =
+    storyDebrief?.parentQuestion ??
+    journalInsight?.parentResponse ??
+    nextRitual.copy;
+  const childQuestion =
+    storyDebrief?.childReflection ??
+    `What felt easier or harder for ${child.name} today?`;
+
+  return {
+    title: familyChatDone
+      ? "Tonight's family meeting is already logged."
+      : "Run a 10-minute family meeting tonight.",
+    copy: `${selectedRhythm.title} becomes easier when the family has one calm check-in, one child signal, and one next practice.`,
+    statusLabel: familyChatDone ? "Logged this week" : "Ready to run",
+    agenda: [
+      {
+        time: "2 min",
+        title: "Start with a tiny win",
+        copy: `Name one visible effort from ${child.name}, especially around ${summary.strongestTrack.title}.`,
+      },
+      {
+        time: "4 min",
+        title: "Ask the signal question",
+        copy: childQuestion,
+      },
+      {
+        time: "3 min",
+        title: "Choose one next practice",
+        copy:
+          storyDebrief?.nextStepCopy ??
+          journalInsight?.recommendedPractice?.copy ??
+          summary.supportMessage,
+      },
+      {
+        time: "1 min",
+        title: "Close with the ritual",
+        copy: nextRitual.copy,
+      },
+    ],
+    parentScript: [
+      `Open with: "This is not a lecture. We are just noticing what helps."`,
+      `Ask: "${anchor}"`,
+      `Close with: "One small repeatable move is enough for tonight."`,
+    ],
+  };
+}
+
 function getQuestPriority(row, focusTrackId) {
   if (row.id === focusTrackId) {
     return 0;

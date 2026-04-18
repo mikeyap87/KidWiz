@@ -4,6 +4,7 @@ import {
   Brain,
   Compass,
   History,
+  MessageCircle,
   RefreshCw,
   ShieldCheck,
   Users,
@@ -17,7 +18,14 @@ import {
   coachStyles,
 } from "../data/kidwizData";
 import { trustSignals } from "../data/kidwizMarketingData";
-import { buildChildSummary, getTrackProgress } from "../lib/progression";
+import {
+  buildChildSummary,
+  buildFamilyMeetingBuilder,
+  buildJournalInsightCoach,
+  buildStorySkillDebrief,
+  findStoryById,
+  getTrackProgress,
+} from "../lib/progression";
 
 export function FamilyTab({
   appState,
@@ -36,6 +44,7 @@ export function FamilyTab({
   onResetWeeklyHistory,
   onRestartOnboarding,
   onDismissPlanningNudge,
+  onToggleJourney,
   onToggleBodyBoundaries,
   onToggleGoal,
   onToggleTrackAssignment,
@@ -62,6 +71,42 @@ export function FamilyTab({
     weeklyTargetsByChild: appState.weeklyTargetsByChild,
     planningNudgeStateByChild: appState.planningNudgeStateByChild,
   });
+  const childCompletedLessonIds =
+    appState.completedLessonIdsByChild[selectedChild.id] ?? [];
+  const childJournalEntries =
+    appState.childJournalEntriesByChild[selectedChild.id] ?? [];
+  const childStoryChoices = appState.storyChoicesByChild[selectedChild.id] ?? {};
+  const latestStoryId = Object.keys(childStoryChoices).at(-1);
+  const latestStory = latestStoryId ? findStoryById(latestStoryId) : null;
+  const latestStoryChoice = latestStory?.choices.find(
+    (choice) => choice.id === childStoryChoices[latestStory.id],
+  );
+  const journalInsight = buildJournalInsightCoach({
+    child: selectedChild,
+    childJournalEntries,
+    visibleTracks,
+    completedLessonIds: childCompletedLessonIds,
+  });
+  const storyDebrief = buildStorySkillDebrief({
+    story: latestStory,
+    choice: latestStoryChoice,
+    visibleTracks,
+    completedLessonIds: childCompletedLessonIds,
+  });
+  const familyChatDone = (
+    appState.completedJourneyIdsByChild[selectedChild.id] ?? []
+  ).includes("family-chat");
+  const nextRitual =
+    familyRituals[childCompletedLessonIds.length % familyRituals.length];
+  const familyMeeting = buildFamilyMeetingBuilder({
+    child: selectedChild,
+    familyChatDone,
+    journalInsight,
+    nextRitual,
+    selectedRhythm,
+    storyDebrief,
+    summary: selectedChildSummary,
+  });
 
   function handlePlanningAction(action) {
     if (action.type === "focus" && action.trackId) {
@@ -84,6 +129,46 @@ export function FamilyTab({
           style, celebration style, track assignment, and a fresh-week generator.
         </p>
       </div>
+
+      <section className="family-meeting-panel">
+        <div className="family-meeting-main">
+          <div>
+            <div className="panel-head">
+              <MessageCircle size={18} />
+              <h2>Family Meeting Builder</h2>
+            </div>
+            <div className="family-meeting-copy">
+              <p>{familyMeeting.statusLabel}</p>
+              <h3>{familyMeeting.title}</h3>
+              <span>{familyMeeting.copy}</span>
+            </div>
+          </div>
+
+          <article className="family-meeting-script">
+            <p>Ready-to-say script</p>
+            {familyMeeting.parentScript.map((line) => (
+              <span key={line}>{line}</span>
+            ))}
+            <button
+              className={`inline-action ${familyChatDone ? "is-selected" : ""}`}
+              onClick={() => onToggleJourney("family-chat")}
+              type="button"
+            >
+              {familyChatDone ? "Family chat logged" : "Mark meeting done"}
+            </button>
+          </article>
+        </div>
+
+        <div className="family-meeting-agenda">
+          {familyMeeting.agenda.map((item) => (
+            <article key={item.title} className="family-meeting-step">
+              <p>{item.time}</p>
+              <strong>{item.title}</strong>
+              <span>{item.copy}</span>
+            </article>
+          ))}
+        </div>
+      </section>
 
       <div className="family-grid">
         <article className="surface-panel">
