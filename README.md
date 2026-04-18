@@ -65,6 +65,7 @@ If Supabase is not configured yet, the product still opens cleanly in demo mode 
 - public marketing site
 - guided onboarding flow
 - parent dashboard with child-by-child weekly targets, weekly report summaries, archived trend comparisons, and recommendations
+- a parent Daily Brief that turns the week into one clear first move, family context, and a ready-to-say parent script
 - child-facing Quest Hub with mission board, world map, reward shelf, and rhythm checklist
 - multi-child switching
 - course library with lesson progress, track-specific lesson playbooks, visual practice panels, authored scenario cards, interactive move storyboards, age-band aware prompts, guided milestones, quiz checkpoints, and sequential progression
@@ -74,6 +75,7 @@ If Supabase is not configured yet, the product still opens cleanly in demo mode 
 - child journal and parent notes
 - guided empty and success states in courses, stories, and journals so child-facing flows feel more complete
 - signal-driven lesson recommendations that react to recent story choices and child reflection mood
+- Daily Brief guidance that explains what happened, why it matters, and what to say tonight
 - parent planning nudges in Dashboard and Family Hub that can adjust weekly targets or switch focus tracks from those child signals
 - accept/dismiss controls for planning nudges so parents can treat recommendations like actionable inbox items instead of repeated alerts
 - a parent review queue that gathers unresolved nudges, story signals, fresh reflections, and family follow-up into one calm dashboard inbox

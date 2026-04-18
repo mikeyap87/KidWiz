@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import {
   buildChildSummaries,
+  buildParentDailyBrief,
   buildParentReviewQueue,
   buildParentWeeklyReport,
 } from "../lib/progression";
@@ -127,6 +128,17 @@ export function DashboardTab({
       }),
     [appState, childSummaries, nextRitual],
   );
+  const dailyBrief = useMemo(
+    () =>
+      buildParentDailyBrief({
+        childSummaries,
+        nextRitual,
+        reviewQueue,
+        selectedRhythm,
+        weeklyReport,
+      }),
+    [childSummaries, nextRitual, reviewQueue, selectedRhythm, weeklyReport],
+  );
 
   function handleReportAction(item) {
     if (item.actionType === "lesson" && item.lessonId) {
@@ -207,6 +219,101 @@ export function DashboardTab({
           <span>Badges earned across both children</span>
         </article>
       </div>
+
+      <section className="surface-panel daily-brief-panel">
+        <div className="daily-brief-main">
+          <div>
+            <div className="panel-head">
+              <Sparkles size={18} />
+              <h2>{dailyBrief.eyebrow}</h2>
+            </div>
+            <div className="daily-brief-copy">
+              <p>{weeklyReport.readinessLabel}</p>
+              <h2>{dailyBrief.title}</h2>
+              <span>{dailyBrief.summary}</span>
+              <strong>{dailyBrief.whyItMatters}</strong>
+            </div>
+          </div>
+
+          <article className="daily-brief-action-card">
+            <p>Do this first</p>
+            {dailyBrief.firstMove ? (
+              <>
+                <strong>{dailyBrief.firstMove.title}</strong>
+                <span>{dailyBrief.firstMove.copy}</span>
+                {dailyBrief.firstMove.actionType === "nudge" ? (
+                  <div className="review-queue-actions">
+                    <button
+                      className="inline-action"
+                      onClick={() =>
+                        onApplyPlanningNudge(
+                          dailyBrief.firstMove.childId,
+                          dailyBrief.firstMove.nudge,
+                        )
+                      }
+                      type="button"
+                    >
+                      Apply all
+                    </button>
+                    <button
+                      className="inline-action"
+                      onClick={() =>
+                        onDismissPlanningNudge(
+                          dailyBrief.firstMove.childId,
+                          dailyBrief.firstMove.nudge.id,
+                        )
+                      }
+                      type="button"
+                    >
+                      Dismiss
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    className="inline-action"
+                    onClick={() => handleReportAction(dailyBrief.firstMove)}
+                    type="button"
+                  >
+                    {dailyBrief.firstMove.ctaLabel}
+                    <ChevronRight size={14} />
+                  </button>
+                )}
+              </>
+            ) : (
+              <>
+                <strong>Open the Family Hub</strong>
+                <span>Use tonight's ritual to turn the week into one small shared moment.</span>
+                <button
+                  className="inline-action"
+                  onClick={onOpenFamily}
+                  type="button"
+                >
+                  Open family hub
+                  <ChevronRight size={14} />
+                </button>
+              </>
+            )}
+          </article>
+        </div>
+
+        <div className="daily-brief-grid">
+          <div className="daily-brief-spotlight">
+            {dailyBrief.spotlightRows.map((row) => (
+              <article key={row.label} className="daily-brief-row">
+                <p>{row.label}</p>
+                <strong>{row.value}</strong>
+              </article>
+            ))}
+          </div>
+
+          <article className="daily-brief-script">
+            <p>Tonight's parent script</p>
+            {dailyBrief.script.map((line) => (
+              <span key={line}>{line}</span>
+            ))}
+          </article>
+        </div>
+      </section>
 
       <section className="surface-panel review-queue-panel">
         <div className="panel-head">

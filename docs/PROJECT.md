@@ -35,6 +35,7 @@ KidWiz aims to close that gap by giving families one place to build:
 - guided family onboarding for goal selection, weekly rhythm, coach style, and celebration style
 - parent dashboard with per-child weekly targets, focus tracks, progress, and recommended next lessons
 - parent weekly report layer with highlights, child-specific action plans, family conversation prompts, and trend history
+- parent Daily Brief with a first move, family context, and a ready-to-say parent script for tonight
 - parent review queue that gathers unresolved planning nudges, recent story practice, fresh child reflections, and family follow-up into one action inbox
 - Quest Hub for the child experience with a world map, weekly mission board, reward shelf, and guided rhythm checklist
 - multi-child switching inside the app shell
@@ -200,6 +201,7 @@ The Family Hub now includes local controls to:
 - Recent story choices and child reflection mood now feed forward into lesson recommendations and parent-facing planning copy, so the product behaves more like one connected learning loop.
 - Dashboard and Family Hub now turn those same child signals into concrete planning nudges, including focus-track shifts and target adjustments parents can apply directly.
 - Planning nudges now support accept and dismiss behavior, so local product state can remember which recommendations the parent already handled.
+- Dashboard now includes a parent Daily Brief that explains what happened, why it matters, what to do first, and what to say tonight.
 - Dashboard now includes a parent review queue so reflections, story signals, planning nudges, and family follow-up appear together instead of staying scattered across tabs.
 - Sensitive topics stay behind a parent unlock.
 - AI is positioned as bounded and supportive, not as an unrestricted social chatbot.

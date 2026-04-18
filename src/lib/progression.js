@@ -375,6 +375,60 @@ export function buildParentReviewQueue({ childSummaries, appState, nextRitual })
     .slice(0, 5);
 }
 
+export function buildParentDailyBrief({
+  childSummaries,
+  nextRitual,
+  reviewQueue,
+  selectedRhythm,
+  weeklyReport,
+}) {
+  const strongestSummary =
+    [...childSummaries].sort(
+      (left, right) => right.overallTargetProgress - left.overallTargetProgress,
+    )[0] ?? childSummaries[0];
+  const supportSummary =
+    [...childSummaries].sort(
+      (left, right) => left.overallTargetProgress - right.overallTargetProgress,
+    )[0] ?? childSummaries[0];
+  const firstMove =
+    reviewQueue.find((item) => item.actionType === "nudge") ??
+    reviewQueue[0] ??
+    null;
+  const signalSummary = childSummaries.find((summary) => summary.signal)?.signal;
+
+  return {
+    eyebrow: "Daily brief",
+    title:
+      weeklyReport.readinessScore >= 70
+        ? "Keep the family rhythm warm tonight."
+        : "Make tonight smaller, clearer, and easier to start.",
+    summary:
+      signalSummary?.parentCopy ??
+      `${supportSummary.child.name} needs the clearest support in ${supportSummary.supportTrack.title}, while ${strongestSummary.child.name} has the strongest momentum in ${strongestSummary.strongestTrack.title}.`,
+    whyItMatters: `${selectedRhythm.title} works best when parents can see one next step, one child signal, and one family conversation without digging across the app.`,
+    firstMove,
+    spotlightRows: [
+      {
+        label: "What happened",
+        value: `${strongestSummary.child.name} is ${strongestSummary.overallTargetProgress}% through this week's targets.`,
+      },
+      {
+        label: "What needs care",
+        value: `${supportSummary.child.name}'s lowest signal is ${supportSummary.supportTrack.title}.`,
+      },
+      {
+        label: "Tonight's family anchor",
+        value: nextRitual.copy,
+      },
+    ],
+    script: [
+      `Start with: "I noticed one thing that looked a little easier for you today."`,
+      `Ask ${supportSummary.child.name}: "What part should we make smaller tomorrow?"`,
+      `Close with: "${nextRitual.title} is our tiny family practice tonight."`,
+    ],
+  };
+}
+
 function getQuestPriority(row, focusTrackId) {
   if (row.id === focusTrackId) {
     return 0;
