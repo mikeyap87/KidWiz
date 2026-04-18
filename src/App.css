@@ -3597,6 +3597,93 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.journal-insight-panel {
+  display: grid;
+  gap: 16px;
+  margin: 22px 0;
+  padding: 20px;
+  border: 1px solid rgba(63, 208, 201, 0.16);
+  background:
+    linear-gradient(135deg, rgba(63, 208, 201, 0.1), rgba(255, 209, 90, 0.08)),
+    rgba(246, 248, 251, 0.03);
+}
+
+.journal-insight-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 0.38fr);
+  gap: 16px;
+  align-items: stretch;
+}
+
+.journal-insight-copy {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.journal-insight-copy p,
+.journal-insight-copy h3,
+.journal-insight-copy span,
+.journal-insight-practice p,
+.journal-insight-practice strong,
+.journal-insight-practice span,
+.journal-insight-card p,
+.journal-insight-card strong {
+  margin: 0;
+}
+
+.journal-insight-copy p,
+.journal-insight-practice p,
+.journal-insight-card p {
+  color: rgba(246, 248, 251, 0.58);
+  font-size: 0.82rem;
+}
+
+.journal-insight-copy h3 {
+  font-size: 1.34rem;
+  line-height: 1.32;
+}
+
+.journal-insight-copy span,
+.journal-insight-practice span,
+.journal-insight-card strong {
+  color: rgba(246, 248, 251, 0.76);
+  line-height: 1.56;
+}
+
+.journal-insight-practice,
+.journal-insight-card {
+  border: 1px solid rgba(246, 248, 251, 0.08);
+  background: rgba(11, 15, 22, 0.24);
+}
+
+.journal-insight-practice {
+  display: grid;
+  align-content: space-between;
+  gap: 12px;
+  padding: 16px;
+}
+
+.journal-insight-practice strong {
+  line-height: 1.42;
+}
+
+.journal-insight-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.journal-insight-card {
+  display: grid;
+  gap: 8px;
+  padding: 14px;
+}
+
+.journal-insight-card svg {
+  color: #ffd15a;
+}
+
 .journal-form {
   display: grid;
   gap: 12px;
@@ -3765,6 +3852,7 @@
   .daily-brief-main,
   .daily-brief-grid,
   .quest-daily-brief,
+  .journal-insight-main,
   .dashboard-report-grid,
   .dashboard-trend-overview,
   .quest-hero-band,
@@ -3892,6 +3980,7 @@
   .dashboard-summary-grid,
   .daily-brief-spotlight,
   .quest-daily-reasons,
+  .journal-insight-grid,
   .review-queue-grid,
   .story-progress-strip,
   .story-strip,
@@ -4019,6 +4108,10 @@
   }
 
   .quest-daily-action {
+    align-content: start;
+  }
+
+  .journal-insight-practice {
     align-content: start;
   }
 

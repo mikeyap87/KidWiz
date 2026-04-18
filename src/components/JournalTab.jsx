@@ -1,10 +1,13 @@
-import { NotebookPen, Users } from "lucide-react";
+import { ArrowRight, Brain, NotebookPen, Sparkles, Users } from "lucide-react";
+import { buildJournalInsightCoach } from "../lib/progression";
 
 export function JournalTab({
+  childCompletedLessonIds,
   childJournalDraft,
   childJournalEntries,
   childJournalMood,
   moodOptions,
+  onOpenLesson,
   onChildDraftChange,
   onChildMoodChange,
   onParentDraftChange,
@@ -13,7 +16,15 @@ export function JournalTab({
   parentJournalDraft,
   parentJournalEntries,
   selectedChild,
+  visibleTracks,
 }) {
+  const journalInsight = buildJournalInsightCoach({
+    child: selectedChild,
+    childJournalEntries,
+    visibleTracks,
+    completedLessonIds: childCompletedLessonIds,
+  });
+
   return (
     <section className="workspace-band">
       <div className="section-heading section-heading-tight">
@@ -24,6 +35,65 @@ export function JournalTab({
           is working, what needs support, and what family rituals to try next.
         </p>
       </div>
+
+      <section className="journal-insight-panel">
+        <div className="journal-insight-main">
+          <div>
+            <div className="panel-head">
+              <Brain size={18} />
+              <h2>Journal Insight Coach</h2>
+            </div>
+            <div className="journal-insight-copy">
+              <p>Mood pattern</p>
+              <h3>{journalInsight.title}</h3>
+              <span>{journalInsight.moodTrend}</span>
+            </div>
+          </div>
+
+          <article className="journal-insight-practice">
+            <p>Recommended next practice</p>
+            {journalInsight.recommendedPractice ? (
+              <>
+                <strong>{journalInsight.recommendedPractice.lesson.title}</strong>
+                <span>{journalInsight.recommendedPractice.copy}</span>
+                <button
+                  className="inline-action"
+                  onClick={() =>
+                    onOpenLesson(journalInsight.recommendedPractice.lesson.id)
+                  }
+                  type="button"
+                >
+                  Open lesson
+                  <ArrowRight size={14} />
+                </button>
+              </>
+            ) : (
+              <>
+                <strong>Save one reflection first</strong>
+                <span>A short note is enough for KidWiz to suggest a better practice loop.</span>
+              </>
+            )}
+          </article>
+        </div>
+
+        <div className="journal-insight-grid">
+          <article className="journal-insight-card">
+            <Sparkles size={18} />
+            <p>Likely need</p>
+            <strong>{journalInsight.likelyNeed}</strong>
+          </article>
+          <article className="journal-insight-card">
+            <Users size={18} />
+            <p>Parent response idea</p>
+            <strong>{journalInsight.parentResponse}</strong>
+          </article>
+          <article className="journal-insight-card">
+            <NotebookPen size={18} />
+            <p>Latest signal</p>
+            <strong>{journalInsight.latestSignal}</strong>
+          </article>
+        </div>
+      </section>
 
       <div className="journal-layout">
         <article className="surface-panel">

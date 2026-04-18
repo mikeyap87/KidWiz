@@ -1400,10 +1400,12 @@ function App() {
 
                 {appState.activeTab === "journal" ? (
                   <JournalTab
+                    childCompletedLessonIds={childCompletedLessonIds}
                     childJournalDraft={childJournalDraft}
                     childJournalEntries={childJournalEntries}
                     childJournalMood={childJournalMood}
                     moodOptions={moodOptions}
+                    onOpenLesson={handleOpenLesson}
                     onChildDraftChange={setChildJournalDraft}
                     onChildMoodChange={setChildJournalMood}
                     onParentDraftChange={setParentJournalDraft}
@@ -1412,6 +1414,7 @@ function App() {
                     parentJournalDraft={parentJournalDraft}
                     parentJournalEntries={appState.parentJournalEntries}
                     selectedChild={selectedChild}
+                    visibleTracks={visibleTracks}
                   />
                 ) : null}
 
