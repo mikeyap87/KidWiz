@@ -1532,6 +1532,52 @@ export function buildChildAchievementPortfolio({
   };
 }
 
+export function buildParentSharePreview({ child, achievementPortfolio, todayLabel }) {
+  const strongestProof =
+    achievementPortfolio.proofCards.find((card) => card.tone === "good") ??
+    achievementPortfolio.proofCards[0];
+  const familyProof =
+    achievementPortfolio.proofCards.find((card) => card.label === "Home proof") ??
+    achievementPortfolio.proofCards.at(-1);
+  const parentShareLine =
+    achievementPortfolio.keepsakes.find(
+      (keepsake) => keepsake.label === "Best parent share line",
+    )?.value ?? "I noticed the effort you put into this week.";
+
+  return {
+    title: `${child.name}'s Weekly Growth Card`,
+    eyebrow: `${todayLabel} family share preview`,
+    copy:
+      "A print-and-send style preview for turning KidWiz progress into a warm family recap without exposing private raw journal data.",
+    heroLine: achievementPortfolio.identityLine,
+    artifactLabel: `${achievementPortfolio.totalArtifacts} growth artifact${achievementPortfolio.totalArtifacts === 1 ? "" : "s"}`,
+    highlightRows: [
+      {
+        label: strongestProof.label,
+        value: strongestProof.title,
+        copy: strongestProof.copy,
+      },
+      {
+        label: familyProof.label,
+        value: familyProof.title,
+        copy: familyProof.copy,
+      },
+      {
+        label: "Parent note",
+        value: parentShareLine,
+        copy: "A ready-to-say line parents can use at dinner, bedtime, or after school.",
+      },
+    ],
+    deliveryOptions: [
+      "Print weekly card",
+      "Email parent recap",
+      "Save to portfolio history",
+    ],
+    privacyNote:
+      "Share cards should summarize growth, not reveal private child journal text unless a parent and child choose it together.",
+  };
+}
+
 function formatJoinedList(items) {
   if (items.length <= 1) {
     return items[0] ?? "";

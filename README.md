@@ -71,6 +71,7 @@ If Supabase is not configured yet, the product still opens cleanly in demo mode 
 - a Kid Daily Quest Brief that gives the selected child one next mission, one reason, one unlock, and one confidence prompt
 - a Child Celebration Reel that turns weekly lessons, stories, reflections, badges, and family practice into visible wins
 - a Child Achievement Portfolio that turns wins into a parent-shareable growth record with proof cards and keepsakes
+- a Parent Share & Print Preview that turns the portfolio into a privacy-aware weekly growth card
 - multi-child switching
 - course library with lesson progress, Learning Path Maps, track-specific lesson playbooks, visual practice panels, authored scenario cards, interactive move storyboards, age-band aware prompts, guided milestones, quiz checkpoints, and sequential progression
 - weekly playlists

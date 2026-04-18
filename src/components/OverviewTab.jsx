@@ -4,7 +4,9 @@ import {
   BookOpen,
   Compass,
   Gem,
+  Mail,
   NotebookPen,
+  Printer,
   Sparkles,
   Star,
   Target,
@@ -15,6 +17,7 @@ import {
   buildChildCelebrationReel,
   buildChildAchievementPortfolio,
   buildKidDailyQuestBrief,
+  buildParentSharePreview,
   buildQuestWorldRows,
   buildWeeklyMissionBoard,
   deriveEarnedBadgeIds,
@@ -228,6 +231,15 @@ export function OverviewTab({
       selectedChild,
       selectedGoals,
     ],
+  );
+  const parentSharePreview = useMemo(
+    () =>
+      buildParentSharePreview({
+        child: selectedChild,
+        achievementPortfolio,
+        todayLabel,
+      }),
+    [achievementPortfolio, selectedChild, todayLabel],
   );
 
   return (
@@ -460,6 +472,51 @@ export function OverviewTab({
               <strong>{keepsake.value}</strong>
             </article>
           ))}
+        </div>
+      </section>
+
+      <section className="parent-share-preview-panel">
+        <div className="parent-share-preview-head">
+          <div>
+            <div className="panel-head">
+              <Printer size={18} />
+              <h2>{parentSharePreview.title}</h2>
+            </div>
+            <p>{parentSharePreview.copy}</p>
+          </div>
+          <span>{parentSharePreview.artifactLabel}</span>
+        </div>
+
+        <div className="parent-share-card">
+          <div className="parent-share-card-top">
+            <p>{parentSharePreview.eyebrow}</p>
+            <strong>{parentSharePreview.heroLine}</strong>
+          </div>
+
+          <div className="parent-share-highlight-grid">
+            {parentSharePreview.highlightRows.map((row) => (
+              <article key={row.label} className="parent-share-highlight">
+                <p>{row.label}</p>
+                <strong>{row.value}</strong>
+                <span>{row.copy}</span>
+              </article>
+            ))}
+          </div>
+
+          <div className="parent-share-footer">
+            <div>
+              <p>Privacy note</p>
+              <span>{parentSharePreview.privacyNote}</span>
+            </div>
+            <div className="parent-share-options">
+              {parentSharePreview.deliveryOptions.map((option) => (
+                <span key={option}>
+                  <Mail size={14} />
+                  {option}
+                </span>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 

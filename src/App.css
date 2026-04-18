@@ -1898,6 +1898,131 @@
   line-height: 1.5;
 }
 
+.parent-share-preview-panel {
+  display: grid;
+  gap: 16px;
+  margin-top: 24px;
+  padding: 20px;
+  border: 1px solid rgba(246, 248, 251, 0.1);
+  background:
+    linear-gradient(135deg, rgba(246, 248, 251, 0.08), rgba(120, 212, 106, 0.08)),
+    rgba(8, 10, 16, 0.42);
+}
+
+.parent-share-preview-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(180px, 0.24fr);
+  gap: 14px;
+  align-items: stretch;
+}
+
+.parent-share-preview-head p,
+.parent-share-preview-head span,
+.parent-share-card p,
+.parent-share-card strong,
+.parent-share-card span {
+  margin: 0;
+}
+
+.parent-share-preview-head > div > p {
+  max-width: 780px;
+  margin-top: 14px;
+  color: rgba(246, 248, 251, 0.76);
+  line-height: 1.58;
+}
+
+.parent-share-preview-head > span {
+  display: grid;
+  align-content: center;
+  min-height: 104px;
+  padding: 16px;
+  border: 1px solid rgba(246, 248, 251, 0.08);
+  background: rgba(11, 15, 22, 0.24);
+  color: #d9ff6b;
+  font-weight: 800;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.parent-share-card {
+  display: grid;
+  gap: 16px;
+  padding: 18px;
+  border: 1px solid rgba(246, 248, 251, 0.1);
+  background: rgba(246, 248, 251, 0.06);
+}
+
+.parent-share-card-top {
+  display: grid;
+  gap: 10px;
+}
+
+.parent-share-card-top p,
+.parent-share-highlight p,
+.parent-share-footer p {
+  color: rgba(246, 248, 251, 0.58);
+  font-size: 0.82rem;
+}
+
+.parent-share-card-top strong {
+  max-width: 900px;
+  font-size: 1.3rem;
+  line-height: 1.34;
+}
+
+.parent-share-highlight-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.parent-share-highlight {
+  display: grid;
+  gap: 8px;
+  min-height: 156px;
+  padding: 14px;
+  border: 1px solid rgba(246, 248, 251, 0.08);
+  background: rgba(11, 15, 22, 0.22);
+}
+
+.parent-share-highlight strong {
+  line-height: 1.36;
+}
+
+.parent-share-highlight span,
+.parent-share-footer span {
+  color: rgba(246, 248, 251, 0.76);
+  line-height: 1.55;
+}
+
+.parent-share-footer {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 0.36fr);
+  gap: 14px;
+  align-items: start;
+  padding-top: 14px;
+  border-top: 1px solid rgba(246, 248, 251, 0.08);
+}
+
+.parent-share-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.parent-share-options span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 34px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: rgba(217, 255, 107, 0.1);
+  color: #d9ff6b;
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
 .quest-main-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.08fr) minmax(300px, 0.92fr);
@@ -4928,6 +5053,8 @@
   .quest-daily-brief,
   .quest-celebration-reel,
   .achievement-portfolio-main,
+  .parent-share-preview-head,
+  .parent-share-footer,
   .journal-insight-main,
   .family-meeting-main,
   .parent-trust-review-main,
@@ -5064,6 +5191,7 @@
   .quest-celebration-frames,
   .achievement-proof-grid,
   .achievement-keepsake-grid,
+  .parent-share-highlight-grid,
   .journal-insight-grid,
   .family-meeting-agenda,
   .parent-trust-grid,
