@@ -1598,6 +1598,87 @@
   background: linear-gradient(90deg, var(--quest-accent), rgba(255, 255, 255, 0.82));
 }
 
+.quest-daily-brief {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 0.32fr);
+  gap: 14px;
+  margin-top: 24px;
+  padding: 20px;
+  border: 1px solid rgba(246, 248, 251, 0.08);
+  background:
+    linear-gradient(135deg, rgba(242, 141, 192, 0.12), rgba(120, 212, 106, 0.1)),
+    rgba(8, 10, 16, 0.42);
+}
+
+.quest-daily-copy {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+}
+
+.quest-daily-copy h3,
+.quest-daily-copy p,
+.quest-daily-copy span,
+.quest-daily-action p,
+.quest-daily-action strong,
+.quest-daily-reason p,
+.quest-daily-reason strong {
+  margin: 0;
+}
+
+.quest-daily-copy h3 {
+  font-size: 1.45rem;
+  line-height: 1.28;
+}
+
+.quest-daily-copy p,
+.quest-daily-copy span,
+.quest-daily-reason strong {
+  color: rgba(246, 248, 251, 0.76);
+  line-height: 1.58;
+}
+
+.quest-daily-copy span {
+  color: #f6f8fb;
+  font-weight: 700;
+}
+
+.quest-daily-action,
+.quest-daily-reason {
+  border: 1px solid rgba(246, 248, 251, 0.08);
+  background: rgba(11, 15, 22, 0.24);
+}
+
+.quest-daily-action {
+  display: grid;
+  align-content: space-between;
+  gap: 12px;
+  padding: 16px;
+}
+
+.quest-daily-action p,
+.quest-daily-reason p {
+  color: rgba(246, 248, 251, 0.58);
+  font-size: 0.82rem;
+}
+
+.quest-daily-action strong {
+  line-height: 1.35;
+}
+
+.quest-daily-reasons {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.quest-daily-reason {
+  display: grid;
+  gap: 8px;
+  padding: 14px;
+}
+
 .quest-main-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.08fr) minmax(300px, 0.92fr);
@@ -3457,6 +3538,7 @@
   .trust-layout,
   .daily-brief-main,
   .daily-brief-grid,
+  .quest-daily-brief,
   .dashboard-report-grid,
   .dashboard-trend-overview,
   .quest-hero-band,
@@ -3571,6 +3653,7 @@
   .course-showcase,
   .dashboard-summary-grid,
   .daily-brief-spotlight,
+  .quest-daily-reasons,
   .review-queue-grid,
   .story-progress-strip,
   .story-strip,
@@ -3691,6 +3774,10 @@
   }
 
   .daily-brief-action-card {
+    align-content: start;
+  }
+
+  .quest-daily-action {
     align-content: start;
   }
 

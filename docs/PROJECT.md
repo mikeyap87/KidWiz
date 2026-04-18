@@ -38,6 +38,7 @@ KidWiz aims to close that gap by giving families one place to build:
 - parent Daily Brief with a first move, family context, and a ready-to-say parent script for tonight
 - parent review queue that gathers unresolved planning nudges, recent story practice, fresh child reflections, and family follow-up into one action inbox
 - Quest Hub for the child experience with a world map, weekly mission board, reward shelf, and guided rhythm checklist
+- Kid Daily Quest Brief with one next mission, one reason it matters, one unlock, and one confidence prompt for the selected child
 - multi-child switching inside the app shell
 - seven always-available course tracks:
   - Wonder Lab
@@ -203,6 +204,7 @@ The Family Hub now includes local controls to:
 - Planning nudges now support accept and dismiss behavior, so local product state can remember which recommendations the parent already handled.
 - Dashboard now includes a parent Daily Brief that explains what happened, why it matters, what to do first, and what to say tonight.
 - Dashboard now includes a parent review queue so reflections, story signals, planning nudges, and family follow-up appear together instead of staying scattered across tabs.
+- Quest Hub now includes a Kid Daily Quest Brief so the child gets the same signal-aware clarity as the parent, translated into playful next-step language.
 - Sensitive topics stay behind a parent unlock.
 - AI is positioned as bounded and supportive, not as an unrestricted social chatbot.
 - The app supports demo mode by default so product design can move before backend work is finished.

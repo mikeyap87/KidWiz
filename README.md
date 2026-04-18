@@ -6,7 +6,7 @@ KidWiz is a modern children's education SaaS concept that combines traditional l
 - a parent login entry with optional Supabase magic-link auth
 - a guided family onboarding flow for goals, rhythm, and coach style
 - a fully navigable demo application for family learning
-- a Quest Hub with world-map navigation, weekly missions, and visible rewards
+- a Quest Hub with world-map navigation, weekly missions, a Kid Daily Quest Brief, and visible rewards
 - a parent weekly report layer with action plans, conversation prompts, and stateful trend history
 - eight course tracks with multi-lesson arcs, guided lesson flows, track-specific playbooks, visual practice panels, age-band aware lesson copy, authored scenario cards, and interactive move storyboards
 - lazy-loaded public, onboarding, and app-screen modules with in-product loading states so the local build stays fast as content grows
@@ -67,6 +67,7 @@ If Supabase is not configured yet, the product still opens cleanly in demo mode 
 - parent dashboard with child-by-child weekly targets, weekly report summaries, archived trend comparisons, and recommendations
 - a parent Daily Brief that turns the week into one clear first move, family context, and a ready-to-say parent script
 - child-facing Quest Hub with mission board, world map, reward shelf, and rhythm checklist
+- a Kid Daily Quest Brief that gives the selected child one next mission, one reason, one unlock, and one confidence prompt
 - multi-child switching
 - course library with lesson progress, track-specific lesson playbooks, visual practice panels, authored scenario cards, interactive move storyboards, age-band aware prompts, guided milestones, quiz checkpoints, and sequential progression
 - weekly playlists
@@ -76,6 +77,7 @@ If Supabase is not configured yet, the product still opens cleanly in demo mode 
 - guided empty and success states in courses, stories, and journals so child-facing flows feel more complete
 - signal-driven lesson recommendations that react to recent story choices and child reflection mood
 - Daily Brief guidance that explains what happened, why it matters, and what to say tonight
+- Kid Daily Quest Brief guidance that translates the same signals into child-friendly motivation
 - parent planning nudges in Dashboard and Family Hub that can adjust weekly targets or switch focus tracks from those child signals
 - accept/dismiss controls for planning nudges so parents can treat recommendations like actionable inbox items instead of repeated alerts
 - a parent review queue that gathers unresolved nudges, story signals, fresh reflections, and family follow-up into one calm dashboard inbox

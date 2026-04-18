@@ -616,6 +616,60 @@ export function buildWeeklyMissionBoard({
   };
 }
 
+export function buildKidDailyQuestBrief({
+  child,
+  missionBoard,
+  recommendedLesson,
+  signal,
+  weeklyCompletion,
+}) {
+  const nextMission =
+    missionBoard.missions.find((mission) => mission.progress < mission.target) ??
+    missionBoard.missions[0] ??
+    null;
+  const focusTitle =
+    missionBoard.focusWorld?.title ??
+    missionBoard.focusTrack?.title ??
+    "today's quest";
+  const progressLabel =
+    weeklyCompletion >= 75
+      ? "You are close to lighting up the week."
+      : weeklyCompletion >= 45
+        ? "You have enough momentum for one brave next step."
+        : "Start small and let the first win make the next one easier.";
+
+  return {
+    title: nextMission
+      ? `${child.name}, your next quest is ${nextMission.title}.`
+      : `${child.name}, choose one small quest to begin.`,
+    copy: signal
+      ? `${child.companionName} noticed ${signal.title.toLowerCase()}. This mission helps turn that clue into a real-life skill.`
+      : `${child.companionName} picked a mission that keeps ${focusTitle} moving without making the day feel too big.`,
+    progressLabel,
+    nextMission,
+    reasonRows: [
+      {
+        label: "Why it matters",
+        value:
+          recommendedLesson?.lesson.parentCue ??
+          nextMission?.copy ??
+          "Small practice now makes the next family conversation easier.",
+      },
+      {
+        label: "What you unlock",
+        value:
+          nextMission?.reward ??
+          missionBoard.nextRewardCopy ??
+          "More quest energy for the reward shelf.",
+      },
+      {
+        label: "Tiny confidence prompt",
+        value: `Say: "I can try the first part before I know the whole answer."`,
+      },
+    ],
+  };
+}
+
 function formatJoinedList(items) {
   if (items.length <= 1) {
     return items[0] ?? "";

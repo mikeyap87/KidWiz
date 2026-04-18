@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { badgeCatalog } from "../data/kidwizData";
 import {
+  buildKidDailyQuestBrief,
   buildQuestWorldRows,
   buildWeeklyMissionBoard,
   deriveEarnedBadgeIds,
@@ -163,6 +164,23 @@ export function OverviewTab({
     onOpenLesson,
     onOpenStory,
   };
+  const kidDailyBrief = useMemo(
+    () =>
+      buildKidDailyQuestBrief({
+        child: selectedChild,
+        missionBoard,
+        recommendedLesson,
+        signal: selectedSignal,
+        weeklyCompletion,
+      }),
+    [
+      missionBoard,
+      recommendedLesson,
+      selectedChild,
+      selectedSignal,
+      weeklyCompletion,
+    ],
+  );
 
   return (
     <section className="workspace-band quest-hub-shell">
@@ -272,6 +290,59 @@ export function OverviewTab({
               </button>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="quest-daily-brief">
+        <div className="quest-daily-copy">
+          <div className="panel-head">
+            <Sparkles size={18} />
+            <h2>Today&apos;s quest brief</h2>
+          </div>
+          <h3>{kidDailyBrief.title}</h3>
+          <p>{kidDailyBrief.copy}</p>
+          <span>{kidDailyBrief.progressLabel}</span>
+        </div>
+
+        <div className="quest-daily-action">
+          {kidDailyBrief.nextMission ? (
+            <>
+              <p>Start here</p>
+              <strong>{kidDailyBrief.nextMission.eyebrow}</strong>
+              <button
+                className="inline-action"
+                onClick={() =>
+                  renderMissionAction(kidDailyBrief.nextMission, questHandlers)
+                }
+                type="button"
+              >
+                {kidDailyBrief.nextMission.ctaLabel}
+                <ArrowRight size={14} />
+              </button>
+            </>
+          ) : (
+            <>
+              <p>Start here</p>
+              <strong>Open your course map</strong>
+              <button
+                className="inline-action"
+                onClick={() => onSelectTrack(missionBoard.focusTrack?.id)}
+                type="button"
+              >
+                Open map
+                <ArrowRight size={14} />
+              </button>
+            </>
+          )}
+        </div>
+
+        <div className="quest-daily-reasons">
+          {kidDailyBrief.reasonRows.map((row) => (
+            <article key={row.label} className="quest-daily-reason">
+              <p>{row.label}</p>
+              <strong>{row.value}</strong>
+            </article>
+          ))}
         </div>
       </section>
 
