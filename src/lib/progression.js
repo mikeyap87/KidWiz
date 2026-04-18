@@ -267,6 +267,7 @@ export function deriveChildSignal({ storyChoices, childJournalEntries }) {
   if (latestJournalEntry) {
     return {
       goalIds: signalGoalIds,
+      mood: latestJournalEntry.mood,
       source: "journal",
       reason: "Reflection follow-through",
       title: `${latestJournalEntry.mood} reflection`,
@@ -290,6 +291,88 @@ export function deriveChildSignal({ storyChoices, childJournalEntries }) {
   }
 
   return null;
+}
+
+function truncateReviewCopy(copy, limit = 145) {
+  if (!copy || copy.length <= limit) {
+    return copy;
+  }
+
+  return `${copy.slice(0, limit).trim()}...`;
+}
+
+export function buildParentReviewQueue({ childSummaries, appState, nextRitual }) {
+  const items = [];
+
+  childSummaries.forEach((summary) => {
+    if (summary.planningNudge) {
+      items.push({
+        id: `nudge-${summary.planningNudge.id}`,
+        childId: summary.child.id,
+        eyebrow: `${summary.child.name} planning`,
+        title: summary.planningNudge.title,
+        copy: summary.planningNudge.copy,
+        ctaLabel: "Apply nudge",
+        actionType: "nudge",
+        priority: 1,
+        nudge: summary.planningNudge,
+      });
+    }
+
+    const latestJournalEntry =
+      appState.childJournalEntriesByChild?.[summary.child.id]?.[0] ?? null;
+
+    const latestStoryId = Object.keys(
+      appState.storyChoicesByChild?.[summary.child.id] ?? {},
+    ).at(-1);
+    const latestStory = latestStoryId ? findStoryById(latestStoryId) : null;
+
+    if (latestStory) {
+      items.push({
+        id: `story-${summary.child.id}-${latestStory.id}`,
+        childId: summary.child.id,
+        eyebrow: `${summary.child.name} story signal`,
+        title: latestStory.title,
+        copy:
+          summary.signal?.source === "story"
+            ? summary.signal.parentCopy
+            : latestStory.reflectionPrompt,
+        ctaLabel: "Open story",
+        actionType: "story",
+        storyId: latestStory.id,
+        priority: 2,
+      });
+    }
+
+    if (latestJournalEntry) {
+      items.push({
+        id: `journal-${summary.child.id}-${latestJournalEntry.id}`,
+        childId: summary.child.id,
+        eyebrow: `${summary.child.name} reflection`,
+        title: `${latestJournalEntry.mood} note: ${latestJournalEntry.title}`,
+        copy: truncateReviewCopy(latestJournalEntry.body),
+        ctaLabel: "Open journal",
+        actionType: "journal",
+        priority: 3,
+      });
+    }
+  });
+
+  if (nextRitual) {
+    items.push({
+      id: "family-ritual-review",
+      eyebrow: "Family rhythm",
+      title: nextRitual.title,
+      copy: nextRitual.copy,
+      ctaLabel: "Open family hub",
+      actionType: "family",
+      priority: 4,
+    });
+  }
+
+  return items
+    .sort((left, right) => left.priority - right.priority)
+    .slice(0, 5);
 }
 
 function getQuestPriority(row, focusTrackId) {

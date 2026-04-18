@@ -6,6 +6,7 @@ import {
   Brain,
   BookOpen,
   ChevronRight,
+  ClipboardList,
   LayoutDashboard,
   MessagesSquare,
   Minus,
@@ -14,7 +15,11 @@ import {
   Target,
   Users,
 } from "lucide-react";
-import { buildChildSummaries, buildParentWeeklyReport } from "../lib/progression";
+import {
+  buildChildSummaries,
+  buildParentReviewQueue,
+  buildParentWeeklyReport,
+} from "../lib/progression";
 
 function TrendDelta({ deltaLabel, deltaTone }) {
   const Icon =
@@ -40,6 +45,7 @@ export function DashboardTab({
   onChangeFocusTrack,
   onDismissPlanningNudge,
   onOpenFamily,
+  onOpenJournal,
   onOpenLesson,
   onOpenStory,
   onSelectChild,
@@ -112,6 +118,15 @@ export function DashboardTab({
       selectedRhythm,
     ],
   );
+  const reviewQueue = useMemo(
+    () =>
+      buildParentReviewQueue({
+        childSummaries,
+        appState,
+        nextRitual,
+      }),
+    [appState, childSummaries, nextRitual],
+  );
 
   function handleReportAction(item) {
     if (item.actionType === "lesson" && item.lessonId) {
@@ -126,6 +141,11 @@ export function DashboardTab({
 
     if (item.actionType === "family") {
       onOpenFamily();
+      return;
+    }
+
+    if (item.actionType === "journal") {
+      onOpenJournal(item.childId);
       return;
     }
 
@@ -187,6 +207,59 @@ export function DashboardTab({
           <span>Badges earned across both children</span>
         </article>
       </div>
+
+      <section className="surface-panel review-queue-panel">
+        <div className="panel-head">
+          <ClipboardList size={18} />
+          <h2>Parent review queue</h2>
+        </div>
+        <p className="panel-copy">
+          The highest-signal items from reflections, stories, family rituals, and
+          planning nudges are gathered here so the parent knows what to handle next.
+        </p>
+
+        <div className="review-queue-grid">
+          {reviewQueue.map((item) => (
+            <article key={item.id} className="review-queue-card">
+              <div>
+                <p>{item.eyebrow}</p>
+                <strong>{item.title}</strong>
+                <span>{item.copy}</span>
+              </div>
+
+              {item.actionType === "nudge" ? (
+                <div className="review-queue-actions">
+                  <button
+                    className="inline-action"
+                    onClick={() => onApplyPlanningNudge(item.childId, item.nudge)}
+                    type="button"
+                  >
+                    Apply all
+                  </button>
+                  <button
+                    className="inline-action"
+                    onClick={() =>
+                      onDismissPlanningNudge(item.childId, item.nudge.id)
+                    }
+                    type="button"
+                  >
+                    Dismiss
+                  </button>
+                </div>
+              ) : (
+                <button
+                  className="inline-action"
+                  onClick={() => handleReportAction(item)}
+                  type="button"
+                >
+                  {item.ctaLabel}
+                  <ChevronRight size={14} />
+                </button>
+              )}
+            </article>
+          ))}
+        </div>
+      </section>
 
       <div className="dashboard-report-grid">
         <article className="surface-panel dashboard-report-hero">

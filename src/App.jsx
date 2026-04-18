@@ -1081,10 +1081,11 @@ function App() {
     }));
   }
 
-  function handleOpenJournal() {
+  function handleOpenJournal(childId = selectedChild.id) {
     updateAppState((current) => ({
       ...current,
       activeTab: "journal",
+      selectedChildId: childId,
     }));
   }
 
@@ -1286,6 +1287,7 @@ function App() {
                     onChangeFocusTrack={handleChangeFocusTrack}
                     onDismissPlanningNudge={handleDismissPlanningNudge}
                     onOpenFamily={handleOpenFamily}
+                    onOpenJournal={handleOpenJournal}
                     onOpenLesson={handleOpenLessonForChild}
                     onOpenStory={handleOpenStory}
                     onSelectChild={handleSelectChild}

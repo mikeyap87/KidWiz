@@ -1853,6 +1853,60 @@
   gap: 16px;
 }
 
+.review-queue-panel {
+  margin-top: 24px;
+  background:
+    linear-gradient(135deg, rgba(255, 209, 90, 0.1), rgba(242, 141, 192, 0.08)),
+    rgba(246, 248, 251, 0.04);
+}
+
+.review-queue-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(180px, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.review-queue-card {
+  display: grid;
+  align-content: space-between;
+  gap: 16px;
+  min-height: 230px;
+  padding: 16px;
+  border: 1px solid rgba(246, 248, 251, 0.08);
+  background: rgba(11, 15, 22, 0.28);
+}
+
+.review-queue-card p,
+.review-queue-card strong,
+.review-queue-card span {
+  margin: 0;
+}
+
+.review-queue-card p {
+  color: rgba(246, 248, 251, 0.58);
+  font-size: 0.8rem;
+}
+
+.review-queue-card strong {
+  display: block;
+  margin-top: 8px;
+  line-height: 1.35;
+}
+
+.review-queue-card span {
+  display: block;
+  margin-top: 8px;
+  color: rgba(246, 248, 251, 0.74);
+  line-height: 1.52;
+}
+
+.review-queue-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
 .dashboard-report-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr);
@@ -3286,6 +3340,7 @@
   .track-grid,
   .dashboard-summary-grid,
   .dashboard-report-stat-grid,
+  .review-queue-grid,
   .quest-lower-grid,
   .overview-grid,
   .family-grid {
@@ -3410,6 +3465,7 @@
   .feature-grid,
   .course-showcase,
   .dashboard-summary-grid,
+  .review-queue-grid,
   .story-progress-strip,
   .story-strip,
   .choice-grid,
@@ -3526,5 +3582,9 @@
   .dashboard-detail-row-action {
     flex-direction: column;
     align-items: stretch;
+  }
+
+  .review-queue-card {
+    min-height: 0;
   }
 }
