@@ -29,7 +29,7 @@ KidWiz aims to close that gap by giving families one place to build:
 
 ## Core Features In This Build
 
-- immersive public website with strong KidWiz positioning
+- CRO-focused public website with parent outcome messaging, demo CTAs, trust positioning, and clearer product/prototype proof
 - parent email entry flow with optional Supabase magic-link auth
 - demo-mode fallback when auth is not configured
 - guided family onboarding for goal selection, weekly rhythm, coach style, and celebration style
@@ -233,6 +233,7 @@ The Family Hub now includes local controls to:
 - AI is positioned as bounded and supportive, not as an unrestricted social chatbot.
 - The app supports demo mode by default so product design can move before backend work is finished.
 - Direct URL demo boot is supported for local QA and stakeholder review.
+- Public-site messaging now emphasizes parent outcomes, decision clarity, and safe local demo access instead of only describing feature inventory.
 
 ## Constraints
 

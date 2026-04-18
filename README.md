@@ -62,7 +62,7 @@ If Supabase is not configured yet, the product still opens cleanly in demo mode 
 
 ## Current Local Product Shape
 
-- public marketing site
+- CRO-focused public marketing site with sharper parent outcomes, trust positioning, and demo entry points
 - guided onboarding flow
 - parent dashboard with child-by-child weekly targets, weekly report summaries, archived trend comparisons, and recommendations
 - a parent Daily Brief that turns the week into one clear first move, family context, and a ready-to-say parent script

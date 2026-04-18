@@ -8,14 +8,32 @@ export const siteImages = {
 };
 
 export const heroStats = [
-  { label: "Guided tracks", value: "8 course arcs" },
-  { label: "Story branches", value: "21 child choices" },
-  { label: "Family loops", value: "playlists, badges, journals" },
+  { label: "Life + school tracks", value: "8 guided arcs" },
+  { label: "Parent trust layer", value: "privacy, consent, AI safety" },
+  { label: "Demo depth", value: "courses, quests, reports" },
+];
+
+export const parentOutcomeRows = [
+  {
+    title: "Confidence you can actually see",
+    copy:
+      "Daily quests, stories, journals, and portfolios turn invisible growth into parent-readable proof.",
+  },
+  {
+    title: "Life skills school rarely covers",
+    copy:
+      "Money choices, friendship repair, focus, digital safety, confidence, and family communication live beside academic practice.",
+  },
+  {
+    title: "A safer path to AI learning",
+    copy:
+      "Spark is designed as bounded lesson support with parent summaries, consent checks, and safety events before real AI is connected.",
+  },
 ];
 
 export const appHighlights = [
   {
-    title: "Courses, not just one-off activities",
+    title: "Courses with a real arc",
     copy:
       "Every KidWiz track now includes a real arc of lessons, checkpoints, family cues, and a next-step playlist.",
   },
@@ -30,9 +48,24 @@ export const appHighlights = [
       "Families can shape weekly rhythm, AI coaching tone, celebration style, and sensitive-topic access without wrecking the fun.",
   },
   {
-    title: "Repeat-use product loops",
+    title: "Reasons to come back",
     copy:
       "Playlists, badges, journals, and coach prompts make KidWiz feel like a product families return to, not just a single session demo.",
+  },
+];
+
+export const conversionProofRows = [
+  {
+    label: "What parents get",
+    value: "Briefs, reports, privacy controls, progress narratives, and weekly share cards.",
+  },
+  {
+    label: "What kids get",
+    value: "Quest worlds, stories, badges, journals, playlists, and a clear next mission.",
+  },
+  {
+    label: "What still needs production",
+    value: "Backend auth, database persistence, AI moderation, billing, analytics, and formal privacy controls.",
   },
 ];
 

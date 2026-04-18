@@ -2,7 +2,9 @@ import { ArrowRight } from "lucide-react";
 import { storyEpisodes } from "../data/kidwizData";
 import {
   appHighlights,
+  conversionProofRows,
   heroStats,
+  parentOutcomeRows,
   siteImages,
   trustSignals,
 } from "../data/kidwizMarketingData";
@@ -37,43 +39,42 @@ export function PublicSite({
           </div>
           <div className="topbar-actions">
             <button className="ghost-button" onClick={() => onDemoStart("guided")}>
-              Plan the family setup
+              Personalize setup
             </button>
             <button className="solid-button" onClick={() => onDemoStart("instant")}>
-              Open full demo week
+              Open parent demo
             </button>
           </div>
         </div>
 
         <div className="hero-content page-width">
-          <p className="eyebrow">A children's learning universe for real life</p>
+          <p className="eyebrow">Modern learning for capable, confident kids</p>
           <h1>
-            School skills, life skills, and family wisdom in one beautiful
-            product.
+            The education app parents wish existed after school.
           </h1>
           <p className="hero-copy">
-            KidWiz now includes guided family onboarding, deeper course arcs,
-            weekly playlists, badges, journals, parent controls, branching
-            stories, and a bounded AI-style coach experience for local review.
+            KidWiz helps children practice confidence, money sense, focus,
+            friendship repair, digital safety, storytelling, and school skills
+            with parent-visible progress and safety controls.
           </p>
 
           <div className="hero-actions">
             <button className="solid-button" onClick={() => onDemoStart("instant")}>
-              Enter KidWiz
+              Try the full family demo
               <ArrowRight size={16} />
             </button>
             <button className="ghost-button" onClick={() => onDemoStart("guided")}>
-              Start with onboarding
+              Build my family setup
             </button>
           </div>
 
           <form className="hero-login" onSubmit={onMagicLinkSubmit}>
-            <label htmlFor="parent-email">Parent email</label>
+            <label htmlFor="parent-email">Get a parent sign-in link</label>
             <div className="hero-login-row">
               <input
                 id="parent-email"
                 type="email"
-                placeholder="parent@kidwiz.com"
+                placeholder="parent@example.com"
                 value={authEmail}
                 onChange={(event) => onAuthEmailChange(event.target.value)}
               />
@@ -83,7 +84,7 @@ export function PublicSite({
             </div>
             <p className="login-note">
               {authMessage ||
-                "Supabase is optional right now. Local demo mode keeps everything testable while we shape the product."}
+                "No setup required for the local demo. Supabase magic links are optional while we shape the product."}
             </p>
           </form>
 
@@ -98,14 +99,36 @@ export function PublicSite({
         </div>
       </section>
 
+      <section className="outcome-band">
+        <div className="page-width outcome-layout">
+          <div className="section-heading">
+            <p className="eyebrow eyebrow-dark">Why parents care</p>
+            <h2>KidWiz sells outcomes, not screen time.</h2>
+            <p>
+              The product turns practice into visible growth: what the child
+              tried, what changed, what parents can say tonight, and what should
+              happen next.
+            </p>
+          </div>
+
+          <div className="outcome-grid">
+            {parentOutcomeRows.map((row) => (
+              <article key={row.title} className="outcome-card">
+                <h3>{row.title}</h3>
+                <p>{row.copy}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="feature-band">
         <div className="page-width section-heading">
-          <p className="eyebrow eyebrow-dark">What makes this stronger now</p>
-          <h2>KidWiz is moving from pretty concept to real local product.</h2>
+          <p className="eyebrow eyebrow-dark">What is inside the demo</p>
+          <h2>A fuller product loop for both kids and parents.</h2>
           <p>
-            The demo is now built around repeat-use family loops: onboarding,
-            tracks, playlists, stories, badges, journaling, and parent control
-            over the learning rhythm.
+            The local build now has enough connected surfaces to evaluate the
+            product experience, not just the landing page.
           </p>
         </div>
 
@@ -116,6 +139,23 @@ export function PublicSite({
               <p>{highlight.copy}</p>
             </article>
           ))}
+        </div>
+      </section>
+
+      <section className="conversion-proof-band">
+        <div className="page-width conversion-proof-layout">
+          <div>
+            <p className="eyebrow eyebrow-dark">Decision clarity</p>
+            <h2>Know exactly what is real, what is demo, and what comes next.</h2>
+          </div>
+          <div className="conversion-proof-grid">
+            {conversionProofRows.map((row) => (
+              <article key={row.label} className="conversion-proof-card">
+                <p>{row.label}</p>
+                <strong>{row.value}</strong>
+              </article>
+            ))}
+          </div>
         </div>
       </section>
 

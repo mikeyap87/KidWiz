@@ -355,6 +355,53 @@
   font-size: 1.05rem;
 }
 
+.outcome-band {
+  padding: 76px 0;
+  background: #f6f8fb;
+  color: #0c1018;
+}
+
+.outcome-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+  gap: 32px;
+  align-items: start;
+}
+
+.outcome-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.outcome-card,
+.conversion-proof-card {
+  border: 1px solid rgba(17, 21, 31, 0.08);
+  background: #ffffff;
+}
+
+.outcome-card {
+  display: grid;
+  gap: 10px;
+  padding: 20px;
+}
+
+.outcome-card h3,
+.outcome-card p,
+.conversion-proof-card p,
+.conversion-proof-card strong {
+  margin: 0;
+}
+
+.outcome-card h3 {
+  font-size: 1.12rem;
+}
+
+.outcome-card p,
+.conversion-proof-card strong {
+  color: rgba(12, 16, 24, 0.72);
+  line-height: 1.58;
+}
+
 .feature-band,
 .course-band,
 .story-band,
@@ -417,6 +464,47 @@
   color: #ff6b4a;
   font-size: 0.88rem;
   font-weight: 700;
+}
+
+.conversion-proof-band {
+  padding: 72px 0;
+  background: #10151d;
+  color: #f6f8fb;
+}
+
+.conversion-proof-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
+  gap: 32px;
+  align-items: start;
+}
+
+.conversion-proof-layout h2 {
+  margin: 10px 0 0;
+  font-size: clamp(2rem, 4vw, 3.1rem);
+  line-height: 1;
+}
+
+.conversion-proof-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.conversion-proof-card {
+  display: grid;
+  gap: 8px;
+  padding: 18px;
+  background: rgba(246, 248, 251, 0.04);
+  border-color: rgba(246, 248, 251, 0.08);
+}
+
+.conversion-proof-card p {
+  color: rgba(246, 248, 251, 0.58);
+  font-size: 0.82rem;
+}
+
+.conversion-proof-card strong {
+  color: rgba(246, 248, 251, 0.82);
 }
 
 .story-band,
@@ -5224,6 +5312,8 @@
 
   .trust-layout,
   .spark-safety-head,
+  .outcome-layout,
+  .conversion-proof-layout,
   .daily-brief-main,
   .daily-brief-grid,
   .progress-narrative-main,
@@ -5361,6 +5451,8 @@
   }
 
   .hero-stat-row,
+  .outcome-layout,
+  .conversion-proof-layout,
   .feature-grid,
   .course-showcase,
   .dashboard-summary-grid,
