@@ -55,6 +55,22 @@ function buildParentOutcomeDashboard({
   const openPlanningItems = reviewQueue.filter(
     (item) => item.actionType === "nudge",
   ).length;
+  const priorityRiskChildren = childSummaries
+    .filter((summary) => summary.overallTargetProgress < 50)
+    .slice()
+    .sort((left, right) => left.overallTargetProgress - right.overallTargetProgress)
+    .map((summary) => ({
+      childId: summary.child.id,
+      name: summary.child.name,
+      progress: summary.overallTargetProgress,
+      reason:
+        summary.overallTargetProgress < 35
+          ? `Priority signal: ${summary.supportTrack.title} needs a clearer weekly prompt before momentum can hold.`
+          : `${summary.supportTrack.title} has the clearest support gap right now.`,
+      suggestedLesson: summary.recommendedLesson
+        ? summary.recommendedLesson.lesson.title
+        : null,
+    }));
   const goalLabel =
     selectedGoals.length > 0
       ? selectedGoals.map((goal) => goal.title).join(", ")
@@ -91,15 +107,28 @@ function buildParentOutcomeDashboard({
             : `The ${selectedRhythm.title.toLowerCase()} rhythm has clear next actions.`,
       },
     ],
+    riskChildren: priorityRiskChildren,
     childOutcomes: childSummaries.map((summary) => ({
       id: summary.child.id,
       name: summary.child.name,
       title: `${summary.strongestTrack.title} is becoming visible`,
       proof: `${summary.weeklyLessonCount}/${summary.weeklyTarget.lessons} lessons, ${summary.weeklyStoryCount}/${summary.weeklyTarget.stories} stories, ${summary.weeklyReflectionCount}/${summary.weeklyTarget.reflections} reflections this week`,
-      risk: `Watch ${summary.supportTrack.title.toLowerCase()} next.`,
+      risk:
+        summary.overallTargetProgress < 50
+          ? `Watch ${summary.supportTrack.title.toLowerCase()} next.`
+          : `Keep reinforcing ${summary.strongestTrack.title.toLowerCase()}.`,
+      riskTone:
+        summary.overallTargetProgress < 35
+          ? "high"
+          : summary.overallTargetProgress < 65
+            ? "medium"
+            : "low",
       nextProof: summary.recommendedLesson
         ? `Next proof point: ${summary.recommendedLesson.lesson.title}.`
         : "Next proof point: celebrate completion and choose a new stretch track.",
+      ctaLabel: summary.recommendedLesson ? "Open lesson" : "Open child",
+      ctaType: summary.recommendedLesson ? "lesson" : "child",
+      ctaLessonId: summary.recommendedLesson?.lesson?.id ?? null,
     })),
   };
 }
@@ -273,6 +302,15 @@ export function DashboardTab({
     }
   }
 
+  function handleOutcomeChildAction(outcome) {
+    if (outcome.ctaType === "lesson" && outcome.ctaLessonId) {
+      onOpenLesson(outcome.id, outcome.ctaLessonId);
+      return;
+    }
+
+    onSelectChild(outcome.id);
+  }
+
   return (
     <section className="workspace-band">
       <div className="section-heading section-heading-tight">
@@ -337,6 +375,29 @@ export function DashboardTab({
           </article>
         </div>
 
+        {outcomeDashboard.riskChildren.length > 0 ? (
+          <div className="parent-outcome-risks">
+            <p>Priority support this week</p>
+            <div className="parent-outcome-risk-list">
+              {outcomeDashboard.riskChildren.map((riskItem) => (
+                <button
+                  key={riskItem.childId}
+                  className="parent-outcome-risk-card"
+                  onClick={() => onSelectChild(riskItem.childId)}
+                  type="button"
+                >
+                  <p>{riskItem.name}</p>
+                  <strong>{riskItem.progress}% on weekly targets</strong>
+                  <span>{riskItem.reason}</span>
+                  {riskItem.suggestedLesson ? (
+                    <em>Suggested next lesson: {riskItem.suggestedLesson}</em>
+                  ) : null}
+                </button>
+              ))}
+            </div>
+          </div>
+        ) : null}
+
         <div className="parent-outcome-grid">
           {outcomeDashboard.outcomeCards.map((card) => (
             <article key={card.label} className="parent-outcome-card">
@@ -350,15 +411,25 @@ export function DashboardTab({
         <div className="child-outcome-grid">
           {outcomeDashboard.childOutcomes.map((outcome) => (
             <article key={outcome.id} className="child-outcome-card">
-              <div>
+              <div className="child-outcome-main">
                 <p>{outcome.name}</p>
                 <strong>{outcome.title}</strong>
                 <span>{outcome.proof}</span>
               </div>
               <div className="child-outcome-next">
-                <span>{outcome.risk}</span>
+                <span className={`child-outcome-risk is-${outcome.riskTone}`}>
+                  {outcome.risk}
+                </span>
                 <em>{outcome.nextProof}</em>
               </div>
+              <button
+                className="inline-action child-outcome-cta"
+                onClick={() => handleOutcomeChildAction(outcome)}
+                type="button"
+              >
+                {outcome.ctaLabel}
+                <ChevronRight size={14} />
+              </button>
             </article>
           ))}
         </div>

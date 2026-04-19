@@ -2631,6 +2631,60 @@ button[disabled]:hover,
   line-height: 1.56;
 }
 
+.parent-outcome-risks {
+  display: grid;
+  gap: 12px;
+}
+
+.parent-outcome-risks p {
+  margin: 0;
+  color: rgba(246, 248, 251, 0.74);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.parent-outcome-risk-list {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.parent-outcome-risk-card {
+  display: grid;
+  gap: 8px;
+  padding: 12px 14px;
+  min-height: 126px;
+  border: 1px solid rgba(255, 107, 74, 0.32);
+  background: rgba(255, 107, 74, 0.08);
+  color: #f6f8fb;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+}
+
+.parent-outcome-risk-card p,
+.parent-outcome-risk-card strong,
+.parent-outcome-risk-card span,
+.parent-outcome-risk-card em {
+  margin: 0;
+}
+
+.parent-outcome-risk-card p {
+  color: rgba(246, 248, 251, 0.72);
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.parent-outcome-risk-card strong {
+  font-size: 1.02rem;
+}
+
+.parent-outcome-risk-card em {
+  color: rgba(246, 248, 251, 0.66);
+  font-size: 0.84rem;
+  font-style: normal;
+}
+
 .parent-outcome-rhythm,
 .parent-outcome-card,
 .child-outcome-card {
@@ -2677,8 +2731,14 @@ button[disabled]:hover,
 
 .child-outcome-card {
   display: grid;
+  grid-template-rows: auto auto 1fr;
   gap: 16px;
   padding: 16px;
+}
+
+.child-outcome-main {
+  display: grid;
+  gap: 6px;
 }
 
 .child-outcome-card strong {
@@ -2698,6 +2758,36 @@ button[disabled]:hover,
   gap: 8px;
   padding-top: 12px;
   border-top: 1px solid rgba(246, 248, 251, 0.08);
+}
+
+.child-outcome-risk {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  border-radius: 999px;
+  min-height: 28px;
+  padding: 4px 10px;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.child-outcome-risk.is-high {
+  background: rgba(255, 107, 74, 0.16);
+  color: #ffb8a2;
+}
+
+.child-outcome-risk.is-medium {
+  background: rgba(255, 209, 90, 0.16);
+  color: #ffe39a;
+}
+
+.child-outcome-risk.is-low {
+  background: rgba(120, 212, 106, 0.16);
+  color: #b8e99f;
+}
+
+.child-outcome-cta {
+  width: fit-content;
 }
 
 .child-outcome-next span,
@@ -5864,6 +5954,7 @@ button[disabled]:hover,
   .course-showcase,
   .dashboard-summary-grid,
   .parent-outcome-grid,
+  .parent-outcome-risk-list,
   .child-outcome-grid,
   .first-session-steps,
   .daily-brief-spotlight,
@@ -6009,6 +6100,10 @@ button[disabled]:hover,
   .dashboard-detail-row-action {
     flex-direction: column;
     align-items: stretch;
+  }
+
+  .child-outcome-cta {
+    width: 100%;
   }
 
   .daily-brief-action-card {

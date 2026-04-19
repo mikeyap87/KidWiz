@@ -37,6 +37,7 @@ KidWiz aims to close that gap by giving families one place to build:
 - focused interaction polish across core screens so keyboard users and hesitant parent/child sessions get clearer affordances, including visible focus states and disabled-action feedback
 - parent dashboard with per-child weekly targets, outcome framing, focus tracks, progress, and recommended next lessons
 - Parent Outcome Dashboard that translates learning readiness, life-skill practice, child momentum, parent clarity, and child-specific next proof points into parent-readable value
+- Parent Outcome Dashboard now highlights priority support children and gives direct one-tap continuation actions for the best next lesson or child workspace.
 - parent weekly report layer with highlights, child-specific action plans, family conversation prompts, and trend history
 - parent Daily Brief with a first move, family context, and a ready-to-say parent script for tonight
 - Parent Progress Narrative that translates dashboard metrics into a warm weekly story parents can read or share
@@ -197,7 +198,7 @@ The Family Hub now includes local controls to:
 - The current product foundation is parent-led rather than child-signup-first.
 - The local product now includes an onboarding flow instead of skipping straight into the app.
 - The local product now includes a quest-style child home experience instead of a plain dashboard-style landing screen.
-- The parent dashboard now includes outcome framing, a weekly report, and historical trend comparison rather than only raw metrics and controls.
+- The parent dashboard now includes outcome framing, a weekly report, and historical trend comparison rather than only raw metrics and controls, plus explicit priority-risk cards for quick parent intervention.
 - Historical trend comparison is now driven by archived local snapshots instead of a fixed read-only seed.
 - The lesson experience now includes guided micro-steps, age-banded micro-challenges, and a parent follow-through loop instead of stopping at a single quiz interaction.
 - The course experience now uses track-specific lesson playbooks so confidence, money, family, digital safety, and academic tracks no longer share the same teaching frame.
@@ -219,7 +220,7 @@ The Family Hub now includes local controls to:
 - Dashboard and Family Hub now turn those same child signals into concrete planning nudges, including focus-track shifts and target adjustments parents can apply directly.
 - Planning nudges now support accept and dismiss behavior, so local product state can remember which recommendations the parent already handled.
 - Dashboard now includes a parent Daily Brief that explains what happened, why it matters, what to do first, and what to say tonight.
-- Dashboard now includes a Parent Outcome Dashboard so parents can see learning readiness, life-skill practice, child momentum, parent clarity, and child-specific next proof points.
+- Dashboard now includes a Parent Outcome Dashboard so parents can see learning readiness, life-skill practice, child momentum, parent clarity, and child-specific next proof points, with direct action links into the most relevant lesson or child view.
 - Dashboard now includes a Parent Progress Narrative so family metrics become a readable story about what grew, what is tender, and what to try next.
 - Dashboard now includes a parent review queue so reflections, story signals, planning nudges, and family follow-up appear together instead of staying scattered across tabs.
 - Quest Hub now includes a Kid Daily Quest Brief so the child gets the same signal-aware clarity as the parent, translated into playful next-step language.

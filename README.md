@@ -16,6 +16,7 @@ KidWiz is a modern children's education SaaS concept that combines traditional l
 - a parent-only mobile control strip for protected settings, Family Hub access, and sensitive-track status
 - a cross-screen app guide that explains the active section, its audience, and the best next move
 - a Parent Outcome Dashboard that translates weekly activity into learning readiness, life-skill practice, child momentum, and parent clarity
+- a parent outcome risk ribbon in dashboard view, so parents can quickly spot at-risk children and jump into the right next action in one tap
 - expanded Brave Heart, Money Moves, and Home Team content depth
 - weekly playlists, badges, progress bars, coach prompts, parent controls, and Family Hub archive tools
 - branching story practice with Story Skill Debriefs, private journals with a Journal Insight Coach, and a parent family hub
