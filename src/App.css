@@ -134,6 +134,44 @@
     color 180ms ease;
 }
 
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+a:focus-visible {
+  outline: 2px solid #d9ff6b;
+  outline-offset: 2px;
+}
+
+button:disabled,
+button[disabled],
+input:disabled,
+textarea:disabled,
+select:disabled,
+.inline-action.is-disabled,
+.lesson-challenge-option.is-disabled {
+  cursor: not-allowed;
+}
+
+button:disabled,
+button[disabled],
+input:disabled,
+textarea:disabled,
+select:disabled,
+.inline-action:disabled,
+.lesson-challenge-option.is-disabled {
+  opacity: 0.56;
+  filter: grayscale(0.25);
+}
+
+button:disabled:hover,
+button[disabled]:hover,
+.inline-action:disabled:hover,
+.inline-action.is-disabled:hover,
+.lesson-challenge-option.is-disabled:hover {
+  transform: none;
+}
+
 .solid-button:hover,
 .ghost-button:hover,
 .choice-tile:hover,
@@ -3996,6 +4034,76 @@
   margin-top: 8px;
   color: rgba(246, 248, 251, 0.78);
   line-height: 1.55;
+}
+
+.lesson-challenge-panel {
+  margin-top: 22px;
+  padding-top: 22px;
+  border-top: 1px solid rgba(246, 248, 251, 0.08);
+}
+
+.lesson-challenge-options {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+  grid-template-columns: 1fr;
+}
+
+.lesson-challenge-option {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid rgba(246, 248, 251, 0.08);
+  background: rgba(246, 248, 251, 0.03);
+  color: #f6f8fb;
+  border-radius: 8px;
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    background 180ms ease;
+}
+
+.lesson-challenge-option:hover {
+  transform: translateY(-1px);
+}
+
+.lesson-challenge-option.is-selected {
+  border-color: rgba(217, 255, 107, 0.32);
+  background: rgba(217, 255, 107, 0.14);
+}
+
+.lesson-challenge-option.is-disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.lesson-challenge-option p,
+.lesson-challenge-option strong {
+  display: block;
+  margin: 0;
+}
+
+.lesson-challenge-option p {
+  color: rgba(246, 248, 251, 0.6);
+  font-size: 0.82rem;
+}
+
+.lesson-challenge-option strong {
+  margin-top: 8px;
+  line-height: 1.45;
+}
+
+.challenge-feedback {
+  margin-top: 14px;
+  line-height: 1.5;
+}
+
+.attempt-counter {
+  display: inline-flex;
+  align-items: center;
+  color: rgba(246, 248, 251, 0.66);
 }
 
 .lesson-momentum-head {

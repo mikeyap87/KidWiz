@@ -8,7 +8,7 @@ KidWiz is a modern children's education SaaS concept that combines traditional l
 - a fully navigable demo application for family learning
 - a Quest Hub with world-map navigation, weekly missions, a Kid Daily Quest Brief, and visible rewards
 - a parent weekly report layer with action plans, conversation prompts, and stateful trend history
-- eight course tracks with multi-lesson arcs, Learning Path Maps, guided lesson flows, track-specific playbooks, visual practice panels, age-band aware lesson copy, authored scenario cards, and interactive move storyboards
+- eight course tracks with multi-lesson arcs, Learning Path Maps, guided lesson flows, track-specific playbooks, visual practice panels, age-band aware lesson copy, authored scenario cards, micro-challenge checks, and interactive move storyboards
 - lazy-loaded public, onboarding, and app-screen modules with in-product loading states so the local build stays fast as content grows
 - a mobile weekly-pulse strip that makes lesson, story, and reflection targets readable at a glance
 - a mobile-first in-app shell with learner switching and sticky section navigation instead of a collapsed desktop sidebar
@@ -67,6 +67,7 @@ If Supabase is not configured yet, the product still opens cleanly in demo mode 
 - CRO-focused public marketing site with sharper parent outcomes, trust positioning, and demo entry points
 - guided onboarding flow
 - in-app screen guidance across Dashboard, Quest Hub, Courses, Stories, Coach, Journal, and Family Hub so parents and children always know the best next move
+- interactive UI polish for core flows, including clear focus-visible outlines and explicit disabled-state handling to reduce confusion during first-run and conversion moments
 - parent dashboard with child-by-child weekly targets, outcome framing, weekly report summaries, archived trend comparisons, and recommendations
 - a Parent Outcome Dashboard that turns lessons, stories, reflections, goals, rhythm, and review-queue items into proof of what the week is building
 - a parent Daily Brief that turns the week into one clear first move, family context, and a ready-to-say parent script
@@ -77,7 +78,7 @@ If Supabase is not configured yet, the product still opens cleanly in demo mode 
 - a Child Achievement Portfolio that turns wins into a parent-shareable growth record with proof cards and keepsakes
 - a Parent Share & Print Preview that turns the portfolio into a privacy-aware weekly growth card
 - multi-child switching
-- course library with lesson progress, Learning Path Maps, track-specific lesson playbooks, visual practice panels, authored scenario cards, interactive move storyboards, age-band aware prompts, guided milestones, quiz checkpoints, and sequential progression
+- course library with lesson progress, Learning Path Maps, track-specific lesson playbooks, visual practice panels, authored scenario cards, interactive micro-challenge checks, age-band aware prompts, guided milestones, quiz checkpoints, and sequential progression
 - weekly playlists
 - branching story choices across confidence, money, relationships, and digital safety with skill debriefs after saved choices
 - Spark Coach demo layer with different coaching modes and a Tutor Safety Studio for bounded AI mock prompts, safety decisions, and parent summaries

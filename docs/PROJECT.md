@@ -34,6 +34,7 @@ KidWiz aims to close that gap by giving families one place to build:
 - demo-mode fallback when auth is not configured
 - guided family onboarding for goal selection, weekly rhythm, coach style, and celebration style
 - shared in-app screen guidance that names each core section's audience, purpose, and best next move
+- focused interaction polish across core screens so keyboard users and hesitant parent/child sessions get clearer affordances, including visible focus states and disabled-action feedback
 - parent dashboard with per-child weekly targets, outcome framing, focus tracks, progress, and recommended next lessons
 - Parent Outcome Dashboard that translates learning readiness, life-skill practice, child momentum, parent clarity, and child-specific next proof points into parent-readable value
 - parent weekly report layer with highlights, child-specific action plans, family conversation prompts, and trend history
@@ -65,7 +66,7 @@ KidWiz aims to close that gap by giving families one place to build:
 - expanded branching story library across confidence, money, and family repair scenarios
 - trend tracking that compares the current week against archived local snapshots for each child and the family overall
 - daily rhythm checklist with visible completion inside the Quest Hub
-- guided lesson flow for each course track with Learning Path Maps, track-specific playbooks, visual practice panels, authored scenario cards, interactive move storyboards, age-band aware prompts, coach cues, activity milestones, quiz checkpoints, and a parent follow-through loop
+- guided lesson flow for each course track with Learning Path Maps, track-specific playbooks, visual practice panels, authored scenario cards, interactive micro-challenge checks, age-band aware prompts, coach cues, activity milestones, quiz checkpoints, and a parent follow-through loop
 - lazy-loaded public, onboarding, and tab-level screen modules with polished loading states so the local product stays responsive as more curriculum ships
 - a mobile-first in-app shell with learner switching and sticky section navigation, replacing the old stacked-sidebar behavior on smaller screens
 - a child-specific mobile resume strip and quick-action rail so a parent can jump straight into the next lesson, story, reflection, or family prompt
@@ -155,6 +156,7 @@ The live app shell currently uses in-browser demo state for:
 - guided lesson milestone state by child and lesson
 - saved lesson practice choices by child and lesson
 - quiz answers by child and lesson
+- micro-challenge attempts and challenge outcome state by child and lesson
 - child journal entries by child
 - parent journal entries
 - assigned tracks by child
@@ -197,7 +199,7 @@ The Family Hub now includes local controls to:
 - The local product now includes a quest-style child home experience instead of a plain dashboard-style landing screen.
 - The parent dashboard now includes outcome framing, a weekly report, and historical trend comparison rather than only raw metrics and controls.
 - Historical trend comparison is now driven by archived local snapshots instead of a fixed read-only seed.
-- The lesson experience now includes guided micro-steps and a parent follow-through loop instead of stopping at a single quiz interaction.
+- The lesson experience now includes guided micro-steps, age-banded micro-challenges, and a parent follow-through loop instead of stopping at a single quiz interaction.
 - The course experience now uses track-specific lesson playbooks so confidence, money, family, digital safety, and academic tracks no longer share the same teaching frame.
 - The course experience now includes visual practice panels with saved lesson choices so each track feels interactive in its own way.
 - The course experience now changes its lesson copy by child age band so younger and older learners do not get the exact same framing.
@@ -207,6 +209,7 @@ The Family Hub now includes local controls to:
 - The app shell now swaps the old stacked mobile sidebar for a learner switcher plus sticky section rail so the product feels intentional on phones.
 - The mobile shell now shows a recommended next lesson plus quick actions for story, reflection, and family follow-through, using the same progress signals that drive the dashboard and quest systems.
 - The mobile shell now separates child next steps from parent-only controls so protected settings and sensitive-topic access feel deliberately gated.
+- Core-screen interactions now include consistent focus-visible and disabled-state cues so keyboard users and first-time parents can tell at a glance what is actionable.
 - Marketing/trust content and starter demo seed content now live in their own data modules so lazy surfaces and bootstrap data have cleaner boundaries as the product grows.
 - Dashboard summaries, weekly reports, quest boards, onboarding previews, and track-progress rows now compute inside lazy-loaded screens so the entry bundle stays focused on the shell and active learner controls.
 - Mobile resume progress and archive snapshot generation now share the same child-summary model, reducing repeated logic and making parent-facing progress cues more consistent.
