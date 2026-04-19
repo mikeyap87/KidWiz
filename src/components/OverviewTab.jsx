@@ -57,6 +57,7 @@ export function OverviewTab({
   childJournalEntries,
   childPlaylistLessonIds,
   childStoryChoices,
+  selectedChildWorkspace,
   onOpenFamily,
   onOpenJournal,
   onOpenLesson,
@@ -201,6 +202,43 @@ export function OverviewTab({
       }),
     [missionBoard, recommendedLesson, selectedChild, weeklyCompletion],
   );
+  const isFirstSession =
+    selectedChildWorkspace.weeklyLessonCount === 0 &&
+    selectedChildWorkspace.weeklyStoryCount === 0 &&
+    selectedChildWorkspace.weeklyReflectionCount === 0 &&
+    !selectedChildWorkspace.familyChatDone;
+  const recommendedStory = selectedChildWorkspace.recommendedStory;
+  const firstSessionLabel = isFirstSession
+    ? firstSessionLaunchpad.title
+    : kidDailyBrief.title;
+  const firstSessionIntro = isFirstSession
+    ? firstSessionLaunchpad.copy
+    : `${selectedChild.companionName} is still here. ${kidDailyBrief.copy}`;
+  const firstSessionReasonRows = isFirstSession
+    ? firstSessionLaunchpad.orientationRows
+    : kidDailyBrief.reasonRows;
+  const primaryMission =
+    firstSessionLaunchpad.firstMission ?? kidDailyBrief.nextMission ?? null;
+  const primaryMissionLabel = isFirstSession
+    ? firstSessionLaunchpad.ctaLabel
+    : primaryMission?.ctaLabel ?? "Open next quest";
+  const primaryMissionAction = isFirstSession
+    ? primaryMission
+      ? () => renderMissionAction(primaryMission, questHandlers)
+      : () => onSelectTrack(missionBoard.focusTrack?.id)
+    : primaryMission
+      ? () => renderMissionAction(primaryMission, questHandlers)
+      : () => onSelectTrack(missionBoard.focusTrack?.id);
+  const secondaryMission =
+    isFirstSession && recommendedStory
+      ? {
+          label: `Try ${recommendedStory.title}`,
+          onClick: () => onOpenStory(recommendedStory.id, selectedChild.id),
+        }
+      : {
+          label: `Open ${missionBoard.focusTrack?.title ?? "focus track"}`,
+          onClick: () => onSelectTrack(missionBoard.focusTrack?.id),
+        };
   const celebrationReel = useMemo(
     () =>
       buildChildCelebrationReel({
@@ -270,36 +308,42 @@ export function OverviewTab({
           <div>
             <div className="panel-head">
               <Compass size={18} />
-              <h2>First Quest Launchpad</h2>
+              <h2>{isFirstSession ? "First Quest Launchpad" : "Resume this quest"}</h2>
             </div>
             <div className="first-session-copy">
               <p>{firstSessionLaunchpad.title}</p>
-              <h3>{firstSessionLaunchpad.copy}</h3>
+              <p>{firstSessionLabel}</p>
+              <h3>{firstSessionIntro}</h3>
             </div>
           </div>
 
           <div className="first-session-action">
             <p>First move</p>
             <strong>
-              {firstSessionLaunchpad.firstMission?.eyebrow ?? "Open today's quest"}
+              {primaryMission?.eyebrow ?? (isFirstSession ? "Open today's quest" : "Continue from here")}
             </strong>
-            <button
-              className="inline-action"
-              onClick={() =>
-                firstSessionLaunchpad.firstMission
-                  ? renderMissionAction(firstSessionLaunchpad.firstMission, questHandlers)
-                  : onSelectTrack(missionBoard.focusTrack?.id)
-              }
-              type="button"
-            >
-              {firstSessionLaunchpad.ctaLabel}
-              <ArrowRight size={14} />
-            </button>
+            <div className="first-session-action-row">
+              <button
+                className="inline-action"
+                onClick={primaryMissionAction}
+                type="button"
+              >
+                {primaryMissionLabel}
+                <ArrowRight size={14} />
+              </button>
+              <button
+                className="inline-action"
+                onClick={secondaryMission.onClick}
+                type="button"
+              >
+                {secondaryMission.label}
+              </button>
+            </div>
           </div>
         </div>
 
         <div className="first-session-steps">
-          {firstSessionLaunchpad.orientationRows.map((row) => (
+          {firstSessionReasonRows.map((row) => (
             <article key={row.label} className="first-session-step">
               <p>{row.label}</p>
               <strong>{row.value}</strong>
