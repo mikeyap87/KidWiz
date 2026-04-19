@@ -33,6 +33,7 @@ KidWiz aims to close that gap by giving families one place to build:
 - parent email entry flow with optional Supabase magic-link auth
 - demo-mode fallback when auth is not configured
 - guided family onboarding for goal selection, weekly rhythm, coach style, and celebration style
+- shared in-app screen guidance that names each core section's audience, purpose, and best next move
 - parent dashboard with per-child weekly targets, focus tracks, progress, and recommended next lessons
 - parent weekly report layer with highlights, child-specific action plans, family conversation prompts, and trend history
 - parent Daily Brief with a first move, family context, and a ready-to-say parent script for tonight
@@ -110,6 +111,7 @@ The value is:
 
 - `src/App.jsx` now acts mainly as the state container and app shell, and lazy-loads the public site, onboarding flow, and tab-level screens.
 - `src/App.jsx` now also renders a mobile-only learner rail and sticky section nav so app switching stays easy on phones and small tablets.
+- `src/App.jsx` now renders a shared screen-context strip across the core app tabs so each section has clear audience, purpose, and next-action guidance.
 - `src/App.jsx` now also surfaces child-specific mobile resume and quick-action controls, driven by the same recommendation and weekly-progress logic as the rest of the product.
 - `src/App.jsx` now also surfaces a child-specific mobile weekly-pulse view so the current lesson, story, and reflection momentum is legible before opening deeper screens.
 - The always-mounted mobile learner shell now lives in its own component so the app shell stays easier to evolve and the mobile-first experience can grow without bloating `App.jsx`.
@@ -220,6 +222,7 @@ The Family Hub now includes local controls to:
 - Quest Hub now includes a Child Celebration Reel so children can see what they built this week across lessons, stories, reflections, badges, and family practice.
 - Quest Hub now includes a Child Achievement Portfolio so weekly activity becomes a durable growth record parents and children can revisit together.
 - Quest Hub now includes a Parent Share & Print Preview so the achievement portfolio can become a clean weekly family recap without exposing raw private journal data.
+- Core app tabs now include a screen-context strip so navigation changes preserve orientation, audience clarity, and the best next move.
 - Courses now include a Learning Path Map so every track shows locked, unlocked, next, playlist, and completed lesson states with a parent cue beside the active lesson.
 - Stories now include a Story Skill Debrief after each saved choice so a branch turns into a named skill, parent question, child reflection, and recommended next lesson.
 - Journal now includes an Insight Coach so child reflections become parent-readable patterns and suggested practice instead of a static list of notes.

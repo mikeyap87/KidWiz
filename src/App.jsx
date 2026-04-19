@@ -184,6 +184,85 @@ function getNextFocusTrackId(trackIds, currentFocusTrackId) {
   return trackIds[(currentIndex + 1) % trackIds.length];
 }
 
+function buildScreenFocusContext({
+  activeTab,
+  activeLesson,
+  activeTrack,
+  currentTabLabel,
+  recommendedLesson,
+  selectedChild,
+  selectedChildWorkspace,
+  selectedCoachStyle,
+  selectedGoals,
+  selectedWeeklyTarget,
+  todayLabel,
+}) {
+  const lessonProgress = `${selectedChildWorkspace.weeklyLessonCount}/${selectedWeeklyTarget.lessons}`;
+  const storyProgress = `${selectedChildWorkspace.weeklyStoryCount}/${selectedWeeklyTarget.stories}`;
+  const reflectionProgress = `${selectedChildWorkspace.weeklyReflectionCount}/${selectedWeeklyTarget.reflections}`;
+  const recommendedTitle = recommendedLesson?.title ?? activeLesson.title;
+
+  const contexts = {
+    dashboard: {
+      audience: "Parent cockpit",
+      title: `${todayLabel} plan for ${selectedChild.name}`,
+      copy: `Use the parent view to choose one action, review signals, and keep this week realistic across ${selectedGoals.length} family goals.`,
+      nextMove: `Start with ${recommendedTitle}, then check the review queue before adjusting targets.`,
+      metric: `${lessonProgress} lessons`,
+    },
+    overview: {
+      audience: "Child quest",
+      title: `${selectedChild.companionName}'s first clear win`,
+      copy: `The Quest Hub turns the week into a visible route for lessons, stories, reflections, and family practice.`,
+      nextMove: `Open the First Quest Launchpad, then move into ${recommendedTitle}.`,
+      metric: `${Math.round(selectedChildWorkspace.overallTargetProgress)}% week`,
+    },
+    courses: {
+      audience: "Learning studio",
+      title: activeTrack.title,
+      copy: `Course work stays focused on the current track, active lesson, guided practice, quiz checks, and parent follow-through.`,
+      nextMove: `Continue ${activeLesson.title} and save one practice move before marking progress complete.`,
+      metric: lessonProgress,
+    },
+    stories: {
+      audience: "Practice stories",
+      title: "Turn choices into skills",
+      copy: `Stories let ${selectedChild.name} rehearse confidence, money, friendship, and family moments before real life asks for them.`,
+      nextMove: "Pick a branch, read the skill debrief, then connect it to the next lesson.",
+      metric: `${storyProgress} stories`,
+    },
+    coach: {
+      audience: "AI guardrails",
+      title: "Bounded coaching only",
+      copy: `Spark Coach is framed around safe prompts, parent-visible summaries, and the ${selectedCoachStyle.title.toLowerCase()} family tone.`,
+      nextMove: "Review the prompt lab before treating any AI behavior as production-ready.",
+      metric: selectedCoachStyle.title,
+    },
+    journal: {
+      audience: "Reflection loop",
+      title: "Signals before advice",
+      copy: `Journals help children name what happened while parents see patterns without exposing raw private writing everywhere.`,
+      nextMove: `Save one ${selectedChild.name} reflection, then review the Insight Coach pattern.`,
+      metric: `${reflectionProgress} reflections`,
+    },
+    family: {
+      audience: "Parent controls",
+      title: "Settings, trust, and family rhythm",
+      copy: "Family Hub keeps sensitive unlocks, weekly targets, privacy previews, and launch readiness decisions in the parent zone.",
+      nextMove: "Use the Family Meeting Builder before changing curriculum or privacy settings.",
+      metric: "Parent zone",
+    },
+  };
+
+  return contexts[activeTab] ?? {
+    audience: "KidWiz",
+    title: currentTabLabel,
+    copy: "Use this space to keep learning clear, safe, and action-oriented.",
+    nextMove: `Return to ${recommendedTitle} when you are ready for the next activity.`,
+    metric: "Ready",
+  };
+}
+
 function getInitialBootstrap() {
   const savedState = loadSavedState();
 
@@ -1115,6 +1194,19 @@ function App() {
   const currentTab =
     tabItems.find((tab) => tab.id === appState.activeTab) ?? tabItems[0];
   const CurrentTabIcon = currentTab.icon;
+  const screenFocusContext = buildScreenFocusContext({
+    activeTab: appState.activeTab,
+    activeLesson,
+    activeTrack,
+    currentTabLabel: currentTab.label,
+    recommendedLesson,
+    selectedChild,
+    selectedChildWorkspace,
+    selectedCoachStyle,
+    selectedGoals,
+    selectedWeeklyTarget,
+    todayLabel,
+  });
 
   return (
     <div className="page-shell">
@@ -1275,6 +1367,22 @@ function App() {
             </aside>
 
             <main className="app-main">
+              <section
+                className="app-context-strip"
+                aria-label={`${screenFocusContext.audience} screen guide`}
+              >
+                <div className="app-context-copy">
+                  <span>{screenFocusContext.audience}</span>
+                  <h1>{screenFocusContext.title}</h1>
+                  <p>{screenFocusContext.copy}</p>
+                </div>
+                <div className="app-context-next">
+                  <span>Best next move</span>
+                  <strong>{screenFocusContext.nextMove}</strong>
+                  <em>{screenFocusContext.metric}</em>
+                </div>
+              </section>
+
               <Suspense
                 fallback={<WorkspaceLoading activeTab={appState.activeTab} />}
               >

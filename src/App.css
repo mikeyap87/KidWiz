@@ -1435,6 +1435,78 @@
   gap: 24px;
 }
 
+.app-context-strip {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 0.36fr);
+  gap: 18px;
+  align-items: stretch;
+  padding: 20px;
+  border: 1px solid rgba(246, 248, 251, 0.1);
+  background:
+    linear-gradient(135deg, rgba(217, 255, 107, 0.08), rgba(63, 208, 201, 0.08)),
+    rgba(246, 248, 251, 0.035);
+}
+
+.app-context-copy,
+.app-context-next {
+  display: grid;
+  align-content: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.app-context-copy span,
+.app-context-next span,
+.app-context-next em {
+  color: rgba(246, 248, 251, 0.62);
+  font-size: 0.78rem;
+  font-style: normal;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.app-context-copy h1,
+.app-context-copy p,
+.app-context-next strong,
+.app-context-next em {
+  margin: 0;
+}
+
+.app-context-copy h1 {
+  font-size: 1.55rem;
+  line-height: 1.14;
+}
+
+.app-context-copy p {
+  max-width: 740px;
+  color: rgba(246, 248, 251, 0.74);
+  line-height: 1.55;
+}
+
+.app-context-next {
+  padding: 16px;
+  border: 1px solid rgba(246, 248, 251, 0.08);
+  background: rgba(8, 10, 16, 0.35);
+}
+
+.app-context-next strong {
+  color: #f6f8fb;
+  line-height: 1.42;
+}
+
+.app-context-next em {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  min-height: 30px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(217, 255, 107, 0.24);
+  background: rgba(217, 255, 107, 0.08);
+  color: #d9ff6b;
+}
+
 .workspace-loading-band {
   display: grid;
   align-content: center;
@@ -5466,6 +5538,10 @@
   .app-main {
     order: 1;
   }
+
+  .app-context-strip {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 860px) {
@@ -5647,6 +5723,7 @@
   }
 
   .workspace-band,
+  .app-context-strip,
   .preview-panel,
   .surface-panel,
   .hero-surface,
