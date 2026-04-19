@@ -39,6 +39,71 @@ function TrendDelta({ deltaLabel, deltaTone }) {
   );
 }
 
+function buildParentOutcomeDashboard({
+  childSummaries,
+  familyMetrics,
+  reviewQueue,
+  selectedGoals,
+  selectedRhythm,
+  weeklyReport,
+}) {
+  const familyPracticeSignals =
+    familyMetrics.storiesDone + familyMetrics.reflectionsSaved;
+  const childrenOnTrack = childSummaries.filter(
+    (summary) => summary.overallTargetProgress >= 50,
+  ).length;
+  const openPlanningItems = reviewQueue.filter(
+    (item) => item.actionType === "nudge",
+  ).length;
+  const goalLabel =
+    selectedGoals.length > 0
+      ? selectedGoals.map((goal) => goal.title).join(", ")
+      : "family growth";
+
+  return {
+    headline:
+      weeklyReport.readinessScore >= 70
+        ? "The family learning loop is turning activity into visible growth."
+        : "The family has enough signal to choose a smaller, better next step.",
+    summary: `KidWiz is tracking outcomes across ${goalLabel.toLowerCase()} instead of only counting screen time.`,
+    outcomeCards: [
+      {
+        label: "Learning readiness",
+        value: `${weeklyReport.readinessScore}%`,
+        copy: weeklyReport.readinessCopy,
+      },
+      {
+        label: "Life-skill practice",
+        value: `${familyPracticeSignals}`,
+        copy: "Story choices and reflections give parents proof of confidence, relationship, and money-sense practice.",
+      },
+      {
+        label: "Children on track",
+        value: `${childrenOnTrack}/${childSummaries.length}`,
+        copy: "Weekly targets show which children are building momentum and which need a smaller path.",
+      },
+      {
+        label: "Parent clarity",
+        value: `${reviewQueue.length}`,
+        copy:
+          openPlanningItems > 0
+            ? `${openPlanningItems} planning item(s) can adjust the week without guesswork.`
+            : `The ${selectedRhythm.title.toLowerCase()} rhythm has clear next actions.`,
+      },
+    ],
+    childOutcomes: childSummaries.map((summary) => ({
+      id: summary.child.id,
+      name: summary.child.name,
+      title: `${summary.strongestTrack.title} is becoming visible`,
+      proof: `${summary.weeklyLessonCount}/${summary.weeklyTarget.lessons} lessons, ${summary.weeklyStoryCount}/${summary.weeklyTarget.stories} stories, ${summary.weeklyReflectionCount}/${summary.weeklyTarget.reflections} reflections this week`,
+      risk: `Watch ${summary.supportTrack.title.toLowerCase()} next.`,
+      nextProof: summary.recommendedLesson
+        ? `Next proof point: ${summary.recommendedLesson.lesson.title}.`
+        : "Next proof point: celebrate completion and choose a new stretch track.",
+    })),
+  };
+}
+
 export function DashboardTab({
   appState,
   nextRitual,
@@ -151,6 +216,25 @@ export function DashboardTab({
       }),
     [childSummaries, familyMetrics, selectedGoals, selectedRhythm, weeklyReport],
   );
+  const outcomeDashboard = useMemo(
+    () =>
+      buildParentOutcomeDashboard({
+        childSummaries,
+        familyMetrics,
+        reviewQueue,
+        selectedGoals,
+        selectedRhythm,
+        weeklyReport,
+      }),
+    [
+      childSummaries,
+      familyMetrics,
+      reviewQueue,
+      selectedGoals,
+      selectedRhythm,
+      weeklyReport,
+    ],
+  );
 
   function handleReportAction(item) {
     if (item.actionType === "lesson" && item.lessonId) {
@@ -231,6 +315,54 @@ export function DashboardTab({
           <span>Badges earned across both children</span>
         </article>
       </div>
+
+      <section className="surface-panel parent-outcome-panel">
+        <div className="parent-outcome-head">
+          <div>
+            <div className="panel-head">
+              <Award size={18} />
+              <h2>Parent outcome dashboard</h2>
+            </div>
+            <div className="parent-outcome-copy">
+              <p>What this week is actually building</p>
+              <h2>{outcomeDashboard.headline}</h2>
+              <span>{outcomeDashboard.summary}</span>
+            </div>
+          </div>
+
+          <article className="parent-outcome-rhythm">
+            <p>Home rhythm</p>
+            <strong>{selectedRhythm.title}</strong>
+            <span>{selectedRhythm.copy}</span>
+          </article>
+        </div>
+
+        <div className="parent-outcome-grid">
+          {outcomeDashboard.outcomeCards.map((card) => (
+            <article key={card.label} className="parent-outcome-card">
+              <p>{card.label}</p>
+              <strong>{card.value}</strong>
+              <span>{card.copy}</span>
+            </article>
+          ))}
+        </div>
+
+        <div className="child-outcome-grid">
+          {outcomeDashboard.childOutcomes.map((outcome) => (
+            <article key={outcome.id} className="child-outcome-card">
+              <div>
+                <p>{outcome.name}</p>
+                <strong>{outcome.title}</strong>
+                <span>{outcome.proof}</span>
+              </div>
+              <div className="child-outcome-next">
+                <span>{outcome.risk}</span>
+                <em>{outcome.nextProof}</em>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
 
       <section className="surface-panel daily-brief-panel">
         <div className="daily-brief-main">

@@ -2530,6 +2530,143 @@
     rgba(246, 248, 251, 0.04);
 }
 
+.parent-outcome-panel {
+  display: grid;
+  gap: 18px;
+  margin-top: 24px;
+  background:
+    linear-gradient(135deg, rgba(217, 255, 107, 0.1), rgba(242, 141, 192, 0.07)),
+    rgba(246, 248, 251, 0.04);
+}
+
+.parent-outcome-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 0.34fr);
+  gap: 18px;
+  align-items: stretch;
+}
+
+.parent-outcome-copy {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.parent-outcome-copy p,
+.parent-outcome-copy h2,
+.parent-outcome-copy span,
+.parent-outcome-rhythm p,
+.parent-outcome-rhythm strong,
+.parent-outcome-rhythm span,
+.parent-outcome-card p,
+.parent-outcome-card strong,
+.parent-outcome-card span,
+.child-outcome-card p,
+.child-outcome-card strong,
+.child-outcome-card span,
+.child-outcome-card em {
+  margin: 0;
+}
+
+.parent-outcome-copy p,
+.parent-outcome-rhythm p,
+.parent-outcome-card p,
+.child-outcome-card p,
+.child-outcome-next span {
+  color: rgba(246, 248, 251, 0.58);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.parent-outcome-copy h2 {
+  max-width: 760px;
+  font-size: 1.58rem;
+  line-height: 1.24;
+}
+
+.parent-outcome-copy span,
+.parent-outcome-rhythm span,
+.parent-outcome-card span,
+.child-outcome-card span,
+.child-outcome-card em {
+  color: rgba(246, 248, 251, 0.76);
+  line-height: 1.56;
+}
+
+.parent-outcome-rhythm,
+.parent-outcome-card,
+.child-outcome-card {
+  border: 1px solid rgba(246, 248, 251, 0.08);
+  background: rgba(11, 15, 22, 0.28);
+}
+
+.parent-outcome-rhythm {
+  display: grid;
+  align-content: center;
+  gap: 10px;
+  padding: 16px;
+}
+
+.parent-outcome-rhythm strong {
+  font-size: 1.08rem;
+  line-height: 1.35;
+}
+
+.parent-outcome-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.parent-outcome-card {
+  display: grid;
+  gap: 8px;
+  min-height: 160px;
+  padding: 16px;
+}
+
+.parent-outcome-card strong {
+  color: #d9ff6b;
+  font-size: 1.64rem;
+  line-height: 1;
+}
+
+.child-outcome-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.child-outcome-card {
+  display: grid;
+  gap: 16px;
+  padding: 16px;
+}
+
+.child-outcome-card strong {
+  display: block;
+  margin-top: 8px;
+  font-size: 1.08rem;
+  line-height: 1.34;
+}
+
+.child-outcome-card span {
+  display: block;
+  margin-top: 8px;
+}
+
+.child-outcome-next {
+  display: grid;
+  gap: 8px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(246, 248, 251, 0.08);
+}
+
+.child-outcome-next span,
+.child-outcome-next em {
+  margin: 0;
+}
+
 .daily-brief-main {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(280px, 0.42fr);
@@ -5453,6 +5590,7 @@
   .track-grid,
   .dashboard-summary-grid,
   .dashboard-report-stat-grid,
+  .parent-outcome-grid,
   .daily-brief-spotlight,
   .review-queue-grid,
   .quest-lower-grid,
@@ -5471,6 +5609,7 @@
   .conversion-proof-layout,
   .daily-brief-main,
   .daily-brief-grid,
+  .parent-outcome-head,
   .progress-narrative-main,
   .first-session-main,
   .quest-daily-brief,
@@ -5616,6 +5755,8 @@
   .feature-grid,
   .course-showcase,
   .dashboard-summary-grid,
+  .parent-outcome-grid,
+  .child-outcome-grid,
   .first-session-steps,
   .daily-brief-spotlight,
   .quest-daily-reasons,

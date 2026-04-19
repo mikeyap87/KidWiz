@@ -15,6 +15,7 @@ KidWiz is a modern children's education SaaS concept that combines traditional l
 - a child-specific mobile resume strip and quick-action rail for opening the next lesson, story, reflection, or family prompt in one tap
 - a parent-only mobile control strip for protected settings, Family Hub access, and sensitive-track status
 - a cross-screen app guide that explains the active section, its audience, and the best next move
+- a Parent Outcome Dashboard that translates weekly activity into learning readiness, life-skill practice, child momentum, and parent clarity
 - expanded Brave Heart, Money Moves, and Home Team content depth
 - weekly playlists, badges, progress bars, coach prompts, parent controls, and Family Hub archive tools
 - branching story practice with Story Skill Debriefs, private journals with a Journal Insight Coach, and a parent family hub
@@ -66,7 +67,8 @@ If Supabase is not configured yet, the product still opens cleanly in demo mode 
 - CRO-focused public marketing site with sharper parent outcomes, trust positioning, and demo entry points
 - guided onboarding flow
 - in-app screen guidance across Dashboard, Quest Hub, Courses, Stories, Coach, Journal, and Family Hub so parents and children always know the best next move
-- parent dashboard with child-by-child weekly targets, weekly report summaries, archived trend comparisons, and recommendations
+- parent dashboard with child-by-child weekly targets, outcome framing, weekly report summaries, archived trend comparisons, and recommendations
+- a Parent Outcome Dashboard that turns lessons, stories, reflections, goals, rhythm, and review-queue items into proof of what the week is building
 - a parent Daily Brief that turns the week into one clear first move, family context, and a ready-to-say parent script
 - a Parent Progress Narrative that turns metrics into a warm weekly story about growth, tender spots, and next steps
 - child-facing Quest Hub with a First Quest Launchpad, mission board, world map, reward shelf, and rhythm checklist
