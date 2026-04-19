@@ -36,13 +36,15 @@ KidWiz aims to close that gap by giving families one place to build:
 - shared in-app screen guidance that names each core section's audience, purpose, and best next move
 - focused interaction polish across core screens so keyboard users and hesitant parent/child sessions get clearer affordances, including visible focus states and disabled-action feedback
 - parent dashboard with per-child weekly targets, outcome framing, focus tracks, progress, and recommended next lessons
-- Parent Outcome Dashboard that translates learning readiness, life-skill practice, child momentum, parent clarity, and child-specific next proof points into parent-readable value
+- Parent Outcome Dashboard that translates learning readiness, life-skill practice, child momentum, parent clarity, and child-specific next proof points into parent-readable value, with resilient filter behavior and recovery prompts when a focus filter is empty.
 - Parent Outcome Dashboard now highlights priority support children and gives direct one-tap continuation actions for the best next lesson or child workspace.
+- Parent Outcome Dashboard now includes outcome filters (“All,” “Needs support,” “Top momentum”) and session-start quick actions for low-friction onboarding of new parents.
 - parent weekly report layer with highlights, child-specific action plans, family conversation prompts, and trend history
 - parent Daily Brief with a first move, family context, and a ready-to-say parent script for tonight
 - Parent Progress Narrative that translates dashboard metrics into a warm weekly story parents can read or share
 - parent review queue that gathers unresolved planning nudges, recent story practice, fresh child reflections, and family follow-up into one action inbox
 - Quest Hub for the child experience with a First Quest Launchpad, world map, weekly mission board, reward shelf, and guided rhythm checklist
+- Quest Hub with a first-session launch mode and a returning-child resume mode, so first visits are guided and returning sessions stay fast.
 - Kid Daily Quest Brief with one next mission, one reason it matters, one unlock, and one confidence prompt for the selected child
 - Child Celebration Reel that turns lessons, stories, reflections, badges, and family practice into a visible weekly win moment
 - Child Achievement Portfolio that converts lessons, journals, stories, badges, and family rituals into proof cards, keepsakes, and parent-share language
@@ -225,6 +227,7 @@ The Family Hub now includes local controls to:
 - Dashboard now includes a parent review queue so reflections, story signals, planning nudges, and family follow-up appear together instead of staying scattered across tabs.
 - Quest Hub now includes a Kid Daily Quest Brief so the child gets the same signal-aware clarity as the parent, translated into playful next-step language.
 - Quest Hub now includes a First Quest Launchpad so a child can understand their guide, first mission, and first win path before scanning the full dashboard.
+- Quest Hub now transitions from a first-session launchpad into a quick resume state after weekly progress starts, helping families move from setup to momentum without extra friction.
 - Quest Hub now includes a Child Celebration Reel so children can see what they built this week across lessons, stories, reflections, badges, and family practice.
 - Quest Hub now includes a Child Achievement Portfolio so weekly activity becomes a durable growth record parents and children can revisit together.
 - Quest Hub now includes a Parent Share & Print Preview so the achievement portfolio can become a clean weekly family recap without exposing raw private journal data.

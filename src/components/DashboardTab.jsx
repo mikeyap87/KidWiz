@@ -1,7 +1,8 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import {
   ArrowDownRight,
   ArrowUpRight,
+  ArrowRight,
   Award,
   Brain,
   BookOpen,
@@ -89,6 +90,11 @@ function buildParentOutcomeDashboard({
         copy: weeklyReport.readinessCopy,
       },
       {
+        label: "Children needing support",
+        value: `${priorityRiskChildren.length}/${childSummaries.length}`,
+        copy: "These children are under the weekly target and should be prioritized for this week.",
+      },
+      {
         label: "Life-skill practice",
         value: `${familyPracticeSignals}`,
         copy: "Story choices and reflections give parents proof of confidence, relationship, and money-sense practice.",
@@ -113,6 +119,7 @@ function buildParentOutcomeDashboard({
       name: summary.child.name,
       title: `${summary.strongestTrack.title} is becoming visible`,
       proof: `${summary.weeklyLessonCount}/${summary.weeklyTarget.lessons} lessons, ${summary.weeklyStoryCount}/${summary.weeklyTarget.stories} stories, ${summary.weeklyReflectionCount}/${summary.weeklyTarget.reflections} reflections this week`,
+      progress: summary.overallTargetProgress,
       risk:
         summary.overallTargetProgress < 50
           ? `Watch ${summary.supportTrack.title.toLowerCase()} next.`
@@ -129,6 +136,7 @@ function buildParentOutcomeDashboard({
       ctaLabel: summary.recommendedLesson ? "Open lesson" : "Open child",
       ctaType: summary.recommendedLesson ? "lesson" : "child",
       ctaLessonId: summary.recommendedLesson?.lesson?.id ?? null,
+      sessionCtaLabel: "Start session",
     })),
   };
 }
@@ -264,6 +272,39 @@ export function DashboardTab({
       weeklyReport,
     ],
   );
+  const [outcomeFilter, setOutcomeFilter] = useState("all");
+  const filteredChildOutcomes = useMemo(() => {
+    const list = [...outcomeDashboard.childOutcomes];
+
+    if (outcomeFilter === "risk") {
+      return list
+        .filter((outcome) => outcome.progress < 50)
+        .sort((left, right) => left.progress - right.progress);
+    }
+
+    if (outcomeFilter === "top") {
+      return list
+        .slice()
+        .sort((left, right) => right.progress - left.progress)
+        .slice(0, Math.min(2, list.length));
+    }
+
+    return list;
+  }, [outcomeDashboard.childOutcomes, outcomeFilter]);
+  const outcomeFilterLabel = {
+    all: "all children",
+    risk: "children needing support",
+    top: "top momentum children",
+  };
+
+  const filteredOutcomeSummary =
+    outcomeFilter === "all"
+      ? `${outcomeDashboard.childOutcomes.length} ${outcomeFilterLabel[outcomeFilter]}`
+      : `${filteredChildOutcomes.length} ${outcomeFilterLabel[outcomeFilter]} now`;
+
+  function handleOutcomeFilterReset() {
+    setOutcomeFilter("all");
+  }
 
   function handleReportAction(item) {
     if (item.actionType === "lesson" && item.lessonId) {
@@ -303,6 +344,15 @@ export function DashboardTab({
   }
 
   function handleOutcomeChildAction(outcome) {
+    if (outcome.ctaType === "lesson" && outcome.ctaLessonId) {
+      onOpenLesson(outcome.id, outcome.ctaLessonId);
+      return;
+    }
+
+    onSelectChild(outcome.id);
+  }
+
+  function handleOutcomeSessionStart(outcome) {
     if (outcome.ctaType === "lesson" && outcome.ctaLessonId) {
       onOpenLesson(outcome.id, outcome.ctaLessonId);
       return;
@@ -380,19 +430,40 @@ export function DashboardTab({
             <p>Priority support this week</p>
             <div className="parent-outcome-risk-list">
               {outcomeDashboard.riskChildren.map((riskItem) => (
-                <button
+                <article
                   key={riskItem.childId}
                   className="parent-outcome-risk-card"
-                  onClick={() => onSelectChild(riskItem.childId)}
-                  type="button"
                 >
                   <p>{riskItem.name}</p>
                   <strong>{riskItem.progress}% on weekly targets</strong>
                   <span>{riskItem.reason}</span>
+                  <div className="parent-outcome-risk-actions">
+                    <button
+                      className="inline-action"
+                      onClick={() => onSelectChild(riskItem.childId)}
+                      type="button"
+                    >
+                      View child
+                      <ChevronRight size={14} />
+                    </button>
+                    <button
+                      className="inline-action"
+                      onClick={() =>
+                        handleOutcomeSessionStart({
+                          id: riskItem.childId,
+                          ctaType: "child",
+                          ctaLessonId: null,
+                        })
+                      }
+                      type="button"
+                    >
+                      Start session
+                    </button>
+                  </div>
                   {riskItem.suggestedLesson ? (
                     <em>Suggested next lesson: {riskItem.suggestedLesson}</em>
                   ) : null}
-                </button>
+                </article>
               ))}
             </div>
           </div>
@@ -408,30 +479,91 @@ export function DashboardTab({
           ))}
         </div>
 
+        <div className="parent-outcome-filter-row">
+          <p>Show outcomes</p>
+          <div className="parent-outcome-filter-list">
+            <button
+              className={`summary-chip-button ${
+                outcomeFilter === "all" ? "is-selected" : ""
+              }`}
+              onClick={() => setOutcomeFilter("all")}
+              type="button"
+            >
+              All children
+            </button>
+            <button
+              className={`summary-chip-button ${
+                outcomeFilter === "risk" ? "is-selected" : ""
+              }`}
+              onClick={() => setOutcomeFilter("risk")}
+              type="button"
+            >
+              Needs support
+            </button>
+            <button
+              className={`summary-chip-button ${
+                outcomeFilter === "top" ? "is-selected" : ""
+              }`}
+              onClick={() => setOutcomeFilter("top")}
+              type="button"
+            >
+              Top momentum
+            </button>
+          </div>
+        </div>
+
         <div className="child-outcome-grid">
-          {outcomeDashboard.childOutcomes.map((outcome) => (
-            <article key={outcome.id} className="child-outcome-card">
-              <div className="child-outcome-main">
-                <p>{outcome.name}</p>
-                <strong>{outcome.title}</strong>
-                <span>{outcome.proof}</span>
-              </div>
-              <div className="child-outcome-next">
-                <span className={`child-outcome-risk is-${outcome.riskTone}`}>
-                  {outcome.risk}
-                </span>
-                <em>{outcome.nextProof}</em>
-              </div>
+          {filteredChildOutcomes.length > 0 ? (
+            filteredChildOutcomes.map((outcome) => (
+              <article key={outcome.id} className="child-outcome-card">
+                <div className="child-outcome-main">
+                  <p>{outcome.name}</p>
+                  <strong>{outcome.title}</strong>
+                  <span>{outcome.proof}</span>
+                </div>
+                <div className="child-outcome-next">
+                  <span className={`child-outcome-risk is-${outcome.riskTone}`}>
+                    {outcome.risk}
+                  </span>
+                  <em>{outcome.nextProof}</em>
+                </div>
+                <div className="child-outcome-actions">
+                  <button
+                    className="inline-action child-outcome-cta"
+                    onClick={() => handleOutcomeChildAction(outcome)}
+                    type="button"
+                  >
+                    {outcome.ctaLabel}
+                    <ChevronRight size={14} />
+                  </button>
+                  <button
+                    className="inline-action child-outcome-cta child-outcome-cta-secondary"
+                    onClick={() => handleOutcomeSessionStart(outcome)}
+                    type="button"
+                  >
+                    {outcome.sessionCtaLabel}
+                  </button>
+                </div>
+              </article>
+            ))
+          ) : (
+            <article className="parent-outcome-empty child-outcome-card">
+              <p>No children match this view</p>
+              <strong>{filteredOutcomeSummary}</strong>
+              <span>
+                Adjust the filter above, or switch back to all children and start the
+                next step for a child that is ready.
+              </span>
               <button
                 className="inline-action child-outcome-cta"
-                onClick={() => handleOutcomeChildAction(outcome)}
+                onClick={handleOutcomeFilterReset}
                 type="button"
               >
-                {outcome.ctaLabel}
-                <ChevronRight size={14} />
+                Show all children
+                <ArrowRight size={14} />
               </button>
             </article>
-          ))}
+          )}
         </div>
       </section>
 

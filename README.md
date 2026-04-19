@@ -17,6 +17,7 @@ KidWiz is a modern children's education SaaS concept that combines traditional l
 - a cross-screen app guide that explains the active section, its audience, and the best next move
 - a Parent Outcome Dashboard that translates weekly activity into learning readiness, life-skill practice, child momentum, and parent clarity
 - a parent outcome risk ribbon in dashboard view, so parents can quickly spot at-risk children and jump into the right next action in one tap
+- parent outcome filtering controls and one-tap child session starts so new parents can instantly focus on “All,” “Needs support,” or “Top momentum” and act, with clear guidance when a filter has no matches.
 - expanded Brave Heart, Money Moves, and Home Team content depth
 - weekly playlists, badges, progress bars, coach prompts, parent controls, and Family Hub archive tools
 - branching story practice with Story Skill Debriefs, private journals with a Journal Insight Coach, and a parent family hub
@@ -74,6 +75,7 @@ If Supabase is not configured yet, the product still opens cleanly in demo mode 
 - a parent Daily Brief that turns the week into one clear first move, family context, and a ready-to-say parent script
 - a Parent Progress Narrative that turns metrics into a warm weekly story about growth, tender spots, and next steps
 - child-facing Quest Hub with a First Quest Launchpad, mission board, world map, reward shelf, and rhythm checklist
+- child-facing Quest Hub now switches from a first-session launchpad to a quick-resume view once the selected child has started weekly activity
 - a Kid Daily Quest Brief that gives the selected child one next mission, one reason, one unlock, and one confidence prompt
 - a Child Celebration Reel that turns weekly lessons, stories, reflections, badges, and family practice into visible wins
 - a Child Achievement Portfolio that turns wins into a parent-shareable growth record with proof cards and keepsakes
