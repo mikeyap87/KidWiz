@@ -1472,6 +1472,89 @@
     );
 }
 
+.first-session-panel {
+  display: grid;
+  gap: 14px;
+  margin-bottom: 24px;
+  padding: 20px;
+  border: 1px solid rgba(217, 255, 107, 0.18);
+  background:
+    linear-gradient(135deg, rgba(217, 255, 107, 0.11), rgba(63, 208, 201, 0.1)),
+    rgba(8, 10, 16, 0.42);
+}
+
+.first-session-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 0.3fr);
+  gap: 14px;
+  align-items: stretch;
+}
+
+.first-session-copy {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.first-session-copy p,
+.first-session-copy h3,
+.first-session-action p,
+.first-session-action strong,
+.first-session-step p,
+.first-session-step strong,
+.first-session-step span {
+  margin: 0;
+}
+
+.first-session-copy p,
+.first-session-action p,
+.first-session-step p {
+  color: rgba(246, 248, 251, 0.58);
+  font-size: 0.82rem;
+}
+
+.first-session-copy h3 {
+  max-width: 840px;
+  font-size: 1.34rem;
+  line-height: 1.34;
+}
+
+.first-session-action,
+.first-session-step {
+  border: 1px solid rgba(246, 248, 251, 0.08);
+  background: rgba(11, 15, 22, 0.24);
+}
+
+.first-session-action {
+  display: grid;
+  align-content: space-between;
+  gap: 12px;
+  padding: 16px;
+}
+
+.first-session-action strong,
+.first-session-step strong {
+  line-height: 1.36;
+}
+
+.first-session-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.first-session-step {
+  display: grid;
+  gap: 8px;
+  min-height: 136px;
+  padding: 14px;
+}
+
+.first-session-step span {
+  color: rgba(246, 248, 251, 0.76);
+  line-height: 1.56;
+}
+
 .quest-hero-band {
   display: grid;
   grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
@@ -5317,6 +5400,7 @@
   .daily-brief-main,
   .daily-brief-grid,
   .progress-narrative-main,
+  .first-session-main,
   .quest-daily-brief,
   .quest-celebration-reel,
   .achievement-portfolio-main,
@@ -5456,6 +5540,7 @@
   .feature-grid,
   .course-showcase,
   .dashboard-summary-grid,
+  .first-session-steps,
   .daily-brief-spotlight,
   .quest-daily-reasons,
   .quest-celebration-frames,

@@ -16,6 +16,7 @@ import { badgeCatalog } from "../data/kidwizData";
 import {
   buildChildCelebrationReel,
   buildChildAchievementPortfolio,
+  buildChildFirstSessionLaunchpad,
   buildKidDailyQuestBrief,
   buildParentSharePreview,
   buildQuestWorldRows,
@@ -190,6 +191,16 @@ export function OverviewTab({
       weeklyCompletion,
     ],
   );
+  const firstSessionLaunchpad = useMemo(
+    () =>
+      buildChildFirstSessionLaunchpad({
+        child: selectedChild,
+        missionBoard,
+        recommendedLesson,
+        weeklyCompletion,
+      }),
+    [missionBoard, recommendedLesson, selectedChild, weeklyCompletion],
+  );
   const celebrationReel = useMemo(
     () =>
       buildChildCelebrationReel({
@@ -253,6 +264,50 @@ export function OverviewTab({
           {missionBoard.focusTrack?.title ?? "today's priorities"}.
         </p>
       </div>
+
+      <section className="first-session-panel">
+        <div className="first-session-main">
+          <div>
+            <div className="panel-head">
+              <Compass size={18} />
+              <h2>First Quest Launchpad</h2>
+            </div>
+            <div className="first-session-copy">
+              <p>{firstSessionLaunchpad.title}</p>
+              <h3>{firstSessionLaunchpad.copy}</h3>
+            </div>
+          </div>
+
+          <div className="first-session-action">
+            <p>First move</p>
+            <strong>
+              {firstSessionLaunchpad.firstMission?.eyebrow ?? "Open today's quest"}
+            </strong>
+            <button
+              className="inline-action"
+              onClick={() =>
+                firstSessionLaunchpad.firstMission
+                  ? renderMissionAction(firstSessionLaunchpad.firstMission, questHandlers)
+                  : onSelectTrack(missionBoard.focusTrack?.id)
+              }
+              type="button"
+            >
+              {firstSessionLaunchpad.ctaLabel}
+              <ArrowRight size={14} />
+            </button>
+          </div>
+        </div>
+
+        <div className="first-session-steps">
+          {firstSessionLaunchpad.orientationRows.map((row) => (
+            <article key={row.label} className="first-session-step">
+              <p>{row.label}</p>
+              <strong>{row.value}</strong>
+              <span>{row.copy}</span>
+            </article>
+          ))}
+        </div>
+      </section>
 
       <section className="quest-hero-band">
         <div className="quest-hero-copy">

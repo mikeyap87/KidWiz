@@ -1429,6 +1429,47 @@ export function buildKidDailyQuestBrief({
   };
 }
 
+export function buildChildFirstSessionLaunchpad({
+  child,
+  missionBoard,
+  recommendedLesson,
+  weeklyCompletion,
+}) {
+  const firstMission =
+    missionBoard.missions.find((mission) => mission.progress < mission.target) ??
+    missionBoard.missions[0] ??
+    null;
+  const lessonTitle = recommendedLesson?.lesson.title ?? firstMission?.title ?? "one small quest";
+  const firstWinLabel =
+    weeklyCompletion > 0
+      ? `${Math.round(weeklyCompletion)}% of this week is already moving.`
+      : "One tiny win starts the whole map.";
+
+  return {
+    title: `Start here, ${child.name}.`,
+    copy: `${child.companionName} is your ${child.companionTitle.toLowerCase()}. The first session is simple: meet the map, try one mission, then save one win.`,
+    firstMission,
+    ctaLabel: firstMission?.ctaLabel ?? "Start first quest",
+    orientationRows: [
+      {
+        label: "1. Meet your guide",
+        value: child.companionName,
+        copy: `${child.companionName} watches for effort, brave starts, and honest reflection.`,
+      },
+      {
+        label: "2. Try one mission",
+        value: lessonTitle,
+        copy: "The goal is not to finish everything. The goal is to get the first useful rep.",
+      },
+      {
+        label: "3. Save one win",
+        value: firstWinLabel,
+        copy: "A lesson, story, reflection, or family prompt can become today's first proof.",
+      },
+    ],
+  };
+}
+
 export function buildChildCelebrationReel({
   child,
   completedLessonIds,
