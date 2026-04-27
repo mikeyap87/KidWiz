@@ -168,9 +168,8 @@ export function CoachTab({
         <p className="eyebrow eyebrow-dark">Spark Coach studio</p>
         <h1>Bounded AI-style guidance, still safe enough for family review.</h1>
         <p>
-          This local version can call the live Learning Studio AI when the
-          server has an OpenAI key, while still keeping prompts lesson-scoped
-          and parent-reviewable.
+          Spark can call the live Learning Studio AI when it is connected, while
+          still keeping prompts lesson-scoped and parent-reviewable.
         </p>
       </div>
 

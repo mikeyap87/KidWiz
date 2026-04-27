@@ -4,6 +4,7 @@ KidWiz is a modern children's education SaaS concept that combines traditional l
 
 - a polished public-facing website
 - a bright KidWiz brand skin using the owner-provided logo, atom favicon, and softened Wiz Spark learning-guide visual from the approved design archive
+- a full public-site and SaaS redesign pass with customer-ready website copy, a sticky outcomes/learning/trust nav, a stronger hero proof card, a grid-based Wiz Spark visual, and a more cohesive bright learning OS app shell
 - a parent login entry with optional Supabase magic-link auth
 - a guided family onboarding flow with a parent launch checklist, first-week brief, goals, rhythm, and coach style
 - a fully navigable demo application for family learning

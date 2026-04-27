@@ -31,6 +31,7 @@ KidWiz aims to close that gap by giving families one place to build:
 
 - CRO-focused public website with parent outcome messaging, demo CTAs, trust positioning, and clearer product/prototype proof
 - bright KidWiz visual identity using white learning surfaces, accessible lime primary actions, colorful subject accents, the owner-provided KidWiz logo, atom favicon, and a softened Wiz Spark learning-guide visual from the approved archive
+- full public-site and SaaS redesign pass that makes KidWiz feel more like a polished family learning OS: customer-ready public copy, outcomes/learning/trust navigation, a proof-led hero, grid-based Wiz Spark companion visual, sticky app topbar, white sidebar, colorful section rails, and larger accessible controls
 - parent-demo-first public hero that keeps the instant demo as the primary action and moves optional magic-link testing below the first proof section
 - parent email entry flow with optional Supabase magic-link auth
 - demo-mode fallback when auth is not configured
@@ -223,6 +224,7 @@ The Family Hub now includes local controls to:
 
 - KidWiz lives in its own isolated folder: `KidWiz`.
 - The current visual direction is hybrid bright trust: old KidWiz warmth, logo, atom science mark, accessible lime controls, subject-color energy, and a softer Wiz Spark AI-guide personality combined with the newer parent-proof dashboard, Learning Studio, safety panels, guided onboarding, and local-first app depth.
+- The latest redesign direction treats KidWiz as a bright family learning OS rather than a generic dashboard: the public site sells whole-child outcomes and parent trust, while the SaaS app separates parent, child, and support zones with consistent white surfaces, colorful rails, and calmer AI/safety framing.
 - Only selected brand assets were copied from the owner-provided archive. Old `.env` files, legacy backups, raw large archives, and unrelated asset packs should stay out of the app repo.
 - The first build is intentionally web-first.
 - The current product foundation is parent-led rather than child-signup-first.
@@ -273,8 +275,7 @@ The Family Hub now includes local controls to:
 - Family Hub now includes a Parent Safety & Trust Review so parents can quickly see sensitive access, AI boundaries, journal privacy, and available controls.
 - Family Hub now includes a Parent Consent & Privacy Center so export, deletion, consent, and retention decisions are visible before backend work begins.
 - Family Hub now includes a Curriculum Depth Console so curriculum expansion can be prioritized by coverage and gaps instead of adding content blindly.
-- Family Hub now includes a Launch Readiness Console so prototype polish stays separate from production infrastructure decisions.
-- Family Hub now includes a Production Data Model Console so local prototype behavior can become a real schema plan without starting backend work too early.
+- Family Hub now frames readiness and data planning in parent-readable language through the Family Readiness Plan and Family Data Map, avoiding public-facing prototype or production caveats inside the product UI.
 - Coach now includes a Spark Tutor Safety Studio so future AI behavior can be reviewed locally before any real model or child data is connected.
 - Sensitive topics stay behind a parent unlock.
 - AI is positioned as bounded and supportive, not as an unrestricted social chatbot.
@@ -284,6 +285,7 @@ The Family Hub now includes local controls to:
 - The parent-demo conversion path now prioritizes one clear public CTA, a compact parent proof panel, and phone-sized layouts without horizontal clipping.
 - The latest conversion pass puts the parent demo CTA first, aligns Dashboard section order with the tour, and compresses parent-facing mobile chrome before core content.
 - The visual polish pass adds parent, child, and support zone accents to reduce samey dark panels and make the app feel more intentional without a full redesign.
+- The full redesign pass removes owner/internal language from visible public and SaaS copy where possible, replacing it with customer-facing language about family workspaces, weekly proof, parent trust, privacy, and guided AI support.
 
 ## Constraints
 

@@ -150,7 +150,7 @@ export function HelpTab({
             </div>
             <div>
               <strong>Need a clean review?</strong>
-              <span>Use Family Hub to reset the local demo or generate a fresh week.</span>
+              <span>Use Family Hub to reset the family workspace or generate a fresh week.</span>
             </div>
           </div>
           <button className="inline-action" onClick={onOpenDashboard} type="button">

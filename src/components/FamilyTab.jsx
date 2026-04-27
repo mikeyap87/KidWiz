@@ -150,10 +150,10 @@ export function FamilyTab({
     <section className="workspace-band">
       <div className="section-heading section-heading-tight">
         <p className="eyebrow eyebrow-dark">Family controls</p>
-        <h1>Parents can shape the product instead of just observing it.</h1>
+        <h1>Parents can shape the week without draining the fun from learning.</h1>
         <p>
-          This local test build includes goal selection, weekly rhythm, coach
-          style, celebration style, track assignment, and a fresh-week generator.
+          Set family goals, weekly rhythm, coach tone, celebration style, track
+          assignments, sensitive access, and the next family conversation.
         </p>
       </div>
 
@@ -206,7 +206,7 @@ export function FamilyTab({
             </div>
             <div className="parent-trust-review-copy">
               <p>{parentTrustReview.score}% review readiness</p>
-              <h3>Parents can see what is protected before the product becomes production-backed.</h3>
+              <h3>Parents can see what is protected before children move deeper.</h3>
               <span>{parentTrustReview.copy}</span>
             </div>
           </div>
@@ -237,17 +237,17 @@ export function FamilyTab({
               <h2>{parentPrivacyCenter.title}</h2>
             </div>
             <div className="privacy-center-copy">
-              <p>{parentPrivacyCenter.exportItemCount} local export item previews</p>
-              <h3>Parents should understand the family data story before KidWiz stores anything in production.</h3>
+              <p>{parentPrivacyCenter.exportItemCount} family memory items</p>
+              <h3>Parents should understand what KidWiz remembers and why.</h3>
               <span>{parentPrivacyCenter.copy}</span>
             </div>
           </div>
 
           <div className="privacy-export-card">
             <FileText size={20} />
-            <p>Export preview</p>
+            <p>Family archive</p>
             <strong>{parentPrivacyCenter.exportItemCount}</strong>
-            <span>Child-scoped local records ready to map into a future family archive.</span>
+            <span>Child-scoped records that should stay readable, portable, and parent-controlled.</span>
           </div>
         </div>
 
@@ -275,7 +275,7 @@ export function FamilyTab({
         </div>
 
         <div className="privacy-action-list">
-          <p>Production privacy actions</p>
+          <p>Privacy actions</p>
           {parentPrivacyCenter.parentActions.map((action) => (
             <span key={action}>{action}</span>
           ))}
@@ -351,15 +351,15 @@ export function FamilyTab({
             </div>
             <div className="launch-readiness-copy">
               <p>{launchReadiness.score}% infrastructure readiness</p>
-              <h3>The product experience is rich; the production foundation is the next mountain.</h3>
+              <h3>The experience is rich; the family trust layer should stay just as clear.</h3>
               <span>{launchReadiness.copy}</span>
             </div>
           </div>
 
           <div className="launch-readiness-score">
-            <p>Local review</p>
+            <p>Trust posture</p>
             <strong>{launchReadiness.score}%</strong>
-            <span>Honest launch posture before backend work begins.</span>
+            <span>Plain-English readiness for family accounts, privacy, and AI safety.</span>
           </div>
         </div>
 
@@ -378,7 +378,7 @@ export function FamilyTab({
         </div>
 
         <div className="launch-readiness-next">
-          <p>Best next production moves</p>
+          <p>Best next trust moves</p>
           <div>
             {launchReadiness.nextSteps.map((step) => (
               <span key={step}>{step}</span>
@@ -426,7 +426,7 @@ export function FamilyTab({
         </div>
 
         <div className="data-model-questions">
-          <p>Open architecture questions</p>
+          <p>Open family-data questions</p>
           {productionDataModel.openQuestions.map((question) => (
             <span key={question}>{question}</span>
           ))}
@@ -635,7 +635,7 @@ export function FamilyTab({
         <article className="surface-panel">
           <div className="panel-head">
             <RefreshCw size={18} />
-            <h2>Local testing tools</h2>
+            <h2>Week reset tools</h2>
           </div>
           <div className="tool-list">
             <button className="inline-action" onClick={onArchiveCurrentWeek} type="button">
@@ -665,7 +665,7 @@ export function FamilyTab({
               Restart dashboard tour
             </button>
             <button className="inline-action" onClick={onResetDemo} type="button">
-              Reset local demo
+              Reset family workspace
             </button>
           </div>
 
@@ -718,7 +718,7 @@ export function FamilyTab({
         <article className="surface-panel">
           <div className="panel-head">
             <Archive size={18} />
-            <h2>How local snapshots work</h2>
+            <h2>How weekly snapshots work</h2>
           </div>
 
           <div className="trust-list">
@@ -733,13 +733,13 @@ export function FamilyTab({
               <strong>Archive and start fresh week</strong>
               <span>
                 Saves the current week, rotates focus tracks, refreshes playlists, and
-                clears the daily rhythm checklist for the next local cycle.
+                clears the daily rhythm checklist for the next cycle.
               </span>
             </div>
             <div className="trust-row">
               <strong>Reset saved history</strong>
               <span>
-                Returns the trend view to the KidWiz demo baseline without wiping the
+                Returns the trend view to the KidWiz baseline without wiping the
                 rest of the product state.
               </span>
             </div>

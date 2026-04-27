@@ -8,9 +8,9 @@ export const siteImages = {
 };
 
 export const heroStats = [
-  { label: "Life + school tracks", value: "8 guided arcs" },
-  { label: "Parent trust layer", value: "privacy, consent, AI safety" },
-  { label: "Parent proof path", value: "courses, quests, reports" },
+  { label: "Learning paths", value: "8 guided arcs" },
+  { label: "Family trust", value: "privacy, consent, AI safety" },
+  { label: "Weekly proof", value: "quests, reports, share cards" },
 ];
 
 export const parentOutcomeRows = [
@@ -33,9 +33,9 @@ export const parentOutcomeRows = [
 
 export const appHighlights = [
   {
-    title: "Courses with a real arc",
+    title: "Courses with a clear arc",
     copy:
-      "Every KidWiz track now includes a real arc of lessons, checkpoints, family cues, and a next-step playlist.",
+      "Every KidWiz track includes lessons, checkpoints, family cues, and a next-step playlist.",
   },
   {
     title: "Real-life learning",
@@ -56,16 +56,16 @@ export const appHighlights = [
 
 export const conversionProofRows = [
   {
-    label: "What parents get",
+    label: "For parents",
     value: "Briefs, reports, privacy controls, progress narratives, and weekly share cards.",
   },
   {
-    label: "What kids get",
+    label: "For kids",
     value: "Quest worlds, stories, badges, journals, playlists, and a clear next mission.",
   },
   {
-    label: "What still needs production",
-    value: "Backend auth, database persistence, AI moderation, billing, analytics, and formal privacy controls.",
+    label: "For families",
+    value: "One calm place to connect school skills, life skills, reflection, and safe AI help.",
   },
 ];
 

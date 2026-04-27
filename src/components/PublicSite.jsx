@@ -5,7 +5,6 @@ import {
   conversionProofRows,
   heroStats,
   parentOutcomeRows,
-  siteImages,
   trustSignals,
 } from "../data/kidwizMarketingData";
 import { TrackGlyph } from "../lib/uiConfig";
@@ -37,6 +36,12 @@ export function PublicSite({
               </p>
             </div>
           </div>
+          <nav className="site-nav" aria-label="KidWiz preview sections">
+            <a href="#outcomes">Outcomes</a>
+            <a href="#learning">Learning</a>
+            <a href="#trust">Trust</a>
+          </nav>
+
           <div className="topbar-actions">
             <button className="solid-button" onClick={() => onDemoStart("instant")}>
               Open parent demo
@@ -51,8 +56,7 @@ export function PublicSite({
           <div className="hero-copy-column">
             <p className="eyebrow">Igniting imagination, fostering genius</p>
             <h1>
-              Unlock your child's full potential with a friendly AI learning
-              companion.
+              The AI learning companion built for whole-child growth.
             </h1>
             <p className="hero-copy">
               KidWiz blends personalized lessons, playful quizzes, parent
@@ -69,6 +73,15 @@ export function PublicSite({
               <button className="ghost-button" onClick={() => onDemoStart("guided")}>
                 Personalize setup
               </button>
+            </div>
+
+            <div className="hero-proof-card">
+              <span>Designed for ages 5-12</span>
+              <strong>School skills, life skills, and parent trust in one loop.</strong>
+              <p>
+                Children get a friendly mission. Parents get the why, the proof,
+                and the next conversation to have at home.
+              </p>
             </div>
 
             <div className="hero-stat-row">
@@ -111,15 +124,23 @@ export function PublicSite({
               <span>Today's mix</span>
               <strong>Science · Money · Creativity</strong>
             </div>
+            <div className="learning-signal-card signal-one">
+              <span>Parent proof</span>
+              <strong>Weekly growth card ready</strong>
+            </div>
+            <div className="learning-signal-card signal-two">
+              <span>Safe AI help</span>
+              <strong>Parent-visible summaries</strong>
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="outcome-band">
+      <section className="outcome-band" id="outcomes">
         <div className="page-width outcome-layout">
           <div className="section-heading">
             <p className="eyebrow eyebrow-dark">Why parents care</p>
-            <h2>KidWiz sells outcomes, not screen time.</h2>
+            <h2>KidWiz gives parents proof that learning is sticking.</h2>
             <p>
               The product turns practice into visible growth: what the child
               tried, what changed, what parents can say tonight, and what should
@@ -139,11 +160,11 @@ export function PublicSite({
 
         <form className="parent-signin-strip page-width" onSubmit={onMagicLinkSubmit}>
           <div>
-            <p className="eyebrow eyebrow-dark">Optional parent sign-in</p>
-            <h3>Want to test the future login flow instead?</h3>
+            <p className="eyebrow eyebrow-dark">Parent sign-in</p>
+            <h3>Send a secure link when you are ready to continue by email.</h3>
             <span>
-              The fastest path is still the parent demo. Magic links are only
-              for local auth testing while KidWiz stays review-first.
+              The parent demo is the fastest way to explore. Email sign-in is
+              here for families who want a quieter return path.
             </span>
           </div>
           <div className="hero-login-row">
@@ -163,18 +184,18 @@ export function PublicSite({
           </div>
           <p className="login-note">
             {authMessage ||
-              "No setup required for the local demo. Supabase magic links are optional while we shape the product."}
+              "No email is needed to open the parent demo."}
           </p>
         </form>
       </section>
 
-      <section className="feature-band">
+      <section className="feature-band" id="learning">
         <div className="page-width section-heading">
-          <p className="eyebrow eyebrow-dark">What is inside the demo</p>
-          <h2>A fuller product loop for both kids and parents.</h2>
+          <p className="eyebrow eyebrow-dark">Learning OS</p>
+          <h2>A complete product loop for both kids and parents.</h2>
           <p>
-            The local build now has enough connected surfaces to evaluate the
-            product experience, not just the landing page.
+            KidWiz connects daily missions, guided lessons, stories, reflection,
+            parent controls, and coach support into one family rhythm.
           </p>
         </div>
 
@@ -192,7 +213,7 @@ export function PublicSite({
         <div className="page-width conversion-proof-layout">
           <div>
             <p className="eyebrow eyebrow-dark">Decision clarity</p>
-            <h2>Know exactly what is real, what is demo, and what comes next.</h2>
+            <h2>A learning space that makes the next best step obvious.</h2>
           </div>
           <div className="conversion-proof-grid">
             {conversionProofRows.map((row) => (
@@ -229,12 +250,7 @@ export function PublicSite({
         </div>
       </section>
 
-      <section
-        className="story-band"
-        style={{
-          backgroundImage: `linear-gradient(120deg, rgba(12, 16, 24, 0.84), rgba(12, 16, 24, 0.3)), url(${siteImages.story})`,
-        }}
-      >
+      <section className="story-band">
         <div className="page-width story-band-content">
           <div className="section-heading on-dark">
             <p className="eyebrow">Branching stories</p>
@@ -258,20 +274,15 @@ export function PublicSite({
         </div>
       </section>
 
-      <section
-        className="trust-band"
-        style={{
-          backgroundImage: `linear-gradient(140deg, rgba(10, 13, 18, 0.9), rgba(10, 13, 18, 0.46)), url(${siteImages.family})`,
-        }}
-      >
+      <section className="trust-band" id="trust">
         <div className="page-width trust-layout">
           <div className="section-heading on-dark">
             <p className="eyebrow">Family trust by design</p>
             <h2>Parents stay in the loop without turning learning into a chore.</h2>
             <p>
               Sensitive tracks stay parent-unlocked. AI help stays bounded.
-              Journals stay private. The product can now be tested locally as a
-              fuller family SaaS before any production setup.
+              Journals stay private. KidWiz is built around family visibility,
+              age-aware guidance, and parent-controlled next steps.
             </p>
           </div>
 

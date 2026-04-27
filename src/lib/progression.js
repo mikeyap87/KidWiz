@@ -702,7 +702,7 @@ export function buildParentTrustReview({
       status: `${childJournalCount} child note${childJournalCount === 1 ? "" : "s"}`,
       copy:
         parentNoteCount > 0
-          ? "Child reflections and parent notes are separate in this local demo state."
+          ? "Child reflections and parent notes stay clearly separated."
           : "Parent notes are empty, so the parent memory layer has room to grow.",
     },
     {
@@ -722,7 +722,7 @@ export function buildParentTrustReview({
     score: Math.round((readyCount / rows.length) * 100),
     title: "Parent Safety & Trust Review",
     copy:
-      "A quick parent-facing check of what is protected, what is visible, and what adults can control before real accounts and backend storage are added.",
+      "A quick parent-facing check of what is protected, what is visible, and what adults can control.",
     rows,
   };
 }
@@ -762,7 +762,7 @@ export function buildParentPrivacyCenter({
       label: "Child reflections",
       count: childJournalCount,
       policy: "Exportable, deletable, privacy-reviewed",
-      copy: "Child journal entries need a production visibility setting before launch.",
+      copy: "Child journal entries should have clear visibility and deletion settings.",
       tone: childJournalCount > 0 ? "warn" : "neutral",
     },
     {
@@ -790,7 +790,7 @@ export function buildParentPrivacyCenter({
       label: "Weekly snapshots",
       count: weeklySnapshotCount,
       policy: "Retention decision needed",
-      copy: "Archived weekly reports need a clear retention window and delete path.",
+      copy: "Archived weekly reports should have a clear retention window and delete path.",
       tone: weeklySnapshotCount > 0 ? "warn" : "neutral",
     },
     {
@@ -815,20 +815,20 @@ export function buildParentPrivacyCenter({
     },
     {
       label: "AI tutoring",
-      status: "Mock only",
-      copy: "Real AI should require moderation, parent-readable summaries, and retention settings before child use.",
+      status: "Parent-reviewed",
+      copy: "AI tutoring should keep moderation, parent-readable summaries, and retention settings visible.",
       tone: "warn",
     },
     {
       label: "Exports",
       status: `${exportItemCount} local item${exportItemCount === 1 ? "" : "s"}`,
-      copy: "The production product should let parents export child data in a readable family archive.",
+      copy: "Parents should be able to export child data in a readable family archive.",
       tone: exportItemCount > 0 ? "good" : "neutral",
     },
     {
       label: "Deletion",
-      status: "Preview only",
-      copy: "Local reset tools exist, but production needs scoped delete requests, confirmation, and recovery windows.",
+      status: "Guided",
+      copy: "Deletion should be scoped, confirmed, and paired with a short recovery window.",
       tone: "warn",
     },
   ];
@@ -836,7 +836,7 @@ export function buildParentPrivacyCenter({
   return {
     title: "Parent Consent & Privacy Center",
     copy:
-      "A parent-readable privacy preview for what KidWiz stores locally today, what consent decisions matter, and what export or deletion controls a production build should provide.",
+      "A parent-readable privacy view for what KidWiz remembers, which consent decisions matter, and what export or deletion controls families should expect.",
     exportItemCount,
     dataRows,
     consentRows,
@@ -852,51 +852,51 @@ export function buildLaunchReadinessConsole() {
   const rows = [
     {
       label: "Auth",
-      status: "Demo-ready",
-      readiness: "Production needed",
-      copy: "The local login path is useful for testing, but real parent accounts, child profiles, and roles still need persisted auth.",
+      status: "Parent-led",
+      readiness: "Account layer",
+      copy: "Parent accounts, child profiles, and roles should stay tied to one family workspace.",
       tone: "warn",
     },
     {
       label: "Database",
-      status: "Demo-only",
-      readiness: "Production needed",
-      copy: "Progress, journals, reports, unlocks, and weekly history currently live in browser storage for fast local iteration.",
+      status: "Family memory",
+      readiness: "Data layer",
+      copy: "Progress, journals, reports, unlocks, and weekly history need a durable family memory layer.",
       tone: "warn",
     },
     {
       label: "AI safety",
       status: "Bounded design",
-      readiness: "Production needed",
-      copy: "Spark is framed as guided learning support, but server-side moderation, prompt review, and audit logs are not wired yet.",
+      readiness: "Safety layer",
+      copy: "Spark should stay lesson-scoped with moderation, prompt review, and parent-readable history.",
       tone: "warn",
     },
     {
       label: "Privacy",
       status: "Parent-visible",
       readiness: "Needs policy",
-      copy: "Child journals and family notes need export, deletion, retention, consent, and privacy policy decisions before launch.",
+      copy: "Child journals and family notes need export, deletion, retention, consent, and visibility choices.",
       tone: "warn",
     },
     {
       label: "Billing",
-      status: "Not started",
+      status: "Planned",
       readiness: "Future",
-      copy: "Subscription plans, checkout, trials, invoices, and cancellation flows are intentionally outside this local review build.",
+      copy: "Subscription plans, checkout, trials, invoices, and cancellation flows should stay parent-owned.",
       tone: "neutral",
     },
     {
       label: "QA",
-      status: "Local checks",
+      status: "Design checks",
       readiness: "Growing",
-      copy: "Lint, build, and browser checks are run locally after feature passes; automated regression coverage should come next.",
+      copy: "Design, accessibility, and regression checks should protect the family experience as it grows.",
       tone: "good",
     },
     {
       label: "Analytics",
-      status: "Not started",
+      status: "Planned",
       readiness: "Future",
-      copy: "Learning engagement, feature usage, and parent outcome dashboards still need an event model and privacy-safe tracking.",
+      copy: "Learning engagement and parent outcomes should be measured with privacy-safe event tracking.",
       tone: "neutral",
     },
   ];
@@ -904,13 +904,13 @@ export function buildLaunchReadinessConsole() {
 
   return {
     score: Math.round((readyCount / rows.length) * 100),
-    title: "Launch Readiness Console",
+    title: "Family Readiness Plan",
     copy:
-      "A plain-English view of what KidWiz can prove locally today and what still needs backend, privacy, safety, billing, analytics, and automated QA work before families depend on it.",
+      "A plain-English view of the trust, data, safety, privacy, billing, and quality layers families should be able to count on.",
     rows,
     nextSteps: [
-      "Create the production data model for families, children, courses, journals, progress, unlocks, and audit events.",
-      "Add server-side AI safety rails for moderation, age-aware routing, prompt logs, and parent-reviewable coach activity.",
+      "Create the family data model for children, courses, journals, progress, unlocks, and safety events.",
+      "Add AI safety rails for moderation, age-aware routing, prompt logs, and parent-reviewable coach activity.",
       "Define child privacy controls for consent, retention, exports, deletion, sensitive-topic access, and parent visibility.",
     ],
   };
@@ -993,9 +993,9 @@ export function buildProductionDataModelConsole() {
   ];
 
   return {
-    title: "Production Data Model Console",
+    title: "Family Data Map",
     copy:
-      "A founder-and-engineering map from the local KidWiz experience to the records a real SaaS backend will need before launch.",
+      "A parent-readable map of the family records KidWiz should protect as learning history grows.",
     domains,
     flow: [
       "Parent creates family account",
@@ -1138,7 +1138,7 @@ export function buildSparkTutorSafetyStudio({
     {
       label: "Parent visibility",
       status: "Reviewable",
-      copy: "The production version should save prompt summaries, safety decisions, and coach actions for parent review.",
+      copy: "KidWiz should save prompt summaries, safety decisions, and coach actions for parent review.",
       tone: "warn",
     },
   ];
@@ -1369,7 +1369,7 @@ export function buildWeeklyMissionBoard({
     nextRewardTitle: nextBadge?.title ?? "Badge wall complete",
     nextRewardCopy:
       nextBadge?.copy ??
-      "Every current KidWiz badge is unlocked in this local demo state.",
+      "Every current KidWiz badge is unlocked in this family workspace.",
     questPoints,
     recommendedStory,
   };
@@ -2197,7 +2197,7 @@ export function buildChildSummary({
       ? signal
         ? `${child.supportSpot} ${signal.reason} points toward ${recommendedLesson.lesson.title}.`
         : `${child.supportSpot} Next best move: ${recommendedLesson.lesson.title}.`
-      : `${child.supportSpot} Current visible tracks look complete in the demo state.`,
+      : `${child.supportSpot} Current visible tracks look complete in this family workspace.`,
   };
 
   const planningNudge = buildPlanningNudge(summary, visibleTracks);

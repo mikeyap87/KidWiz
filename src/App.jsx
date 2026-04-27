@@ -253,7 +253,7 @@ function buildScreenFocusContext({
       audience: "AI guardrails",
       title: "Bounded coaching only",
       copy: `Spark Coach is framed around safe prompts, parent-visible summaries, and the ${selectedCoachStyle.title.toLowerCase()} family tone.`,
-      nextMove: "Review the prompt lab before treating any AI behavior as production-ready.",
+      nextMove: "Review the prompt lab before opening broader AI support.",
       metric: selectedCoachStyle.title,
     },
     journal: {
@@ -352,8 +352,8 @@ function getInitialBootstrap() {
     },
     authMessage:
       demoMode === "instant"
-        ? "KidWiz opened from a direct local demo link."
-        : "KidWiz opened in guided setup from a direct local demo link.",
+        ? "KidWiz opened with a ready family workspace."
+        : "KidWiz opened in guided setup.",
     shouldClearQuery: true,
   };
 }
@@ -851,7 +851,7 @@ function App() {
         onboardingComplete: false,
       });
       setAuthMessage(
-        "Supabase is not connected yet, so KidWiz opened in local demo mode.",
+        "KidWiz opened the parent demo workspace.",
       );
       return;
     }
@@ -1668,8 +1668,7 @@ function App() {
                 />
                 <div>
                   <p className="brand-subtitle">
-                    {appState.familyName} · {appState.session.email} ·{" "}
-                    {appState.session.type === "supabase" ? "live auth" : "local demo"}
+                    {appState.familyName} · {appState.session.email} · Family workspace
                   </p>
                 </div>
               </div>
