@@ -183,6 +183,13 @@ export function CoachTab({
             Priority goals: {selectedGoals.map((goal) => goal.title).join(", ")}.
           </span>
         </div>
+        <figure className="coach-art-card">
+          <img
+            src="/assets/generated/kidwiz-learning-studio.jpg"
+            alt="A friendly KidWiz AI learning guide explaining ideas with colorful lesson cards and parent-safe review cues."
+            loading="eager"
+          />
+        </figure>
         <div className="mode-toggle-row">
           {["gentle", "playful", "stretch"].map((mode) => (
             <button

@@ -269,6 +269,14 @@ export function CoursesTab({
           Tracks still unlock in sequence, but each lesson now carries its own
           rhythm, proof-of-learning moment, and parent follow-through loop.
         </p>
+        <figure className="section-art-card section-art-card-course">
+          <img
+            src="/assets/generated/kidwiz-course-lab.jpg"
+            alt="A bright KidWiz lesson lab with science, reading, money, creativity, confidence, and digital safety practice stations."
+            loading="eager"
+          />
+          <figcaption>Hands-on lesson lab across the KidWiz tracks</figcaption>
+        </figure>
       </div>
 
       <div className="track-grid">

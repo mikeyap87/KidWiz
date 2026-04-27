@@ -301,6 +301,14 @@ export function OverviewTab({
           is guiding this week&apos;s mission loop around{" "}
           {missionBoard.focusTrack?.title ?? "today's priorities"}.
         </p>
+        <figure className="section-art-card section-art-card-quest">
+          <img
+            src="/assets/generated/kidwiz-quest-map.jpg"
+            alt="A colorful KidWiz quest map with floating learning islands and a bright path through weekly missions."
+            loading="eager"
+          />
+          <figcaption>Visual quest map for today&apos;s learning route</figcaption>
+        </figure>
       </div>
 
       <section className="first-session-panel">

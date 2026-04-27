@@ -81,6 +81,7 @@ KidWiz aims to close that gap by giving families one place to build:
 - parent-facing mobile tabs now use a shorter learner strip and a smaller primary tab row so Dashboard, Coach, Family Hub, and Help reach their content faster
 - parent, child, and support visual zones now give major app areas different accent systems while preserving the existing layout
 - section-by-section SaaS redesign across Dashboard, Quest Hub, Courses, Stories, Coach, Journal, Family Hub, Help, and guided onboarding, with brighter mastheads, kid-friendly cards, stronger contrast, and consistent subject-zone accents
+- generated KidWiz learning-world artwork in the homepage, Quest Hub, Courses, Stories, Journal, and Learning Studio so the child-facing product feels more delightful while parent trust cues stay visible
 - a child-specific mobile resume strip so a parent can jump straight into the next lesson without scrolling past secondary controls
 - a parent-only mobile controls drawer that keeps protected settings and sensitive-topic status separate from the child-facing next-step flow
 - Parent Proof entry panel in Dashboard that gives first-time demo parents one child, one next lesson, and one safety note before deeper metrics
@@ -129,6 +130,7 @@ The value is:
 
 - `src/App.jsx` now acts mainly as the state container and app shell, and lazy-loads the public site, onboarding flow, and tab-level screens.
 - `public/brand/` stores the selected KidWiz logo and robot tutor files copied from the owner-provided design archive for this local prototype.
+- `public/assets/generated/` stores generated KidWiz learning-world illustrations for the homepage and SaaS section headers.
 - `src/App.jsx` now also renders a mobile-only learner rail and sticky section nav so app switching stays easy on phones and small tablets.
 - `src/App.jsx` now renders a shared screen-context strip across the core app tabs so each section has clear audience, purpose, and next-action guidance.
 - `src/App.jsx` now also surfaces child-specific mobile resume and quick-action controls, driven by the same recommendation and weekly-progress logic as the rest of the product.
@@ -227,6 +229,7 @@ The Family Hub now includes local controls to:
 - The current visual direction is hybrid bright trust: old KidWiz warmth, logo, atom science mark, accessible lime controls, subject-color energy, and a softer Wiz Spark AI-guide personality combined with the newer parent-proof dashboard, Learning Studio, safety panels, guided onboarding, and local-first app depth.
 - The latest redesign direction treats KidWiz as a bright family learning OS rather than a generic dashboard: the public site sells whole-child outcomes and parent trust, while the SaaS app separates parent, child, and support zones with consistent white surfaces, colorful rails, and calmer AI/safety framing.
 - The interior SaaS redesign now extends the bright KidWiz system into every major app section, so the product depth is no longer hidden behind the shell: each tab has its own clear masthead, section rhythm, finished cards, and readable parent/child/support tone.
+- The first ImageGen visual pass uses generated bitmap art to support the homepage and child-facing SaaS sections. The images are treated as replaceable brand assets, and prompts plus filenames are documented in `docs/IMAGE_GENERATION.md`.
 - Only selected brand assets were copied from the owner-provided archive. Old `.env` files, legacy backups, raw large archives, and unrelated asset packs should stay out of the app repo.
 - The first build is intentionally web-first.
 - The current product foundation is parent-led rather than child-signup-first.

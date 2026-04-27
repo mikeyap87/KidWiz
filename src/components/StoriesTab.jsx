@@ -30,6 +30,14 @@ export function StoriesTab({
           Each story now includes richer branches and a parent follow-up cue after
           the choice is made.
         </p>
+        <figure className="section-art-card section-art-card-story">
+          <img
+            src="/assets/generated/kidwiz-story-journal.jpg"
+            alt="Children using story cards and a private journal with a friendly KidWiz guide nearby."
+            loading="eager"
+          />
+          <figcaption>Story choices become safe practice before real moments</figcaption>
+        </figure>
       </div>
 
       <div className="story-progress-strip">

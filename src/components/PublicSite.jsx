@@ -95,22 +95,12 @@ export function PublicSite({
           </div>
 
           <div className="kidwiz-hero-visual" aria-label="KidWiz tutor preview">
-            <div className="kidwiz-hero-orbit" />
-            <div className="kidwiz-companion-card">
-              <div className="spark-orbit-field" aria-hidden="true">
-                <img className="spark-mark" src="/favicon.svg" alt="" />
-                <img
-                  className="kidwiz-hero-bot"
-                  src="/brand/kidwiz-bot.png"
-                  alt=""
-                />
-              </div>
-              <span>AI learning guide</span>
-              <strong>Meet Wiz Spark</strong>
-              <p>
-                A gentle guide that helps children ask better questions, try
-                new skills, and show parents what changed.
-              </p>
+            <div className="kidwiz-hero-image-frame">
+              <img
+                src="/assets/generated/kidwiz-hero-learning-world.jpg"
+                alt="A friendly AI learning guide helping children explore science, stories, money, creativity, confidence, and safety worlds."
+                fetchPriority="high"
+              />
             </div>
             <div className="chat-bubble bot-bubble">
               <strong>Hi there, Jace!</strong>

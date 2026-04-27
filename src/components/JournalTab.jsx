@@ -34,6 +34,14 @@ export function JournalTab({
           Children can reflect with a mood cue. Parents can keep notes about what
           is working, what needs support, and what family rituals to try next.
         </p>
+        <figure className="section-art-card section-art-card-story">
+          <img
+            src="/assets/generated/kidwiz-story-journal.jpg"
+            alt="A warm KidWiz reflection space with story cards, mood tokens, a private journal, and a gentle safety shield."
+            loading="eager"
+          />
+          <figcaption>Private reflection, parent-visible patterns, and gentle next steps</figcaption>
+        </figure>
       </div>
 
       <section className="journal-insight-panel">
