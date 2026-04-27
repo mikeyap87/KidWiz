@@ -10588,3 +10588,23 @@ body {
     min-height: 166px;
   }
 }
+
+/* Public-page contrast guard for bright cards inside dark homepage bands. */
+.site-shell :where(.story-card, .trust-card) {
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(247, 251, 242, 0.96)),
+    #ffffff !important;
+  color: var(--kw-ink) !important;
+}
+
+.site-shell :where(.story-card h3, .trust-card h3, .story-card strong, .trust-card strong) {
+  color: var(--kw-ink) !important;
+}
+
+.site-shell :where(.story-card p, .story-card span, .trust-card p, .trust-card span) {
+  color: var(--kw-muted) !important;
+}
+
+.site-shell :where(.story-band .section-heading.on-dark h1, .story-band .section-heading.on-dark h2, .story-band .section-heading.on-dark p, .trust-band .section-heading.on-dark h1, .trust-band .section-heading.on-dark h2, .trust-band .section-heading.on-dark p) {
+  color: #ffffff !important;
+}
