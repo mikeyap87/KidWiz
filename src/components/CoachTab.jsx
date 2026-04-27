@@ -62,7 +62,7 @@ export function CoachTab({
   const [studioPrompt, setStudioPrompt] = useState("");
   const [studioStatus, setStudioStatus] = useState({
     state: "idle",
-    message: "Local preview is ready. Checking whether live AI is configured.",
+    message: "Learning Studio is ready. Checking whether live AI is configured.",
     result: null,
   });
   const tutorSafety = buildSparkTutorSafetyStudio({
@@ -92,7 +92,7 @@ export function CoachTab({
   const resolvedAiServerStatus = aiServerStatus ?? {
     state: "checking",
     configured: false,
-    message: "Checking the local Learning Studio server.",
+    message: "Checking the Learning Studio connection.",
   };
   const liveAiStatus =
     studioStatus.state === "loading"
@@ -123,14 +123,14 @@ export function CoachTab({
             : resolvedAiServerStatus.state === "offline"
               ? {
                   tone: "error",
-                  label: "AI server offline",
+                  label: "Learning Studio offline",
                   message: resolvedAiServerStatus.message,
                 }
               : {
-                  tone: "loading",
-                  label: "Checking local server",
-                  message: resolvedAiServerStatus.message,
-                };
+                tone: "loading",
+                label: "Checking connection",
+                message: resolvedAiServerStatus.message,
+              };
 
   function applyMode(mode) {
     setStudioMode(mode.id);
@@ -217,7 +217,7 @@ export function CoachTab({
             </div>
             <p>
               A live-AI lesson workspace inspired by DeepTutor, but bounded to
-              KidWiz lessons, age bands, parent visibility, and local memory.
+              KidWiz lessons, age bands, parent visibility, and family memory.
             </p>
           </div>
           <div className={`studio-status-card is-${liveAiStatus.tone}`}>
@@ -411,7 +411,7 @@ export function CoachTab({
         </div>
 
         <div className="spark-moderation-checklist">
-          <p>Production safety checklist</p>
+          <p>Safety checklist</p>
           {tutorSafety.moderationChecklist.map((item) => (
             <span key={item}>{item}</span>
           ))}

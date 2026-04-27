@@ -5,6 +5,7 @@ KidWiz is a modern children's education SaaS concept that combines traditional l
 - a polished public-facing website
 - a bright KidWiz brand skin using the owner-provided logo, atom favicon, and softened Wiz Spark learning-guide visual from the approved design archive
 - a full public-site and SaaS redesign pass with customer-ready website copy, a sticky outcomes/learning/trust nav, a stronger hero proof card, a grid-based Wiz Spark visual, and a more cohesive bright learning OS app shell
+- a deeper section-by-section SaaS redesign so Dashboard, Quest Hub, Courses, Stories, Coach, Journal, Family Hub, Help, and guided onboarding all feel like finished KidWiz product surfaces
 - a parent login entry with optional Supabase magic-link auth
 - a guided family onboarding flow with a parent launch checklist, first-week brief, goals, rhythm, and coach style
 - a fully navigable demo application for family learning
@@ -94,6 +95,7 @@ For local testing, KidWiz can temporarily use a shared OpenAI key copied from an
 
 - bright KidWiz public marketing site with the original logo direction, robot tutor visual, playful science-learning identity, sharper parent outcomes, trust positioning, and demo entry points
 - bright app shell with white panels, lime primary controls, colorful subject accents, and calmer parent versus child visual zones
+- section-level SaaS polish across Dashboard, Quest Hub, Courses, Stories, Coach, Journal, Family Hub, Help, and guided onboarding, with clearer mastheads, stronger cards, better contrast, and more consistent KidWiz learning-system styling
 - parent-demo-first public hero with optional magic-link testing moved below the first proof section
 - public hero CTA order keeps `Open parent demo` as the first action before personalization
 - guided onboarding flow with a parent launch brief, setup checklist, first child next move, and restart guidance

@@ -579,7 +579,7 @@ button[disabled]:hover,
 
 .conversion-proof-layout h2 {
   margin: 10px 0 0;
-  font-size: clamp(2rem, 4vw, 3.1rem);
+  font-size: 3rem;
   line-height: 1;
 }
 
@@ -851,7 +851,7 @@ button[disabled]:hover,
 
 .launch-brief-copy h2 {
   margin-top: 8px;
-  font-size: clamp(1.35rem, 2vw, 1.85rem);
+  font-size: 1.75rem;
 }
 
 .launch-brief-copy span {
@@ -5527,7 +5527,7 @@ button[disabled]:hover,
 .help-hero h1 {
   margin-top: 8px;
   max-width: 760px;
-  font-size: clamp(1.8rem, 3vw, 2.65rem);
+  font-size: 2.45rem;
 }
 
 .help-hero > div > p:last-child {
@@ -7469,7 +7469,7 @@ a:focus-visible {
 .hero-content h1 {
   max-width: 870px;
   color: var(--kw-ink);
-  font-size: clamp(3rem, 6vw, 5.65rem);
+  font-size: 5.25rem;
   line-height: 0.98;
   letter-spacing: 0;
 }
@@ -9277,4 +9277,1111 @@ body {
   .app-mobile-nav-shell {
     top: 0;
   }
+}
+
+/* Deep SaaS section redesign: every tab should feel like a finished product page */
+.app-shell .workspace-band > .section-heading-tight,
+.onboarding-main > .section-heading-tight {
+  position: relative;
+  max-width: none;
+  overflow: hidden;
+  padding: 28px 30px;
+  border: 1px solid rgba(67, 127, 0, 0.14);
+  border-left: 10px solid var(--zone-accent, var(--kw-lime));
+  border-radius: 28px;
+  background:
+    linear-gradient(90deg, rgba(67, 127, 0, 0.045) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(71, 167, 245, 0.045) 1px, transparent 1px),
+    linear-gradient(135deg, var(--zone-accent-quiet, rgba(154, 242, 9, 0.08)), rgba(255, 255, 255, 0.96)),
+    #ffffff;
+  background-size: 36px 36px, 36px 36px, auto, auto;
+  box-shadow: var(--kw-shadow-soft);
+}
+
+.app-shell .workspace-band > .section-heading-tight::after,
+.onboarding-main > .section-heading-tight::after {
+  content: "";
+  position: absolute;
+  right: -54px;
+  top: -44px;
+  width: 248px;
+  height: 128px;
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, var(--zone-accent, var(--kw-lime)) 24%, transparent);
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--zone-accent, var(--kw-lime)) 16%, transparent) 1px, transparent 1px),
+    linear-gradient(180deg, color-mix(in srgb, var(--zone-accent, var(--kw-lime)) 12%, transparent) 1px, transparent 1px);
+  background-size: 22px 22px;
+  opacity: 0.72;
+  transform: rotate(-10deg);
+}
+
+.app-shell .workspace-band > .section-heading-tight h1,
+.onboarding-main > .section-heading-tight h1 {
+  position: relative;
+  z-index: 1;
+  max-width: 880px;
+  font-size: 3.35rem;
+  line-height: 1.03;
+}
+
+.app-shell .workspace-band > .section-heading-tight p,
+.onboarding-main > .section-heading-tight p {
+  position: relative;
+  z-index: 1;
+  max-width: 780px;
+}
+
+.app-shell .workspace-band > .section-heading-tight .eyebrow,
+.onboarding-main > .section-heading-tight .eyebrow {
+  color: color-mix(in srgb, var(--zone-accent, var(--kw-lime)) 82%, #172033);
+}
+
+.panel-head {
+  align-items: center;
+}
+
+.panel-head svg,
+.summary-card-icon,
+.setup-proof-icon,
+.choice-tile-icon,
+.course-showcase-icon,
+.quest-node-icon {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 38px;
+  height: 38px;
+  border-radius: 14px;
+  background: var(--zone-accent-quiet, rgba(154, 242, 9, 0.12));
+  color: var(--zone-accent, var(--kw-lime));
+}
+
+.panel-copy,
+.lesson-copy,
+.lesson-subcopy,
+.lesson-age-note,
+.practice-panel-helper,
+.practice-selection-note,
+.challenge-feedback,
+.story-body {
+  color: var(--kw-muted);
+  line-height: 1.65;
+}
+
+.summary-chip,
+.quest-rank-pill,
+.detail-pills span,
+.track-status,
+.lesson-status,
+.dashboard-delta-pill,
+.help-ai-status span,
+.mobile-progress-pill,
+.mode-pill,
+.zone-pill {
+  border: 1px solid rgba(67, 127, 0, 0.14);
+  border-radius: 999px;
+  background: #f7fbf2;
+  color: var(--kw-ink);
+  font-weight: 850;
+}
+
+.dashboard-tour-card {
+  border-left: 10px solid var(--kw-lime) !important;
+}
+
+.setup-proof-panel,
+.parent-proof-entry {
+  position: relative;
+  overflow: hidden;
+}
+
+.setup-proof-panel::before,
+.parent-proof-entry::before,
+.parent-outcome-panel::before,
+.daily-brief-panel::before,
+.quest-daily-brief::before,
+.learning-studio-panel::before,
+.journal-insight-panel::before,
+.help-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 10px;
+  background: linear-gradient(180deg, var(--zone-accent, var(--kw-lime)), var(--kw-teal));
+}
+
+.setup-proof-grid,
+.dashboard-summary-grid,
+.parent-outcome-grid,
+.child-outcome-grid,
+.dashboard-report-stat-grid,
+.dashboard-insight-grid,
+.dashboard-progress-grid,
+.review-queue-grid {
+  align-items: stretch;
+}
+
+.setup-proof-card,
+.parent-proof-card,
+.parent-outcome-card,
+.child-outcome-card,
+.daily-brief-row,
+.daily-brief-script,
+.dashboard-report-stat,
+.dashboard-detail-row,
+.dashboard-insight,
+.dashboard-recommendation,
+.dashboard-targets,
+.dashboard-planning-card,
+.review-queue-card {
+  border: 1px solid rgba(67, 127, 0, 0.14) !important;
+  border-radius: 18px !important;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.98), var(--zone-accent-quiet, rgba(154, 242, 9, 0.045))),
+    #ffffff !important;
+  box-shadow: 0 10px 22px rgba(34, 48, 29, 0.055);
+}
+
+.parent-proof-entry {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(260px, 0.8fr);
+  gap: 18px;
+}
+
+.parent-proof-copy h2,
+.daily-brief-copy h2,
+.dashboard-report-copy h2,
+.progress-narrative-panel h2 {
+  font-size: 2.2rem;
+  line-height: 1.08;
+}
+
+.parent-proof-card,
+.daily-brief-action-card {
+  min-height: 100%;
+}
+
+.parent-outcome-filter-list {
+  padding: 6px;
+  border: 1px solid rgba(67, 127, 0, 0.12);
+  border-radius: 999px;
+  background: #f7fbf2;
+}
+
+.parent-outcome-filter-list button {
+  min-height: 42px;
+  border-radius: 999px;
+}
+
+.parent-outcome-filter-list button.is-active {
+  background: #ffffff;
+  box-shadow: 0 10px 18px rgba(34, 48, 29, 0.08);
+}
+
+.child-outcome-card {
+  display: grid;
+  gap: 16px;
+}
+
+.child-outcome-card.is-high,
+.review-queue-card.is-high,
+.privacy-data-card.is-warn,
+.privacy-consent-card.is-warn,
+.launch-readiness-card.is-warn {
+  border-left: 6px solid var(--kw-pink) !important;
+}
+
+.child-outcome-card.is-medium,
+.review-queue-card.is-medium,
+.privacy-data-card.is-neutral,
+.privacy-consent-card.is-neutral,
+.launch-readiness-card.is-neutral {
+  border-left: 6px solid var(--kw-yellow) !important;
+}
+
+.child-outcome-card.is-low,
+.review-queue-card.is-low,
+.privacy-data-card.is-good,
+.privacy-consent-card.is-good,
+.launch-readiness-card.is-good {
+  border-left: 6px solid var(--kw-teal) !important;
+}
+
+.counter-button {
+  box-shadow: none;
+  font-weight: 900;
+}
+
+.quest-hub-shell {
+  --zone-accent: var(--kw-sky);
+  --zone-accent-quiet: rgba(71, 167, 245, 0.08);
+}
+
+.first-session-panel,
+.quest-hero-band,
+.quest-daily-brief,
+.quest-celebration-reel,
+.achievement-portfolio-panel,
+.parent-share-preview-panel {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(71, 167, 245, 0.18) !important;
+  border-radius: 30px !important;
+  background:
+    linear-gradient(90deg, rgba(71, 167, 245, 0.05) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(154, 242, 9, 0.05) 1px, transparent 1px),
+    linear-gradient(135deg, rgba(71, 167, 245, 0.11), rgba(255, 255, 255, 0.96)),
+    #ffffff !important;
+  background-size: 32px 32px, 32px 32px, auto, auto;
+  box-shadow: var(--kw-shadow-soft);
+}
+
+.first-session-main,
+.quest-hero-band,
+.achievement-portfolio-main,
+.parent-share-preview-head,
+.daily-brief-main,
+.journal-insight-main,
+.family-meeting-main,
+.parent-trust-review-main,
+.privacy-center-main,
+.curriculum-depth-main,
+.launch-readiness-main {
+  align-items: stretch;
+}
+
+.first-session-action,
+.quest-daily-action,
+.quest-celebration-score,
+.achievement-artifact-score,
+.parent-share-card,
+.daily-brief-action-card,
+.journal-insight-practice,
+.family-meeting-script,
+.parent-trust-score,
+.privacy-export-card,
+.curriculum-depth-score,
+.launch-readiness-score,
+.data-model-flow {
+  border: 1px solid rgba(67, 127, 0, 0.14) !important;
+  border-radius: 22px !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+  box-shadow: 0 14px 30px rgba(34, 48, 29, 0.075);
+}
+
+.first-session-step,
+.quest-stat,
+.quest-daily-reason,
+.quest-celebration-frame,
+.achievement-proof-card,
+.achievement-keepsake-card,
+.parent-share-highlight,
+.quest-side-card,
+.quest-rhythm-summary,
+.quest-conversation-row,
+.quest-reason-list .signal-card {
+  border: 1px solid rgba(71, 167, 245, 0.16) !important;
+  border-radius: 18px !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+  box-shadow: 0 10px 22px rgba(34, 48, 29, 0.055);
+}
+
+.quest-map-panel,
+.quest-mission-panel,
+.quest-reward-panel,
+.quest-rhythm-panel {
+  border-radius: 24px !important;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(71, 167, 245, 0.05)),
+    #ffffff !important;
+}
+
+.quest-map-grid {
+  padding: 14px;
+}
+
+.quest-node {
+  min-height: 116px;
+  border: 1px solid color-mix(in srgb, var(--quest-accent, var(--kw-sky)) 22%, #ffffff) !important;
+  border-radius: 20px !important;
+  background:
+    linear-gradient(145deg, var(--quest-surface, rgba(71, 167, 245, 0.08)), #ffffff),
+    #ffffff !important;
+  box-shadow: 0 12px 26px rgba(34, 48, 29, 0.07);
+}
+
+.quest-node.is-active {
+  outline: 3px solid color-mix(in srgb, var(--quest-accent, var(--kw-sky)) 30%, transparent);
+}
+
+.track-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+}
+
+.track-tile {
+  position: relative;
+  overflow: hidden;
+  min-height: 210px;
+  padding: 18px;
+  text-align: left;
+}
+
+.track-tile::after {
+  content: "";
+  position: absolute;
+  right: -28px;
+  bottom: -30px;
+  width: 150px;
+  height: 72px;
+  border-radius: 8px;
+  background: var(--zone-accent-quiet, rgba(154, 242, 9, 0.12));
+  transform: rotate(-12deg);
+}
+
+.track-tile > * {
+  position: relative;
+  z-index: 1;
+}
+
+.track-tile-top {
+  align-items: center;
+  justify-content: space-between;
+}
+
+.track-tile.is-selected {
+  outline: 3px solid color-mix(in srgb, var(--zone-accent, var(--kw-lime)) 22%, transparent);
+}
+
+.learning-layout {
+  align-items: start;
+  gap: 20px;
+}
+
+.learning-layout > .surface-panel {
+  position: relative;
+  overflow: hidden;
+}
+
+.learning-layout > .surface-panel:first-child {
+  border-top: 8px solid var(--kw-sky) !important;
+}
+
+.learning-layout > .surface-panel:last-child {
+  border-top: 8px solid var(--kw-lime) !important;
+}
+
+.track-detail-grid > div,
+.lesson-state-card,
+.learning-path-follow,
+.quiz-panel,
+.lesson-proof-panel {
+  border: 1px solid rgba(67, 127, 0, 0.14) !important;
+  border-radius: 18px !important;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(71, 167, 245, 0.045)),
+    #ffffff !important;
+}
+
+.learning-path-map {
+  border: 1px solid rgba(71, 167, 245, 0.16) !important;
+  border-radius: 24px !important;
+  background:
+    linear-gradient(90deg, rgba(71, 167, 245, 0.055) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(67, 127, 0, 0.045) 1px, transparent 1px),
+    #fbfff7 !important;
+  background-size: 28px 28px;
+}
+
+.learning-path-step {
+  min-height: 92px;
+  border: 1px solid rgba(67, 127, 0, 0.14);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.learning-path-step.is-active,
+.learning-path-step.is-next {
+  border-color: var(--kw-lime);
+  box-shadow: 0 12px 24px rgba(67, 127, 0, 0.12);
+}
+
+.lesson-row {
+  min-height: 124px;
+  align-items: center;
+}
+
+.practice-panel,
+.choice-storyboard,
+.lesson-challenge-panel {
+  border-radius: 24px !important;
+  border-color: color-mix(in srgb, var(--practice-accent, var(--kw-teal)) 24%, #ffffff) !important;
+  background:
+    linear-gradient(145deg, var(--practice-surface, rgba(20, 167, 165, 0.08)), rgba(255, 255, 255, 0.96)),
+    #ffffff !important;
+}
+
+.practice-spotlight {
+  border-left: 8px solid var(--practice-accent, var(--kw-teal)) !important;
+}
+
+.practice-scene-card,
+.choice-storyboard-beat,
+.practice-option,
+.lesson-challenge-option,
+.quiz-option {
+  border-radius: 18px !important;
+  background: rgba(255, 255, 255, 0.96) !important;
+}
+
+.practice-option.is-selected,
+.lesson-challenge-option.is-selected,
+.quiz-option.is-selected {
+  outline: 3px solid color-mix(in srgb, var(--practice-accent, var(--kw-teal)) 24%, transparent);
+}
+
+.story-progress-strip {
+  align-items: stretch;
+}
+
+.story-progress-card {
+  border-left: 6px solid var(--kw-purple) !important;
+}
+
+.story-layout {
+  grid-template-columns: minmax(210px, 280px) minmax(0, 1fr);
+  gap: 20px;
+}
+
+.story-menu {
+  position: sticky;
+  top: 112px;
+  align-self: start;
+  padding: 12px;
+  border: 1px solid rgba(117, 87, 230, 0.16);
+  border-radius: 24px;
+  background:
+    linear-gradient(145deg, rgba(117, 87, 230, 0.08), rgba(255, 255, 255, 0.96)),
+    #ffffff;
+  box-shadow: var(--kw-shadow-soft);
+}
+
+.story-menu-item {
+  min-height: 82px;
+  border: 1px solid rgba(117, 87, 230, 0.14);
+  background: #ffffff;
+}
+
+.story-menu-item.is-selected {
+  border-left: 6px solid var(--kw-purple);
+  background:
+    linear-gradient(145deg, rgba(117, 87, 230, 0.1), #ffffff),
+    #ffffff;
+}
+
+.story-stage {
+  position: relative;
+  overflow: hidden;
+  border-top: 8px solid var(--kw-purple) !important;
+}
+
+.story-stage-head {
+  gap: 16px;
+}
+
+.story-stage-head > span {
+  border: 1px solid rgba(117, 87, 230, 0.16);
+  border-radius: 999px;
+  background: rgba(117, 87, 230, 0.08);
+  color: var(--kw-ink);
+}
+
+.story-outcome-card,
+.reflection-block,
+.story-skill-debrief {
+  border: 1px solid rgba(117, 87, 230, 0.16) !important;
+  border-radius: 22px !important;
+  background:
+    linear-gradient(145deg, rgba(117, 87, 230, 0.08), rgba(255, 255, 255, 0.96)),
+    #ffffff !important;
+}
+
+.choice-list {
+  gap: 12px;
+}
+
+.choice-row {
+  min-height: 96px;
+  border: 1px solid rgba(117, 87, 230, 0.14);
+  background: #ffffff;
+}
+
+.choice-row.is-selected {
+  border-left: 6px solid var(--kw-purple);
+  box-shadow: 0 12px 24px rgba(117, 87, 230, 0.12);
+}
+
+.story-skill-card,
+.story-skill-next {
+  border: 1px solid rgba(117, 87, 230, 0.14) !important;
+  border-radius: 18px !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+}
+
+.journal-insight-panel {
+  position: relative;
+  overflow: hidden;
+  border-color: rgba(243, 98, 155, 0.18) !important;
+}
+
+.journal-insight-panel::before {
+  background: linear-gradient(180deg, var(--kw-pink), var(--kw-purple));
+}
+
+.journal-insight-card,
+.journal-insight-practice,
+.journal-guidance,
+.entry-row {
+  border: 1px solid rgba(243, 98, 155, 0.15) !important;
+  border-radius: 18px !important;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(243, 98, 155, 0.045)),
+    #ffffff !important;
+}
+
+.journal-layout .surface-panel:first-child {
+  border-top: 8px solid var(--kw-pink) !important;
+}
+
+.journal-layout .surface-panel:last-child {
+  border-top: 8px solid var(--kw-teal) !important;
+}
+
+.mood-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.mood-pill {
+  min-height: 42px;
+  border: 1px solid rgba(243, 98, 155, 0.18);
+  background: #ffffff;
+}
+
+.mood-pill.is-selected {
+  background:
+    linear-gradient(145deg, rgba(243, 98, 155, 0.12), #ffffff),
+    #ffffff;
+  box-shadow: 0 10px 20px rgba(243, 98, 155, 0.1);
+}
+
+.journal-form textarea,
+.learning-studio-form textarea {
+  min-height: 156px;
+  border-radius: 18px;
+  box-shadow: inset 0 1px 0 rgba(67, 127, 0, 0.06);
+}
+
+.coach-hero {
+  position: relative;
+  overflow: hidden;
+  min-height: 220px;
+  border-top: 8px solid var(--kw-teal) !important;
+}
+
+.coach-grid {
+  align-items: stretch;
+}
+
+.coach-card {
+  min-height: 154px;
+}
+
+.learning-studio-head {
+  align-items: stretch;
+}
+
+.learning-mode-grid {
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
+.learning-mode-button {
+  min-height: 74px;
+  border: 1px solid rgba(20, 167, 165, 0.16);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.learning-mode-button.is-selected {
+  border-left: 6px solid var(--kw-teal);
+  background:
+    linear-gradient(145deg, rgba(20, 167, 165, 0.12), #ffffff),
+    #ffffff;
+  box-shadow: 0 12px 24px rgba(20, 167, 165, 0.12);
+}
+
+.studio-status-card,
+.studio-answer-card,
+.studio-parent-card,
+.learning-memory-card,
+.spark-guardrail-card,
+.spark-prompt-card,
+.spark-response-box,
+.spark-parent-log {
+  border: 1px solid rgba(20, 167, 165, 0.15) !important;
+  border-radius: 18px !important;
+}
+
+.spark-prompt-lab {
+  gap: 16px;
+}
+
+.spark-prompt-card {
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(20, 167, 165, 0.055)),
+    #ffffff !important;
+}
+
+.spark-prompt-card.is-warn {
+  border-left: 6px solid var(--kw-pink) !important;
+}
+
+.spark-prompt-card.is-good,
+.spark-prompt-card.is-ready {
+  border-left: 6px solid var(--kw-teal) !important;
+}
+
+.family-meeting-panel,
+.parent-trust-review-panel,
+.privacy-center-panel,
+.curriculum-depth-panel,
+.launch-readiness-panel,
+.data-model-panel {
+  position: relative;
+  overflow: hidden;
+}
+
+.family-meeting-panel::before,
+.parent-trust-review-panel::before,
+.privacy-center-panel::before,
+.curriculum-depth-panel::before,
+.launch-readiness-panel::before,
+.data-model-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 10px;
+  background: linear-gradient(180deg, var(--kw-lime), var(--kw-teal));
+}
+
+.family-meeting-main,
+.parent-trust-review-main,
+.privacy-center-main,
+.curriculum-depth-main,
+.launch-readiness-main,
+.data-model-head {
+  position: relative;
+  z-index: 1;
+}
+
+.family-meeting-step,
+.parent-trust-card,
+.privacy-export-card,
+.privacy-data-card,
+.privacy-consent-card,
+.curriculum-summary-card,
+.curriculum-track-card,
+.launch-readiness-card,
+.data-model-card,
+.trust-row,
+.ritual-row,
+.planning-nudge-card {
+  border: 1px solid rgba(67, 127, 0, 0.14) !important;
+  border-radius: 18px !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+}
+
+.help-panel {
+  --zone-accent: var(--kw-teal);
+  --zone-accent-quiet: rgba(20, 167, 165, 0.08);
+}
+
+.help-hero {
+  position: relative;
+  overflow: hidden;
+  border-top: 8px solid var(--kw-teal) !important;
+}
+
+.help-status-card {
+  border: 1px solid rgba(20, 167, 165, 0.16) !important;
+  border-radius: 22px !important;
+  background: #ffffff !important;
+  box-shadow: var(--kw-shadow-soft);
+}
+
+.help-action-card {
+  min-height: 184px;
+  text-align: left;
+}
+
+.help-action-card svg {
+  width: 38px;
+  height: 38px;
+  padding: 9px;
+  border-radius: 14px;
+  background: rgba(20, 167, 165, 0.1);
+  color: var(--kw-teal);
+}
+
+.help-step-list li,
+.help-feature-list div {
+  min-height: 82px;
+}
+
+.onboarding-shell {
+  background:
+    linear-gradient(90deg, rgba(67, 127, 0, 0.045) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(71, 167, 245, 0.045) 1px, transparent 1px),
+    linear-gradient(180deg, #fbfff7, #ffffff);
+  background-size: 44px 44px, 44px 44px, auto;
+}
+
+.onboarding-layout {
+  align-items: start;
+}
+
+.onboarding-main,
+.onboarding-side {
+  gap: 18px;
+}
+
+.step-row {
+  padding: 8px;
+  border: 1px solid rgba(67, 127, 0, 0.14);
+  border-radius: 999px;
+  background: #ffffff;
+  box-shadow: var(--kw-shadow-soft);
+}
+
+.step-pill {
+  min-height: 54px;
+  border-radius: 999px;
+}
+
+.step-pill.is-active {
+  background:
+    linear-gradient(145deg, rgba(154, 242, 9, 0.16), #ffffff),
+    #ffffff;
+  box-shadow: 0 10px 20px rgba(67, 127, 0, 0.1);
+}
+
+.choice-grid {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.choice-tile,
+.stack-row,
+.preview-panel,
+.launch-brief-panel,
+.onboarding-summary {
+  border: 1px solid rgba(67, 127, 0, 0.14) !important;
+  border-radius: 22px !important;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(154, 242, 9, 0.045)),
+    #ffffff !important;
+  box-shadow: 0 10px 22px rgba(34, 48, 29, 0.055);
+}
+
+.choice-tile {
+  min-height: 190px;
+  align-content: start;
+}
+
+.choice-tile.is-selected,
+.stack-row.is-selected {
+  border-left: 6px solid var(--kw-lime) !important;
+  box-shadow: 0 14px 28px rgba(67, 127, 0, 0.12);
+}
+
+.launch-brief-panel {
+  position: relative;
+  overflow: hidden;
+  border-top: 8px solid var(--kw-lime) !important;
+}
+
+.launch-brief-grid,
+.preview-grid {
+  gap: 14px;
+}
+
+.launch-brief-item,
+.launch-brief-next,
+.preview-lesson-row,
+.onboarding-check-row,
+.promise-list li {
+  border: 1px solid rgba(67, 127, 0, 0.14) !important;
+  border-radius: 16px !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+}
+
+.onboarding-side {
+  position: sticky;
+  top: 24px;
+}
+
+@media (max-width: 1120px) {
+  .parent-proof-entry,
+  .story-layout,
+  .learning-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .story-menu,
+  .onboarding-side {
+    position: static;
+  }
+}
+
+@media (max-width: 760px) {
+  .app-shell .workspace-band > .section-heading-tight,
+  .onboarding-main > .section-heading-tight {
+    padding: 22px 20px;
+    border-radius: 22px;
+  }
+
+  .app-shell .workspace-band > .section-heading-tight::after,
+  .onboarding-main > .section-heading-tight::after {
+    right: -92px;
+    top: -72px;
+  }
+
+  .app-shell .workspace-band > .section-heading-tight h1,
+  .onboarding-main > .section-heading-tight h1 {
+    font-size: 2.35rem;
+  }
+
+  .parent-proof-copy h2,
+  .daily-brief-copy h2,
+  .dashboard-report-copy h2,
+  .progress-narrative-panel h2 {
+    font-size: 1.75rem;
+  }
+
+  .parent-outcome-filter-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    border-radius: 18px;
+  }
+
+  .quest-map-grid,
+  .track-grid,
+  .learning-mode-grid,
+  .choice-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .track-tile,
+  .lesson-row,
+  .choice-row,
+  .help-action-card {
+    min-height: auto;
+  }
+
+  .step-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    border-radius: 22px;
+  }
+}
+
+@media (max-width: 430px) {
+  .app-shell .workspace-band > .section-heading-tight h1,
+  .onboarding-main > .section-heading-tight h1 {
+    font-size: 2rem;
+  }
+
+  .panel-head svg,
+  .summary-card-icon,
+  .setup-proof-icon,
+  .choice-tile-icon,
+  .course-showcase-icon,
+  .quest-node-icon {
+    width: 34px;
+    height: 34px;
+  }
+
+  .first-session-action-row,
+  .story-skill-next,
+  .learning-studio-submit-row,
+  .dashboard-tour-actions,
+  .dashboard-tour-actions > div,
+  .parent-share-footer,
+  .parent-share-options,
+  .mobile-parent-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Final interior contrast guard for older dark-theme remnants. */
+.app-shell :where(
+  .setup-proof-panel,
+  .parent-proof-entry,
+  .parent-outcome-panel,
+  .daily-brief-panel,
+  .progress-narrative-panel,
+  .review-queue-panel,
+  .dashboard-report-grid,
+  .dashboard-child-card,
+  .first-session-panel,
+  .quest-hero-band,
+  .quest-daily-brief,
+  .quest-celebration-reel,
+  .achievement-portfolio-panel,
+  .parent-share-preview-panel,
+  .quest-main-grid,
+  .quest-lower-grid,
+  .track-grid,
+  .learning-layout,
+  .practice-panel,
+  .choice-storyboard,
+  .lesson-challenge-panel,
+  .quiz-panel,
+  .lesson-proof-panel,
+  .story-progress-strip,
+  .story-layout,
+  .story-stage,
+  .story-menu,
+  .story-skill-debrief,
+  .journal-insight-panel,
+  .journal-layout,
+  .help-panel,
+  .help-hero,
+  .help-content-grid,
+  .family-meeting-panel,
+  .parent-trust-review-panel,
+  .privacy-center-panel,
+  .curriculum-depth-panel,
+  .launch-readiness-panel,
+  .data-model-panel
+) :where(h1, h2, h3, h4, strong, label) {
+  color: var(--kw-ink) !important;
+  opacity: 1 !important;
+}
+
+.app-shell :where(
+  .setup-proof-panel,
+  .parent-proof-entry,
+  .parent-outcome-panel,
+  .daily-brief-panel,
+  .progress-narrative-panel,
+  .review-queue-panel,
+  .dashboard-report-grid,
+  .dashboard-child-card,
+  .first-session-panel,
+  .quest-hero-band,
+  .quest-daily-brief,
+  .quest-celebration-reel,
+  .achievement-portfolio-panel,
+  .parent-share-preview-panel,
+  .quest-main-grid,
+  .quest-lower-grid,
+  .track-grid,
+  .learning-layout,
+  .practice-panel,
+  .choice-storyboard,
+  .lesson-challenge-panel,
+  .quiz-panel,
+  .lesson-proof-panel,
+  .story-progress-strip,
+  .story-layout,
+  .story-stage,
+  .story-menu,
+  .story-skill-debrief,
+  .journal-insight-panel,
+  .journal-layout,
+  .help-panel,
+  .help-hero,
+  .help-content-grid,
+  .family-meeting-panel,
+  .parent-trust-review-panel,
+  .privacy-center-panel,
+  .curriculum-depth-panel,
+  .launch-readiness-panel,
+  .data-model-panel
+) :where(p, span, small, em, li, blockquote) {
+  color: var(--kw-muted) !important;
+  opacity: 1 !important;
+}
+
+.app-shell :where(
+  .story-progress-card,
+  .story-outcome-card,
+  .choice-row,
+  .story-skill-card,
+  .story-skill-next,
+  .journal-insight-card,
+  .journal-insight-practice,
+  .journal-guidance,
+  .entry-row,
+  .track-tile,
+  .lesson-row,
+  .learning-path-step,
+  .practice-scene-card,
+  .practice-option,
+  .choice-storyboard-beat,
+  .lesson-challenge-option,
+  .quest-stat,
+  .quest-node,
+  .quest-daily-reason,
+  .quest-celebration-frame,
+  .achievement-proof-card,
+  .achievement-keepsake-card,
+  .parent-share-highlight
+) :where(h1, h2, h3, h4, strong) {
+  color: var(--kw-ink) !important;
+  opacity: 1 !important;
+}
+
+.app-shell :where(
+  .story-progress-card,
+  .story-outcome-card,
+  .choice-row,
+  .story-skill-card,
+  .story-skill-next,
+  .journal-insight-card,
+  .journal-insight-practice,
+  .journal-guidance,
+  .entry-row,
+  .track-tile,
+  .lesson-row,
+  .learning-path-step,
+  .practice-scene-card,
+  .practice-option,
+  .choice-storyboard-beat,
+  .lesson-challenge-option,
+  .quest-stat,
+  .quest-node,
+  .quest-daily-reason,
+  .quest-celebration-frame,
+  .achievement-proof-card,
+  .achievement-keepsake-card,
+  .parent-share-highlight
+) :where(p, span, small, em, li) {
+  color: var(--kw-muted) !important;
+  opacity: 1 !important;
+}
+
+.app-shell :where(.solid-button, .solid-button *, .inline-action, .inline-action *) {
+  color: #ffffff !important;
+}
+
+.app-shell :where(.eyebrow, .eyebrow-dark, .panel-head p, .story-stage-head p, .learning-path-head p, .quest-map-head p, .journal-insight-copy p, .help-status-card span, .launch-brief-copy p) {
+  color: color-mix(in srgb, var(--zone-accent, var(--kw-lime)) 82%, #172033) !important;
+}
+
+.app-shell :where(svg) {
+  opacity: 1;
 }

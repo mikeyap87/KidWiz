@@ -84,7 +84,7 @@ export function HelpTab({
             </li>
             <li>
               <strong>Review Family Hub.</strong>
-              <span>Use parent controls for weekly targets, sensitive topics, and local testing resets.</span>
+              <span>Use parent controls for weekly targets, sensitive topics, and week reset tools.</span>
             </li>
           </ol>
         </article>

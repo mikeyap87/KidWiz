@@ -373,7 +373,7 @@ function App() {
     state: "checking",
     configured: false,
     model: null,
-    message: "Checking the local Learning Studio server.",
+    message: "Checking the Learning Studio connection.",
   });
 
   useEffect(() => {
@@ -447,7 +447,7 @@ function App() {
           model: data.model ?? null,
           message: data.configured
             ? `Live AI is connected with ${data.model ?? "the configured model"}.`
-            : "The local AI server is running, but live AI is not configured.",
+            : "Learning Studio is available, but live AI is not configured.",
         });
       } catch {
         if (cancelled) return;
@@ -456,7 +456,7 @@ function App() {
           state: "offline",
           configured: false,
           model: null,
-          message: "The local AI server is offline. The app remains usable in demo mode.",
+          message: "Learning Studio is offline. The family workspace still works.",
         });
       }
     }
@@ -726,7 +726,7 @@ function App() {
             parentSummary:
               result.parentSummary ??
               result.error ??
-              "The local Learning Studio server returned an error.",
+              "The Learning Studio connection returned an error.",
             safetyDecision: result.safetyDecision ?? {
               status: "not_checked",
               source: "server",
@@ -734,7 +734,7 @@ function App() {
             },
             suggestedNextAction:
               result.suggestedNextAction ??
-              "Check the AI server terminal, then try again.",
+              "Check the Learning Studio connection, then try again.",
           },
         };
       }
@@ -744,15 +744,15 @@ function App() {
         result: {
           promptStatus: "server_offline",
           childAnswer:
-            "The live Learning Studio is not connected yet. Ask a parent to start the local AI server.",
+            "The live Learning Studio is not connected yet. Ask a parent to open the Learning Studio connection.",
           parentSummary:
-            "The browser could not reach the KidWiz AI server at http://127.0.0.1:5291.",
+            "The KidWiz Learning Studio helper is not responding right now.",
           safetyDecision: {
             status: "not_checked",
             source: "browser",
-            reason: "Local AI server is offline or unreachable.",
+            reason: "Learning Studio is offline or unreachable.",
           },
-          suggestedNextAction: "Run npm run ai:server in the KidWiz folder.",
+          suggestedNextAction: "Start the Learning Studio helper before live AI review.",
         },
       };
     }
@@ -1307,7 +1307,7 @@ function App() {
         snapshotsByChild,
       ),
     }));
-    setFamilyToolsMessage("Current week saved into local trend history.");
+    setFamilyToolsMessage("Current week saved into trend history.");
   }
 
   function handleArchiveAndStartFreshWeek() {
@@ -1376,7 +1376,7 @@ function App() {
       };
     });
     setFamilyToolsMessage(
-      "Week archived and a fresh local week is ready with new focus tracks and reset rhythm.",
+      "Week archived and a fresh week is ready with new focus tracks and reset rhythm.",
     );
   }
 
@@ -1385,13 +1385,13 @@ function App() {
       ...current,
       weeklyHistoryByChild: createDefaultState().weeklyHistoryByChild,
     }));
-    setFamilyToolsMessage("Saved weekly history reset to the KidWiz demo baseline.");
+    setFamilyToolsMessage("Saved weekly history reset to the KidWiz baseline.");
   }
 
   function handleResetDemo() {
     if (typeof window !== "undefined") {
       const shouldReset = window.confirm(
-        "Reset the local KidWiz demo and clear saved browser data?",
+        "Reset the KidWiz family workspace and clear saved browser data?",
       );
 
       if (!shouldReset) {
@@ -1403,7 +1403,7 @@ function App() {
 
     setAppState(createDefaultState());
     setAuthEmail("");
-    setAuthMessage("Local KidWiz demo reset.");
+    setAuthMessage("KidWiz family workspace reset.");
     setChildJournalDraft("");
     setParentJournalDraft("");
     setFamilyToolsMessage("");

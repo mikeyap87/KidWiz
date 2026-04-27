@@ -80,6 +80,7 @@ KidWiz aims to close that gap by giving families one place to build:
 - a mobile-first in-app shell with a compact learner summary, sticky section navigation, and expandable family controls instead of a long prelude before the selected screen
 - parent-facing mobile tabs now use a shorter learner strip and a smaller primary tab row so Dashboard, Coach, Family Hub, and Help reach their content faster
 - parent, child, and support visual zones now give major app areas different accent systems while preserving the existing layout
+- section-by-section SaaS redesign across Dashboard, Quest Hub, Courses, Stories, Coach, Journal, Family Hub, Help, and guided onboarding, with brighter mastheads, kid-friendly cards, stronger contrast, and consistent subject-zone accents
 - a child-specific mobile resume strip so a parent can jump straight into the next lesson without scrolling past secondary controls
 - a parent-only mobile controls drawer that keeps protected settings and sensitive-topic status separate from the child-facing next-step flow
 - Parent Proof entry panel in Dashboard that gives first-time demo parents one child, one next lesson, and one safety note before deeper metrics
@@ -225,6 +226,7 @@ The Family Hub now includes local controls to:
 - KidWiz lives in its own isolated folder: `KidWiz`.
 - The current visual direction is hybrid bright trust: old KidWiz warmth, logo, atom science mark, accessible lime controls, subject-color energy, and a softer Wiz Spark AI-guide personality combined with the newer parent-proof dashboard, Learning Studio, safety panels, guided onboarding, and local-first app depth.
 - The latest redesign direction treats KidWiz as a bright family learning OS rather than a generic dashboard: the public site sells whole-child outcomes and parent trust, while the SaaS app separates parent, child, and support zones with consistent white surfaces, colorful rails, and calmer AI/safety framing.
+- The interior SaaS redesign now extends the bright KidWiz system into every major app section, so the product depth is no longer hidden behind the shell: each tab has its own clear masthead, section rhythm, finished cards, and readable parent/child/support tone.
 - Only selected brand assets were copied from the owner-provided archive. Old `.env` files, legacy backups, raw large archives, and unrelated asset packs should stay out of the app repo.
 - The first build is intentionally web-first.
 - The current product foundation is parent-led rather than child-signup-first.

@@ -686,7 +686,7 @@ export function OverviewTab({
               <div className="signal-card quest-side-card">
                 <p>Badges earned</p>
                 <strong>{earnedBadgesSummary.count}</strong>
-                <span>Current local badge wall progress for {selectedChild.name}.</span>
+                <span>Current badge wall progress for {selectedChild.name}.</span>
               </div>
               <div className="signal-card quest-side-card">
                 <p>World in focus</p>

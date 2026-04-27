@@ -313,7 +313,7 @@ export function buildStorySkillDebrief({
       : null,
     nextStepCopy: nextLesson
       ? `${nextLesson.title} is the closest lesson follow-through for this story signal.`
-      : `${matchingTrack?.title ?? "This track"} looks complete in the current local state.`,
+      : `${matchingTrack?.title ?? "This track"} looks complete in the current family workspace.`,
   };
 }
 
@@ -821,7 +821,7 @@ export function buildParentPrivacyCenter({
     },
     {
       label: "Exports",
-      status: `${exportItemCount} local item${exportItemCount === 1 ? "" : "s"}`,
+      status: `${exportItemCount} family item${exportItemCount === 1 ? "" : "s"}`,
       copy: "Parents should be able to export child data in a readable family archive.",
       tone: exportItemCount > 0 ? "good" : "neutral",
     },
@@ -1076,7 +1076,7 @@ export function buildCurriculumDepthConsole() {
       {
         label: "Lessons",
         value: lessonTotal,
-        copy: "Authored local lessons across academics and life skills.",
+        copy: "Authored lessons across academics and life skills.",
       },
       {
         label: "Quiz checks",
@@ -1176,7 +1176,7 @@ export function buildSparkTutorSafetyStudio({
       ? "Sensitive track support is parent-opened and review-first."
       : "General learning support stays bounded to the active lesson.",
     copy:
-      "A local mock of how KidWiz can make AI tutoring useful without making it unsupervised: every response has a lesson scope, safety decision, and parent-readable summary.",
+      "A reviewable view of how KidWiz can make AI tutoring useful without making it unsupervised: every response has a lesson scope, safety decision, and parent-readable summary.",
     guardrails,
     samplePrompts,
     moderationChecklist: [
@@ -1653,7 +1653,7 @@ export function buildChildAchievementPortfolio({
     totalArtifacts,
     subtitle:
       totalArtifacts > 0
-        ? `${totalArtifacts} portfolio artifact${totalArtifacts === 1 ? "" : "s"} from this local week.`
+        ? `${totalArtifacts} portfolio artifact${totalArtifacts === 1 ? "" : "s"} from this week.`
         : "No artifacts yet, but the portfolio is ready.",
     proofCards,
     keepsakes,
