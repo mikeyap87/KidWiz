@@ -30,9 +30,13 @@ KidWiz aims to close that gap by giving families one place to build:
 ## Core Features In This Build
 
 - CRO-focused public website with parent outcome messaging, demo CTAs, trust positioning, and clearer product/prototype proof
+- parent-demo-first public hero that keeps the instant demo as the primary action and moves optional magic-link testing below the first proof section
 - parent email entry flow with optional Supabase magic-link auth
 - demo-mode fallback when auth is not configured
-- guided family onboarding for goal selection, weekly rhythm, coach style, and celebration style
+- guided family onboarding for goal selection, weekly rhythm, coach style, celebration style, a parent launch checklist, and first-week proof
+- post-launch dashboard confirmation that the selected goals, rhythm, coach tone, and celebration lens are active in the family plan
+- restartable Dashboard tour with skip, back, next, finish, and Family Hub restart controls
+- Help tab plus `/help` path with the fastest parent path, main section guide, Learning Studio status, and common fixes
 - shared in-app screen guidance that names each core section's audience, purpose, and best next move
 - focused interaction polish across core screens so keyboard users and hesitant parent/child sessions get clearer affordances, including visible focus states and disabled-action feedback
 - parent dashboard with per-child weekly targets, outcome framing, focus tracks, progress, and recommended next lessons
@@ -71,15 +75,20 @@ KidWiz aims to close that gap by giving families one place to build:
 - daily rhythm checklist with visible completion inside the Quest Hub
 - guided lesson flow for each course track with Learning Path Maps, track-specific playbooks, visual practice panels, authored scenario cards, interactive micro-challenge checks, age-band aware prompts, coach cues, activity milestones, quiz checkpoints, and a parent follow-through loop
 - lazy-loaded public, onboarding, and tab-level screen modules with polished loading states so the local product stays responsive as more curriculum ships
-- a mobile-first in-app shell with learner switching and sticky section navigation, replacing the old stacked-sidebar behavior on smaller screens
-- a child-specific mobile resume strip and quick-action rail so a parent can jump straight into the next lesson, story, reflection, or family prompt
-- a parent-only mobile control strip that keeps protected settings and sensitive-topic status separate from the child-facing next-step flow
+- a mobile-first in-app shell with a compact learner summary, sticky section navigation, and expandable family controls instead of a long prelude before the selected screen
+- parent-facing mobile tabs now use a shorter learner strip and a smaller primary tab row so Dashboard, Coach, Family Hub, and Help reach their content faster
+- parent, child, and support visual zones now give major app areas different accent systems while preserving the existing layout
+- a child-specific mobile resume strip so a parent can jump straight into the next lesson without scrolling past secondary controls
+- a parent-only mobile controls drawer that keeps protected settings and sensitive-topic status separate from the child-facing next-step flow
+- Parent Proof entry panel in Dashboard that gives first-time demo parents one child, one next lesson, and one safety note before deeper metrics
+- DeepTutor-inspired KidWiz Learning Studio inside Coach with live-AI modes, lesson-scoped tutoring, local learner memory, notebook cards, question-bank saves, and parent-visible safety review
 - sequential lesson progression within tracks
 - track statuses such as ready, in progress, checkpoint ready, and complete
 - per-child weekly playlists with add/remove controls
 - branching story episodes with richer choices, Story Skill Debriefs, parent questions, child reflections, and lesson follow-through
 - badge system based on local progress state
 - Spark Coach tab with bounded coaching modes and a Tutor Safety Studio for mock AI prompts, guardrail decisions, and parent-visible summaries
+- Learning Studio live-AI endpoint for lesson-aware tutoring, quiz generation, alternate explanations, visual idea prompts, notebook saves, explicit live-AI setup status, and safety-reviewed parent summaries
 - child journal and parent notes with a Journal Insight Coach for mood patterns, likely needs, parent response ideas, and next practice
 - family hub with trust center, unlock controls, goal editing, rhythm controls, archived history visibility, and local testing tools for saving or resetting weekly snapshots
 - Family Meeting Builder that turns child signals into a 10-minute agenda, parent script, ritual close, and completion action
@@ -108,6 +117,7 @@ The value is:
 - plain CSS
 - Lucide React icons
 - browser `localStorage` for demo persistence
+- local Node HTTP server for live Learning Studio AI calls
 - optional Supabase auth via `@supabase/supabase-js`
 
 ## Architecture
@@ -130,11 +140,21 @@ The value is:
 - `src/components/CoursesTab.jsx` now owns the lesson-experience builder import so course-only lesson logic loads with the course screen instead of the entry bundle.
 - `src/data/kidwizData.js` acts as the current content source for demo profiles, course tracks, lessons, quest worlds, stories, playlists, badges, rituals, and setup options.
 - `src/App.css` contains the full visual system and responsive layout.
+- `scripts/kidwiz-ai-server.mjs` owns the local `POST /api/kidwiz/tutor` endpoint, OpenAI moderation call, Responses API tutor call, local child-safety prechecks, and no-key fallback response.
 
 ### Auth
 
 - `src/lib/supabaseClient.js` enables magic-link login when environment variables are present.
 - If Supabase is not configured, the app falls back to a polished demo mode instead of breaking.
+
+### Learning Studio AI
+
+- The Vite app stays on `http://127.0.0.1:5290`.
+- The local AI server runs on `http://127.0.0.1:5291`.
+- `OPENAI_API_KEY`, `OPENAI_MODEL`, and `KIDWIZ_AI_SERVER_PORT` are server-side variables for `npm run ai:server`.
+- `VITE_KIDWIZ_AI_API_URL` only stores the local API base URL and must not contain secrets.
+- The server checks local child-safety rules first, then `omni-moderation-latest`, then calls the OpenAI Responses API with `OPENAI_MODEL` defaulting to `gpt-5.4-mini`.
+- The first release does not stream responses because partial streaming is harder to moderate in a child-facing flow.
 
 ### Local Product Logic
 
@@ -165,6 +185,7 @@ The live app shell currently uses in-browser demo state for:
 - assigned tracks by child
 - sensitive topic unlock state
 - weekly history snapshots by child, including archived totals used for trend comparisons
+- learning studio tutor turns, saved notebook cards, question-bank items, and parent-review safety events by child
 
 This is stored in `localStorage` so a reviewer can interact with the experience without backend setup.
 
@@ -174,6 +195,7 @@ For faster local QA, the app also supports direct demo boot URLs such as:
 - `/?demo=instant&tab=dashboard`
 - `/?demo=instant&tab=courses`
 - `/?demo=instant&tab=family`
+- `/help`
 - `/?demo=guided`
 - `/?demo=instant&tab=quest&child=kai`
 
@@ -183,6 +205,7 @@ The Family Hub now includes local controls to:
 - archive the current week and start a fresh week with rotated focus tracks and fresh playlists
 - reset saved history back to the seeded demo baseline
 - restart onboarding or fully reset the local demo state
+- restart the Dashboard tour
 
 ## Setup
 
@@ -190,15 +213,19 @@ The Family Hub now includes local controls to:
 2. Run `npm run dev`.
 3. Open `http://127.0.0.1:5290`.
 4. For direct local review, optionally use `http://127.0.0.1:5290/?demo=instant&tab=quest`.
-5. Run `npm run lint` and `npm run build`.
-6. Optionally copy `.env.example` to `.env.local` and add Supabase values for real magic-link login.
+5. For live Learning Studio AI, copy `.env.example` to `.env.local`, add `OPENAI_API_KEY`, and run `npm run ai:server` in a second terminal. Local review can temporarily reuse a shared OpenAI key from another trusted local project, but KidWiz should get its own dedicated key before public or production use.
+6. Run `npm run lint` and `npm run build`.
+7. Optionally add Supabase values for real magic-link login.
 
 ## Important Decisions
 
 - KidWiz lives in its own isolated folder: `KidWiz`.
 - The first build is intentionally web-first.
 - The current product foundation is parent-led rather than child-signup-first.
-- The local product now includes an onboarding flow instead of skipping straight into the app.
+- The local product now includes an onboarding flow instead of skipping straight into the app, and that flow now gives parents a launch checklist, first-week brief, child-specific next move, safety promises, and restart guidance.
+- The parent dashboard now confirms the family setup choices after launch so parents can see that goals, rhythm, coach tone, and celebration lens are actively shaping the week.
+- The parent dashboard now includes a restartable first-run tour, and Family Hub plus Help can restart it after dismissal.
+- The app now includes a user-facing Help surface at `/help` so parent onboarding guidance lives in the product, not only in developer docs.
 - The local product now includes a quest-style child home experience instead of a plain dashboard-style landing screen.
 - The parent dashboard now includes outcome framing, a weekly report, and historical trend comparison rather than only raw metrics and controls, plus explicit priority-risk cards for quick parent intervention.
 - Historical trend comparison is now driven by archived local snapshots instead of a fixed read-only seed.
@@ -213,6 +240,9 @@ The Family Hub now includes local controls to:
 - The mobile shell now shows a recommended next lesson plus quick actions for story, reflection, and family follow-through, using the same progress signals that drive the dashboard and quest systems.
 - The mobile shell now separates child next steps from parent-only controls so protected settings and sensitive-topic access feel deliberately gated.
 - Core-screen interactions now include consistent focus-visible and disabled-state cues so keyboard users and first-time parents can tell at a glance what is actionable.
+- The Coach tab now includes a live-AI Learning Studio, inspired by DeepTutor's mode-switching, memory, notebook, and question-bank patterns but implemented as KidWiz-native code rather than an external repo integration.
+- Live AI stays behind a local server endpoint so OpenAI keys are not exposed to the browser, and every prompt receives a parent-visible safety decision.
+- For local testing only, the AI server may use a shared OpenAI key copied into KidWiz `.env.local`; before going live, replace it with a dedicated KidWiz key and review the child-data safety posture.
 - Marketing/trust content and starter demo seed content now live in their own data modules so lazy surfaces and bootstrap data have cleaner boundaries as the product grows.
 - Dashboard summaries, weekly reports, quest boards, onboarding previews, and track-progress rows now compute inside lazy-loaded screens so the entry bundle stays focused on the shell and active learner controls.
 - Mobile resume progress and archive snapshot generation now share the same child-summary model, reducing repeated logic and making parent-facing progress cues more consistent.
@@ -247,11 +277,14 @@ The Family Hub now includes local controls to:
 - The app supports demo mode by default so product design can move before backend work is finished.
 - Direct URL demo boot is supported for local QA and stakeholder review.
 - Public-site messaging now emphasizes parent outcomes, decision clarity, and safe local demo access instead of only describing feature inventory.
+- The parent-demo conversion path now prioritizes one clear public CTA, a compact parent proof panel, and phone-sized layouts without horizontal clipping.
+- The latest conversion pass puts the parent demo CTA first, aligns Dashboard section order with the tour, and compresses parent-facing mobile chrome before core content.
+- The visual polish pass adds parent, child, and support zone accents to reduce samey dark panels and make the app feel more intentional without a full redesign.
 
 ## Constraints
 
 - There is no database persistence yet beyond browser storage.
-- There is no server-side AI integration yet.
+- Server-side AI now exists locally for the Learning Studio, but it is not production-persisted and should be treated as local/staging review until auth, audit logs, retention policy, and parent controls are approved.
 - Journals, playlists, badges, quizzes, and progress are demo-state only until Supabase tables are added.
 - Billing, subscriptions, and role permissions are not implemented yet.
 - The current build is a strong local product prototype, not a production-ready child data platform.
@@ -263,7 +296,7 @@ The Family Hub now includes local controls to:
 3. Replace the shared track playbooks with richer authored lesson variants, stronger age-banding, and deeper media or interaction types that fit each track.
 4. Keep trimming the local bundle by moving the remaining shell-owned active-lesson and coach-card helpers behind lazy boundaries or focused child-shell components.
 5. Split the always-mounted mobile shell into clearer components now that its progress state comes from shared progression helpers.
-6. Add a server-side AI orchestration layer with moderation, age banding, and audit logs.
+6. Move the Learning Studio from local-only history to production persistence with moderation records, age banding, audit logs, and parent-review retention policy.
 7. Replace the static course content model with a more scalable curriculum structure and content authoring approach.
 8. Add billing and subscription controls.
 9. Define the first launch age band more tightly and decide whether the sensitive track belongs in V1 or V2.

@@ -21,12 +21,27 @@ import {
 
 export const STORAGE_KEY = "kidwiz-demo-state-v3";
 
+function createLearningStudioState() {
+  return Object.fromEntries(
+    childProfiles.map((child) => [
+      child.id,
+      {
+        turns: [],
+        notebookCards: [],
+        questionBankItems: [],
+        safetyEvents: [],
+      },
+    ]),
+  );
+}
+
 export function createDefaultState() {
   return {
     session: null,
     activeTab: "dashboard",
     onboardingComplete: false,
     onboardingStep: 0,
+    dashboardTourCompleted: false,
     familyName: "Aster House",
     selectedChildId: childProfiles[0].id,
     selectedTrackId: courseCatalog[0].id,
@@ -58,12 +73,16 @@ export function createDefaultState() {
     lessonMilestoneIdsByChild: Object.fromEntries(
       childProfiles.map((child) => [child.id, {}]),
     ),
+    lessonChallengeStateByChild: Object.fromEntries(
+      childProfiles.map((child) => [child.id, {}]),
+    ),
     lessonPracticeChoiceIdsByChild: Object.fromEntries(
       childProfiles.map((child) => [child.id, {}]),
     ),
     lessonQuizAnswersByChild: Object.fromEntries(
       childProfiles.map((child) => [child.id, {}]),
     ),
+    learningStudioByChild: createLearningStudioState(),
   };
 }
 
@@ -126,6 +145,10 @@ export function loadSavedState() {
         ...defaults.lessonMilestoneIdsByChild,
         ...(parsed.lessonMilestoneIdsByChild ?? {}),
       },
+      lessonChallengeStateByChild: {
+        ...defaults.lessonChallengeStateByChild,
+        ...(parsed.lessonChallengeStateByChild ?? {}),
+      },
       lessonPracticeChoiceIdsByChild: {
         ...defaults.lessonPracticeChoiceIdsByChild,
         ...(parsed.lessonPracticeChoiceIdsByChild ?? {}),
@@ -134,6 +157,12 @@ export function loadSavedState() {
         ...defaults.lessonQuizAnswersByChild,
         ...(parsed.lessonQuizAnswersByChild ?? {}),
       },
+      learningStudioByChild: {
+        ...defaults.learningStudioByChild,
+        ...(parsed.learningStudioByChild ?? {}),
+      },
+      dashboardTourCompleted:
+        parsed.dashboardTourCompleted ?? defaults.dashboardTourCompleted,
       parentJournalEntries:
         parsed.parentJournalEntries ?? defaults.parentJournalEntries,
     };

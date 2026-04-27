@@ -4,6 +4,7 @@ import {
   Bot,
   Brain,
   Flame,
+  CircleHelp,
   Heart,
   LayoutDashboard,
   Map,
@@ -29,6 +30,7 @@ export const tabItems = [
   { id: "coach", label: "Coach", icon: Bot },
   { id: "journal", label: "Journal", icon: NotebookPen },
   { id: "family", label: "Family Hub", icon: Users },
+  { id: "help", label: "Help", icon: CircleHelp },
 ];
 
 export const moodOptions = ["proud", "curious", "steady", "grateful", "wobbly"];

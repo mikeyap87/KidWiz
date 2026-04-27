@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   ArrowDownRight,
   ArrowUpRight,
@@ -12,6 +12,7 @@ import {
   MessagesSquare,
   Minus,
   NotebookPen,
+  ShieldCheck,
   Sparkles,
   Target,
   Users,
@@ -141,12 +142,84 @@ function buildParentOutcomeDashboard({
   };
 }
 
+const dashboardTourSteps = [
+  {
+    id: "setup-proof",
+    label: "1 of 3",
+    title: "Your setup choices are active",
+    copy: "Start here after guided setup. These cards confirm the goals, rhythm, coach tone, and celebration lens now shaping the week.",
+  },
+  {
+    id: "parent-proof",
+    label: "2 of 3",
+    title: "One trusted next move",
+    copy: "This card gives a parent one child, one lesson, and one safety note before the dashboard gets deeper.",
+  },
+  {
+    id: "family-controls",
+    label: "3 of 3",
+    title: "Adjust controls later",
+    copy: "Family Hub is where parents restart onboarding, change rhythm, review safety, and restart this tour when needed.",
+  },
+];
+
+function DashboardTour({
+  activeStep,
+  onBack,
+  onFinish,
+  onNext,
+  onSkip,
+}) {
+  const step = dashboardTourSteps[activeStep] ?? dashboardTourSteps[0];
+  const isFinalStep = activeStep === dashboardTourSteps.length - 1;
+
+  useEffect(() => {
+    const target = document.querySelector(`[data-tour-id="${step.id}"]`);
+    target?.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+    });
+  }, [step.id]);
+
+  return (
+    <aside className="dashboard-tour-card" aria-live="polite">
+      <div>
+        <p className="eyebrow eyebrow-dark">Dashboard tour</p>
+        <span>{step.label}</span>
+      </div>
+      <h2>{step.title}</h2>
+      <p>{step.copy}</p>
+      <div className="dashboard-tour-actions">
+        <button className="inline-action" onClick={onSkip} type="button">
+          Skip
+        </button>
+        <div>
+          <button
+            className="ghost-button ghost-button-dark"
+            disabled={activeStep === 0}
+            onClick={onBack}
+            type="button"
+          >
+            Back
+          </button>
+          <button className="solid-button" onClick={isFinalStep ? onFinish : onNext} type="button">
+            {isFinalStep ? "Finish" : "Next"}
+            <ArrowRight size={16} />
+          </button>
+        </div>
+      </div>
+    </aside>
+  );
+}
+
 export function DashboardTab({
   appState,
+  dashboardTourActive,
   nextRitual,
   onAdjustWeeklyTarget,
   onApplyPlanningNudge,
   onChangeFocusTrack,
+  onCompleteDashboardTour,
   onDismissPlanningNudge,
   onOpenFamily,
   onOpenJournal,
@@ -160,6 +233,7 @@ export function DashboardTab({
   selectedRhythm,
   visibleTracks,
 }) {
+  const [dashboardTourStep, setDashboardTourStep] = useState(0);
   const childSummaries = useMemo(
     () =>
       buildChildSummaries({
@@ -301,6 +375,43 @@ export function DashboardTab({
     outcomeFilter === "all"
       ? `${outcomeDashboard.childOutcomes.length} ${outcomeFilterLabel[outcomeFilter]}`
       : `${filteredChildOutcomes.length} ${outcomeFilterLabel[outcomeFilter]} now`;
+  const selectedChildSummary =
+    childSummaries.find((summary) => summary.child.id === selectedChildId) ??
+    childSummaries[0];
+  const parentProofLesson = selectedChildSummary?.recommendedLesson;
+  const activeTourTarget = dashboardTourActive
+    ? dashboardTourSteps[dashboardTourStep]?.id
+    : null;
+  const setupGoalLabel =
+    selectedGoals.length > 0
+      ? selectedGoals.map((goal) => goal.title).join(", ")
+      : "Family growth";
+  const activeSetupCards = [
+    {
+      label: "Goals active",
+      value: setupGoalLabel,
+      copy: "The first playlists and coach prompts now use these parent-selected priorities.",
+      icon: Target,
+    },
+    {
+      label: "Weekly rhythm",
+      value: selectedRhythm.title,
+      copy: selectedRhythm.copy,
+      icon: LayoutDashboard,
+    },
+    {
+      label: "Coach tone",
+      value: selectedCoachStyle.title,
+      copy: selectedCoachStyle.copy,
+      icon: Sparkles,
+    },
+    {
+      label: "Celebration lens",
+      value: selectedCelebrationStyle.title,
+      copy: selectedCelebrationStyle.copy,
+      icon: Award,
+    },
+  ];
 
   function handleOutcomeFilterReset() {
     setOutcomeFilter("all");
@@ -361,6 +472,21 @@ export function DashboardTab({
     onSelectChild(outcome.id);
   }
 
+  function handleTourBack() {
+    setDashboardTourStep((current) => Math.max(0, current - 1));
+  }
+
+  function handleTourNext() {
+    setDashboardTourStep((current) =>
+      Math.min(dashboardTourSteps.length - 1, current + 1),
+    );
+  }
+
+  function handleTourComplete() {
+    setDashboardTourStep(0);
+    onCompleteDashboardTour();
+  }
+
   return (
     <section className="workspace-band">
       <div className="section-heading section-heading-tight">
@@ -372,6 +498,152 @@ export function DashboardTab({
           child-by-child summaries.
         </p>
       </div>
+
+      {dashboardTourActive ? (
+        <DashboardTour
+          activeStep={dashboardTourStep}
+          onBack={handleTourBack}
+          onFinish={handleTourComplete}
+          onNext={handleTourNext}
+          onSkip={handleTourComplete}
+        />
+      ) : null}
+
+      <section
+        className={`surface-panel setup-proof-panel ${
+          activeTourTarget === "setup-proof" ? "is-tour-highlight" : ""
+        }`}
+        aria-label="Active family setup"
+        data-tour-id="setup-proof"
+      >
+        <div className="setup-proof-head">
+          <div>
+            <div className="panel-head">
+              <Target size={18} />
+              <h2>Your setup is active</h2>
+            </div>
+            <p>
+              The choices from guided setup are now shaping the dashboard,
+              playlists, coaching tone, and parent follow-through.
+            </p>
+          </div>
+          <button
+            className={`inline-action ${
+              activeTourTarget === "family-controls" ? "is-tour-highlight" : ""
+            }`}
+            data-tour-id="family-controls"
+            onClick={onOpenFamily}
+            type="button"
+          >
+            Adjust in Family Hub
+            <ChevronRight size={14} />
+          </button>
+        </div>
+
+        <div className="setup-proof-grid">
+          {activeSetupCards.map((item) => {
+            const Icon = item.icon;
+
+            return (
+              <article key={item.label} className="setup-proof-card">
+                <div className="setup-proof-icon">
+                  <Icon size={18} />
+                </div>
+                <span>{item.label}</span>
+                <strong>{item.value}</strong>
+                <p>{item.copy}</p>
+              </article>
+            );
+          })}
+        </div>
+
+        {selectedChildSummary ? (
+          <div className="setup-proof-next">
+            <div>
+              <span>First proof path</span>
+              <strong>{selectedChildSummary.child.name}'s week starts here.</strong>
+            </div>
+            <p>
+              {parentProofLesson
+                ? `${parentProofLesson.lesson.title} is ready because it matches the current goals and ${selectedRhythm.title.toLowerCase()} rhythm.`
+                : `${selectedChildSummary.supportTrack.title} is the current support track for the family plan.`}
+            </p>
+          </div>
+        ) : null}
+      </section>
+
+      {selectedChildSummary ? (
+        <section
+          className={`parent-proof-entry ${
+            activeTourTarget === "parent-proof" ? "is-tour-highlight" : ""
+          }`}
+          aria-label="Parent proof entry"
+          data-tour-id="parent-proof"
+        >
+          <div className="parent-proof-copy">
+            <p className="eyebrow eyebrow-dark">Parent proof in 3 minutes</p>
+            <h2>
+              See one safe next step for {selectedChildSummary.child.name} before
+              exploring the full product.
+            </h2>
+            <span>
+              KidWiz turns practice into parent-visible proof: the next lesson,
+              why it matters, and what stays protected.
+            </span>
+          </div>
+
+          <article className="parent-proof-card">
+            <div className="parent-proof-card-head">
+              <BookOpen size={18} />
+              <p>Best next move</p>
+            </div>
+            <strong>
+              {parentProofLesson
+                ? parentProofLesson.lesson.title
+                : selectedChildSummary.supportTrack.title}
+            </strong>
+            <span>
+              {parentProofLesson
+                ? parentProofLesson.reason
+                : selectedChildSummary.supportMessage}
+            </span>
+            <button
+              className="solid-button"
+              onClick={() =>
+                parentProofLesson
+                  ? onOpenLesson(
+                      selectedChildSummary.child.id,
+                      parentProofLesson.lesson.id,
+                    )
+                  : onSelectChild(selectedChildSummary.child.id)
+              }
+              type="button"
+            >
+              Open next lesson
+              <ArrowRight size={16} />
+            </button>
+          </article>
+
+          <article className="parent-proof-card parent-proof-safety">
+            <div className="parent-proof-card-head">
+              <ShieldCheck size={18} />
+              <p>Trust note</p>
+            </div>
+            <strong>Parent-led safety controls</strong>
+            <span>
+              Sensitive tracks stay locked, AI help is parent-reviewable, and
+              family settings remain visible in the parent area.
+            </span>
+            <button
+              className="ghost-button ghost-button-dark"
+              onClick={onOpenFamily}
+              type="button"
+            >
+              Review controls
+            </button>
+          </article>
+        </section>
+      ) : null}
 
       <div className="dashboard-summary-grid">
         <article className="summary-card">

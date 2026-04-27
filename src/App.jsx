@@ -51,6 +51,7 @@ const DashboardTab = lazyNamed(
   "DashboardTab",
 );
 const FamilyTab = lazyNamed(() => import("./components/FamilyTab"), "FamilyTab");
+const HelpTab = lazyNamed(() => import("./components/HelpTab"), "HelpTab");
 const JournalTab = lazyNamed(
   () => import("./components/JournalTab"),
   "JournalTab",
@@ -71,6 +72,8 @@ const StoriesTab = lazyNamed(
   () => import("./components/StoriesTab"),
   "StoriesTab",
 );
+const KIDWIZ_AI_API_URL =
+  import.meta.env.VITE_KIDWIZ_AI_API_URL ?? "http://127.0.0.1:5291";
 
 function SiteLoading() {
   return (
@@ -165,6 +168,8 @@ function getRequestedTab(tabValue) {
     coach: "coach",
     journal: "journal",
     family: "family",
+    help: "help",
+    support: "help",
   };
 
   return aliases[normalized] ?? "dashboard";
@@ -182,6 +187,16 @@ function getNextFocusTrackId(trackIds, currentFocusTrackId) {
   }
 
   return trackIds[(currentIndex + 1) % trackIds.length];
+}
+
+function getLearningStudioState(state, childId) {
+  return {
+    turns: [],
+    notebookCards: [],
+    questionBankItems: [],
+    safetyEvents: [],
+    ...(state.learningStudioByChild?.[childId] ?? {}),
+  };
 }
 
 function buildScreenFocusContext({
@@ -252,6 +267,13 @@ function buildScreenFocusContext({
       nextMove: "Use the Family Meeting Builder before changing curriculum or privacy settings.",
       metric: "Parent zone",
     },
+    help: {
+      audience: "Help center",
+      title: "Find the fastest path through KidWiz",
+      copy: "Use Help when you want a plain-English map of setup, dashboard proof, Learning Studio, and parent controls.",
+      nextMove: "Start with the parent path, then restart onboarding or the dashboard tour if the product feels too dense.",
+      metric: "Guide",
+    },
   };
 
   return contexts[activeTab] ?? {
@@ -275,7 +297,26 @@ function getInitialBootstrap() {
   }
 
   const searchParams = new URLSearchParams(window.location.search);
+  const isHelpPath = window.location.pathname === "/help";
   const demoMode = searchParams.get("demo");
+
+  if (isHelpPath) {
+    return {
+      appState: {
+        ...createDefaultState(),
+        ...savedState,
+        session: savedState.session ?? {
+          type: "demo",
+          role: "parent",
+          email: "help@kidwiz.demo",
+        },
+        onboardingComplete: true,
+        activeTab: "help",
+      },
+      authMessage: "KidWiz Help opened.",
+      shouldClearQuery: false,
+    };
+  }
 
   if (demoMode !== "instant" && demoMode !== "guided") {
     return {
@@ -325,6 +366,12 @@ function App() {
   const [parentJournalDraft, setParentJournalDraft] = useState("");
   const [coachResponseMode, setCoachResponseMode] = useState("gentle");
   const [familyToolsMessage, setFamilyToolsMessage] = useState("");
+  const [aiServerStatus, setAiServerStatus] = useState({
+    state: "checking",
+    configured: false,
+    model: null,
+    message: "Checking the local Learning Studio server.",
+  });
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -381,6 +428,43 @@ function App() {
     window.history.replaceState({}, "", window.location.pathname);
   }, [bootstrap.shouldClearQuery]);
 
+  useEffect(() => {
+    let cancelled = false;
+
+    async function checkAiServer() {
+      try {
+        const response = await fetch(`${KIDWIZ_AI_API_URL}/api/kidwiz/health`);
+        const data = await response.json();
+
+        if (cancelled) return;
+
+        setAiServerStatus({
+          state: response.ok ? "online" : "offline",
+          configured: Boolean(data.configured),
+          model: data.model ?? null,
+          message: data.configured
+            ? `Live AI is connected with ${data.model ?? "the configured model"}.`
+            : "The local AI server is running, but live AI is not configured.",
+        });
+      } catch {
+        if (cancelled) return;
+
+        setAiServerStatus({
+          state: "offline",
+          configured: false,
+          model: null,
+          message: "The local AI server is offline. The app remains usable in demo mode.",
+        });
+      }
+    }
+
+    checkAiServer();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   const visibleTracks = getVisibleTracks(appState.bodyBoundariesUnlocked);
   const selectedChild =
     childProfiles.find((child) => child.id === appState.selectedChildId) ??
@@ -423,6 +507,9 @@ function App() {
     appState.lessonMilestoneIdsByChild[selectedChild.id] ?? {};
   const childLessonPracticeChoices =
     appState.lessonPracticeChoiceIdsByChild[selectedChild.id] ?? {};
+  const childLessonChallengeState =
+    appState.lessonChallengeStateByChild[selectedChild.id] ?? {};
+  const selectedLearningStudio = getLearningStudioState(appState, selectedChild.id);
   const assignedTrackIds =
     appState.assignedTrackIdsByChild[selectedChild.id] ?? [];
   const selectedChildWorkspace = buildSelectedChildWorkspace({
@@ -434,6 +521,13 @@ function App() {
   const activeLessonAnswer = childQuizAnswers[activeLesson.id];
   const activeLessonMilestoneIds = childLessonMilestones[activeLesson.id] ?? [];
   const activeLessonPracticeChoiceId = childLessonPracticeChoices[activeLesson.id];
+  const activeLessonChallengeState =
+    childLessonChallengeState[activeLesson.id] ?? {
+      selectedOptionId: null,
+      attempts: 0,
+      solved: false,
+      lastResult: null,
+    };
   const answeredOption = activeLesson.quiz.options[activeLessonAnswer];
   const answeredCorrectly =
     activeLessonAnswer === activeLesson.quiz.correctIndex;
@@ -536,6 +630,203 @@ function App() {
         [childId]: updater(current.weeklyTargetsByChild?.[childId]),
       },
     }));
+  }
+
+  function patchLearningStudio(childId, updater) {
+    updateAppState((current) => {
+      const currentStudio = getLearningStudioState(current, childId);
+
+      return {
+        ...current,
+        learningStudioByChild: {
+          ...current.learningStudioByChild,
+          [childId]: updater(currentStudio),
+        },
+      };
+    });
+  }
+
+  async function handleSendLearningStudioPrompt({ mode, prompt }) {
+    const trimmedPrompt = prompt.trim();
+
+    if (!trimmedPrompt) {
+      return {
+        ok: false,
+        result: {
+          promptStatus: "empty",
+          childAnswer: "Type one question or learning request first.",
+          parentSummary: "No prompt was sent to the Learning Studio.",
+          safetyDecision: {
+            status: "not_checked",
+            source: "browser",
+            reason: "Empty prompt.",
+          },
+          suggestedNextAction: "Add a short lesson-specific prompt.",
+        },
+      };
+    }
+
+    const payload = {
+      mode,
+      prompt: trimmedPrompt,
+      selectedChild: {
+        id: selectedChild.id,
+        name: selectedChild.name,
+        age: selectedChild.age,
+        grade: selectedChild.grade,
+        coachLens: selectedChild.coachLens,
+      },
+      selectedCoachStyle: {
+        id: selectedCoachStyle.id,
+        title: selectedCoachStyle.title,
+        copy: selectedCoachStyle.copy,
+      },
+      selectedGoals: selectedGoals.map((goal) => ({
+        id: goal.id,
+        title: goal.title,
+      })),
+      activeTrack: {
+        id: activeTrack.id,
+        title: activeTrack.title,
+        ageBand: activeTrack.ageBand,
+        sensitive: Boolean(activeTrack.sensitive),
+      },
+      activeLesson: {
+        id: activeLesson.id,
+        title: activeLesson.title,
+        summary: activeLesson.summary,
+        parentCue: activeLesson.parentCue,
+      },
+    };
+
+    let result;
+
+    try {
+      const response = await fetch(`${KIDWIZ_AI_API_URL}/api/kidwiz/tutor`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      result = await response.json();
+
+      if (!response.ok) {
+        return {
+          ok: false,
+          result: {
+            promptStatus: result.promptStatus ?? "server_error",
+            childAnswer:
+              result.childAnswer ??
+              "KidWiz could not run the live tutor response yet.",
+            parentSummary:
+              result.parentSummary ??
+              result.error ??
+              "The local Learning Studio server returned an error.",
+            safetyDecision: result.safetyDecision ?? {
+              status: "not_checked",
+              source: "server",
+              reason: result.error ?? "Server error.",
+            },
+            suggestedNextAction:
+              result.suggestedNextAction ??
+              "Check the AI server terminal, then try again.",
+          },
+        };
+      }
+    } catch {
+      return {
+        ok: false,
+        result: {
+          promptStatus: "server_offline",
+          childAnswer:
+            "The live Learning Studio is not connected yet. Ask a parent to start the local AI server.",
+          parentSummary:
+            "The browser could not reach the KidWiz AI server at http://127.0.0.1:5291.",
+          safetyDecision: {
+            status: "not_checked",
+            source: "browser",
+            reason: "Local AI server is offline or unreachable.",
+          },
+          suggestedNextAction: "Run npm run ai:server in the KidWiz folder.",
+        },
+      };
+    }
+
+    const timestamp = Date.now();
+    const turn = {
+      id: `studio-turn-${timestamp}`,
+      mode,
+      prompt: trimmedPrompt,
+      promptStatus: result.promptStatus,
+      childAnswer: result.childAnswer,
+      parentSummary: result.parentSummary,
+      suggestedNextAction: result.suggestedNextAction,
+      safetyDecision: result.safetyDecision,
+      model: result.model,
+      lessonId: activeLesson.id,
+      lessonTitle: activeLesson.title,
+      trackTitle: activeTrack.title,
+      dateLabel: "Just now",
+    };
+    const notebookCard = result.notebookCard
+      ? {
+          id: `studio-note-${timestamp}`,
+          title: result.notebookCard.title ?? activeLesson.title,
+          body: result.notebookCard.body ?? result.childAnswer,
+          tags: result.notebookCard.tags ?? [activeTrack.title],
+          lessonTitle: activeLesson.title,
+          dateLabel: "Just now",
+        }
+      : null;
+    const questionBankItem = result.questionBankItem
+      ? {
+          id: `studio-question-${timestamp}`,
+          question:
+            result.questionBankItem.question ??
+            `What is one useful move from ${activeLesson.title}?`,
+          answer: result.questionBankItem.answer ?? result.childAnswer,
+          lessonTitle: activeLesson.title,
+          mode,
+          dateLabel: "Just now",
+        }
+      : null;
+    const safetyEvent =
+      result.safetyDecision?.status && result.safetyDecision.status !== "allowed"
+        ? {
+            id: `studio-safety-${timestamp}`,
+            status: result.safetyDecision.status,
+            source: result.safetyDecision.source,
+            reason: result.safetyDecision.reason,
+            prompt: trimmedPrompt,
+            lessonTitle: activeLesson.title,
+            dateLabel: "Just now",
+          }
+        : null;
+
+    patchLearningStudio(selectedChild.id, (current) => ({
+      ...current,
+      turns: [turn, ...current.turns].slice(0, 20),
+      notebookCards: notebookCard
+        ? [notebookCard, ...current.notebookCards].slice(0, 20)
+        : current.notebookCards,
+      questionBankItems: questionBankItem
+        ? [questionBankItem, ...current.questionBankItems].slice(0, 20)
+        : current.questionBankItems,
+      safetyEvents: safetyEvent
+        ? [safetyEvent, ...current.safetyEvents].slice(0, 20)
+        : current.safetyEvents,
+    }));
+
+    return {
+      ok: true,
+      result,
+      turn,
+      notebookCard,
+      questionBankItem,
+      safetyEvent,
+    };
   }
 
   async function handleMagicLinkSubmit(event) {
@@ -683,6 +974,7 @@ function App() {
       onboardingComplete: true,
       onboardingStep: 2,
       activeTab: "dashboard",
+      dashboardTourCompleted: false,
       playlistLessonIdsByChild: buildSuggestedPlaylists(
         current.selectedGoalIds,
         current.bodyBoundariesUnlocked,
@@ -761,6 +1053,75 @@ function App() {
         ...current,
         [activeLesson.id]: current[activeLesson.id] === choiceId ? null : choiceId,
       }),
+    );
+  }
+
+  function handleSelectLessonChallengeChoice(choiceId) {
+    patchChildCollection(
+      "lessonChallengeStateByChild",
+      selectedChild.id,
+      (current = {}) => {
+        const lessonState = current[activeLesson.id] ?? {
+          attempts: 0,
+          solved: false,
+        };
+        const nextSelectedOptionId =
+          lessonState.selectedOptionId === choiceId ? null : choiceId;
+
+        return {
+          ...current,
+          [activeLesson.id]: {
+            ...lessonState,
+            selectedOptionId: nextSelectedOptionId,
+            lastResult: nextSelectedOptionId ? null : lessonState.lastResult,
+          },
+        };
+      },
+    );
+  }
+
+  function handleCheckLessonChallenge(correctOptionId, maxAttempts = 3) {
+    const selectedOptionId = activeLessonChallengeState.selectedOptionId;
+
+    if (!selectedOptionId) {
+      return;
+    }
+
+    if (
+      activeLessonChallengeState.solved ||
+      activeLessonChallengeState.attempts >= maxAttempts
+    ) {
+      return;
+    }
+
+    patchChildCollection(
+      "lessonChallengeStateByChild",
+      selectedChild.id,
+      (current = {}) => {
+        const lessonState = current[activeLesson.id] ?? {
+          attempts: 0,
+          solved: false,
+          lastResult: null,
+          selectedOptionId: null,
+        };
+
+        if (lessonState.solved || lessonState.attempts >= maxAttempts) {
+          return current;
+        }
+
+        const isCorrect = selectedOptionId === correctOptionId;
+
+        return {
+          ...current,
+          [activeLesson.id]: {
+            ...lessonState,
+            selectedOptionId,
+            attempts: lessonState.attempts + 1,
+            solved: isCorrect,
+            lastResult: isCorrect ? "correct" : "wrong",
+          },
+        };
+      },
     );
   }
 
@@ -890,6 +1251,9 @@ function App() {
         lessonMilestoneIdsByChild: Object.fromEntries(
           childProfiles.map((child) => [child.id, {}]),
         ),
+        lessonChallengeStateByChild: Object.fromEntries(
+          childProfiles.map((child) => [child.id, {}]),
+        ),
         lessonPracticeChoiceIdsByChild: Object.fromEntries(
           childProfiles.map((child) => [child.id, {}]),
         ),
@@ -995,6 +1359,9 @@ function App() {
           childProfiles.map((child) => [child.id, []]),
         ),
         lessonMilestoneIdsByChild: Object.fromEntries(
+          childProfiles.map((child) => [child.id, {}]),
+        ),
+        lessonChallengeStateByChild: Object.fromEntries(
           childProfiles.map((child) => [child.id, {}]),
         ),
         lessonPracticeChoiceIdsByChild: Object.fromEntries(
@@ -1189,11 +1556,39 @@ function App() {
     }));
   }
 
+  function handleCompleteDashboardTour() {
+    updateAppState((current) => ({
+      ...current,
+      dashboardTourCompleted: true,
+    }));
+  }
+
+  function handleRestartDashboardTour() {
+    updateAppState((current) => ({
+      ...current,
+      activeTab: "dashboard",
+      dashboardTourCompleted: false,
+    }));
+    setFamilyToolsMessage("Dashboard tour restarted.");
+  }
+
   const canAdvanceOnboarding =
     appState.onboardingStep === 0 ? appState.selectedGoalIds.length >= 2 : true;
   const currentTab =
     tabItems.find((tab) => tab.id === appState.activeTab) ?? tabItems[0];
   const CurrentTabIcon = currentTab.icon;
+  const parentZoneTabs = ["dashboard", "coach", "family"];
+  const childZoneTabs = ["overview", "courses", "stories"];
+  const appZoneClass = parentZoneTabs.includes(appState.activeTab)
+    ? "is-parent-zone"
+    : childZoneTabs.includes(appState.activeTab)
+      ? "is-child-zone"
+      : "is-support-zone";
+  const appZoneLabel = parentZoneTabs.includes(appState.activeTab)
+    ? "Parent zone"
+    : childZoneTabs.includes(appState.activeTab)
+      ? "Child zone"
+      : "Support zone";
   const screenFocusContext = buildScreenFocusContext({
     activeTab: appState.activeTab,
     activeLesson,
@@ -1259,7 +1654,7 @@ function App() {
           />
         </Suspense>
       ) : (
-        <div className="app-shell">
+        <div className={`app-shell ${appZoneClass}`}>
           <header className="app-topbar">
             <div className="page-width app-topbar-inner">
               <div className="brand-lockup brand-lockup-dark">
@@ -1278,6 +1673,7 @@ function App() {
                   <CurrentTabIcon size={16} />
                   <span>{currentTab.label}</span>
                 </div>
+                <div className="zone-pill">{appZoneLabel}</div>
                 <button className="ghost-button ghost-button-dark" onClick={handleLogout}>
                   Back to site
                 </button>
@@ -1389,10 +1785,12 @@ function App() {
                 {appState.activeTab === "dashboard" ? (
                   <DashboardTab
                     appState={appState}
+                    dashboardTourActive={!appState.dashboardTourCompleted}
                     nextRitual={nextRitual}
                     onAdjustWeeklyTarget={handleAdjustWeeklyTarget}
                     onApplyPlanningNudge={handleApplyPlanningNudge}
                     onChangeFocusTrack={handleChangeFocusTrack}
+                    onCompleteDashboardTour={handleCompleteDashboardTour}
                     onDismissPlanningNudge={handleDismissPlanningNudge}
                     onOpenFamily={handleOpenFamily}
                     onOpenJournal={handleOpenJournal}
@@ -1410,6 +1808,7 @@ function App() {
 
                 {appState.activeTab === "overview" ? (
                   <OverviewTab
+                    selectedChildWorkspace={selectedChildWorkspace}
                     appState={appState}
                     childCompletedJourneyIds={childCompletedJourneyIds}
                     childCompletedLessonIds={childCompletedLessonIds}
@@ -1441,6 +1840,7 @@ function App() {
                     activeLessonAnswer={activeLessonAnswer}
                     activeLessonMilestoneIds={activeLessonMilestoneIds}
                     activeLessonPracticeChoiceId={activeLessonPracticeChoiceId}
+                    activeLessonChallengeState={activeLessonChallengeState}
                     activeTrack={activeTrack}
                     answeredCorrectly={answeredCorrectly}
                     answeredOption={answeredOption}
@@ -1453,6 +1853,7 @@ function App() {
                     onChangeCoachMode={setCoachResponseMode}
                     onOpenChildReflectionStarter={handleOpenChildReflectionStarter}
                     onOpenParentNoteStarter={handleOpenParentNoteStarter}
+                    onCheckLessonChallenge={handleCheckLessonChallenge}
                     onSelectLesson={(lessonId) =>
                       updateAppState((current) => ({
                         ...current,
@@ -1460,6 +1861,7 @@ function App() {
                       }))
                     }
                     onSelectPracticeChoice={handleSelectLessonPracticeChoice}
+                    onSelectLessonChallengeChoice={handleSelectLessonChallengeChoice}
                     onSelectTrack={handleSelectTrack}
                     onToggleJourney={handleToggleJourney}
                     onToggleComplete={handleToggleLessonComplete}
@@ -1495,11 +1897,14 @@ function App() {
 
                 {appState.activeTab === "coach" ? (
                   <CoachTab
+                    aiServerStatus={aiServerStatus}
                     activeLesson={activeLesson}
                     activeTrack={activeTrack}
                     coachCards={coachCards}
                     coachResponseMode={coachResponseMode}
+                    learningStudio={selectedLearningStudio}
                     onChangeCoachMode={setCoachResponseMode}
+                    onSendLearningStudioPrompt={handleSendLearningStudioPrompt}
                     selectedChild={selectedChild}
                     selectedCoachStyle={selectedCoachStyle}
                     selectedGoals={selectedGoals}
@@ -1563,8 +1968,10 @@ function App() {
                         ...current,
                         onboardingComplete: false,
                         onboardingStep: 0,
+                        dashboardTourCompleted: false,
                       }))
                     }
+                    onRestartDashboardTour={handleRestartDashboardTour}
                     onToggleBodyBoundaries={handleToggleBodyBoundaries}
                     onToggleGoal={handleToggleGoal}
                     onToggleJourney={handleToggleJourney}
@@ -1576,6 +1983,28 @@ function App() {
                     selectedRhythm={selectedRhythm}
                     visibleTracks={visibleTracks}
                     weeklyHistoryByChild={appState.weeklyHistoryByChild}
+                  />
+                ) : null}
+
+                {appState.activeTab === "help" ? (
+                  <HelpTab
+                    aiServerStatus={aiServerStatus}
+                    onOpenCoach={() => handleSelectTab("coach")}
+                    onOpenDashboard={() => handleSelectTab("dashboard")}
+                    onOpenFamily={handleOpenFamily}
+                    onRestartDashboardTour={handleRestartDashboardTour}
+                    onRestartOnboarding={() =>
+                      updateAppState((current) => ({
+                        ...current,
+                        activeTab: "dashboard",
+                        onboardingComplete: false,
+                        onboardingStep: 0,
+                        dashboardTourCompleted: false,
+                      }))
+                    }
+                    selectedChild={selectedChild}
+                    selectedGoals={selectedGoals}
+                    selectedRhythm={selectedRhythm}
                   />
                 ) : null}
               </Suspense>

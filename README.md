@@ -4,7 +4,7 @@ KidWiz is a modern children's education SaaS concept that combines traditional l
 
 - a polished public-facing website
 - a parent login entry with optional Supabase magic-link auth
-- a guided family onboarding flow for goals, rhythm, and coach style
+- a guided family onboarding flow with a parent launch checklist, first-week brief, goals, rhythm, and coach style
 - a fully navigable demo application for family learning
 - a Quest Hub with world-map navigation, weekly missions, a Kid Daily Quest Brief, and visible rewards
 - a parent weekly report layer with action plans, conversation prompts, and stateful trend history
@@ -12,9 +12,15 @@ KidWiz is a modern children's education SaaS concept that combines traditional l
 - lazy-loaded public, onboarding, and app-screen modules with in-product loading states so the local build stays fast as content grows
 - a mobile weekly-pulse strip that makes lesson, story, and reflection targets readable at a glance
 - a mobile-first in-app shell with learner switching and sticky section navigation instead of a collapsed desktop sidebar
-- a child-specific mobile resume strip and quick-action rail for opening the next lesson, story, reflection, or family prompt in one tap
-- a parent-only mobile control strip for protected settings, Family Hub access, and sensitive-track status
+- a tighter mobile resume strip with extra learner, quick-action, and parent controls behind a compact family-controls drawer
+- a compact parent-facing mobile shell that gets Dashboard, Coach, Family Hub, and Help to their core content faster
+- parent, child, and support visual zones so the app no longer feels like one repeated dark dashboard surface
+- a DeepTutor-inspired KidWiz Learning Studio inside Coach with live-AI modes, parent-visible safety review, local tutor history, notebook cards, and a question bank
 - a cross-screen app guide that explains the active section, its audience, and the best next move
+- a Parent Proof entry panel that gives first-time demo parents one child, one next lesson, and one safety note before deeper dashboards
+- a dashboard setup confirmation panel that shows the selected goals, rhythm, coach tone, and celebration lens are actively shaping the week
+- a restartable Dashboard tour that teaches setup proof, parent proof, and Family Hub controls
+- a Help tab and `/help` path for the parent workflow, section guide, Learning Studio status, and onboarding restart actions
 - a Parent Outcome Dashboard that translates weekly activity into learning readiness, life-skill practice, child momentum, and parent clarity
 - a parent outcome risk ribbon in dashboard view, so parents can quickly spot at-risk children and jump into the right next action in one tap
 - parent outcome filtering controls and one-tap child session starts so new parents can instantly focus on “All,” “Needs support,” or “Top momentum” and act, with clear guidance when a filter has no matches.
@@ -45,12 +51,14 @@ Useful local review shortcuts:
 - instant dashboard demo: `http://127.0.0.1:5290/?demo=instant&tab=dashboard`
 - guided courses demo: `http://127.0.0.1:5290/?demo=instant&tab=courses`
 - Family Hub demo: `http://127.0.0.1:5290/?demo=instant&tab=family`
+- Help: `http://127.0.0.1:5290/help`
 - guided onboarding demo: `http://127.0.0.1:5290/?demo=guided`
 - instant demo for a specific child: `http://127.0.0.1:5290/?demo=instant&tab=quest&child=kai`
 
 ## Scripts
 
 - `npm run dev` - local dev server on port `5290`
+- `npm run ai:server` - local AI server on port `5291` for the Learning Studio
 - `npm run build` - production build
 - `npm run lint` - ESLint
 - `npm run preview` - preview build on port `4290`
@@ -64,10 +72,31 @@ KidWiz supports two modes today:
 
 If Supabase is not configured yet, the product still opens cleanly in demo mode so design, flows, and content can be reviewed.
 
+## Learning Studio AI
+
+The Coach tab includes a live-AI KidWiz Learning Studio inspired by DeepTutor's unified tutor workspace, memory, notebook, and question-bank ideas. It does not install or vendor DeepTutor code.
+
+Run the app and AI server in two terminals:
+
+```bash
+npm run dev
+npm run ai:server
+```
+
+The browser calls `http://127.0.0.1:5291/api/kidwiz/tutor`. The OpenAI key stays server-side in `.env.local` as `OPENAI_API_KEY`; it should never be exposed through `VITE_` variables. If `OPENAI_API_KEY` is missing, the Learning Studio stays visible but reports that live AI is not configured.
+
+For local testing, KidWiz can temporarily use a shared OpenAI key copied from another local project into `.env.local`. Replace that shared key with a dedicated KidWiz OpenAI key before public or production use.
+
 ## Current Local Product Shape
 
 - CRO-focused public marketing site with sharper parent outcomes, trust positioning, and demo entry points
-- guided onboarding flow
+- parent-demo-first public hero with optional magic-link testing moved below the first proof section
+- public hero CTA order keeps `Open parent demo` as the first action before personalization
+- guided onboarding flow with a parent launch brief, setup checklist, first child next move, and restart guidance
+- post-launch setup confirmation in Dashboard so parents can see their setup choices are now active
+- Dashboard proof order now matches the tour: setup confirmation before parent proof
+- restartable Dashboard tour and Help tab so first-time parents have a short product guide after setup
+- app shell polish with zone-specific accents for parent controls, child learning, and help/reflection screens
 - in-app screen guidance across Dashboard, Quest Hub, Courses, Stories, Coach, Journal, and Family Hub so parents and children always know the best next move
 - interactive UI polish for core flows, including clear focus-visible outlines and explicit disabled-state handling to reduce confusion during first-run and conversion moments
 - parent dashboard with child-by-child weekly targets, outcome framing, weekly report summaries, archived trend comparisons, and recommendations
@@ -85,6 +114,7 @@ If Supabase is not configured yet, the product still opens cleanly in demo mode 
 - weekly playlists
 - branching story choices across confidence, money, relationships, and digital safety with skill debriefs after saved choices
 - Spark Coach demo layer with different coaching modes and a Tutor Safety Studio for bounded AI mock prompts, safety decisions, and parent summaries
+- KidWiz Learning Studio with live-AI modes for Learn with me, Quiz me, Explain another way, Show a visual idea, and Save to notebook, backed by a local Node API server, explicit live-AI setup status, and parent-visible safety summaries
 - child journal and parent notes
 - Journal Insight Coach that turns saved child reflections into mood patterns, likely needs, parent response ideas, and next practice
 - guided empty and success states in courses, stories, and journals so child-facing flows feel more complete
@@ -116,12 +146,13 @@ If Supabase is not configured yet, the product still opens cleanly in demo mode 
 - `src/lib/progression.js` - playlist, mission board, world map, badge, recommendation, child summary, and archive snapshot logic
 - `src/lib/lessonExperience.js` - course-only lesson experience builder, now loaded with the Courses screen chunk
 - `src/lib/supabaseClient.js` - optional Supabase auth wiring
+- `scripts/kidwiz-ai-server.mjs` - local live-AI endpoint for Learning Studio tutoring and moderation
 - `docs/PROJECT.md` - living product and architecture document
 
 ## Next Good Moves
 
 - connect Supabase tables for real parent accounts, child profiles, journals, progress, and weekly snapshots
-- add a server-side AI layer for bounded tutoring and summaries
+- connect the Learning Studio's local tutor history, notebook, question bank, and safety events to production persistence after the Supabase schema is approved
 - introduce billing and subscription controls
 - keep trimming the local bundle by pushing the remaining shell-only recommendation and archive helpers behind lazy screen boundaries or async state utilities
 - move more of the always-mounted mobile shell into focused components now that its state derives from shared progression helpers

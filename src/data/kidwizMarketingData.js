@@ -10,7 +10,7 @@ export const siteImages = {
 export const heroStats = [
   { label: "Life + school tracks", value: "8 guided arcs" },
   { label: "Parent trust layer", value: "privacy, consent, AI safety" },
-  { label: "Demo depth", value: "courses, quests, reports" },
+  { label: "Parent proof path", value: "courses, quests, reports" },
 ];
 
 export const parentOutcomeRows = [

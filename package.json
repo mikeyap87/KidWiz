@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 127.0.0.1 --port 5290 --strictPort",
+    "ai:server": "node scripts/kidwiz-ai-server.mjs",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview --host 127.0.0.1 --port 4290"

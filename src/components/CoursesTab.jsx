@@ -24,6 +24,7 @@ export function CoursesTab({
   activeLesson,
   activeLessonAnswer,
   activeLessonMilestoneIds,
+  activeLessonChallengeState,
   activeLessonPracticeChoiceId,
   activeTrack,
   answeredCorrectly,
@@ -35,10 +36,12 @@ export function CoursesTab({
   nextRitual,
   onAnswer,
   onChangeCoachMode,
+  onCheckLessonChallenge,
   onOpenChildReflectionStarter,
   onOpenParentNoteStarter,
   onSelectLesson,
   onSelectPracticeChoice,
+  onSelectLessonChallengeChoice,
   onSelectTrack,
   onToggleJourney,
   onToggleComplete,
@@ -78,18 +81,36 @@ export function CoursesTab({
   const lessonComplete = childCompletedLessonIds.includes(activeLesson.id);
   const familyChatDone = childCompletedJourneyIds.includes("family-chat");
   const lessonStages = activeLessonExperience.stages;
+  const lessonChallenge = activeLessonExperience.lessonChallenge ?? {
+    title: "Micro challenge",
+    prompt: "Complete this quick transfer challenge to practice the lesson in context.",
+    attemptPrompt: "Choose one option and check your answer.",
+    maxAttempts: 3,
+    correctOptionId: "",
+    successMessage: "Great, that choice is strong.",
+    options: [],
+  };
   const practicePanel = activeLessonExperience.practicePanel;
+  const lessonChallengeSelectedOption = lessonChallenge.options?.find(
+    (option) => option.id === activeLessonChallengeState.selectedOptionId,
+  );
+  const lessonChallengeSolved = activeLessonChallengeState.solved;
+  const lessonChallengeAttempts = activeLessonChallengeState.attempts;
+  const lessonChallengeLastResult = activeLessonChallengeState.lastResult;
+  const lessonChallengeMaxAttempts = lessonChallenge.maxAttempts ?? 3;
+  const lessonChallengeHasMoreAttempts = lessonChallengeAttempts < lessonChallengeMaxAttempts;
   const lessonStageCount = lessonStages.filter((stage) =>
     activeLessonMilestoneIds.includes(stage.id),
   ).length;
   const checkpointCount = answeredCorrectly ? 1 : 0;
-  const lessonMoveCount = lessonStages.length + 1;
-  const completedMoveCount = lessonStageCount + checkpointCount;
+  const challengeCount = lessonChallengeSolved ? 1 : 0;
+  const lessonMoveCount = lessonStages.length + 2;
+  const completedMoveCount = lessonStageCount + checkpointCount + challengeCount;
   const lessonProgressPercent = Math.round(
     (completedMoveCount / lessonMoveCount) * 100,
   );
   const lessonReadyToCelebrate =
-    lessonStageCount === lessonStages.length && answeredCorrectly;
+    lessonStageCount === lessonStages.length && answeredCorrectly && lessonChallengeSolved;
   const completionLabel = lessonComplete
     ? "Mark incomplete"
       : lessonReadyToCelebrate
@@ -113,6 +134,12 @@ export function CoursesTab({
             title: "Choose the practice move that feels strongest.",
             copy: practicePanel.unselectedNote,
           }
+        : !activeLessonChallengeState.selectedOptionId && !lessonChallengeSolved
+          ? {
+              eyebrow: "Micro challenge",
+              title: "Take one quick scenario challenge.",
+              copy: lessonChallenge.prompt,
+            }
         : !answeredOption
           ? {
               eyebrow: "Checkpoint open",
@@ -209,6 +236,26 @@ export function CoursesTab({
         <strong>{option.title}</strong>
         <span>{option.copy}</span>
         <em>{option.outcome}</em>
+      </button>
+    );
+  }
+
+  function renderChallengeOption(option) {
+    const selected = lessonChallengeSelectedOption?.id === option.id;
+    const disabled = lessonChallengeSolved;
+
+    return (
+      <button
+        key={option.id}
+        className={`lesson-challenge-option ${
+          selected ? "is-selected" : ""
+        } ${disabled ? "is-disabled" : ""}`}
+        disabled={disabled}
+        onClick={() => onSelectLessonChallengeChoice(option.id)}
+        type="button"
+      >
+        <p>{option.label}</p>
+        <strong>{option.copy}</strong>
       </button>
     );
   }
@@ -474,6 +521,57 @@ export function CoursesTab({
             </div>
           </div>
 
+          <div className="lesson-challenge-panel">
+            <div className="panel-head">
+              <Sparkles size={18} />
+              <h2>{lessonChallenge.title}</h2>
+            </div>
+            <p className="panel-copy">{lessonChallenge.prompt}</p>
+            <div className="lesson-challenge-options">
+              {lessonChallenge.options?.map((option) =>
+                renderChallengeOption(option),
+              )}
+            </div>
+            <p className="challenge-feedback">
+              {lessonChallengeSolved
+                ? lessonChallenge.successMessage
+                : lessonChallengeLastResult === "wrong"
+                  ? lessonChallengeSelectedOption?.explanation ??
+                    "That choice does not fit the rule yet. Try a different option."
+                  : lessonChallengeSelectedOption
+                  ? `${lessonChallengeSelectedOption.label} is selected. ${
+                      lessonChallenge.attemptPrompt
+                    }`
+                    : lessonChallenge.attemptPrompt}
+            </p>
+            <div className="action-row lesson-action-row">
+              <button
+                className="inline-action"
+                disabled={
+                  !activeLessonChallengeState.selectedOptionId ||
+                  lessonChallengeSolved ||
+                  !lessonChallengeHasMoreAttempts
+                }
+                onClick={() =>
+                  onCheckLessonChallenge(
+                    lessonChallenge.correctOptionId,
+                    lessonChallengeMaxAttempts,
+                  )
+                }
+                type="button"
+              >
+                {lessonChallengeSolved
+                  ? "Challenge complete"
+                  : lessonChallengeHasMoreAttempts
+                    ? "Check answer"
+                    : "Attempt limit reached"}
+              </button>
+              <span className="attempt-counter">
+                {lessonChallengeAttempts} / {lessonChallengeMaxAttempts} attempts used
+              </span>
+            </div>
+          </div>
+
           <div className="lesson-momentum">
             <div className="lesson-momentum-head">
               <div>
@@ -532,6 +630,27 @@ export function CoursesTab({
                   }`}
                 >
                   {answeredCorrectly ? "Cleared" : "Open"}
+                </span>
+              </div>
+
+              <div
+                className={`lesson-stage-row ${lessonChallengeSolved ? "is-complete" : ""}`}
+              >
+                <div>
+                  <p>Micro challenge</p>
+                  <strong>Choose one option to finish this challenge.</strong>
+                  <span>
+                    {lessonChallengeSolved
+                      ? lessonChallenge.successMessage
+                      : "Complete the micro challenge to show practical transfer."}
+                  </span>
+                </div>
+                <span
+                  className={`lesson-stage-status ${
+                    lessonChallengeSolved ? "is-complete" : ""
+                  }`}
+                >
+                  {lessonChallengeSolved ? "Cleared" : "Open"}
                 </span>
               </div>
             </div>

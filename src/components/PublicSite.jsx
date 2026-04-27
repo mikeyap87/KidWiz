@@ -38,11 +38,11 @@ export function PublicSite({
             </div>
           </div>
           <div className="topbar-actions">
-            <button className="ghost-button" onClick={() => onDemoStart("guided")}>
-              Personalize setup
-            </button>
             <button className="solid-button" onClick={() => onDemoStart("instant")}>
               Open parent demo
+            </button>
+            <button className="ghost-button" onClick={() => onDemoStart("guided")}>
+              Personalize setup
             </button>
           </div>
         </div>
@@ -60,33 +60,13 @@ export function PublicSite({
 
           <div className="hero-actions">
             <button className="solid-button" onClick={() => onDemoStart("instant")}>
-              Try the full family demo
+              Open parent demo
               <ArrowRight size={16} />
             </button>
             <button className="ghost-button" onClick={() => onDemoStart("guided")}>
-              Build my family setup
+              Personalize setup
             </button>
           </div>
-
-          <form className="hero-login" onSubmit={onMagicLinkSubmit}>
-            <label htmlFor="parent-email">Get a parent sign-in link</label>
-            <div className="hero-login-row">
-              <input
-                id="parent-email"
-                type="email"
-                placeholder="parent@example.com"
-                value={authEmail}
-                onChange={(event) => onAuthEmailChange(event.target.value)}
-              />
-              <button className="solid-button" type="submit" disabled={authBusy}>
-                {authBusy ? "Sending..." : "Send magic link"}
-              </button>
-            </div>
-            <p className="login-note">
-              {authMessage ||
-                "No setup required for the local demo. Supabase magic links are optional while we shape the product."}
-            </p>
-          </form>
 
           <div className="hero-stat-row">
             {heroStats.map((stat) => (
@@ -120,6 +100,36 @@ export function PublicSite({
             ))}
           </div>
         </div>
+
+        <form className="parent-signin-strip page-width" onSubmit={onMagicLinkSubmit}>
+          <div>
+            <p className="eyebrow eyebrow-dark">Optional parent sign-in</p>
+            <h3>Want to test the future login flow instead?</h3>
+            <span>
+              The fastest path is still the parent demo. Magic links are only
+              for local auth testing while KidWiz stays review-first.
+            </span>
+          </div>
+          <div className="hero-login-row">
+            <label className="sr-only" htmlFor="parent-email">
+              Parent email
+            </label>
+            <input
+              id="parent-email"
+              type="email"
+              placeholder="parent@example.com"
+              value={authEmail}
+              onChange={(event) => onAuthEmailChange(event.target.value)}
+            />
+            <button className="solid-button" type="submit" disabled={authBusy}>
+              {authBusy ? "Sending..." : "Send magic link"}
+            </button>
+          </div>
+          <p className="login-note">
+            {authMessage ||
+              "No setup required for the local demo. Supabase magic links are optional while we shape the product."}
+          </p>
+        </form>
       </section>
 
       <section className="feature-band">

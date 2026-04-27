@@ -882,7 +882,7 @@ export function buildLaunchReadinessConsole() {
       label: "Billing",
       status: "Not started",
       readiness: "Future",
-      copy: "Subscription plans, checkout, trials, invoices, and cancellation flows are intentionally outside this local prototype.",
+      copy: "Subscription plans, checkout, trials, invoices, and cancellation flows are intentionally outside this local review build.",
       tone: "neutral",
     },
     {

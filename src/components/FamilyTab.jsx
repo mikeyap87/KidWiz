@@ -53,6 +53,7 @@ export function FamilyTab({
   onResetDemo,
   onResetWeeklyHistory,
   onRestartOnboarding,
+  onRestartDashboardTour,
   onDismissPlanningNudge,
   onToggleJourney,
   onToggleBodyBoundaries,
@@ -356,7 +357,7 @@ export function FamilyTab({
           </div>
 
           <div className="launch-readiness-score">
-            <p>Local prototype</p>
+            <p>Local review</p>
             <strong>{launchReadiness.score}%</strong>
             <span>Honest launch posture before backend work begins.</span>
           </div>
@@ -655,6 +656,13 @@ export function FamilyTab({
             </button>
             <button className="inline-action" onClick={onRestartOnboarding} type="button">
               Restart onboarding
+            </button>
+            <button
+              className="inline-action"
+              onClick={onRestartDashboardTour}
+              type="button"
+            >
+              Restart dashboard tour
             </button>
             <button className="inline-action" onClick={onResetDemo} type="button">
               Reset local demo
