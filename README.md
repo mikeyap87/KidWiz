@@ -3,6 +3,7 @@
 KidWiz is a modern children's education SaaS concept that combines traditional learning with real-life growth skills. The current local build now includes:
 
 - a polished public-facing website
+- a bright KidWiz brand skin using the owner-provided logo, atom favicon, and softened Wiz Spark learning-guide visual from the approved design archive
 - a parent login entry with optional Supabase magic-link auth
 - a guided family onboarding flow with a parent launch checklist, first-week brief, goals, rhythm, and coach style
 - a fully navigable demo application for family learning
@@ -24,6 +25,7 @@ KidWiz is a modern children's education SaaS concept that combines traditional l
 - a Parent Outcome Dashboard that translates weekly activity into learning readiness, life-skill practice, child momentum, and parent clarity
 - a parent outcome risk ribbon in dashboard view, so parents can quickly spot at-risk children and jump into the right next action in one tap
 - parent outcome filtering controls and one-tap child session starts so new parents can instantly focus on “All,” “Needs support,” or “Top momentum” and act, with clear guidance when a filter has no matches.
+- a refreshed bright learning OS with white surfaces, lime primary actions, colorful subject accents, larger friendly controls, and calmer parent trust panels
 - expanded Brave Heart, Money Moves, and Home Team content depth
 - weekly playlists, badges, progress bars, coach prompts, parent controls, and Family Hub archive tools
 - branching story practice with Story Skill Debriefs, private journals with a Journal Insight Coach, and a parent family hub
@@ -89,7 +91,8 @@ For local testing, KidWiz can temporarily use a shared OpenAI key copied from an
 
 ## Current Local Product Shape
 
-- CRO-focused public marketing site with sharper parent outcomes, trust positioning, and demo entry points
+- bright KidWiz public marketing site with the original logo direction, robot tutor visual, playful science-learning identity, sharper parent outcomes, trust positioning, and demo entry points
+- bright app shell with white panels, lime primary controls, colorful subject accents, and calmer parent versus child visual zones
 - parent-demo-first public hero with optional magic-link testing moved below the first proof section
 - public hero CTA order keeps `Open parent demo` as the first action before personalization
 - guided onboarding flow with a parent launch brief, setup checklist, first child next move, and restart guidance
@@ -135,6 +138,7 @@ For local testing, KidWiz can temporarily use a shared OpenAI key copied from an
 
 ## Project Structure
 
+- `public/brand/` - selected owner-provided KidWiz logo and robot tutor assets used by the bright brand prototype
 - `src/App.jsx` - top-level state, mobile shell, cross-screen guidance, and app routing with lighter first-load derivation
 - `src/components/` - public site, onboarding, dashboard, and tab components
 - `src/components/MobileShell.jsx` - extracted mobile learner shell, section nav, quick actions, and parent control rail

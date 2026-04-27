@@ -23,17 +23,17 @@ export function PublicSite({
     <div className="site-shell">
       <section
         className="hero-band"
-        style={{
-          backgroundImage: `linear-gradient(125deg, rgba(9, 11, 17, 0.86), rgba(9, 11, 17, 0.34)), url(${siteImages.hero})`,
-        }}
       >
         <div className="topbar page-width">
           <div className="brand-lockup">
-            <div className="brand-badge">KW</div>
+            <img
+              className="brand-logo-image"
+              src="/brand/kidwiz-logo.svg"
+              alt="KidWiz"
+            />
             <div>
-              <p className="brand-name">KidWiz</p>
               <p className="brand-subtitle">
-                Learning, confidence, money sense, and family wisdom
+                Personalized AI learning companion for ages 5-12
               </p>
             </div>
           </div>
@@ -48,33 +48,69 @@ export function PublicSite({
         </div>
 
         <div className="hero-content page-width">
-          <p className="eyebrow">Modern learning for capable, confident kids</p>
-          <h1>
-            The education app parents wish existed after school.
-          </h1>
-          <p className="hero-copy">
-            KidWiz helps children practice confidence, money sense, focus,
-            friendship repair, digital safety, storytelling, and school skills
-            with parent-visible progress and safety controls.
-          </p>
+          <div className="hero-copy-column">
+            <p className="eyebrow">Igniting imagination, fostering genius</p>
+            <h1>
+              Unlock your child's full potential with a friendly AI learning
+              companion.
+            </h1>
+            <p className="hero-copy">
+              KidWiz blends personalized lessons, playful quizzes, parent
+              progress proof, and safe tutor-style coaching so children can build
+              school skills, life skills, confidence, and curiosity in one bright
+              place.
+            </p>
 
-          <div className="hero-actions">
-            <button className="solid-button" onClick={() => onDemoStart("instant")}>
-              Open parent demo
-              <ArrowRight size={16} />
-            </button>
-            <button className="ghost-button" onClick={() => onDemoStart("guided")}>
-              Personalize setup
-            </button>
+            <div className="hero-actions">
+              <button className="solid-button" onClick={() => onDemoStart("instant")}>
+                Open parent demo
+                <ArrowRight size={16} />
+              </button>
+              <button className="ghost-button" onClick={() => onDemoStart("guided")}>
+                Personalize setup
+              </button>
+            </div>
+
+            <div className="hero-stat-row">
+              {heroStats.map((stat) => (
+                <div key={stat.label} className="hero-stat">
+                  <span>{stat.label}</span>
+                  <strong>{stat.value}</strong>
+                </div>
+              ))}
+            </div>
           </div>
 
-          <div className="hero-stat-row">
-            {heroStats.map((stat) => (
-              <div key={stat.label} className="hero-stat">
-                <span>{stat.label}</span>
-                <strong>{stat.value}</strong>
+          <div className="kidwiz-hero-visual" aria-label="KidWiz tutor preview">
+            <div className="kidwiz-hero-orbit" />
+            <div className="kidwiz-companion-card">
+              <div className="spark-orbit-field" aria-hidden="true">
+                <img className="spark-mark" src="/favicon.svg" alt="" />
+                <img
+                  className="kidwiz-hero-bot"
+                  src="/brand/kidwiz-bot.png"
+                  alt=""
+                />
               </div>
-            ))}
+              <span>AI learning guide</span>
+              <strong>Meet Wiz Spark</strong>
+              <p>
+                A gentle guide that helps children ask better questions, try
+                new skills, and show parents what changed.
+              </p>
+            </div>
+            <div className="chat-bubble bot-bubble">
+              <strong>Hi there, Jace!</strong>
+              <span>Ready for a fun day of learning?</span>
+            </div>
+            <div className="chat-bubble kid-bubble">
+              <strong>Yes, I'm excited!</strong>
+              <span>Let's explore animals, money, and stories.</span>
+            </div>
+            <div className="subject-wheel-card">
+              <span>Today's mix</span>
+              <strong>Science · Money · Creativity</strong>
+            </div>
           </div>
         </div>
       </section>

@@ -4,7 +4,7 @@
 
 KidWiz is a premium family learning platform for children that blends academics, confidence, relationships, money sense, family communication, private reflection, and bounded AI guidance into one product.
 
-The current build is a much richer local product foundation that includes a public website, a parent login entry flow, a guided onboarding experience, and a deeper demo application shell that shows how the core product can work day to day.
+The current build is a much richer local product foundation that includes a public website, a parent login entry flow, a guided onboarding experience, a brighter KidWiz brand layer, and a deeper demo application shell that shows how the core product can work day to day.
 
 ## Who It Serves
 
@@ -30,6 +30,7 @@ KidWiz aims to close that gap by giving families one place to build:
 ## Core Features In This Build
 
 - CRO-focused public website with parent outcome messaging, demo CTAs, trust positioning, and clearer product/prototype proof
+- bright KidWiz visual identity using white learning surfaces, accessible lime primary actions, colorful subject accents, the owner-provided KidWiz logo, atom favicon, and a softened Wiz Spark learning-guide visual from the approved archive
 - parent-demo-first public hero that keeps the instant demo as the primary action and moves optional magic-link testing below the first proof section
 - parent email entry flow with optional Supabase magic-link auth
 - demo-mode fallback when auth is not configured
@@ -125,6 +126,7 @@ The value is:
 ### Frontend
 
 - `src/App.jsx` now acts mainly as the state container and app shell, and lazy-loads the public site, onboarding flow, and tab-level screens.
+- `public/brand/` stores the selected KidWiz logo and robot tutor files copied from the owner-provided design archive for this local prototype.
 - `src/App.jsx` now also renders a mobile-only learner rail and sticky section nav so app switching stays easy on phones and small tablets.
 - `src/App.jsx` now renders a shared screen-context strip across the core app tabs so each section has clear audience, purpose, and next-action guidance.
 - `src/App.jsx` now also surfaces child-specific mobile resume and quick-action controls, driven by the same recommendation and weekly-progress logic as the rest of the product.
@@ -220,6 +222,8 @@ The Family Hub now includes local controls to:
 ## Important Decisions
 
 - KidWiz lives in its own isolated folder: `KidWiz`.
+- The current visual direction is hybrid bright trust: old KidWiz warmth, logo, atom science mark, accessible lime controls, subject-color energy, and a softer Wiz Spark AI-guide personality combined with the newer parent-proof dashboard, Learning Studio, safety panels, guided onboarding, and local-first app depth.
+- Only selected brand assets were copied from the owner-provided archive. Old `.env` files, legacy backups, raw large archives, and unrelated asset packs should stay out of the app repo.
 - The first build is intentionally web-first.
 - The current product foundation is parent-led rather than child-signup-first.
 - The local product now includes an onboarding flow instead of skipping straight into the app, and that flow now gives parents a launch checklist, first-week brief, child-specific next move, safety promises, and restart guidance.

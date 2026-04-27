@@ -81,9 +81,12 @@ function SiteLoading() {
       <div className="page-width site-loading-shell">
         <div className="site-loading-card">
           <div className="brand-lockup">
-            <div className="brand-badge">KW</div>
+            <img
+              className="brand-logo-image"
+              src="/brand/kidwiz-logo.svg"
+              alt="KidWiz"
+            />
             <div>
-              <p className="site-loading-name">KidWiz</p>
               <p className="site-loading-copy">
                 Loading the family learning studio.
               </p>
@@ -1658,9 +1661,12 @@ function App() {
           <header className="app-topbar">
             <div className="page-width app-topbar-inner">
               <div className="brand-lockup brand-lockup-dark">
-                <div className="brand-badge">KW</div>
+                <img
+                  className="brand-logo-image"
+                  src="/brand/kidwiz-logo.svg"
+                  alt="KidWiz"
+                />
                 <div>
-                  <p className="brand-name">KidWiz</p>
                   <p className="brand-subtitle">
                     {appState.familyName} · {appState.session.email} ·{" "}
                     {appState.session.type === "supabase" ? "live auth" : "local demo"}
