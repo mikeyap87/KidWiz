@@ -38,7 +38,7 @@ KidWiz aims to close that gap by giving families one place to build:
 - guided family onboarding for goal selection, weekly rhythm, coach style, celebration style, a parent launch checklist, and first-week proof
 - post-launch dashboard confirmation that the selected goals, rhythm, coach tone, and celebration lens are active in the family plan
 - restartable Dashboard tour with skip, back, next, finish, and Family Hub restart controls
-- Help tab plus `/help` path with the fastest parent path, main section guide, Learning Studio status, and common fixes
+- Help tab plus `/help` path with the fastest parent path, main section guide, Learning Studio status, common fixes, and a production-readiness checklist for real-family launch
 - shared in-app screen guidance that names each core section's audience, purpose, and best next move
 - focused interaction polish across core screens so keyboard users and hesitant parent/child sessions get clearer affordances, including visible focus states and disabled-action feedback
 - parent dashboard with per-child weekly targets, outcome framing, focus tracks, progress, and recommended next lessons
@@ -97,9 +97,9 @@ KidWiz aims to close that gap by giving families one place to build:
 - family hub with trust center, unlock controls, goal editing, rhythm controls, archived history visibility, and local testing tools for saving or resetting weekly snapshots
 - Family Meeting Builder that turns child signals into a 10-minute agenda, parent script, ritual close, and completion action
 - Parent Safety & Trust Review that summarizes sensitive-track status, coach boundaries, journal privacy, and parent controls
-- Parent Consent & Privacy Center that previews exportable child data, sensitive-topic consent, AI tutoring consent needs, deletion scope, and retention decisions
+- Parent Consent & Privacy Center that previews exportable child data, sensitive-topic consent, AI tutoring consent needs, deletion scope, retention decisions, and pre-launch privacy decisions
 - Curriculum Depth Console that scores track coverage across lesson depth, quiz checkpoints, story support, age bands, and parent follow-through
-- Launch Readiness Console that clearly marks what is local-demo ready and what still needs production auth, database, AI safety, privacy, billing, QA, and analytics work
+- Launch Readiness Console and Help readiness layer that clearly mark what is local-demo ready and what still needs production auth, database, AI safety, privacy, billing, QA, and analytics work
 - Production Data Model Console that maps local product behavior to future SaaS records across accounts, children, learning progress, journals, AI safety, consent, and billing
 
 ## Business Value
@@ -143,6 +143,7 @@ The value is:
 - Selected-child workspace state and archive snapshots now derive from shared progression helpers so the shell, dashboard, and save-week flows stay aligned.
 - `src/data/kidwizMarketingData.js` now owns public-site and trust-copy content so those lazy surfaces no longer share the same all-purpose data module as the main app shell.
 - `src/data/kidwizDemoSeedData.js` now owns the seeded local demo state so bootstrap defaults are cleaner to evolve without bloating the shared data module.
+- `src/data/releaseReadinessData.js` now owns launch proof steps, production readiness milestones, and privacy decisions used across Help, Coach, and Family Hub.
 - `src/components/CoursesTab.jsx` now owns the lesson-experience builder import so course-only lesson logic loads with the course screen instead of the entry bundle.
 - `src/data/kidwizData.js` acts as the current content source for demo profiles, course tracks, lessons, quest worlds, stories, playlists, badges, rituals, and setup options.
 - `src/App.css` contains the full visual system and responsive layout.
@@ -161,6 +162,7 @@ The value is:
 - `VITE_KIDWIZ_AI_API_URL` only stores the local API base URL and must not contain secrets.
 - The server checks local child-safety rules first, then `omni-moderation-latest`, then calls the OpenAI Responses API with `OPENAI_MODEL` defaulting to `gpt-5.4-mini`.
 - The first release does not stream responses because partial streaming is harder to moderate in a child-facing flow.
+- The Learning Studio now shows production AI guardrails in the app review flow: live-AI configuration, server-side key handling, no-key fallback, dedicated KidWiz key replacement, and parent-review expectations.
 
 ### Local Product Logic
 
@@ -279,6 +281,8 @@ The Family Hub now includes local controls to:
 - Family Hub now includes a Family Meeting Builder so signals from journals, stories, and progress become a practical 10-minute home conversation.
 - Family Hub now includes a Parent Safety & Trust Review so parents can quickly see sensitive access, AI boundaries, journal privacy, and available controls.
 - Family Hub now includes a Parent Consent & Privacy Center so export, deletion, consent, and retention decisions are visible before backend work begins.
+- Family Hub now includes a clearer privacy decision checklist for consent records, export paths, deletion scope, and retention windows before public launch.
+- Help now includes a production-readiness layer so the next milestone is visible in the product: durable family data, AI safety evidence, privacy/consent policy, and repeatable QA.
 - Family Hub now includes a Curriculum Depth Console so curriculum expansion can be prioritized by coverage and gaps instead of adding content blindly.
 - Family Hub now frames readiness and data planning in parent-readable language through the Family Readiness Plan and Family Data Map, avoiding public-facing prototype or production caveats inside the product UI.
 - Coach now includes a Spark Tutor Safety Studio so future AI behavior can be reviewed locally before any real model or child data is connected.

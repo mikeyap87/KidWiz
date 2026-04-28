@@ -25,6 +25,7 @@ KidWiz is a modern children's education SaaS concept that combines traditional l
 - a dashboard setup confirmation panel that shows the selected goals, rhythm, coach tone, and celebration lens are actively shaping the week
 - a restartable Dashboard tour that teaches setup proof, parent proof, and Family Hub controls
 - a Help tab and `/help` path for the parent workflow, section guide, Learning Studio status, and onboarding restart actions
+- a production-readiness Help layer that shows what must be true before real families use KidWiz: durable family data, AI safety evidence, privacy/consent decisions, and repeatable QA
 - a Parent Outcome Dashboard that translates weekly activity into learning readiness, life-skill practice, child momentum, and parent clarity
 - a parent outcome risk ribbon in dashboard view, so parents can quickly spot at-risk children and jump into the right next action in one tap
 - parent outcome filtering controls and one-tap child session starts so new parents can instantly focus on “All,” “Needs support,” or “Top momentum” and act, with clear guidance when a filter has no matches.
@@ -135,9 +136,10 @@ For local testing, KidWiz can temporarily use a shared OpenAI key copied from an
 - parent controls for goals, rhythm, celebration style, track assignment, and sensitive-topic unlocks
 - Family Meeting Builder that turns child signals into a 10-minute guided conversation and ready-to-say script
 - Parent Safety & Trust Review that summarizes sensitive access, coach boundaries, journal privacy, and parent controls
-- Parent Consent & Privacy Center that previews exportable child data, consent status, deletion needs, and retention decisions
+- Parent Consent & Privacy Center that previews exportable child data, consent status, deletion needs, retention decisions, and the launch decisions parents will expect around consent records, exports, deletion, and data retention
 - Curriculum Depth Console that scores track coverage across lessons, quiz checks, story support, age bands, and parent cues
 - Launch Readiness Console that separates the polished local product from production needs like auth, database, AI safety, privacy, billing, QA, and analytics
+- Learning Studio production guardrails that make live-AI configuration, server-side key handling, no-key fallback, and parent-review expectations visible during local review
 - Production Data Model Console that maps local product features to future SaaS records for families, children, learning, journals, AI safety, consent, and billing
 - local save-week, archive-week, fresh-week, and reset testing tools in the Family Hub
 
@@ -151,6 +153,7 @@ For local testing, KidWiz can temporarily use a shared OpenAI key copied from an
 - `src/data/kidwizData.js` - core curriculum, worlds, rituals, badges, and child/profile data used by the app shell
 - `src/data/kidwizMarketingData.js` - public-site and trust-copy data for lazy marketing and setup surfaces
 - `src/data/kidwizDemoSeedData.js` - starter demo state and seeded history used to bootstrap local testing
+- `src/data/releaseReadinessData.js` - parent-launch proof steps, production readiness milestones, and privacy decisions used by Help, Coach, and Family Hub
 - `src/lib/demoState.js` - local demo state bootstrap and persistence helpers
 - `src/lib/progression.js` - playlist, mission board, world map, badge, recommendation, and track-progression logic
 - `src/lib/progression.js` - playlist, mission board, world map, badge, recommendation, child summary, and archive snapshot logic

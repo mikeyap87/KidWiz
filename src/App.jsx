@@ -17,6 +17,10 @@ import {
 } from "./data/kidwizData";
 import { STORAGE_KEY, createDefaultState, loadSavedState } from "./lib/demoState";
 import {
+  addLearningStudioSubmissionToState,
+  submitLearningStudioPrompt,
+} from "./lib/learningStudioClient";
+import {
   buildArchivedSnapshotsByChild,
   buildSelectedChildWorkspace,
   buildSuggestedPlaylists,
@@ -650,28 +654,12 @@ function App() {
   }
 
   async function handleSendLearningStudioPrompt({ mode, prompt }) {
-    const trimmedPrompt = prompt.trim();
-
-    if (!trimmedPrompt) {
-      return {
-        ok: false,
-        result: {
-          promptStatus: "empty",
-          childAnswer: "Type one question or learning request first.",
-          parentSummary: "No prompt was sent to the Learning Studio.",
-          safetyDecision: {
-            status: "not_checked",
-            source: "browser",
-            reason: "Empty prompt.",
-          },
-          suggestedNextAction: "Add a short lesson-specific prompt.",
-        },
-      };
-    }
-
-    const payload = {
+    const submissionContext = {
+      activeLesson,
+      activeTrack,
+      apiUrl: KIDWIZ_AI_API_URL,
       mode,
-      prompt: trimmedPrompt,
+      prompt,
       selectedChild: {
         id: selectedChild.id,
         name: selectedChild.name,
@@ -684,152 +672,20 @@ function App() {
         title: selectedCoachStyle.title,
         copy: selectedCoachStyle.copy,
       },
-      selectedGoals: selectedGoals.map((goal) => ({
-        id: goal.id,
-        title: goal.title,
-      })),
-      activeTrack: {
-        id: activeTrack.id,
-        title: activeTrack.title,
-        ageBand: activeTrack.ageBand,
-        sensitive: Boolean(activeTrack.sensitive),
-      },
-      activeLesson: {
-        id: activeLesson.id,
-        title: activeLesson.title,
-        summary: activeLesson.summary,
-        parentCue: activeLesson.parentCue,
-      },
+      selectedGoals,
     };
 
-    let result;
+    const submission = await submitLearningStudioPrompt(submissionContext);
 
-    try {
-      const response = await fetch(`${KIDWIZ_AI_API_URL}/api/kidwiz/tutor`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
-
-      result = await response.json();
-
-      if (!response.ok) {
-        return {
-          ok: false,
-          result: {
-            promptStatus: result.promptStatus ?? "server_error",
-            childAnswer:
-              result.childAnswer ??
-              "KidWiz could not run the live tutor response yet.",
-            parentSummary:
-              result.parentSummary ??
-              result.error ??
-              "The Learning Studio connection returned an error.",
-            safetyDecision: result.safetyDecision ?? {
-              status: "not_checked",
-              source: "server",
-              reason: result.error ?? "Server error.",
-            },
-            suggestedNextAction:
-              result.suggestedNextAction ??
-              "Check the Learning Studio connection, then try again.",
-          },
-        };
-      }
-    } catch {
-      return {
-        ok: false,
-        result: {
-          promptStatus: "server_offline",
-          childAnswer:
-            "The live Learning Studio is not connected yet. Ask a parent to open the Learning Studio connection.",
-          parentSummary:
-            "The KidWiz Learning Studio helper is not responding right now.",
-          safetyDecision: {
-            status: "not_checked",
-            source: "browser",
-            reason: "Learning Studio is offline or unreachable.",
-          },
-          suggestedNextAction: "Start the Learning Studio helper before live AI review.",
-        },
-      };
+    if (!submission.ok) {
+      return submission;
     }
 
-    const timestamp = Date.now();
-    const turn = {
-      id: `studio-turn-${timestamp}`,
-      mode,
-      prompt: trimmedPrompt,
-      promptStatus: result.promptStatus,
-      childAnswer: result.childAnswer,
-      parentSummary: result.parentSummary,
-      suggestedNextAction: result.suggestedNextAction,
-      safetyDecision: result.safetyDecision,
-      model: result.model,
-      lessonId: activeLesson.id,
-      lessonTitle: activeLesson.title,
-      trackTitle: activeTrack.title,
-      dateLabel: "Just now",
-    };
-    const notebookCard = result.notebookCard
-      ? {
-          id: `studio-note-${timestamp}`,
-          title: result.notebookCard.title ?? activeLesson.title,
-          body: result.notebookCard.body ?? result.childAnswer,
-          tags: result.notebookCard.tags ?? [activeTrack.title],
-          lessonTitle: activeLesson.title,
-          dateLabel: "Just now",
-        }
-      : null;
-    const questionBankItem = result.questionBankItem
-      ? {
-          id: `studio-question-${timestamp}`,
-          question:
-            result.questionBankItem.question ??
-            `What is one useful move from ${activeLesson.title}?`,
-          answer: result.questionBankItem.answer ?? result.childAnswer,
-          lessonTitle: activeLesson.title,
-          mode,
-          dateLabel: "Just now",
-        }
-      : null;
-    const safetyEvent =
-      result.safetyDecision?.status && result.safetyDecision.status !== "allowed"
-        ? {
-            id: `studio-safety-${timestamp}`,
-            status: result.safetyDecision.status,
-            source: result.safetyDecision.source,
-            reason: result.safetyDecision.reason,
-            prompt: trimmedPrompt,
-            lessonTitle: activeLesson.title,
-            dateLabel: "Just now",
-          }
-        : null;
+    patchLearningStudio(submissionContext.selectedChild.id, (current) =>
+      addLearningStudioSubmissionToState(current, submission),
+    );
 
-    patchLearningStudio(selectedChild.id, (current) => ({
-      ...current,
-      turns: [turn, ...current.turns].slice(0, 20),
-      notebookCards: notebookCard
-        ? [notebookCard, ...current.notebookCards].slice(0, 20)
-        : current.notebookCards,
-      questionBankItems: questionBankItem
-        ? [questionBankItem, ...current.questionBankItems].slice(0, 20)
-        : current.questionBankItems,
-      safetyEvents: safetyEvent
-        ? [safetyEvent, ...current.safetyEvents].slice(0, 20)
-        : current.safetyEvents,
-    }));
-
-    return {
-      ok: true,
-      result,
-      turn,
-      notebookCard,
-      questionBankItem,
-      safetyEvent,
-    };
+    return submission;
   }
 
   async function handleMagicLinkSubmit(event) {

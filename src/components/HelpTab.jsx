@@ -1,14 +1,20 @@
 import {
   ArrowRight,
   Bot,
+  CheckCircle2,
   ClipboardList,
   Compass,
   LayoutDashboard,
   RefreshCw,
+  Rocket,
   ShieldCheck,
   Target,
   Users,
 } from "lucide-react";
+import {
+  parentLaunchProofSteps,
+  productionReadinessMilestones,
+} from "../data/releaseReadinessData";
 
 export function HelpTab({
   aiServerStatus,
@@ -27,6 +33,10 @@ export function HelpTab({
   const aiStatusLabel = aiServerStatus.configured
     ? "Live AI ready"
     : "Live AI not configured";
+  const productionReadyCount = productionReadinessMilestones.filter(
+    (item) => item.tone === "good",
+  ).length;
+  const productionReadinessLabel = `${productionReadyCount}/${productionReadinessMilestones.length} launch layers ready`;
 
   return (
     <section className="workspace-band help-panel">
@@ -43,6 +53,11 @@ export function HelpTab({
           <span>Current family plan</span>
           <strong>{goalLabel}</strong>
           <p>{selectedRhythm.title}: {selectedRhythm.copy}</p>
+        </article>
+        <article className="help-status-card help-release-card">
+          <span>Production readiness</span>
+          <strong>{productionReadinessLabel}</strong>
+          <p>Strong local demo. Real families still need durable data, privacy policy, AI audit logs, and release QA.</p>
         </article>
       </div>
 
@@ -65,9 +80,34 @@ export function HelpTab({
           <strong>Open Family Hub</strong>
           <p>Adjust weekly targets, sensitive unlocks, family rhythm, and history.</p>
         </button>
+        <button className="help-action-card" onClick={onOpenCoach} type="button">
+          <Bot size={18} />
+          <span>AI safety</span>
+          <strong>Review Learning Studio</strong>
+          <p>Check live-AI status, no-key fallback, parent summaries, and blocked-prompt handling.</p>
+        </button>
       </div>
 
       <div className="help-content-grid">
+        <article className="surface-panel help-section-card help-release-section">
+          <div className="panel-head">
+            <Rocket size={18} />
+            <h2>Before real families</h2>
+          </div>
+          <div className="release-milestone-grid">
+            {productionReadinessMilestones.map((item) => (
+              <div
+                key={item.id}
+                className={`release-milestone-card is-${item.tone}`}
+              >
+                <span>{item.label}</span>
+                <strong>{item.status}</strong>
+                <p>{item.copy}</p>
+              </div>
+            ))}
+          </div>
+        </article>
+
         <article className="surface-panel help-section-card">
           <div className="panel-head">
             <ClipboardList size={18} />
@@ -137,22 +177,16 @@ export function HelpTab({
         <article className="surface-panel help-section-card">
           <div className="panel-head">
             <ShieldCheck size={18} />
-            <h2>Common fixes</h2>
+            <h2>Launch proof checklist</h2>
           </div>
-          <div className="help-feature-list">
-            <div>
-              <strong>Too much at once?</strong>
-              <span>Restart the dashboard tour and follow the three highlighted areas.</span>
-            </div>
-            <div>
-              <strong>Wrong family plan?</strong>
-              <span>Restart guided setup or change rhythm and goals in Family Hub.</span>
-            </div>
-            <div>
-              <strong>Need a clean review?</strong>
-              <span>Use Family Hub to reset the family workspace or generate a fresh week.</span>
-            </div>
-          </div>
+          <ol className="help-step-list launch-proof-list">
+            {parentLaunchProofSteps.map((step) => (
+              <li key={step}>
+                <CheckCircle2 size={16} />
+                <span>{step}</span>
+              </li>
+            ))}
+          </ol>
           <button className="inline-action" onClick={onOpenDashboard} type="button">
             Return to Dashboard
             <RefreshCw size={14} />

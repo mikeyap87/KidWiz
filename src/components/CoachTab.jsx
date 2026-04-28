@@ -6,6 +6,7 @@ import {
   HelpCircle,
   Lightbulb,
   MessageSquareText,
+  Server,
   Send,
   ShieldCheck,
   Sparkles,
@@ -131,6 +132,13 @@ export function CoachTab({
                 label: "Checking connection",
                 message: resolvedAiServerStatus.message,
               };
+  const aiLaunchNotes = [
+    resolvedAiServerStatus.configured
+      ? "Live AI is connected for local review. Swap to a dedicated KidWiz OpenAI key before public launch."
+      : "Live AI is not configured, so KidWiz should keep showing the no-key fallback instead of silently failing.",
+    "The browser only calls the local KidWiz API. The OpenAI key stays server-side.",
+    "Blocked or sensitive prompts should create parent-visible review events before any broader child use.",
+  ];
 
   function applyMode(mode) {
     setStudioMode(mode.id);
@@ -233,6 +241,18 @@ export function CoachTab({
             <span>{liveAiStatus.message}</span>
           </div>
         </div>
+
+        <aside className="ai-launch-guardrail">
+          <div className="panel-head">
+            <Server size={18} />
+            <h3>Production AI checks</h3>
+          </div>
+          <div>
+            {aiLaunchNotes.map((note) => (
+              <span key={note}>{note}</span>
+            ))}
+          </div>
+        </aside>
 
         <div className="learning-mode-grid">
           {learningStudioModes.map((mode) => {

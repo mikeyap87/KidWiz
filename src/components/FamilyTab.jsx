@@ -14,6 +14,7 @@ import {
   ShieldCheck,
   Users,
 } from "lucide-react";
+import { privacyDecisionChecklist } from "../data/releaseReadinessData";
 import {
   celebrationStyles,
   childProfiles,
@@ -278,6 +279,16 @@ export function FamilyTab({
           <p>Privacy actions</p>
           {parentPrivacyCenter.parentActions.map((action) => (
             <span key={action}>{action}</span>
+          ))}
+        </div>
+
+        <div className="privacy-decision-grid">
+          {privacyDecisionChecklist.map((item) => (
+            <article key={item.label} className="privacy-decision-card">
+              <p>{item.label}</p>
+              <strong>Decide before launch</strong>
+              <span>{item.copy}</span>
+            </article>
           ))}
         </div>
       </section>
