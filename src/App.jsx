@@ -19,7 +19,6 @@ import {
 import {
   buildSuggestedPlaylists,
   findTrackByLessonId,
-  getVisibleTracks,
 } from "./lib/progression";
 import { moodOptions, tabItems } from "./lib/uiConfig";
 import { getInitialBootstrap } from "./lib/appBootstrap";
@@ -40,6 +39,10 @@ import {
   buildArchivedSnapshotsMap,
   buildFreshWeekState,
 } from "./lib/familyWeekActions";
+import {
+  applyPlanningNudgeToState,
+  dismissPlanningNudgeState,
+} from "./lib/planningNudgeActions";
 import {
   isSupabaseConfigured,
   sendMagicLink,
@@ -872,75 +875,16 @@ function App() {
   }
 
   function handleDismissPlanningNudge(childId, nudgeId) {
-    patchPlanningNudgeState(childId, (current = {}) => ({
-      acceptedIds: current.acceptedIds ?? [],
-      dismissedIds: Array.from(
-        new Set([...(current.dismissedIds ?? []), nudgeId]),
-      ),
-    }));
+    patchPlanningNudgeState(childId, (current) =>
+      dismissPlanningNudgeState(current, nudgeId),
+    );
     setFamilyToolsMessage("Planning nudge dismissed for now.");
   }
 
   function handleApplyPlanningNudge(childId, planningNudge) {
-    updateAppState((current) => {
-      const currentTarget = current.weeklyTargetsByChild?.[childId] ?? {
-        lessons: 3,
-        stories: 2,
-        reflections: 2,
-        focusTrackId: getVisibleTracks(current.bodyBoundariesUnlocked)[0]?.id,
-      };
-      const nextTarget = planningNudge.actions.reduce((target, action) => {
-        if (action.type === "focus" && action.trackId) {
-          return {
-            ...target,
-            focusTrackId: action.trackId,
-          };
-        }
-
-        if (action.type === "target" && action.key && action.delta) {
-          return {
-            ...target,
-            [action.key]: clampTargetValue(
-              action.key,
-              (target[action.key] ?? 1) + action.delta,
-            ),
-          };
-        }
-
-        return target;
-      }, currentTarget);
-      const nextPlanningNudgeState = current.planningNudgeStateByChild?.[childId] ?? {
-        acceptedIds: [],
-        dismissedIds: [],
-      };
-
-      return {
-        ...current,
-        weeklyTargetsByChild: {
-          ...current.weeklyTargetsByChild,
-          [childId]: nextTarget,
-        },
-        playlistLessonIdsByChild: buildSuggestedPlaylists(
-          current.selectedGoalIds,
-          current.bodyBoundariesUnlocked,
-          {
-            ...current.weeklyTargetsByChild,
-            [childId]: nextTarget,
-          },
-        ),
-        planningNudgeStateByChild: {
-          ...current.planningNudgeStateByChild,
-          [childId]: {
-            acceptedIds: Array.from(
-              new Set([...(nextPlanningNudgeState.acceptedIds ?? []), planningNudge.id]),
-            ),
-            dismissedIds: (nextPlanningNudgeState.dismissedIds ?? []).filter(
-              (id) => id !== planningNudge.id,
-            ),
-          },
-        },
-      };
-    });
+    updateAppState((current) =>
+      applyPlanningNudgeToState(current, childId, planningNudge),
+    );
     setFamilyToolsMessage("Planning nudge applied to this week's setup.");
   }
 
