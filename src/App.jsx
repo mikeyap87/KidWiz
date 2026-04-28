@@ -66,7 +66,10 @@ function lazyNamed(importer, exportName) {
   );
 }
 
-const CoachTab = lazyNamed(() => import("./components/CoachTab"), "CoachTab");
+const CoachTab = lazyNamed(
+  () => import("./components/GameCoachTab"),
+  "CoachTab",
+);
 const CoursesTab = lazyNamed(
   () => import("./components/GameCoursesTab"),
   "CoursesTab",
@@ -75,10 +78,10 @@ const DashboardTab = lazyNamed(
   () => import("./components/GameDashboardTab"),
   "DashboardTab",
 );
-const FamilyTab = lazyNamed(() => import("./components/FamilyTab"), "FamilyTab");
-const HelpTab = lazyNamed(() => import("./components/HelpTab"), "HelpTab");
+const FamilyTab = lazyNamed(() => import("./components/GameFamilyTab"), "FamilyTab");
+const HelpTab = lazyNamed(() => import("./components/GameHelpTab"), "HelpTab");
 const JournalTab = lazyNamed(
-  () => import("./components/JournalTab"),
+  () => import("./components/GameJournalTab"),
   "JournalTab",
 );
 const OnboardingFlow = lazyNamed(
@@ -94,7 +97,7 @@ const PublicSite = lazyNamed(
   "PublicSite",
 );
 const StoriesTab = lazyNamed(
-  () => import("./components/StoriesTab"),
+  () => import("./components/GameStoriesTab"),
   "StoriesTab",
 );
 const KIDWIZ_AI_API_URL =
@@ -898,7 +901,16 @@ function App() {
     appState.onboardingStep === 0 ? appState.selectedGoalIds.length >= 2 : true;
   const currentTab =
     tabItems.find((tab) => tab.id === appState.activeTab) ?? tabItems[0];
-  const gameShellTabs = ["dashboard", "overview", "courses"];
+  const gameShellTabs = [
+    "dashboard",
+    "overview",
+    "courses",
+    "stories",
+    "coach",
+    "journal",
+    "family",
+    "help",
+  ];
   const isGameShell = gameShellTabs.includes(appState.activeTab);
   const parentZoneTabs = ["dashboard", "coach", "family"];
   const childZoneTabs = ["overview", "courses", "stories"];
@@ -1156,6 +1168,7 @@ function App() {
                         activeTab: "stories",
                       }))
                     }
+                    onSelectTab={handleSelectTab}
                     selectedChild={selectedChild}
                     storyEpisodes={storyEpisodes}
                     visibleTracks={visibleTracks}
@@ -1171,6 +1184,7 @@ function App() {
                     coachResponseMode={coachResponseMode}
                     learningStudio={selectedLearningStudio}
                     onChangeCoachMode={setCoachResponseMode}
+                    onSelectTab={handleSelectTab}
                     onSendLearningStudioPrompt={handleSendLearningStudioPrompt}
                     selectedChild={selectedChild}
                     selectedCoachStyle={selectedCoachStyle}
@@ -1191,6 +1205,7 @@ function App() {
                     onParentDraftChange={setParentJournalDraft}
                     onSaveChildJournal={handleSaveChildJournal}
                     onSaveParentJournal={handleSaveParentJournal}
+                    onSelectTab={handleSelectTab}
                     parentJournalDraft={parentJournalDraft}
                     parentJournalEntries={appState.parentJournalEntries}
                     selectedChild={selectedChild}
@@ -1239,6 +1254,7 @@ function App() {
                       }))
                     }
                     onRestartDashboardTour={handleRestartDashboardTour}
+                    onSelectTab={handleSelectTab}
                     onToggleBodyBoundaries={handleToggleBodyBoundaries}
                     onToggleGoal={handleToggleGoal}
                     onToggleJourney={handleToggleJourney}
@@ -1269,6 +1285,7 @@ function App() {
                         dashboardTourCompleted: false,
                       }))
                     }
+                    onSelectTab={handleSelectTab}
                     selectedChild={selectedChild}
                     selectedGoals={selectedGoals}
                     selectedRhythm={selectedRhythm}

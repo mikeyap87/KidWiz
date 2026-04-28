@@ -5,7 +5,7 @@ KidWiz is a modern children's education SaaS concept that combines traditional l
 - a polished public-facing website
 - a bright KidWiz brand skin using the owner-provided logo, atom favicon, and softened Wiz Spark learning-guide visual from the approved design archive
 - a full public-site and SaaS redesign pass with customer-ready website copy, a sticky outcomes/learning/trust nav, a stronger hero proof card, a grid-based Wiz Spark visual, and a more cohesive bright learning OS app shell
-- an experimental game-shell branch that turns Dashboard, Quest Hub, and Courses into fixed-screen KidWiz game rooms for laptop and iPad review
+- an experimental game-shell branch that turns Dashboard, Quest Hub, Courses, Stories, Coach, Journal, Family Hub, and Help into fixed-screen KidWiz game rooms for laptop and iPad review
 - a deeper section-by-section SaaS redesign so Dashboard, Quest Hub, Courses, Stories, Coach, Journal, Family Hub, Help, and guided onboarding all feel like finished KidWiz product surfaces
 - generated KidWiz learning-world art for the homepage, Quest Hub, Courses, Stories, Journal, and Learning Studio so the product feels more engaging for children without losing parent trust
 - a parent login entry with optional Supabase magic-link auth
@@ -54,13 +54,13 @@ KidWiz is a modern children's education SaaS concept that combines traditional l
 Useful local review shortcuts:
 
 - public site: `http://127.0.0.1:5290/`
-- instant Quest Hub demo: `http://127.0.0.1:5290/?demo=instant&tab=quest`
+- instant Quest Hub demo: `http://127.0.0.1:5290/?demo=instant&tab=overview`
 - instant dashboard demo: `http://127.0.0.1:5290/?demo=instant&tab=dashboard`
 - guided courses demo: `http://127.0.0.1:5290/?demo=instant&tab=courses`
 - Family Hub demo: `http://127.0.0.1:5290/?demo=instant&tab=family`
 - Help: `http://127.0.0.1:5290/help`
 - guided onboarding demo: `http://127.0.0.1:5290/?demo=guided`
-- instant demo for a specific child: `http://127.0.0.1:5290/?demo=instant&tab=quest&child=kai`
+- instant demo for a specific child: `http://127.0.0.1:5290/?demo=instant&tab=overview&child=kai`
 
 ## Scripts
 
@@ -110,7 +110,7 @@ For local testing, KidWiz can temporarily use a shared OpenAI key copied from an
 - in-app screen guidance across Dashboard, Quest Hub, Courses, Stories, Coach, Journal, and Family Hub so parents and children always know the best next move
 - interactive UI polish for core flows, including clear focus-visible outlines and explicit disabled-state handling to reduce confusion during first-run and conversion moments
 - parent dashboard with child-by-child weekly targets, outcome framing, weekly report summaries, archived trend comparisons, and recommendations
-- game-style Dashboard, Quest Hub, and Courses prototypes on this branch with no-scroll HUDs, world-map/lesson stages, console panels, and quick-action bars
+- game-style Dashboard, Quest Hub, Courses, Stories, Coach, Journal, Family Hub, and Help rooms on this branch with no-scroll HUDs, world-map/lesson/story stages, parent consoles, and quick-action bars
 - a Parent Outcome Dashboard that turns lessons, stories, reflections, goals, rhythm, and review-queue items into proof of what the week is building
 - a parent Daily Brief that turns the week into one clear first move, family context, and a ready-to-say parent script
 - a Parent Progress Narrative that turns metrics into a warm weekly story about growth, tender spots, and next steps
@@ -151,7 +151,7 @@ For local testing, KidWiz can temporarily use a shared OpenAI key copied from an
 - `public/assets/generated/` - generated KidWiz learning-world illustrations used in the homepage and SaaS section headers
 - `src/App.jsx` - top-level state, app routing, and screen wiring with more product logic delegated to focused helpers
 - `src/components/` - public site, onboarding, app navigation/loading chrome, dashboard, and tab components
-- `src/components/GameDashboardTab.jsx`, `src/components/GameOverviewTab.jsx`, and `src/components/GameCoursesTab.jsx` - experimental fixed-screen game rooms used on the `codex/kidwiz-game-shell` branch
+- `src/components/GameDashboardTab.jsx`, `src/components/GameOverviewTab.jsx`, `src/components/GameCoursesTab.jsx`, `src/components/GameStoriesTab.jsx`, `src/components/GameCoachTab.jsx`, `src/components/GameJournalTab.jsx`, `src/components/GameFamilyTab.jsx`, and `src/components/GameHelpTab.jsx` - fixed-screen game rooms used on the `codex/kidwiz-game-shell` branch
 - `src/components/MobileShell.jsx` - extracted mobile learner shell, section nav, quick actions, and parent control rail
 - `src/data/kidwizData.js` - core curriculum, worlds, rituals, badges, and child/profile data used by the app shell
 - `src/data/kidwizMarketingData.js` - public-site and trust-copy data for lazy marketing and setup surfaces
@@ -176,5 +176,5 @@ For local testing, KidWiz can temporarily use a shared OpenAI key copied from an
 - keep trimming the local bundle by pushing the remaining shell-only recommendation and archive helpers behind lazy screen boundaries or async state utilities
 - move more of the always-mounted mobile shell into focused components now that its state derives from shared progression helpers
 - keep sharpening the mobile shell so the first screen answers both “what should my child do next?” and “what should the parent adjust?”
-- continue converting Coach, Stories, Journal, and Family Hub into game-style rooms after the Dashboard, Quest Hub, and Courses pattern gets parent/child review
+- run one final parent/child review pass on the completed game-room shell, then tune spacing, copy, and mobile priorities from real use
 - deepen lesson authoring so each track gets richer interactive practice variations, stronger media moments, and more sharply authored age-banded lesson content
