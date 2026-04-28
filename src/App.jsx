@@ -30,6 +30,10 @@ import {
 import { moodOptions, tabItems } from "./lib/uiConfig";
 import { getInitialBootstrap } from "./lib/appBootstrap";
 import {
+  checkKidWizAiServer,
+  createInitialAiServerStatus,
+} from "./lib/aiServerStatus";
+import {
   buildScreenFocusContext,
   clampTargetValue,
   formatArchiveWeekLabel,
@@ -152,12 +156,9 @@ function App() {
   const [parentJournalDraft, setParentJournalDraft] = useState("");
   const [coachResponseMode, setCoachResponseMode] = useState("gentle");
   const [familyToolsMessage, setFamilyToolsMessage] = useState("");
-  const [aiServerStatus, setAiServerStatus] = useState({
-    state: "checking",
-    configured: false,
-    model: null,
-    message: "Checking the Learning Studio connection.",
-  });
+  const [aiServerStatus, setAiServerStatus] = useState(() =>
+    createInitialAiServerStatus(),
+  );
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -217,34 +218,11 @@ function App() {
   useEffect(() => {
     let cancelled = false;
 
-    async function checkAiServer() {
-      try {
-        const response = await fetch(`${KIDWIZ_AI_API_URL}/api/kidwiz/health`);
-        const data = await response.json();
-
-        if (cancelled) return;
-
-        setAiServerStatus({
-          state: response.ok ? "online" : "offline",
-          configured: Boolean(data.configured),
-          model: data.model ?? null,
-          message: data.configured
-            ? `Live AI is connected with ${data.model ?? "the configured model"}.`
-            : "Learning Studio is available, but live AI is not configured.",
-        });
-      } catch {
-        if (cancelled) return;
-
-        setAiServerStatus({
-          state: "offline",
-          configured: false,
-          model: null,
-          message: "Learning Studio is offline. The family workspace still works.",
-        });
+    checkKidWizAiServer(KIDWIZ_AI_API_URL).then((status) => {
+      if (!cancelled) {
+        setAiServerStatus(status);
       }
-    }
-
-    checkAiServer();
+    });
 
     return () => {
       cancelled = true;
