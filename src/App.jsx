@@ -17,7 +17,6 @@ import {
   submitLearningStudioPrompt,
 } from "./lib/learningStudioClient";
 import {
-  buildArchivedSnapshotsByChild,
   buildSuggestedPlaylists,
   findTrackByLessonId,
   getVisibleTracks,
@@ -34,8 +33,13 @@ import {
   clampTargetValue,
   formatArchiveWeekLabel,
   getLearningStudioState,
-  getNextFocusTrackId,
 } from "./lib/appWorkspaceHelpers";
+import {
+  archiveAndStartFreshWeekState,
+  archiveCurrentWeekState,
+  buildArchivedSnapshotsMap,
+  buildFreshWeekState,
+} from "./lib/familyWeekActions";
 import {
   isSupabaseConfigured,
   sendMagicLink,
@@ -773,173 +777,27 @@ function App() {
   }
 
   function handleGenerateFreshWeek() {
-    updateAppState((current) => {
-      const nextVisibleTracks = getVisibleTracks(current.bodyBoundariesUnlocked);
-      const nextWeeklyTargetsByChild = Object.fromEntries(
-        childProfiles.map((child) => {
-          const currentTarget = current.weeklyTargetsByChild?.[child.id] ?? {
-            lessons: 3,
-            stories: 2,
-            reflections: 2,
-            focusTrackId: nextVisibleTracks[0]?.id,
-          };
-          const assignedVisibleTrackIds = (
-            current.assignedTrackIdsByChild?.[child.id] ?? []
-          ).filter((trackId) =>
-            nextVisibleTracks.some((track) => track.id === trackId),
-          );
-          const focusPool = assignedVisibleTrackIds.length
-            ? assignedVisibleTrackIds
-            : nextVisibleTracks.map((track) => track.id);
-
-          return [
-            child.id,
-            {
-              ...currentTarget,
-              focusTrackId: getNextFocusTrackId(
-                focusPool,
-                currentTarget.focusTrackId,
-              ),
-            },
-          ];
-        }),
-      );
-
-      return {
-        ...current,
-        weeklyTargetsByChild: nextWeeklyTargetsByChild,
-        playlistLessonIdsByChild: buildSuggestedPlaylists(
-          current.selectedGoalIds,
-          current.bodyBoundariesUnlocked,
-          nextWeeklyTargetsByChild,
-        ),
-        completedJourneyIdsByChild: Object.fromEntries(
-          childProfiles.map((child) => [child.id, []]),
-        ),
-        lessonMilestoneIdsByChild: Object.fromEntries(
-          childProfiles.map((child) => [child.id, {}]),
-        ),
-        lessonChallengeStateByChild: Object.fromEntries(
-          childProfiles.map((child) => [child.id, {}]),
-        ),
-        lessonPracticeChoiceIdsByChild: Object.fromEntries(
-          childProfiles.map((child) => [child.id, {}]),
-        ),
-        lessonQuizAnswersByChild: Object.fromEntries(
-          childProfiles.map((child) => [child.id, {}]),
-        ),
-      };
-    });
+    updateAppState((current) => buildFreshWeekState(current));
     setFamilyToolsMessage(
       "Fresh week generated. Focus tracks rotated, playlists refreshed, and daily rhythm reset.",
     );
   }
 
-  function buildArchivedSnapshotsMap(weekLabel, sourceState = appState) {
-    const snapshots = buildArchivedSnapshotsByChild(sourceState);
-
-    return Object.fromEntries(
-      Object.entries(snapshots).map(([childId, snapshot]) => [
-        childId,
-        {
-          ...snapshot,
-          weekLabel,
-        },
-      ]),
-    );
-  }
-
-  function appendArchivedSnapshots(currentHistory, snapshotsByChild) {
-    return Object.fromEntries(
-      childProfiles.map((child) => [
-        child.id,
-        [
-          ...((currentHistory?.[child.id] ?? []).slice(-7)),
-          snapshotsByChild[child.id],
-        ],
-      ]),
-    );
-  }
-
   function handleArchiveCurrentWeek() {
     const weekLabel = formatArchiveWeekLabel();
-    const snapshotsByChild = buildArchivedSnapshotsMap(weekLabel);
+    const snapshotsByChild = buildArchivedSnapshotsMap(weekLabel, appState);
 
-    updateAppState((current) => ({
-      ...current,
-      weeklyHistoryByChild: appendArchivedSnapshots(
-        current.weeklyHistoryByChild,
-        snapshotsByChild,
-      ),
-    }));
+    updateAppState((current) => archiveCurrentWeekState(current, snapshotsByChild));
     setFamilyToolsMessage("Current week saved into trend history.");
   }
 
   function handleArchiveAndStartFreshWeek() {
     const weekLabel = formatArchiveWeekLabel();
-    const snapshotsByChild = buildArchivedSnapshotsMap(weekLabel);
+    const snapshotsByChild = buildArchivedSnapshotsMap(weekLabel, appState);
 
-    updateAppState((current) => {
-      const nextVisibleTracks = getVisibleTracks(current.bodyBoundariesUnlocked);
-      const nextWeeklyTargetsByChild = Object.fromEntries(
-        childProfiles.map((child) => {
-          const currentTarget = current.weeklyTargetsByChild?.[child.id] ?? {
-            lessons: 3,
-            stories: 2,
-            reflections: 2,
-            focusTrackId: nextVisibleTracks[0]?.id,
-          };
-          const assignedVisibleTrackIds = (
-            current.assignedTrackIdsByChild?.[child.id] ?? []
-          ).filter((trackId) =>
-            nextVisibleTracks.some((track) => track.id === trackId),
-          );
-          const focusPool = assignedVisibleTrackIds.length
-            ? assignedVisibleTrackIds
-            : nextVisibleTracks.map((track) => track.id);
-
-          return [
-            child.id,
-            {
-              ...currentTarget,
-              focusTrackId: getNextFocusTrackId(
-                focusPool,
-                currentTarget.focusTrackId,
-              ),
-            },
-          ];
-        }),
-      );
-
-      return {
-        ...current,
-        weeklyHistoryByChild: appendArchivedSnapshots(
-          current.weeklyHistoryByChild,
-          snapshotsByChild,
-        ),
-        weeklyTargetsByChild: nextWeeklyTargetsByChild,
-        playlistLessonIdsByChild: buildSuggestedPlaylists(
-          current.selectedGoalIds,
-          current.bodyBoundariesUnlocked,
-          nextWeeklyTargetsByChild,
-        ),
-        completedJourneyIdsByChild: Object.fromEntries(
-          childProfiles.map((child) => [child.id, []]),
-        ),
-        lessonMilestoneIdsByChild: Object.fromEntries(
-          childProfiles.map((child) => [child.id, {}]),
-        ),
-        lessonChallengeStateByChild: Object.fromEntries(
-          childProfiles.map((child) => [child.id, {}]),
-        ),
-        lessonPracticeChoiceIdsByChild: Object.fromEntries(
-          childProfiles.map((child) => [child.id, {}]),
-        ),
-        lessonQuizAnswersByChild: Object.fromEntries(
-          childProfiles.map((child) => [child.id, {}]),
-        ),
-      };
-    });
+    updateAppState((current) =>
+      archiveAndStartFreshWeekState(current, snapshotsByChild),
+    );
     setFamilyToolsMessage(
       "Week archived and a fresh week is ready with new focus tracks and reset rhythm.",
     );
