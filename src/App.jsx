@@ -72,7 +72,7 @@ const CoursesTab = lazyNamed(
   "CoursesTab",
 );
 const DashboardTab = lazyNamed(
-  () => import("./components/DashboardTab"),
+  () => import("./components/GameDashboardTab"),
   "DashboardTab",
 );
 const FamilyTab = lazyNamed(() => import("./components/FamilyTab"), "FamilyTab");
@@ -898,6 +898,7 @@ function App() {
     appState.onboardingStep === 0 ? appState.selectedGoalIds.length >= 2 : true;
   const currentTab =
     tabItems.find((tab) => tab.id === appState.activeTab) ?? tabItems[0];
+  const isGameDashboard = appState.activeTab === "dashboard";
   const parentZoneTabs = ["dashboard", "coach", "family"];
   const childZoneTabs = ["overview", "courses", "stories"];
   const appZoneClass = parentZoneTabs.includes(appState.activeTab)
@@ -975,68 +976,77 @@ function App() {
           />
         </Suspense>
       ) : (
-        <div className={`app-shell ${appZoneClass}`}>
-          <AppTopbar
-            appZoneLabel={appZoneLabel}
-            currentTab={currentTab}
-            familyName={appState.familyName}
-            onLogout={handleLogout}
-            sessionEmail={appState.session.email}
-          />
+        <div className={`app-shell ${appZoneClass} ${isGameDashboard ? "is-game-dashboard" : ""}`}>
+          {!isGameDashboard ? (
+            <AppTopbar
+              appZoneLabel={appZoneLabel}
+              currentTab={currentTab}
+              familyName={appState.familyName}
+              onLogout={handleLogout}
+              sessionEmail={appState.session.email}
+            />
+          ) : null}
 
-          <MobileShell
-            activeTab={appState.activeTab}
-            bodyBoundariesUnlocked={appState.bodyBoundariesUnlocked}
-            childProfiles={childProfiles}
-            mobileParentSnapshots={mobileParentSnapshots}
-            mobileQuickActions={mobileQuickActions}
-            onOpenFamily={handleOpenFamily}
-            onOpenLesson={handleOpenLesson}
-            onSelectChild={handleSelectChild}
-            onSelectTab={handleSelectTab}
-            onToggleBodyBoundaries={handleToggleBodyBoundaries}
-            recommendedLesson={recommendedLesson}
-            selectedChild={selectedChild}
-            selectedChildOverallTargetProgress={
-              selectedChildWorkspace.overallTargetProgress
-            }
-            selectedChildWorkspace={selectedChildWorkspace}
-            selectedCoachStyle={selectedCoachStyle}
-            selectedWeeklyTarget={selectedWeeklyTarget}
-          />
-
-          <div className="page-width app-layout">
-            <AppSidebar
+          {!isGameDashboard ? (
+            <MobileShell
               activeTab={appState.activeTab}
+              bodyBoundariesUnlocked={appState.bodyBoundariesUnlocked}
               childProfiles={childProfiles}
+              mobileParentSnapshots={mobileParentSnapshots}
+              mobileQuickActions={mobileQuickActions}
+              onOpenFamily={handleOpenFamily}
+              onOpenLesson={handleOpenLesson}
               onSelectChild={handleSelectChild}
               onSelectTab={handleSelectTab}
+              onToggleBodyBoundaries={handleToggleBodyBoundaries}
+              recommendedLesson={recommendedLesson}
               selectedChild={selectedChild}
+              selectedChildOverallTargetProgress={
+                selectedChildWorkspace.overallTargetProgress
+              }
+              selectedChildWorkspace={selectedChildWorkspace}
               selectedCoachStyle={selectedCoachStyle}
+              selectedWeeklyTarget={selectedWeeklyTarget}
             />
+          ) : null}
+
+          <div className="page-width app-layout">
+            {!isGameDashboard ? (
+              <AppSidebar
+                activeTab={appState.activeTab}
+                childProfiles={childProfiles}
+                onSelectChild={handleSelectChild}
+                onSelectTab={handleSelectTab}
+                selectedChild={selectedChild}
+                selectedCoachStyle={selectedCoachStyle}
+              />
+            ) : null}
 
             <main className="app-main">
-              <section
-                className="app-context-strip"
-                aria-label={`${screenFocusContext.audience} screen guide`}
-              >
-                <div className="app-context-copy">
-                  <span>{screenFocusContext.audience}</span>
-                  <h1>{screenFocusContext.title}</h1>
-                  <p>{screenFocusContext.copy}</p>
-                </div>
-                <div className="app-context-next">
-                  <span>Best next move</span>
-                  <strong>{screenFocusContext.nextMove}</strong>
-                  <em>{screenFocusContext.metric}</em>
-                </div>
-              </section>
+              {!isGameDashboard ? (
+                <section
+                  className="app-context-strip"
+                  aria-label={`${screenFocusContext.audience} screen guide`}
+                >
+                  <div className="app-context-copy">
+                    <span>{screenFocusContext.audience}</span>
+                    <h1>{screenFocusContext.title}</h1>
+                    <p>{screenFocusContext.copy}</p>
+                  </div>
+                  <div className="app-context-next">
+                    <span>Best next move</span>
+                    <strong>{screenFocusContext.nextMove}</strong>
+                    <em>{screenFocusContext.metric}</em>
+                  </div>
+                </section>
+              ) : null}
 
               <Suspense
                 fallback={<WorkspaceLoading activeTab={appState.activeTab} />}
               >
                 {appState.activeTab === "dashboard" ? (
                   <DashboardTab
+                    aiServerStatus={aiServerStatus}
                     appState={appState}
                     dashboardTourActive={!appState.dashboardTourCompleted}
                     nextRitual={nextRitual}
@@ -1050,6 +1060,7 @@ function App() {
                     onOpenLesson={handleOpenLessonForChild}
                     onOpenStory={handleOpenStory}
                     onSelectChild={handleSelectChild}
+                    onSelectTab={handleSelectTab}
                     selectedCelebrationStyle={selectedCelebrationStyle}
                     selectedCoachStyle={selectedCoachStyle}
                     selectedGoals={selectedGoals}

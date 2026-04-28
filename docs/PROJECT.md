@@ -32,6 +32,7 @@ KidWiz aims to close that gap by giving families one place to build:
 - CRO-focused public website with parent outcome messaging, demo CTAs, trust positioning, and clearer product/prototype proof
 - bright KidWiz visual identity using white learning surfaces, accessible lime primary actions, colorful subject accents, the owner-provided KidWiz logo, atom favicon, and a softened Wiz Spark learning-guide visual from the approved archive
 - full public-site and SaaS redesign pass that makes KidWiz feel more like a polished family learning OS: customer-ready public copy, outcomes/learning/trust navigation, a proof-led hero, grid-based Wiz Spark companion visual, sticky app topbar, white sidebar, colorful section rails, and larger accessible controls
+- experimental game-shell Dashboard branch that replaces the long instant-demo dashboard with a fixed-screen mission deck for laptop and iPad review
 - parent-demo-first public hero that keeps the instant demo as the primary action and moves optional magic-link testing below the first proof section
 - parent email entry flow with optional Supabase magic-link auth
 - demo-mode fallback when auth is not configured
@@ -42,6 +43,7 @@ KidWiz aims to close that gap by giving families one place to build:
 - shared in-app screen guidance that names each core section's audience, purpose, and best next move
 - focused interaction polish across core screens so keyboard users and hesitant parent/child sessions get clearer affordances, including visible focus states and disabled-action feedback
 - parent dashboard with per-child weekly targets, outcome framing, focus tracks, progress, and recommended next lessons
+- game-style Dashboard prototype with a no-scroll HUD, quest-map stage, selected-child mission, parent signal console, and quick-action bar
 - Parent Outcome Dashboard that translates learning readiness, life-skill practice, child momentum, parent clarity, and child-specific next proof points into parent-readable value, with resilient filter behavior and recovery prompts when a focus filter is empty.
 - Parent Outcome Dashboard now highlights priority support children and gives direct one-tap continuation actions for the best next lesson or child workspace.
 - Parent Outcome Dashboard now includes outcome filters (“All,” “Needs support,” “Top momentum”) and session-start quick actions for low-friction onboarding of new parents.
@@ -140,6 +142,7 @@ The value is:
 - `src/App.jsx` now also includes a parent-only mobile control strip that routes settings work into Family Hub and keeps the sensitive-track toggle in a clearly protected area.
 - `src/components/` contains the public site, onboarding flow, dashboard, and tab-level UI modules.
 - `src/components/MobileShell.jsx` owns the mobile learner summary, weekly pulse, quick actions, and parent control rail.
+- `src/components/GameDashboardTab.jsx` owns the experimental fixed-screen Dashboard game shell used on the `codex/kidwiz-game-shell` branch.
 - Dashboard, quest-hub, onboarding-preview, family assignment, and course track-progress derivation now run inside their lazy screen modules instead of being precomputed by the app shell on every load.
 - Selected-child workspace state and archive snapshots now derive from shared progression helpers so the shell, dashboard, and save-week flows stay aligned.
 - `src/data/kidwizMarketingData.js` now owns public-site and trust-copy content so those lazy surfaces no longer share the same all-purpose data module as the main app shell.
@@ -242,6 +245,7 @@ The Family Hub now includes local controls to:
 - The local product now includes an onboarding flow instead of skipping straight into the app, and that flow now gives parents a launch checklist, first-week brief, child-specific next move, safety promises, and restart guidance.
 - The parent dashboard now confirms the family setup choices after launch so parents can see that goals, rhythm, coach tone, and celebration lens are actively shaping the week.
 - The parent dashboard now includes a restartable first-run tour, and Family Hub plus Help can restart it after dismissal.
+- The game-shell branch intentionally hides the regular dashboard chrome on the instant Dashboard route so the first experience can behave more like a KidWiz mission board than a scrollable website.
 - The app now includes a user-facing Help surface at `/help` so parent onboarding guidance lives in the product, not only in developer docs.
 - The local product now includes a quest-style child home experience instead of a plain dashboard-style landing screen.
 - The parent dashboard now includes outcome framing, a weekly report, and historical trend comparison rather than only raw metrics and controls, plus explicit priority-risk cards for quick parent intervention.

@@ -5,6 +5,7 @@ KidWiz is a modern children's education SaaS concept that combines traditional l
 - a polished public-facing website
 - a bright KidWiz brand skin using the owner-provided logo, atom favicon, and softened Wiz Spark learning-guide visual from the approved design archive
 - a full public-site and SaaS redesign pass with customer-ready website copy, a sticky outcomes/learning/trust nav, a stronger hero proof card, a grid-based Wiz Spark visual, and a more cohesive bright learning OS app shell
+- an experimental game-shell dashboard branch that turns the instant demo entry into a fixed-screen KidWiz mission deck for laptop and iPad review
 - a deeper section-by-section SaaS redesign so Dashboard, Quest Hub, Courses, Stories, Coach, Journal, Family Hub, Help, and guided onboarding all feel like finished KidWiz product surfaces
 - generated KidWiz learning-world art for the homepage, Quest Hub, Courses, Stories, Journal, and Learning Studio so the product feels more engaging for children without losing parent trust
 - a parent login entry with optional Supabase magic-link auth
@@ -109,6 +110,7 @@ For local testing, KidWiz can temporarily use a shared OpenAI key copied from an
 - in-app screen guidance across Dashboard, Quest Hub, Courses, Stories, Coach, Journal, and Family Hub so parents and children always know the best next move
 - interactive UI polish for core flows, including clear focus-visible outlines and explicit disabled-state handling to reduce confusion during first-run and conversion moments
 - parent dashboard with child-by-child weekly targets, outcome framing, weekly report summaries, archived trend comparisons, and recommendations
+- game-style Dashboard prototype on this branch with a no-scroll HUD, quest map stage, today mission, parent signal console, and quick-action bar
 - a Parent Outcome Dashboard that turns lessons, stories, reflections, goals, rhythm, and review-queue items into proof of what the week is building
 - a parent Daily Brief that turns the week into one clear first move, family context, and a ready-to-say parent script
 - a Parent Progress Narrative that turns metrics into a warm weekly story about growth, tender spots, and next steps
@@ -173,4 +175,5 @@ For local testing, KidWiz can temporarily use a shared OpenAI key copied from an
 - keep trimming the local bundle by pushing the remaining shell-only recommendation and archive helpers behind lazy screen boundaries or async state utilities
 - move more of the always-mounted mobile shell into focused components now that its state derives from shared progression helpers
 - keep sharpening the mobile shell so the first screen answers both “what should my child do next?” and “what should the parent adjust?”
+- validate the game-shell Dashboard with real parent and child review before converting the other sections into game-style rooms
 - deepen lesson authoring so each track gets richer interactive practice variations, stronger media moments, and more sharply authored age-banded lesson content
