@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Archive,
   Bot,
@@ -38,17 +39,31 @@ const gameNavItems = [
   { id: "family", label: "Parent", icon: Users },
 ];
 
+function compactControlLabel(label) {
+  return label
+    .replace("Reading and writing", "Reading")
+    .replace("Focus and habits", "Focus")
+    .replace("Digital safety", "Digital")
+    .replace("Weekday burst", "Weekday")
+    .replace("Weekend reset", "Weekend")
+    .replace("Balanced coach", "Balanced")
+    .replace("Gentle guide", "Gentle")
+    .replace("Stretch mode", "Stretch")
+    .replace("Celebrate ", "");
+}
+
 function ChoiceDock({ items, selectedId, onSelect, limit = 4 }) {
   return (
     <div className="game-choice-dock">
       {items.slice(0, limit).map((item) => (
         <button
           key={item.id}
+          aria-label={`Choose ${item.label ?? item.title}`}
           className={selectedId === item.id ? "is-selected" : ""}
           onClick={() => onSelect(item.id)}
           type="button"
         >
-          {item.label ?? item.title}
+          {compactControlLabel(item.label ?? item.title)}
         </button>
       ))}
     </div>
@@ -64,6 +79,7 @@ export function FamilyTab({
   onChangeCelebrationStyle,
   onChangeCoachStyle,
   onChangeRhythm,
+  onExitDemo,
   onGenerateFreshWeek,
   onResetDemo,
   onResetWeeklyHistory,
@@ -82,6 +98,7 @@ export function FamilyTab({
   visibleTracks,
   weeklyHistoryByChild,
 }) {
+  const [showMoreControls, setShowMoreControls] = useState(false);
   const selectedChildSummary = buildChildSummary({
     bodyBoundariesUnlocked: appState.bodyBoundariesUnlocked,
     selectedGoalIds: appState.selectedGoalIds,
@@ -141,6 +158,17 @@ export function FamilyTab({
     visibleTracks,
   });
 
+  function runWithConfirmation(message, action) {
+    if (!action) {
+      return;
+    }
+
+    if (typeof window === "undefined" || window.confirm(message)) {
+      action();
+      setShowMoreControls(false);
+    }
+  }
+
   return (
     <section className="kidwiz-game-shell game-family-room" aria-label="KidWiz parent control room">
       <header className="game-hud">
@@ -194,13 +222,22 @@ export function FamilyTab({
               <h2>{familyMeeting.title}</h2>
               <span>{familyMeeting.copy}</span>
             </div>
-            <button
-              className={`solid-button game-save-button ${familyChatDone ? "is-selected" : ""}`}
-              onClick={() => onToggleJourney("family-chat")}
-              type="button"
-            >
-              {familyChatDone ? "Meeting logged" : "Mark meeting done"}
-            </button>
+            <div className="game-family-mission-actions">
+              <button
+                className={`solid-button game-save-button ${familyChatDone ? "is-selected" : ""}`}
+                onClick={() => onToggleJourney("family-chat")}
+                type="button"
+              >
+                {familyChatDone ? "Meeting logged" : "Mark meeting done"}
+              </button>
+              <button
+                className="ghost-button ghost-button-dark"
+                onClick={() => setShowMoreControls(true)}
+                type="button"
+              >
+                More controls
+              </button>
+            </div>
           </section>
 
           <section className="game-family-control-grid" aria-label="Control panels">
@@ -216,11 +253,12 @@ export function FamilyTab({
                 {familyGoals.slice(0, 4).map((goal) => (
                   <button
                     key={goal.id}
+                    aria-label={`Toggle family goal: ${goal.title}`}
                     className={appState.selectedGoalIds.includes(goal.id) ? "is-selected" : ""}
                     onClick={() => onToggleGoal(goal.id)}
                     type="button"
                   >
-                    {goal.title}
+                    {compactControlLabel(goal.title)}
                   </button>
                 ))}
               </div>
@@ -283,6 +321,7 @@ export function FamilyTab({
                 {visibleTracks.slice(0, 6).map((track) => (
                   <button
                     key={track.id}
+                    aria-label={`Toggle ${track.title} learning zone`}
                     className={assignedTrackIds.includes(track.id) ? "is-selected" : ""}
                     onClick={() => onToggleTrackAssignment(track.id)}
                     type="button"
@@ -309,10 +348,30 @@ export function FamilyTab({
         </main>
 
         <aside className="game-console" aria-label="Parent safety console">
-          <div className="game-console-tabs" role="tablist">
+          <div className="game-console-tabs game-console-actions" aria-label="Parent quick actions">
             <button className="is-active" type="button">Safety</button>
-            <button onClick={onGenerateFreshWeek} type="button">Plan</button>
-            <button onClick={onArchiveCurrentWeek} type="button">Save</button>
+            <button
+              onClick={() =>
+                runWithConfirmation(
+                  "Generate a fresh weekly plan for this demo?",
+                  onGenerateFreshWeek,
+                )
+              }
+              type="button"
+            >
+              New plan
+            </button>
+            <button
+              onClick={() =>
+                runWithConfirmation(
+                  "Save this week to the local demo archive?",
+                  onArchiveCurrentWeek,
+                )
+              }
+              type="button"
+            >
+              Save week
+            </button>
           </div>
 
           <div className="game-console-panel">
@@ -340,11 +399,27 @@ export function FamilyTab({
               </article>
             ) : null}
             <div className="game-family-toolbox">
-              <button onClick={onArchiveAndStartFreshWeek} type="button">
+              <button
+                onClick={() =>
+                  runWithConfirmation(
+                    "Archive the current week and start a fresh local demo week?",
+                    onArchiveAndStartFreshWeek,
+                  )
+                }
+                type="button"
+              >
                 <Archive size={14} />
                 Archive + refresh
               </button>
-              <button onClick={onResetWeeklyHistory} type="button">
+              <button
+                onClick={() =>
+                  runWithConfirmation(
+                    "Reset weekly history for this local demo?",
+                    onResetWeeklyHistory,
+                  )
+                }
+                type="button"
+              >
                 <RefreshCw size={14} />
                 Reset history
               </button>
@@ -354,7 +429,10 @@ export function FamilyTab({
               <button onClick={onRestartOnboarding} type="button">
                 Setup
               </button>
-              <button onClick={onResetDemo} type="button">
+              <button
+                onClick={onResetDemo}
+                type="button"
+              >
                 Reset demo
               </button>
             </div>
@@ -362,10 +440,129 @@ export function FamilyTab({
         </aside>
       </div>
 
+      {showMoreControls ? (
+        <div className="game-drawer-backdrop" role="presentation">
+          <section
+            aria-label="More parent controls"
+            className="game-drawer game-family-more-drawer"
+            role="dialog"
+          >
+            <div className="game-drawer-head">
+              <div>
+                <p className="eyebrow eyebrow-dark">More controls</p>
+                <h2>Parent-only tools for {selectedChild.name}</h2>
+              </div>
+              <button
+                className="ghost-button ghost-button-dark"
+                onClick={() => setShowMoreControls(false)}
+                type="button"
+              >
+                Close
+              </button>
+            </div>
+
+            <div className="game-drawer-grid">
+              <article>
+                <strong>Assigned learning zones</strong>
+                <span>Choose which zones appear in the child&apos;s learning path.</span>
+                <div className="game-choice-dock game-choice-dock-wide">
+                  {visibleTracks.slice(0, 6).map((track) => (
+                    <button
+                      key={track.id}
+                      aria-label={`Toggle ${track.title} learning zone`}
+                      className={assignedTrackIds.includes(track.id) ? "is-selected" : ""}
+                      onClick={() => onToggleTrackAssignment(track.id)}
+                      type="button"
+                    >
+                      {track.shortTitle ?? track.title}
+                    </button>
+                  ))}
+                </div>
+              </article>
+
+              <article>
+                <strong>Sensitive access</strong>
+                <span>
+                  {appState.bodyBoundariesUnlocked
+                    ? "Sensitive learning topics are currently parent-opened."
+                    : "Sensitive learning topics are locked behind parent review."}
+                </span>
+                <button className="inline-action" onClick={onToggleBodyBoundaries} type="button">
+                  {appState.bodyBoundariesUnlocked ? "Lock sensitive topics" : "Unlock with parent"}
+                </button>
+              </article>
+
+              <article>
+                <strong>Week tools</strong>
+                <span>Use these only when you want to refresh local demo progress.</span>
+                <div className="game-family-toolbox">
+                  <button
+                    onClick={() =>
+                      runWithConfirmation(
+                        "Archive the current week and start a fresh local demo week?",
+                        onArchiveAndStartFreshWeek,
+                      )
+                    }
+                    type="button"
+                  >
+                    <Archive size={14} />
+                    Archive + refresh
+                  </button>
+                  <button
+                    onClick={() =>
+                      runWithConfirmation(
+                        "Reset weekly history for this local demo?",
+                        onResetWeeklyHistory,
+                      )
+                    }
+                    type="button"
+                  >
+                    <RefreshCw size={14} />
+                    Reset history
+                  </button>
+                </div>
+              </article>
+
+              <article>
+                <strong>Demo recovery</strong>
+                <span>Restart guidance, reset demo data, or leave the app preview.</span>
+                <div className="game-family-toolbox">
+                  <button onClick={onRestartDashboardTour} type="button">
+                    Tour
+                  </button>
+                  <button onClick={onRestartOnboarding} type="button">
+                    Setup
+                  </button>
+                  <button
+                    onClick={onResetDemo}
+                    type="button"
+                  >
+                    Reset demo
+                  </button>
+                  {onExitDemo ? (
+                    <button onClick={onExitDemo} type="button">
+                      Public site
+                    </button>
+                  ) : null}
+                </div>
+              </article>
+            </div>
+          </section>
+        </div>
+      ) : null}
+
       <footer className="game-action-bar" aria-label="Parent control actions">
         <button onClick={() => onSelectTab("dashboard")} type="button">
           <Target size={16} />
           Today
+        </button>
+        <button onClick={() => setShowMoreControls(true)} type="button">
+          <ShieldCheck size={16} />
+          More controls
+        </button>
+        <button onClick={() => onSelectTab("help")} type="button">
+          <ShieldCheck size={16} />
+          Help
         </button>
         <button onClick={() => onSelectTab("journal")} type="button">
           <NotebookPen size={16} />
@@ -375,10 +572,12 @@ export function FamilyTab({
           <Bot size={16} />
           Tutor
         </button>
-        <button onClick={() => onSelectTab("help")} type="button">
-          <ShieldCheck size={16} />
-          Help
-        </button>
+        {onExitDemo ? (
+          <button onClick={onExitDemo} type="button">
+            <Archive size={16} />
+            Public site
+          </button>
+        ) : null}
       </footer>
     </section>
   );

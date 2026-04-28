@@ -36,7 +36,7 @@ KidWiz aims to close that gap by giving families one place to build:
 - parent-demo-first public hero that keeps the instant demo as the primary action and moves optional magic-link testing below the first proof section
 - parent email entry flow with optional Supabase magic-link auth
 - demo-mode fallback when auth is not configured
-- guided family onboarding for goal selection, weekly rhythm, coach style, celebration style, a parent launch checklist, and first-week proof
+- Setup Quest guided onboarding for goal selection, weekly rhythm, coach style, celebration style, a parent trust console, a clear "choose at least two goals" blocked state, and first-week proof
 - post-launch dashboard confirmation that the selected goals, rhythm, coach tone, and celebration lens are active in the family plan
 - restartable Dashboard tour with skip, back, next, finish, and Family Hub restart controls
 - Help tab plus `/help` path with the fastest parent path, main section guide, Learning Studio status, common fixes, and a production-readiness checklist for real-family launch
@@ -44,6 +44,7 @@ KidWiz aims to close that gap by giving families one place to build:
 - focused interaction polish across core screens so keyboard users and hesitant parent/child sessions get clearer affordances, including visible focus states and disabled-action feedback
 - parent dashboard with per-child weekly targets, outcome framing, focus tracks, progress, and recommended next lessons
 - game-style Dashboard, Quest Hub, Courses, Stories, Coach, Journal, Family Hub, and Help rooms with no-scroll HUDs, quest-map/lesson/story stages, mission consoles, parent controls, and quick-action bars
+- game-room QA polish now keeps guided setup, Journal, Parent, and Help closer to a laptop/iPad game flow: Setup Quest is one decision at a time, Journal has a child/parent note toggle on mobile, Parent has a More Controls drawer for protected tools, and Help/Parent both include a visible Public Site exit
 - Parent Outcome Dashboard that translates learning readiness, life-skill practice, child momentum, parent clarity, and child-specific next proof points into parent-readable value, with resilient filter behavior and recovery prompts when a focus filter is empty.
 - Parent Outcome Dashboard now highlights priority support children and gives direct one-tap continuation actions for the best next lesson or child workspace.
 - Parent Outcome Dashboard now includes outcome filters (“All,” “Needs support,” “Top momentum”) and session-start quick actions for low-friction onboarding of new parents.
@@ -95,8 +96,8 @@ KidWiz aims to close that gap by giving families one place to build:
 - badge system based on local progress state
 - Spark Coach tab with bounded coaching modes and a Tutor Safety Studio for mock AI prompts, guardrail decisions, and parent-visible summaries
 - Learning Studio live-AI endpoint for lesson-aware tutoring, quiz generation, alternate explanations, visual idea prompts, notebook saves, explicit live-AI setup status, and safety-reviewed parent summaries
-- child journal and parent notes with a Journal Insight Coach for mood patterns, likely needs, parent response ideas, and next practice
-- family hub with trust center, unlock controls, goal editing, rhythm controls, archived history visibility, and local testing tools for saving or resetting weekly snapshots
+- child journal and parent notes with a mobile child/parent toggle plus a Journal Insight Coach for mood patterns, likely needs, parent response ideas, and next practice
+- family hub with trust center, a More Controls drawer, unlock controls, goal editing, rhythm controls, archived history visibility, and local testing tools for saving or resetting weekly snapshots
 - Family Meeting Builder that turns child signals into a 10-minute agenda, parent script, ritual close, and completion action
 - Parent Safety & Trust Review that summarizes sensitive-track status, coach boundaries, journal privacy, and parent controls
 - Parent Consent & Privacy Center that previews exportable child data, sensitive-topic consent, AI tutoring consent needs, deletion scope, retention decisions, and pre-launch privacy decisions

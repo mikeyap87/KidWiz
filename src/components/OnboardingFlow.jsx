@@ -99,265 +99,294 @@ export function OnboardingFlow({
       current: step === 2,
     },
   ];
+  const stepTitle =
+    step === 0
+      ? "Pick two family powers."
+      : step === 1
+        ? "Tune the weekly rhythm."
+        : "Launch the first quest.";
+  const stepCopy =
+    step === 0
+      ? "Choose at least two goals. KidWiz uses these to build the first child missions and parent proof."
+      : step === 1
+        ? "Set how often KidWiz should guide practice, how Spark should talk, and what gets celebrated."
+        : "Review the plan, then open the game room with Today already pointing to the next mission.";
+  const actionLabel =
+    step < 2 ? `Continue to ${step === 0 ? "rhythm" : "launch"}` : "Launch KidWiz";
 
   return (
-    <div className="onboarding-shell">
-      <div className="page-width onboarding-layout">
-        <section className="onboarding-main">
-          <div className="section-heading section-heading-tight">
-            <p className="eyebrow eyebrow-dark">KidWiz family setup</p>
-            <h1>Set up a first week parents can actually trust.</h1>
-            <p>
-              Choose the goals, rhythm, and coaching tone KidWiz should use
-              before your child starts their first learning session.
-            </p>
+    <div className="onboarding-shell setup-quest-shell">
+      <section className="kidwiz-game-shell setup-quest-room" aria-label="KidWiz setup quest">
+        <header className="game-hud setup-quest-hud">
+          <div className="game-brand">
+            <img alt="KidWiz" src="/brand/kidwiz-logo.svg" />
+            <div>
+              <p>Setup Quest</p>
+              <h1>{stepTitle}</h1>
+            </div>
           </div>
 
-          <div className="step-row" aria-label="Setup steps">
-            {[0, 1, 2].map((item) => (
-              <div
-                key={item}
-                className={`step-pill ${step === item ? "is-active" : ""}`}
-              >
-                <span>{item + 1}</span>
-                <strong>
-                  {item === 0 ? "Goals" : item === 1 ? "Rhythm" : "Preview"}
-                </strong>
-              </div>
-            ))}
+          <div className="game-hud-stats" aria-label="Setup progress">
+            <span className="game-stat">
+              <strong>{step + 1}/3</strong>
+              quest step
+            </span>
+            <span className="game-stat">
+              <strong>{selectedGoalIds.length}</strong>
+              goals
+            </span>
+            <span className="game-stat">
+              <strong>{selectedRhythm.title}</strong>
+              rhythm
+            </span>
           </div>
+        </header>
 
-          {step === 0 ? (
-            <div className="choice-grid">
-              {familyGoals.map((goal) => (
-                <button
-                  key={goal.id}
-                  className={`choice-tile ${
-                    selectedGoalIds.includes(goal.id) ? "is-selected" : ""
-                  }`}
-                  onClick={() => onToggleGoal(goal.id)}
-                  type="button"
+        <div className="setup-quest-board">
+          <main className="setup-quest-stage" aria-label="Setup decision">
+            <div className="setup-quest-intro">
+              <p>Parent launch path</p>
+              <h2>{stepTitle}</h2>
+              <span>{stepCopy}</span>
+            </div>
+
+            <div className="step-row setup-quest-steps" aria-label="Setup steps">
+              {[0, 1, 2].map((item) => (
+                <div
+                  key={item}
+                  className={`step-pill ${step === item ? "is-active" : ""}`}
                 >
-                  <div className="choice-tile-icon">
-                    <GoalGlyph goalId={goal.id} />
-                  </div>
-                  <h3>{goal.title}</h3>
-                  <p>{goal.copy}</p>
-                </button>
+                  <span>{item + 1}</span>
+                  <strong>
+                    {item === 0 ? "Goals" : item === 1 ? "Rhythm" : "Launch"}
+                  </strong>
+                </div>
               ))}
             </div>
-          ) : null}
 
-          {step === 1 ? (
-            <div className="onboarding-choice-columns">
-              <div>
-                <h2>Weekly rhythm</h2>
-                <div className="stack-list">
-                  {weeklyRhythms.map((rhythm) => (
-                    <button
-                      key={rhythm.id}
-                      className={`stack-row ${
-                        weeklyRhythmId === rhythm.id ? "is-selected" : ""
-                      }`}
-                      onClick={() => onSelectRhythm(rhythm.id)}
-                      type="button"
-                    >
-                      <strong>{rhythm.title}</strong>
-                      <span>{rhythm.copy}</span>
-                    </button>
+            {step === 0 ? (
+              <div className="setup-goal-grid">
+                {familyGoals.map((goal) => (
+                  <button
+                    key={goal.id}
+                    aria-pressed={selectedGoalIds.includes(goal.id)}
+                    className={`choice-tile setup-goal-tile ${
+                      selectedGoalIds.includes(goal.id) ? "is-selected" : ""
+                    }`}
+                    onClick={() => onToggleGoal(goal.id)}
+                    type="button"
+                  >
+                    <div className="choice-tile-icon">
+                      <GoalGlyph goalId={goal.id} />
+                    </div>
+                    <h3>{goal.title}</h3>
+                    <p>{goal.copy}</p>
+                  </button>
+                ))}
+              </div>
+            ) : null}
+
+            {step === 1 ? (
+              <div className="setup-choice-grid">
+                <section className="setup-choice-panel">
+                  <h3>Weekly rhythm</h3>
+                  <div className="stack-list">
+                    {weeklyRhythms.map((rhythm) => (
+                      <button
+                        key={rhythm.id}
+                        className={`stack-row ${
+                          weeklyRhythmId === rhythm.id ? "is-selected" : ""
+                        }`}
+                        onClick={() => onSelectRhythm(rhythm.id)}
+                        type="button"
+                      >
+                        <strong>{rhythm.title}</strong>
+                        <span>{rhythm.copy}</span>
+                      </button>
+                    ))}
+                  </div>
+                </section>
+
+                <section className="setup-choice-panel">
+                  <h3>Coach style</h3>
+                  <div className="stack-list">
+                    {coachStyles.map((style) => (
+                      <button
+                        key={style.id}
+                        className={`stack-row ${
+                          coachStyleId === style.id ? "is-selected" : ""
+                        }`}
+                        onClick={() => onSelectCoachStyle(style.id)}
+                        type="button"
+                      >
+                        <strong>{style.title}</strong>
+                        <span>{style.copy}</span>
+                      </button>
+                    ))}
+                  </div>
+                </section>
+
+                <section className="setup-choice-panel">
+                  <h3>Celebrate</h3>
+                  <div className="stack-list">
+                    {celebrationStyles.map((style) => (
+                      <button
+                        key={style.id}
+                        className={`stack-row ${
+                          celebrationStyleId === style.id ? "is-selected" : ""
+                        }`}
+                        onClick={() => onSelectCelebrationStyle(style.id)}
+                        type="button"
+                      >
+                        <strong>{style.title}</strong>
+                        <span>{style.copy}</span>
+                      </button>
+                    ))}
+                  </div>
+                </section>
+              </div>
+            ) : null}
+
+            {step === 2 ? (
+              <div className="setup-launch-grid">
+                <article className="launch-brief-panel setup-launch-brief">
+                  <div className="launch-brief-copy">
+                    <p className="eyebrow eyebrow-dark">Parent launch brief</p>
+                    <h2>Your first week is ready.</h2>
+                    <span>
+                      KidWiz will open with a clear child path, parent proof,
+                      and safety controls visible in the Parent room.
+                    </span>
+                  </div>
+
+                  <div className="launch-brief-grid">
+                    <div className="launch-brief-item">
+                      <span>Goals</span>
+                      <strong>{goalSummary}</strong>
+                    </div>
+                    <div className="launch-brief-item">
+                      <span>Rhythm</span>
+                      <strong>{selectedRhythm.title}</strong>
+                    </div>
+                    <div className="launch-brief-item">
+                      <span>Coach</span>
+                      <strong>{selectedCoachStyle.title}</strong>
+                    </div>
+                    <div className="launch-brief-item">
+                      <span>Celebrates</span>
+                      <strong>{selectedCelebrationStyle.title}</strong>
+                    </div>
+                  </div>
+
+                  {firstLesson && firstPreview ? (
+                    <div className="launch-brief-next">
+                      <div>
+                        <span>{firstPreview.child.name}&apos;s first move</span>
+                        <strong>{firstLesson.title}</strong>
+                      </div>
+                      <p>{firstLesson.summary}</p>
+                    </div>
+                  ) : null}
+                </article>
+
+                <div className="preview-grid setup-preview-grid">
+                  {previewPlaylists.slice(0, 2).map(({ child, lessons }) => (
+                    <article key={child.id} className="preview-panel">
+                      <p>{child.name}</p>
+                      <h3>{child.todayTheme}</h3>
+                      <span>{child.supportSpot}</span>
+                      <div className="preview-lesson-list">
+                        {lessons.slice(0, 3).map((lesson) => (
+                          <div key={lesson.id} className="preview-lesson-row">
+                            <strong>{lesson.title}</strong>
+                            <span>{lesson.trackTitle}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </article>
                   ))}
                 </div>
               </div>
+            ) : null}
+          </main>
 
-              <div>
-                <h2>Coach style</h2>
-                <div className="stack-list">
-                  {coachStyles.map((style) => (
-                    <button
-                      key={style.id}
-                      className={`stack-row ${
-                        coachStyleId === style.id ? "is-selected" : ""
-                      }`}
-                      onClick={() => onSelectCoachStyle(style.id)}
-                      type="button"
-                    >
-                      <strong>{style.title}</strong>
-                      <span>{style.copy}</span>
-                    </button>
-                  ))}
-                </div>
-
-                <h2 className="section-subhead">What gets celebrated</h2>
-                <div className="stack-list">
-                  {celebrationStyles.map((style) => (
-                    <button
-                      key={style.id}
-                      className={`stack-row ${
-                        celebrationStyleId === style.id ? "is-selected" : ""
-                      }`}
-                      onClick={() => onSelectCelebrationStyle(style.id)}
-                      type="button"
-                    >
-                      <strong>{style.title}</strong>
-                      <span>{style.copy}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
+          <aside className="game-console setup-quest-console" aria-label="Parent trust console">
+            <div className="game-console-tabs" role="tablist">
+              <button className="is-active" type="button">Quest</button>
+              <button type="button">Safety</button>
+              <button type="button">Proof</button>
             </div>
-          ) : null}
 
-          {step === 2 ? (
-            <div className="launch-preview-stack">
-              <div className="launch-brief-panel">
-                <div className="launch-brief-copy">
-                  <p className="eyebrow eyebrow-dark">Parent launch brief</p>
-                  <h2>Your first week is ready to review.</h2>
-                  <span>
-                    KidWiz will open with a clear child path, parent-readable
-                    progress, and safety controls visible in the family area.
-                  </span>
+            <div className="game-console-panel">
+              <div className="game-console-hero">
+                <div className="setup-console-badge">{step + 1}</div>
+                <div>
+                  <p>Launch checklist</p>
+                  <h2>{canAdvance ? "Ready for next step" : "Pick two goals"}</h2>
                 </div>
-
-                <div className="launch-brief-grid">
-                  <div className="launch-brief-item">
-                    <span>Goals</span>
-                    <strong>{goalSummary}</strong>
-                  </div>
-                  <div className="launch-brief-item">
-                    <span>Rhythm</span>
-                    <strong>{selectedRhythm.title}</strong>
-                  </div>
-                  <div className="launch-brief-item">
-                    <span>Coach</span>
-                    <strong>{selectedCoachStyle.title}</strong>
-                  </div>
-                  <div className="launch-brief-item">
-                    <span>Celebrates</span>
-                    <strong>{selectedCelebrationStyle.title}</strong>
-                  </div>
-                </div>
-
-                {firstLesson ? (
-                  <div className="launch-brief-next">
-                    <div>
-                      <span>{firstPreview.child.name}'s first move</span>
-                      <strong>{firstLesson.title}</strong>
-                    </div>
-                    <p>{firstLesson.summary}</p>
-                  </div>
-                ) : null}
               </div>
 
-              <div className="preview-grid">
-                {previewPlaylists.map(({ child, lessons }) => (
-                  <article key={child.id} className="preview-panel">
-                    <p>{child.name}</p>
-                    <h3>{child.todayTheme}</h3>
-                    <span>{child.supportSpot}</span>
-                    <div className="preview-lesson-list">
-                      {lessons.map((lesson) => (
-                        <div key={lesson.id} className="preview-lesson-row">
-                          <strong>{lesson.title}</strong>
-                          <span>{lesson.trackTitle}</span>
-                        </div>
-                      ))}
+              <div className="onboarding-mini-checklist">
+                {setupChecklist.map((item) => (
+                  <div
+                    key={item.label}
+                    className={`onboarding-check-row ${
+                      item.complete ? "is-complete" : ""
+                    } ${item.current ? "is-current" : ""}`}
+                  >
+                    <span>{item.complete ? "Done" : "Next"}</span>
+                    <div>
+                      <strong>{item.label}</strong>
+                      <small>{item.detail}</small>
                     </div>
-                  </article>
+                  </div>
+                ))}
+              </div>
+
+              <article className="game-signal-card setup-selected-goals">
+                <p>Selected priorities</p>
+                <strong>{goalSummary}</strong>
+                <span>
+                  Parents can restart setup from the Parent room later.
+                </span>
+              </article>
+
+              <div className="setup-safety-list" aria-label="Safety promises">
+                {trustSignals.slice(0, 3).map((signal) => (
+                  <span key={signal.title}>
+                    <strong>{signal.title}</strong>
+                    {signal.copy}
+                  </span>
                 ))}
               </div>
             </div>
+          </aside>
+        </div>
+
+        <footer className="game-action-bar setup-quest-actions" aria-label="Setup actions">
+          <button
+            className="ghost-button ghost-button-dark"
+            disabled={step === 0}
+            onClick={onBack}
+            type="button"
+          >
+            Back
+          </button>
+
+          {!canAdvance ? (
+            <span className="setup-blocked-state">Choose at least two goals</span>
           ) : null}
 
-          <div className="onboarding-actions">
-            <button
-              className="ghost-button ghost-button-dark"
-              disabled={step === 0}
-              onClick={onBack}
-              type="button"
-            >
-              Back
-            </button>
-
-            {step < 2 ? (
-              <button
-                className="solid-button"
-                disabled={!canAdvance}
-                onClick={onNext}
-                type="button"
-              >
-                Continue
-              </button>
-            ) : (
-              <button className="solid-button" onClick={onFinish} type="button">
-                Launch KidWiz
-              </button>
-            )}
-          </div>
-        </section>
-
-        <aside className="onboarding-side">
-          <div className="sidebar-block onboarding-summary onboarding-progress-card">
-            <p className="eyebrow eyebrow-dark">Launch checklist</p>
-            <div className="onboarding-mini-checklist">
-              {setupChecklist.map((item) => (
-                <div
-                  key={item.label}
-                  className={`onboarding-check-row ${
-                    item.complete ? "is-complete" : ""
-                  } ${item.current ? "is-current" : ""}`}
-                >
-                  <span>{item.complete ? "Done" : "Next"}</span>
-                  <div>
-                    <strong>{item.label}</strong>
-                    <small>{item.detail}</small>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="sidebar-block onboarding-summary">
-            <p className="eyebrow eyebrow-dark">Selected priorities</p>
-            <div className="summary-chip-row">
-              {selectedGoals.length ? (
-                selectedGoals.map((goal) => (
-                  <span key={goal.id} className="summary-chip">
-                    {goal.title}
-                  </span>
-                ))
-              ) : (
-                <span className="summary-chip">Pick goals to begin</span>
-              )}
-            </div>
-            <p>
-              Pick at least two goals. KidWiz uses these to build the first weekly
-              playlist and coach prompts for each child.
-            </p>
-          </div>
-
-          <div className="sidebar-block onboarding-summary">
-            <p className="eyebrow eyebrow-dark">Safety promises</p>
-            <ul className="promise-list">
-              {trustSignals.map((signal) => (
-                <li key={signal.title}>
-                  <strong>{signal.title}</strong>
-                  <span>{signal.copy}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="sidebar-block onboarding-summary onboarding-help-card">
-            <p className="eyebrow eyebrow-dark">Need help choosing?</p>
-            <strong>Start with the goal you already talk about at home.</strong>
-            <p>
-              Parents can restart setup from Family Hub later, so this does not
-              have to be perfect on the first pass.
-            </p>
-          </div>
-        </aside>
-      </div>
+          <button
+            className="solid-button"
+            disabled={!canAdvance}
+            onClick={step < 2 ? onNext : onFinish}
+            type="button"
+          >
+            {actionLabel}
+          </button>
+        </footer>
+      </section>
     </div>
   );
 }

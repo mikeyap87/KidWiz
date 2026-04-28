@@ -29,8 +29,17 @@ const gameNavItems = [
   { id: "family", label: "Parent", icon: Users },
 ];
 
+function compactCopy(text, maxLength = 84) {
+  if (!text || text.length <= maxLength) {
+    return text;
+  }
+
+  return `${text.slice(0, maxLength - 3).trim()}...`;
+}
+
 export function HelpTab({
   aiServerStatus,
+  onExitDemo,
   onOpenCoach,
   onOpenDashboard,
   onOpenFamily,
@@ -106,9 +115,20 @@ export function HelpTab({
                 and Parent should adjust trust controls.
               </span>
             </div>
-            <button className="solid-button game-save-button" onClick={onOpenDashboard} type="button">
-              Open Today
-            </button>
+            <div className="game-family-mission-actions">
+              <button className="solid-button game-save-button" onClick={onOpenDashboard} type="button">
+                Open Today
+              </button>
+              {onExitDemo ? (
+                <button
+                  className="ghost-button ghost-button-dark"
+                  onClick={onExitDemo}
+                  type="button"
+                >
+                  Public site
+                </button>
+              ) : null}
+            </div>
           </section>
 
           <section className="game-help-grid" aria-label="Help actions">
@@ -144,7 +164,7 @@ export function HelpTab({
                 <Rocket size={18} />
                 <p>{item.label}</p>
                 <strong>{item.status}</strong>
-                <span>{item.copy}</span>
+                <span>{compactCopy(item.copy)}</span>
               </article>
             ))}
           </section>
@@ -183,6 +203,12 @@ export function HelpTab({
       </div>
 
       <footer className="game-action-bar" aria-label="Help actions">
+        {onExitDemo ? (
+          <button onClick={onExitDemo} type="button">
+            <ArrowRight size={16} />
+            Public site
+          </button>
+        ) : null}
         <button onClick={onOpenDashboard} type="button">
           <LayoutDashboard size={16} />
           Today

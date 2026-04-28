@@ -62,6 +62,14 @@ const learningStudioModes = [
   },
 ];
 
+function compactText(text, maxLength = 92) {
+  if (!text || text.length <= maxLength) {
+    return text;
+  }
+
+  return `${text.slice(0, maxLength - 3).trim()}...`;
+}
+
 export function CoachTab({
   aiServerStatus,
   activeLesson,
@@ -256,8 +264,10 @@ export function CoachTab({
                 return (
                   <button
                     key={mode.id}
+                    aria-label={`Use ${mode.label} mode. ${mode.prompt}`}
                     className={studioMode === mode.id ? "is-selected" : ""}
                     onClick={() => applyMode(mode)}
+                    title={mode.prompt}
                     type="button"
                   >
                     <Icon size={16} />
@@ -304,7 +314,7 @@ export function CoachTab({
             {modeNotes.map((card) => (
               <article key={card.title}>
                 <p>{card.title}</p>
-                <strong>{card.copy}</strong>
+                <strong>{compactText(card.copy)}</strong>
               </article>
             ))}
           </section>

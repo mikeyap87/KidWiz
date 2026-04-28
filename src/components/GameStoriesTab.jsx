@@ -24,6 +24,13 @@ const gameNavItems = [
   { id: "family", label: "Parent", icon: Users },
 ];
 
+function storyButtonLabel(title) {
+  return title
+    .replace(/^The\s+/u, "")
+    .replace("Friendship", "Friend")
+    .replace("Group Chat", "Chat");
+}
+
 export function StoriesTab({
   activeStory,
   activeStoryChoice,
@@ -96,12 +103,13 @@ export function StoriesTab({
             {storyEpisodes.slice(0, 7).map((story) => (
               <button
                 key={story.id}
+                aria-label={`Open story: ${story.title}`}
                 className={activeStory.id === story.id ? "is-selected" : ""}
                 onClick={() => onSelectStory(story.id)}
                 type="button"
               >
                 {childStoryChoices[story.id] ? <Check size={14} /> : <BookOpen size={14} />}
-                <span>{story.title}</span>
+                <span>{storyButtonLabel(story.title)}</span>
               </button>
             ))}
           </aside>
@@ -123,11 +131,12 @@ export function StoriesTab({
               {activeStory.choices.map((choice) => (
                 <button
                   key={choice.id}
+                  aria-label={`Choose story path: ${choice.title}`}
                   className={activeStoryChoice?.id === choice.id ? "is-selected" : ""}
                   onClick={() => onSelectChoice(choice.id)}
                   type="button"
                 >
-                  <p>{activeStoryChoice?.id === choice.id ? "Saved move" : "Path"}</p>
+                  <p>{activeStoryChoice?.id === choice.id ? "Saved" : "Choice"}</p>
                   <strong>{choice.title}</strong>
                   <span>{choice.result}</span>
                 </button>

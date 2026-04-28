@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   ArrowRight,
   Bot,
@@ -61,6 +62,7 @@ export function JournalTab({
   selectedChild,
   visibleTracks,
 }) {
+  const [activeJournalPanel, setActiveJournalPanel] = useState("child");
   const journalInsight = buildJournalInsightCoach({
     child: selectedChild,
     childJournalEntries,
@@ -124,8 +126,29 @@ export function JournalTab({
             </div>
           </section>
 
+          <div className="game-journal-switch" aria-label="Choose journal view">
+            <button
+              className={activeJournalPanel === "child" ? "is-selected" : ""}
+              onClick={() => setActiveJournalPanel("child")}
+              type="button"
+            >
+              Child note
+            </button>
+            <button
+              className={activeJournalPanel === "parent" ? "is-selected" : ""}
+              onClick={() => setActiveJournalPanel("parent")}
+              type="button"
+            >
+              Parent note
+            </button>
+          </div>
+
           <section className="game-journal-grid" aria-label="Journal inputs">
-            <article className="game-journal-card">
+            <article
+              className={`game-journal-card ${
+                activeJournalPanel === "child" ? "is-active" : ""
+              }`}
+            >
               <div className="game-journal-card-head">
                 <NotebookPen size={18} />
                 <div>
@@ -136,7 +159,7 @@ export function JournalTab({
 
               <form className="game-journal-form" onSubmit={onSaveChildJournal}>
                 <button className="game-save-chip" type="submit">
-                  Save
+                  Save child
                 </button>
                 <div className="game-mood-dock">
                   {moodOptions.map((mood) => (
@@ -166,7 +189,11 @@ export function JournalTab({
               />
             </article>
 
-            <article className="game-journal-card">
+            <article
+              className={`game-journal-card ${
+                activeJournalPanel === "parent" ? "is-active" : ""
+              }`}
+            >
               <div className="game-journal-card-head">
                 <Users size={18} />
                 <div>
@@ -177,7 +204,7 @@ export function JournalTab({
 
               <form className="game-journal-form" onSubmit={onSaveParentJournal}>
                 <button className="game-save-chip" type="submit">
-                  Save
+                  Save parent
                 </button>
                 <textarea
                   value={parentJournalDraft}

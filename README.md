@@ -9,7 +9,7 @@ KidWiz is a modern children's education SaaS concept that combines traditional l
 - a deeper section-by-section SaaS redesign so Dashboard, Quest Hub, Courses, Stories, Coach, Journal, Family Hub, Help, and guided onboarding all feel like finished KidWiz product surfaces
 - generated KidWiz learning-world art for the homepage, Quest Hub, Courses, Stories, Journal, and Learning Studio so the product feels more engaging for children without losing parent trust
 - a parent login entry with optional Supabase magic-link auth
-- a guided family onboarding flow with a parent launch checklist, first-week brief, goals, rhythm, and coach style
+- a Setup Quest guided onboarding flow with a parent launch checklist, first-week brief, goals, rhythm, coach style, and an obvious blocked state until at least two goals are selected
 - a fully navigable demo application for family learning
 - a Quest Hub with world-map navigation, weekly missions, a Kid Daily Quest Brief, and visible rewards
 - a parent weekly report layer with action plans, conversation prompts, and stateful trend history
@@ -110,7 +110,7 @@ For local testing, KidWiz can temporarily use a shared OpenAI key copied from an
 - in-app screen guidance across Dashboard, Quest Hub, Courses, Stories, Coach, Journal, and Family Hub so parents and children always know the best next move
 - interactive UI polish for core flows, including clear focus-visible outlines and explicit disabled-state handling to reduce confusion during first-run and conversion moments
 - parent dashboard with child-by-child weekly targets, outcome framing, weekly report summaries, archived trend comparisons, and recommendations
-- game-style Dashboard, Quest Hub, Courses, Stories, Coach, Journal, Family Hub, and Help rooms on this branch with no-scroll HUDs, world-map/lesson/story stages, parent consoles, and quick-action bars
+- game-style Dashboard, Quest Hub, Courses, Stories, Coach, Journal, Family Hub, and Help rooms on this branch with no-scroll HUDs, world-map/lesson/story stages, parent consoles, quick-action bars, mobile Journal child/parent note toggles, Parent More Controls, and Help/Public Site recovery actions
 - a Parent Outcome Dashboard that turns lessons, stories, reflections, goals, rhythm, and review-queue items into proof of what the week is building
 - a parent Daily Brief that turns the week into one clear first move, family context, and a ready-to-say parent script
 - a Parent Progress Narrative that turns metrics into a warm weekly story about growth, tender spots, and next steps

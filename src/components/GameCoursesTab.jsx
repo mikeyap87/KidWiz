@@ -144,12 +144,13 @@ export function CoursesTab({
             {trackRows.slice(0, 8).map((track) => (
               <button
                 key={track.id}
+                aria-label={`Open ${track.title} learning zone`}
                 className={activeTrack.id === track.id ? "is-selected" : ""}
                 onClick={() => onSelectTrack(track.id)}
                 type="button"
               >
                 <TrackGlyph category={track.category} size={18} />
-                <span>{track.title}</span>
+                <span>{track.shortTitle ?? track.title}</span>
                 {track.assigned ? <BadgeCheck size={14} /> : null}
               </button>
             ))}
@@ -207,6 +208,7 @@ export function CoursesTab({
                   {quizOptions.map((option, index) => (
                     <button
                       key={option}
+                      aria-label={`Answer quiz option ${index + 1}: ${option}`}
                       className={activeLessonAnswer === index ? "is-selected" : ""}
                       onClick={() => onAnswer(index)}
                       type="button"

@@ -113,17 +113,19 @@ export function OverviewTab({
             {visibleTracks.slice(0, 6).map((track, index) => {
               const position = trackPositions[index % trackPositions.length];
               const isFocus = track.id === focusTrack?.id;
+              const trackLabel = track.shortTitle ?? track.title;
 
               return (
                 <button
                   key={track.id}
+                  aria-label={`Open ${track.title} zone`}
                   className={`game-zone-node ${isFocus ? "is-selected" : ""}`}
                   onClick={() => onSelectTrack(track.id)}
                   style={position}
                   type="button"
                 >
                   <TrackGlyph category={track.category} size={18} />
-                  <span>{track.title}</span>
+                  <span>{trackLabel}</span>
                 </button>
               );
             })}

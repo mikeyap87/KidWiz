@@ -427,6 +427,20 @@ function App() {
     }));
   }
 
+  function handleExitDemo() {
+    if (typeof window !== "undefined") {
+      window.localStorage.removeItem(STORAGE_KEY);
+      window.history.pushState({}, "", "/");
+    }
+
+    updateAppState(createDefaultState());
+    setAuthEmail("");
+    setAuthMessage("KidWiz closed the demo and reopened the public site.");
+    setChildJournalDraft("");
+    setParentJournalDraft("");
+    setFamilyToolsMessage("");
+  }
+
   function handleSelectTrack(trackId) {
     const track = courseCatalog.find((item) => item.id === trackId);
     if (!track) return;
@@ -1242,6 +1256,7 @@ function App() {
                       }))
                     }
                     onArchiveCurrentWeek={handleArchiveCurrentWeek}
+                    onExitDemo={handleExitDemo}
                     onGenerateFreshWeek={handleGenerateFreshWeek}
                     onResetDemo={handleResetDemo}
                     onResetWeeklyHistory={handleResetWeeklyHistory}
@@ -1272,6 +1287,7 @@ function App() {
                 {appState.activeTab === "help" ? (
                   <HelpTab
                     aiServerStatus={aiServerStatus}
+                    onExitDemo={handleExitDemo}
                     onOpenCoach={() => handleSelectTab("coach")}
                     onOpenDashboard={() => handleSelectTab("dashboard")}
                     onOpenFamily={handleOpenFamily}
