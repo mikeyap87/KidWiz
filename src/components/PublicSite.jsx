@@ -1,11 +1,4 @@
-import {
-  ArrowRight,
-  BookOpen,
-  ClipboardList,
-  ShieldCheck,
-  Sparkles,
-  Target,
-} from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { storyEpisodes } from "../data/kidwizData";
 import {
   appHighlights,
@@ -61,14 +54,15 @@ export function PublicSite({
 
         <div className="hero-content page-width">
           <div className="hero-copy-column">
-            <p className="eyebrow">KidWiz Parent Command Center</p>
+            <p className="eyebrow">Igniting imagination, fostering genius</p>
             <h1>
-              See today&apos;s safest next learning move in one calm cockpit.
+              The AI learning companion built for whole-child growth.
             </h1>
             <p className="hero-copy">
-              KidWiz blends personalized lessons, playful quests, parent proof,
-              and safe tutor-style guidance into a compact family dashboard for
-              ages 5-12.
+              KidWiz blends personalized lessons, playful quizzes, parent
+              progress proof, and safe tutor-style coaching so children can build
+              school skills, life skills, confidence, and curiosity in one bright
+              place.
             </p>
 
             <div className="hero-actions">
@@ -81,12 +75,12 @@ export function PublicSite({
               </button>
             </div>
 
-            <div className="hero-proof-card hero-command-proof-card">
-              <span>First parent view</span>
-              <strong>One child, one next lesson, one trust note.</strong>
+            <div className="hero-proof-card">
+              <span>Designed for ages 5-12</span>
+              <strong>School skills, life skills, and parent trust in one loop.</strong>
               <p>
-                Parents start with the day&apos;s recommended move before
-                opening deeper lessons, journals, AI support, or family settings.
+                Children get a friendly mission. Parents get the why, the proof,
+                and the next conversation to have at home.
               </p>
             </div>
 
@@ -100,7 +94,7 @@ export function PublicSite({
             </div>
           </div>
 
-          <div className="kidwiz-hero-visual hero-command-preview" aria-label="KidWiz parent command center preview">
+          <div className="kidwiz-hero-visual" aria-label="KidWiz tutor preview">
             <div className="kidwiz-hero-image-frame">
               <img
                 src="/assets/generated/kidwiz-hero-learning-world.jpg"
@@ -108,45 +102,25 @@ export function PublicSite({
                 fetchPriority="high"
               />
             </div>
-            <div className="hero-command-card">
-              <div className="hero-command-card-head">
-                <span>Today&apos;s cockpit</span>
-                <strong>Nova is ready for Wonder Lab</strong>
-              </div>
-              <div className="hero-command-status-row">
-                <span>
-                  <Target size={14} />
-                  42% week plan
-                </span>
-                <span>
-                  <ShieldCheck size={14} />
-                  Sensitive track locked
-                </span>
-              </div>
-              <div className="hero-command-mission">
-                <BookOpen size={18} />
-                <div>
-                  <p>Best next move</p>
-                  <strong>Open the first science lesson</strong>
-                  <span>Parent sees why it matters before the child starts.</span>
-                </div>
-              </div>
-              <div className="hero-command-grid">
-                <article>
-                  <ClipboardList size={16} />
-                  <strong>2</strong>
-                  <span>items need parent review</span>
-                </article>
-                <article>
-                  <Sparkles size={16} />
-                  <strong>Safe AI</strong>
-                  <span>lesson-scoped help only</span>
-                </article>
-              </div>
-              <button className="solid-button" onClick={() => onDemoStart("instant")}>
-                Open parent demo
-                <ArrowRight size={16} />
-              </button>
+            <div className="chat-bubble bot-bubble">
+              <strong>Hi there, Jace!</strong>
+              <span>Ready for a fun day of learning?</span>
+            </div>
+            <div className="chat-bubble kid-bubble">
+              <strong>Yes, I'm excited!</strong>
+              <span>Let's explore animals, money, and stories.</span>
+            </div>
+            <div className="subject-wheel-card">
+              <span>Today's mix</span>
+              <strong>Science · Money · Creativity</strong>
+            </div>
+            <div className="learning-signal-card signal-one">
+              <span>Parent proof</span>
+              <strong>Weekly growth card ready</strong>
+            </div>
+            <div className="learning-signal-card signal-two">
+              <span>Safe AI help</span>
+              <strong>Parent-visible summaries</strong>
             </div>
           </div>
         </div>
