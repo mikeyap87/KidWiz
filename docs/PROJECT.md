@@ -128,9 +128,10 @@ The value is:
 
 ### Frontend
 
-- `src/App.jsx` now acts mainly as the state container and app shell, and lazy-loads the public site, onboarding flow, and tab-level screens.
+- `src/App.jsx` now acts mainly as the state container and app router, with shared workspace selectors, weekly action helpers, planning-nudge helpers, loading states, and navigation chrome split into focused modules.
 - `public/brand/` stores the selected KidWiz logo and robot tutor files copied from the owner-provided design archive for this local prototype.
 - `public/assets/generated/` stores generated KidWiz learning-world illustrations for the homepage and SaaS section headers.
+- `src/components/AppNavigation.jsx` owns the desktop topbar and sidebar navigation, while `src/components/AppLoadingStates.jsx` owns shared public/app loading states.
 - `src/App.jsx` now also renders a mobile-only learner rail and sticky section nav so app switching stays easy on phones and small tablets.
 - `src/App.jsx` now renders a shared screen-context strip across the core app tabs so each section has clear audience, purpose, and next-action guidance.
 - `src/App.jsx` now also surfaces child-specific mobile resume and quick-action controls, driven by the same recommendation and weekly-progress logic as the rest of the product.
@@ -167,7 +168,10 @@ The value is:
 ### Local Product Logic
 
 - `src/lib/demoState.js` owns the local demo bootstrap state and browser persistence behavior.
-- `src/lib/progression.js` owns playlist generation, quest world derivation, mission board logic, weekly report derivation, trend comparison logic, lesson progression, track status, badge logic, and recommended-next-step behavior.
+- `src/lib/progression/` owns playlist generation, quest world derivation, mission board logic, weekly report derivation, trend comparison logic, lesson progression, track status, badge logic, and recommended-next-step behavior.
+- `src/lib/appWorkspaceSelectors.js` owns selected-child, active-lesson, active-story, and workspace derivation for the app shell.
+- `src/lib/familyWeekActions.js` owns save-week, archive-week, and fresh-week state transitions.
+- `src/lib/planningNudgeActions.js` owns parent recommendation accept/dismiss state transitions.
 
 ### Data Model Today
 

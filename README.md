@@ -147,16 +147,18 @@ For local testing, KidWiz can temporarily use a shared OpenAI key copied from an
 
 - `public/brand/` - selected owner-provided KidWiz logo and robot tutor assets used by the bright brand prototype
 - `public/assets/generated/` - generated KidWiz learning-world illustrations used in the homepage and SaaS section headers
-- `src/App.jsx` - top-level state, mobile shell, cross-screen guidance, and app routing with lighter first-load derivation
-- `src/components/` - public site, onboarding, dashboard, and tab components
+- `src/App.jsx` - top-level state, app routing, and screen wiring with more product logic delegated to focused helpers
+- `src/components/` - public site, onboarding, app navigation/loading chrome, dashboard, and tab components
 - `src/components/MobileShell.jsx` - extracted mobile learner shell, section nav, quick actions, and parent control rail
 - `src/data/kidwizData.js` - core curriculum, worlds, rituals, badges, and child/profile data used by the app shell
 - `src/data/kidwizMarketingData.js` - public-site and trust-copy data for lazy marketing and setup surfaces
 - `src/data/kidwizDemoSeedData.js` - starter demo state and seeded history used to bootstrap local testing
 - `src/data/releaseReadinessData.js` - parent-launch proof steps, production readiness milestones, and privacy decisions used by Help, Coach, and Family Hub
 - `src/lib/demoState.js` - local demo state bootstrap and persistence helpers
-- `src/lib/progression.js` - playlist, mission board, world map, badge, recommendation, and track-progression logic
-- `src/lib/progression.js` - playlist, mission board, world map, badge, recommendation, child summary, and archive snapshot logic
+- `src/lib/progression/` - playlist, mission board, world map, badge, recommendation, reporting, readiness, and track-progression logic
+- `src/lib/appWorkspaceSelectors.js` - selected child, lesson, story, progress, and workspace derivation for the app shell
+- `src/lib/familyWeekActions.js` - save-week, archive-week, and fresh-week state transitions
+- `src/lib/planningNudgeActions.js` - parent recommendation accept/dismiss state transitions
 - `src/lib/lessonExperience.js` - course-only lesson experience builder, now loaded with the Courses screen chunk
 - `src/lib/supabaseClient.js` - optional Supabase auth wiring
 - `scripts/kidwiz-ai-server.mjs` - local live-AI endpoint for Learning Studio tutoring and moderation
