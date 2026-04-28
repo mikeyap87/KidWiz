@@ -1016,27 +1016,30 @@ function App() {
             />
 
             <main className="app-main">
-              <section
-                className="app-context-strip"
-                aria-label={`${screenFocusContext.audience} screen guide`}
-              >
-                <div className="app-context-copy">
-                  <span>{screenFocusContext.audience}</span>
-                  <h1>{screenFocusContext.title}</h1>
-                  <p>{screenFocusContext.copy}</p>
-                </div>
-                <div className="app-context-next">
-                  <span>Best next move</span>
-                  <strong>{screenFocusContext.nextMove}</strong>
-                  <em>{screenFocusContext.metric}</em>
-                </div>
-              </section>
+              {appState.activeTab === "dashboard" ? null : (
+                <section
+                  className="app-context-strip"
+                  aria-label={`${screenFocusContext.audience} screen guide`}
+                >
+                  <div className="app-context-copy">
+                    <span>{screenFocusContext.audience}</span>
+                    <h1>{screenFocusContext.title}</h1>
+                    <p>{screenFocusContext.copy}</p>
+                  </div>
+                  <div className="app-context-next">
+                    <span>Best next move</span>
+                    <strong>{screenFocusContext.nextMove}</strong>
+                    <em>{screenFocusContext.metric}</em>
+                  </div>
+                </section>
+              )}
 
               <Suspense
                 fallback={<WorkspaceLoading activeTab={appState.activeTab} />}
               >
                 {appState.activeTab === "dashboard" ? (
                   <DashboardTab
+                    aiServerStatus={aiServerStatus}
                     appState={appState}
                     dashboardTourActive={!appState.dashboardTourCompleted}
                     nextRitual={nextRitual}
@@ -1049,6 +1052,7 @@ function App() {
                     onOpenJournal={handleOpenJournal}
                     onOpenLesson={handleOpenLessonForChild}
                     onOpenStory={handleOpenStory}
+                    onOpenHelp={() => handleSelectTab("help")}
                     onSelectChild={handleSelectChild}
                     selectedCelebrationStyle={selectedCelebrationStyle}
                     selectedCoachStyle={selectedCoachStyle}

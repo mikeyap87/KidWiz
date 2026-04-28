@@ -5,6 +5,7 @@ KidWiz is a modern children's education SaaS concept that combines traditional l
 - a polished public-facing website
 - a bright KidWiz brand skin using the owner-provided logo, atom favicon, and softened Wiz Spark learning-guide visual from the approved design archive
 - a full public-site and SaaS redesign pass with customer-ready website copy, a sticky outcomes/learning/trust nav, a stronger hero proof card, a grid-based Wiz Spark visual, and a more cohesive bright learning OS app shell
+- a Parent Command Center first view on the homepage and instant dashboard, showing child status, today’s best move, safety state, weekly proof, and parent attention items before deeper product depth
 - a deeper section-by-section SaaS redesign so Dashboard, Quest Hub, Courses, Stories, Coach, Journal, Family Hub, Help, and guided onboarding all feel like finished KidWiz product surfaces
 - generated KidWiz learning-world art for the homepage, Quest Hub, Courses, Stories, Journal, and Learning Studio so the product feels more engaging for children without losing parent trust
 - a parent login entry with optional Supabase magic-link auth
@@ -55,6 +56,7 @@ Useful local review shortcuts:
 - public site: `http://127.0.0.1:5290/`
 - instant Quest Hub demo: `http://127.0.0.1:5290/?demo=instant&tab=quest`
 - instant dashboard demo: `http://127.0.0.1:5290/?demo=instant&tab=dashboard`
+- instant overview demo: `http://127.0.0.1:5290/?demo=instant&tab=overview`
 - guided courses demo: `http://127.0.0.1:5290/?demo=instant&tab=courses`
 - Family Hub demo: `http://127.0.0.1:5290/?demo=instant&tab=family`
 - Help: `http://127.0.0.1:5290/help`
@@ -96,6 +98,7 @@ For local testing, KidWiz can temporarily use a shared OpenAI key copied from an
 ## Current Local Product Shape
 
 - bright KidWiz public marketing site with the original logo direction, robot tutor visual, playful science-learning identity, sharper parent outcomes, trust positioning, and demo entry points
+- homepage first viewport framed around a compact KidWiz Parent Command Center preview with one primary `Open parent demo` action
 - bright app shell with white panels, lime primary controls, colorful subject accents, and calmer parent versus child visual zones
 - section-level SaaS polish across Dashboard, Quest Hub, Courses, Stories, Coach, Journal, Family Hub, Help, and guided onboarding, with clearer mastheads, stronger cards, better contrast, and more consistent KidWiz learning-system styling
 - generated learning-world artwork on the homepage and child-facing sections, documented in `docs/IMAGE_GENERATION.md`
@@ -109,6 +112,7 @@ For local testing, KidWiz can temporarily use a shared OpenAI key copied from an
 - in-app screen guidance across Dashboard, Quest Hub, Courses, Stories, Coach, Journal, and Family Hub so parents and children always know the best next move
 - interactive UI polish for core flows, including clear focus-visible outlines and explicit disabled-state handling to reduce confusion during first-run and conversion moments
 - parent dashboard with child-by-child weekly targets, outcome framing, weekly report summaries, archived trend comparisons, and recommendations
+- parent dashboard now opens with a bounded cockpit: status strip, one recommended lesson, attention queue, child board, parent controls, and compact Proof/Signals/Plan/Reports/Readiness panels
 - a Parent Outcome Dashboard that turns lessons, stories, reflections, goals, rhythm, and review-queue items into proof of what the week is building
 - a parent Daily Brief that turns the week into one clear first move, family context, and a ready-to-say parent script
 - a Parent Progress Narrative that turns metrics into a warm weekly story about growth, tender spots, and next steps
@@ -173,4 +177,5 @@ For local testing, KidWiz can temporarily use a shared OpenAI key copied from an
 - keep trimming the local bundle by pushing the remaining shell-only recommendation and archive helpers behind lazy screen boundaries or async state utilities
 - move more of the always-mounted mobile shell into focused components now that its state derives from shared progression helpers
 - keep sharpening the mobile shell so the first screen answers both “what should my child do next?” and “what should the parent adjust?”
+- continue tightening the parent command center copy and panel order after real parent review sessions
 - deepen lesson authoring so each track gets richer interactive practice variations, stronger media moments, and more sharply authored age-banded lesson content

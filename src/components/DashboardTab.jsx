@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import {
   ArrowDownRight,
   ArrowUpRight,
@@ -12,6 +12,7 @@ import {
   MessagesSquare,
   Minus,
   NotebookPen,
+  Server,
   ShieldCheck,
   Sparkles,
   Target,
@@ -173,14 +174,6 @@ function DashboardTour({
   const step = dashboardTourSteps[activeStep] ?? dashboardTourSteps[0];
   const isFinalStep = activeStep === dashboardTourSteps.length - 1;
 
-  useEffect(() => {
-    const target = document.querySelector(`[data-tour-id="${step.id}"]`);
-    target?.scrollIntoView({
-      behavior: "smooth",
-      block: "center",
-    });
-  }, [step.id]);
-
   return (
     <aside className="dashboard-tour-card" aria-live="polite">
       <div>
@@ -213,6 +206,7 @@ function DashboardTour({
 }
 
 export function DashboardTab({
+  aiServerStatus,
   appState,
   dashboardTourActive,
   nextRitual,
@@ -222,6 +216,7 @@ export function DashboardTab({
   onCompleteDashboardTour,
   onDismissPlanningNudge,
   onOpenFamily,
+  onOpenHelp,
   onOpenJournal,
   onOpenLesson,
   onOpenStory,
@@ -347,6 +342,7 @@ export function DashboardTab({
     ],
   );
   const [outcomeFilter, setOutcomeFilter] = useState("all");
+  const [commandPanel, setCommandPanel] = useState("proof");
   const filteredChildOutcomes = useMemo(() => {
     const list = [...outcomeDashboard.childOutcomes];
 
@@ -412,6 +408,53 @@ export function DashboardTab({
       icon: Award,
     },
   ];
+  const aiStatus =
+    aiServerStatus?.state === "online" && aiServerStatus.configured
+      ? {
+          label: "Live AI ready",
+          copy: "Learning Studio is connected for local review.",
+          tone: "ready",
+        }
+      : aiServerStatus?.state === "online"
+        ? {
+            label: "Live AI not configured",
+            copy: "No-key fallback stays available for review.",
+            tone: "setup",
+          }
+        : aiServerStatus?.state === "offline"
+          ? {
+              label: "AI server offline",
+              copy: "Coach still shows setup guidance.",
+              tone: "setup",
+            }
+          : {
+              label: "Checking AI",
+              copy: "KidWiz is checking the local AI server.",
+              tone: "checking",
+            };
+  const commandPanels = [
+    { id: "proof", label: "Proof", count: outcomeDashboard.outcomeCards.length },
+    { id: "signals", label: "Signals", count: reviewQueue.length },
+    { id: "plan", label: "Plan", count: childSummaries.length },
+    { id: "reports", label: "Reports", count: weeklyReport.stats.length },
+    { id: "readiness", label: "Readiness", count: 3 },
+  ];
+  const commandAttentionItems = reviewQueue.slice(0, 3);
+  const selectedGoalSummary =
+    selectedGoals.length > 0
+      ? selectedGoals.map((goal) => goal.title).join(", ")
+      : "family growth";
+  const commandFocusTrackTitle =
+    visibleTracks.find(
+      (track) => track.id === selectedChildSummary?.weeklyTarget.focusTrackId,
+    )?.title ?? "current focus track";
+  const commandMissionTitle = parentProofLesson
+    ? parentProofLesson.lesson.title
+    : selectedChildSummary?.supportTrack.title ?? "Choose the next lesson";
+  const commandMissionReason = parentProofLesson
+    ? parentProofLesson.reason
+    : selectedChildSummary?.supportMessage ??
+      "Pick the smallest next action that keeps the week moving.";
 
   function handleOutcomeFilterReset() {
     setOutcomeFilter("all");
@@ -488,16 +531,177 @@ export function DashboardTab({
   }
 
   return (
-    <section className="workspace-band">
-      <div className="section-heading section-heading-tight">
-        <p className="eyebrow eyebrow-dark">Parent dashboard</p>
-        <h1>One place to see what is working, what needs help, and what comes next.</h1>
-        <p>
-          This view turns KidWiz into something much closer to a real SaaS
-          workspace by combining weekly targets, progress, recommendations, and
-          child-by-child summaries.
-        </p>
-      </div>
+    <section className="workspace-band parent-command-workspace">
+      <section className="parent-command-center" aria-label="KidWiz parent command center">
+        <div className="parent-command-topline">
+          <div>
+            <p className="eyebrow eyebrow-dark">KidWiz Parent Command Center</p>
+            <h1>Today&apos;s safest next move is ready.</h1>
+          </div>
+          <div className="parent-command-status-strip" aria-label="Family status">
+            <span>
+              <Users size={14} />
+              {appState.familyName}
+            </span>
+            <span>
+              <Target size={14} />
+              {selectedChildSummary?.overallTargetProgress ?? 0}% week plan
+            </span>
+            <span className={`is-${aiStatus.tone}`}>
+              <Server size={14} />
+              {aiStatus.label}
+            </span>
+            <span>
+              <ShieldCheck size={14} />
+              {appState.bodyBoundariesUnlocked
+                ? "Sensitive track unlocked"
+                : "Sensitive track locked"}
+            </span>
+          </div>
+        </div>
+
+        <div className="parent-command-grid">
+          <article className="parent-command-mission">
+            <div className="parent-command-mission-head">
+              <div>
+                <p>Best next move for {selectedChildSummary?.child.name}</p>
+                <h2>{commandMissionTitle}</h2>
+              </div>
+              <span>{selectedRhythm.title}</span>
+            </div>
+            <p>{commandMissionReason}</p>
+            <div className="parent-command-mission-meta">
+              <span>{commandFocusTrackTitle}</span>
+              <span>{selectedGoalSummary}</span>
+            </div>
+            <div className="parent-command-actions">
+              <button
+                className="solid-button"
+                onClick={() =>
+                  parentProofLesson
+                    ? onOpenLesson(
+                        selectedChildSummary.child.id,
+                        parentProofLesson.lesson.id,
+                      )
+                    : onSelectChild(selectedChildSummary.child.id)
+                }
+                type="button"
+              >
+                Open next lesson
+                <ArrowRight size={16} />
+              </button>
+              <button className="ghost-button ghost-button-dark" onClick={onOpenFamily} type="button">
+                Review controls
+              </button>
+            </div>
+          </article>
+
+          <aside className="parent-command-attention">
+            <div className="panel-head">
+              <ClipboardList size={18} />
+              <h2>Needs attention</h2>
+            </div>
+            <div className="parent-command-attention-list">
+              {commandAttentionItems.length > 0 ? (
+                commandAttentionItems.map((item) => (
+                  <article key={item.id} className="parent-command-attention-card">
+                    <p>{item.eyebrow}</p>
+                    <strong>{item.title}</strong>
+                    {item.actionType === "nudge" ? (
+                      <div className="parent-command-mini-actions">
+                        <button
+                          className="inline-action"
+                          onClick={() => onApplyPlanningNudge(item.childId, item.nudge)}
+                          type="button"
+                        >
+                          Apply
+                        </button>
+                        <button
+                          className="inline-action"
+                          onClick={() =>
+                            onDismissPlanningNudge(item.childId, item.nudge.id)
+                          }
+                          type="button"
+                        >
+                          Dismiss
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        className="inline-action"
+                        onClick={() => handleReportAction(item)}
+                        type="button"
+                      >
+                        {item.ctaLabel}
+                      </button>
+                    )}
+                  </article>
+                ))
+              ) : (
+                <article className="parent-command-attention-card">
+                  <p>All clear</p>
+                  <strong>No urgent parent review items.</strong>
+                  <span>Use the panel tabs below for proof, reports, and settings.</span>
+                </article>
+              )}
+            </div>
+          </aside>
+
+          <div className="parent-command-child-board">
+            {childSummaries.map((summary) => (
+              <button
+                key={summary.child.id}
+                className={`parent-command-child-card ${
+                  selectedChildId === summary.child.id ? "is-selected" : ""
+                }`}
+                onClick={() => onSelectChild(summary.child.id)}
+                type="button"
+              >
+                <span>{summary.child.name}</span>
+                <strong>{summary.overallTargetProgress}%</strong>
+                <em>{summary.supportTrack.title}</em>
+              </button>
+            ))}
+          </div>
+
+          <aside className="parent-command-controls">
+            <div>
+              <p>Parent controls</p>
+              <strong>{selectedCoachStyle.title} coach tone</strong>
+              <span>{aiStatus.copy}</span>
+            </div>
+            <div className="parent-command-control-actions">
+              <button
+                className={`inline-action ${
+                  activeTourTarget === "family-controls" ? "is-tour-highlight" : ""
+                }`}
+                data-tour-id="family-controls"
+                onClick={onOpenFamily}
+                type="button"
+              >
+                Family Hub
+              </button>
+              <button className="inline-action" onClick={onOpenHelp} type="button">
+                Help
+              </button>
+            </div>
+          </aside>
+        </div>
+
+        <nav className="parent-command-panel-tabs" aria-label="Dashboard detail panels">
+          {commandPanels.map((panel) => (
+            <button
+              key={panel.id}
+              className={commandPanel === panel.id ? "is-selected" : ""}
+              onClick={() => setCommandPanel(panel.id)}
+              type="button"
+            >
+              <span>{panel.label}</span>
+              <strong>{panel.count}</strong>
+            </button>
+          ))}
+        </nav>
+      </section>
 
       {dashboardTourActive ? (
         <DashboardTour
@@ -509,6 +713,9 @@ export function DashboardTab({
         />
       ) : null}
 
+      <div className="dashboard-command-detail-scroll" aria-live="polite">
+      {commandPanel === "proof" ? (
+        <>
       <section
         className={`surface-panel setup-proof-panel ${
           activeTourTarget === "setup-proof" ? "is-tour-highlight" : ""
@@ -838,7 +1045,11 @@ export function DashboardTab({
           )}
         </div>
       </section>
+        </>
+      ) : null}
 
+      {commandPanel === "signals" ? (
+        <>
       <section className="surface-panel daily-brief-panel">
         <div className="daily-brief-main">
           <div>
@@ -1013,7 +1224,11 @@ export function DashboardTab({
           ))}
         </div>
       </section>
+        </>
+      ) : null}
 
+      {commandPanel === "reports" ? (
+        <>
       <div className="dashboard-report-grid">
         <article className="surface-panel dashboard-report-hero">
           <div className="panel-head">
@@ -1193,7 +1408,11 @@ export function DashboardTab({
           </div>
         </section>
       </div>
+        </>
+      ) : null}
 
+      {commandPanel === "plan" ? (
+        <>
       <div className="dashboard-child-grid">
         {childSummaries.map((summary) => (
           <article
@@ -1419,6 +1638,61 @@ export function DashboardTab({
             </div>
           </article>
         ))}
+      </div>
+        </>
+      ) : null}
+
+      {commandPanel === "readiness" ? (
+        <section className="surface-panel dashboard-readiness-gateway">
+          <div className="panel-head">
+            <ShieldCheck size={18} />
+            <h2>Launch readiness shortcuts</h2>
+          </div>
+          <p className="panel-copy">
+            Keep the command center focused on daily family decisions. Use these
+            parent-only areas for deeper production, privacy, and safety review.
+          </p>
+          <div className="dashboard-readiness-grid">
+            <article>
+              <Server size={18} />
+              <strong>{aiStatus.label}</strong>
+              <span>{aiStatus.copy}</span>
+              <button className="inline-action" onClick={onOpenHelp} type="button">
+                Open Help
+              </button>
+            </article>
+            <article>
+              <ShieldCheck size={18} />
+              <strong>
+                {appState.bodyBoundariesUnlocked
+                  ? "Sensitive track unlocked"
+                  : "Sensitive track locked"}
+              </strong>
+              <span>
+                Sensitive topics stay parent-controlled and reviewable in Family Hub.
+              </span>
+              <button className="inline-action" onClick={onOpenFamily} type="button">
+                Review safety
+              </button>
+            </article>
+            <article>
+              <ClipboardList size={18} />
+              <strong>{reviewQueue.length} review item(s)</strong>
+              <span>
+                Planning nudges, story signals, and family follow-up remain
+                visible before launch decisions.
+              </span>
+              <button
+                className="inline-action"
+                onClick={() => setCommandPanel("signals")}
+                type="button"
+              >
+                Open signals
+              </button>
+            </article>
+          </div>
+        </section>
+      ) : null}
       </div>
     </section>
   );

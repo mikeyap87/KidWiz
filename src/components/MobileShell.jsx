@@ -21,6 +21,7 @@ export function MobileShell({
 }) {
   const parentFocusTabs = ["dashboard", "coach", "family", "help"];
   const isParentFocusTab = parentFocusTabs.includes(activeTab);
+  const isDashboardTab = activeTab === "dashboard";
   const primaryTabIds = ["dashboard", "overview", "courses", "coach"];
   const primaryTabs = tabItems.filter((item) => primaryTabIds.includes(item.id));
   const secondaryTabs = tabItems.filter((item) => !primaryTabIds.includes(item.id));
@@ -30,7 +31,7 @@ export function MobileShell({
       <section
         className={`page-width app-mobile-learner-shell ${
           isParentFocusTab ? "is-parent-compact" : ""
-        }`}
+        } ${isDashboardTab ? "is-dashboard-compact" : ""}`}
       >
         <div className="mobile-learner-summary">
           <div className="mobile-learner-copy">
@@ -50,6 +51,7 @@ export function MobileShell({
           </div>
         </div>
 
+        {!isDashboardTab ? (
         <div className="mobile-resume-strip">
           <div className="mobile-resume-head">
             <div>
@@ -127,6 +129,7 @@ export function MobileShell({
             ) : null}
           </div>
         </div>
+        ) : null}
       </section>
 
       <div className="app-mobile-nav-shell">
@@ -153,6 +156,7 @@ export function MobileShell({
         </div>
       </div>
 
+      {!isDashboardTab ? (
       <section className="page-width app-mobile-action-shell">
         <details className="mobile-more-shell">
           <summary>
@@ -283,6 +287,7 @@ export function MobileShell({
           </div>
         </details>
       </section>
+      ) : null}
     </>
   );
 }
