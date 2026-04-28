@@ -48,6 +48,7 @@ import {
   supabase,
 } from "./lib/supabaseClient";
 import "./App.css";
+import "./styles/brightBrand.css";
 import { MobileShell } from "./components/MobileShell";
 
 function lazyNamed(importer, exportName) {
