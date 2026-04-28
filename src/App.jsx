@@ -68,7 +68,7 @@ function lazyNamed(importer, exportName) {
 
 const CoachTab = lazyNamed(() => import("./components/CoachTab"), "CoachTab");
 const CoursesTab = lazyNamed(
-  () => import("./components/CoursesTab"),
+  () => import("./components/GameCoursesTab"),
   "CoursesTab",
 );
 const DashboardTab = lazyNamed(
@@ -86,7 +86,7 @@ const OnboardingFlow = lazyNamed(
   "OnboardingFlow",
 );
 const OverviewTab = lazyNamed(
-  () => import("./components/OverviewTab"),
+  () => import("./components/GameOverviewTab"),
   "OverviewTab",
 );
 const PublicSite = lazyNamed(
@@ -898,7 +898,8 @@ function App() {
     appState.onboardingStep === 0 ? appState.selectedGoalIds.length >= 2 : true;
   const currentTab =
     tabItems.find((tab) => tab.id === appState.activeTab) ?? tabItems[0];
-  const isGameDashboard = appState.activeTab === "dashboard";
+  const gameShellTabs = ["dashboard", "overview", "courses"];
+  const isGameShell = gameShellTabs.includes(appState.activeTab);
   const parentZoneTabs = ["dashboard", "coach", "family"];
   const childZoneTabs = ["overview", "courses", "stories"];
   const appZoneClass = parentZoneTabs.includes(appState.activeTab)
@@ -976,8 +977,8 @@ function App() {
           />
         </Suspense>
       ) : (
-        <div className={`app-shell ${appZoneClass} ${isGameDashboard ? "is-game-dashboard" : ""}`}>
-          {!isGameDashboard ? (
+        <div className={`app-shell ${appZoneClass} ${isGameShell ? "is-game-dashboard" : ""}`}>
+          {!isGameShell ? (
             <AppTopbar
               appZoneLabel={appZoneLabel}
               currentTab={currentTab}
@@ -987,7 +988,7 @@ function App() {
             />
           ) : null}
 
-          {!isGameDashboard ? (
+          {!isGameShell ? (
             <MobileShell
               activeTab={appState.activeTab}
               bodyBoundariesUnlocked={appState.bodyBoundariesUnlocked}
@@ -1011,7 +1012,7 @@ function App() {
           ) : null}
 
           <div className="page-width app-layout">
-            {!isGameDashboard ? (
+            {!isGameShell ? (
               <AppSidebar
                 activeTab={appState.activeTab}
                 childProfiles={childProfiles}
@@ -1023,7 +1024,7 @@ function App() {
             ) : null}
 
             <main className="app-main">
-              {!isGameDashboard ? (
+              {!isGameShell ? (
                 <section
                   className="app-context-strip"
                   aria-label={`${screenFocusContext.audience} screen guide`}
@@ -1085,6 +1086,7 @@ function App() {
                     onOpenJournal={handleOpenJournal}
                     onOpenLesson={handleOpenLesson}
                     onOpenStory={handleOpenStory}
+                    onSelectTab={handleSelectTab}
                     onSelectTrack={handleSelectTrack}
                     onToggleJourney={handleToggleJourney}
                     recommendedLesson={recommendedLesson}
@@ -1124,6 +1126,7 @@ function App() {
                         selectedLessonId: lessonId,
                       }))
                     }
+                    onSelectTab={handleSelectTab}
                     onSelectPracticeChoice={handleSelectLessonPracticeChoice}
                     onSelectLessonChallengeChoice={handleSelectLessonChallengeChoice}
                     onSelectTrack={handleSelectTrack}
