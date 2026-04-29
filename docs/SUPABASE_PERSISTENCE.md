@@ -14,7 +14,7 @@ KidWiz still works as a local demo without Supabase. This production slice adds 
 - no analytics
 - no public child accounts
 - no live migration is applied automatically
-- no privacy/retention policy is enforced yet beyond owner-only row-level security
+- no final privacy/retention policy is enforced yet beyond owner-only row-level security and parent-facing export/delete controls
 
 ## Setup
 
@@ -26,6 +26,13 @@ KidWiz still works as a local demo without Supabase. This production slice adds 
 6. Use the magic-link parent sign-in flow.
 
 When the tables are present, signed-in parent sessions show cloud sync status. When the tables are missing, KidWiz stays usable and shows that cloud setup is needed.
+
+## Parent Privacy Controls
+
+- `Export data` in the Parent room downloads the current family workspace as readable JSON.
+- The export excludes browser session credentials and Supabase user ids.
+- `Delete cloud` deletes the signed-in Supabase family workspace and AI safety event rows.
+- Cloud deletion does not erase the local browser preview; parents can still use the separate demo reset control if they want to clear local data.
 
 ## Safety Notes
 

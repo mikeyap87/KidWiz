@@ -40,6 +40,11 @@ export function createCloudSyncStatus(state, detail = "") {
       detail: "Family workspace saved.",
       tone: "good",
     },
+    deleted: {
+      label: "Cloud deleted",
+      detail: "The cloud copy was deleted. Local browser review is still available.",
+      tone: "warn",
+    },
     setup_required: {
       label: "Cloud setup needed",
       detail: "Run the KidWiz Supabase migration first.",
@@ -87,6 +92,23 @@ export function buildPersistableKidWizState(appState) {
   return {
     ...workspaceState,
     cloudSchemaVersion: STATE_VERSION,
+  };
+}
+
+export function buildFamilyExportPayload(appState) {
+  const safetyEvents = extractSafetyEvents(appState);
+
+  return {
+    exportedAt: new Date().toISOString(),
+    exportVersion: STATE_VERSION,
+    familyName: appState.familyName,
+    note:
+      "KidWiz family export for parent review. Session credentials and Supabase user ids are excluded.",
+    workspace: buildPersistableKidWizState(appState),
+    safetyEvents: safetyEvents.map(({ childId, event }) => ({
+      childId,
+      ...event,
+    })),
   };
 }
 
@@ -187,6 +209,41 @@ export async function saveKidWizCloudWorkspace({ appState, client, userId }) {
     status: "saved",
     workspaceId: data.id,
     updatedAt: data.updated_at,
+  };
+}
+
+export async function deleteKidWizCloudWorkspace({ client, userId }) {
+  const { error: safetyError } = await client
+    .from(SAFETY_EVENTS_TABLE)
+    .delete()
+    .eq("owner_id", userId);
+
+  if (safetyError) {
+    const normalized = normalizeSupabaseError(safetyError);
+    return {
+      ok: false,
+      status: normalized.state,
+      error: normalized.message,
+    };
+  }
+
+  const { error: workspaceError } = await client
+    .from(WORKSPACES_TABLE)
+    .delete()
+    .eq("owner_id", userId);
+
+  if (workspaceError) {
+    const normalized = normalizeSupabaseError(workspaceError);
+    return {
+      ok: false,
+      status: normalized.state,
+      error: normalized.message,
+    };
+  }
+
+  return {
+    ok: true,
+    status: "deleted",
   };
 }
 

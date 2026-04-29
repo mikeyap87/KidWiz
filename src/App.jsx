@@ -49,8 +49,10 @@ import {
   supabase,
 } from "./lib/supabaseClient";
 import {
+  buildFamilyExportPayload,
   createCloudSyncStatus,
   createInitialCloudSyncStatus,
+  deleteKidWizCloudWorkspace,
   loadKidWizCloudWorkspace,
   mergeCloudWorkspaceState,
   saveKidWizCloudWorkspace,
@@ -918,6 +920,64 @@ function App() {
     setFamilyToolsMessage("Saved weekly history reset to the KidWiz baseline.");
   }
 
+  function handleExportFamilyData() {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const payload = buildFamilyExportPayload(appState);
+    const fileName = `kidwiz-${appState.familyName
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)/g, "") || "family"}-export.json`;
+    const blob = new Blob([JSON.stringify(payload, null, 2)], {
+      type: "application/json",
+    });
+    const downloadUrl = window.URL.createObjectURL(blob);
+    const link = document.createElement("a");
+
+    link.href = downloadUrl;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.URL.revokeObjectURL(downloadUrl);
+    setFamilyToolsMessage("Family export prepared as a parent-readable JSON file.");
+  }
+
+  async function handleDeleteCloudWorkspace() {
+    const session = appState.session;
+
+    if (
+      !isSupabaseConfigured ||
+      !supabase ||
+      session?.type !== "supabase" ||
+      !session.userId
+    ) {
+      setFamilyToolsMessage(
+        "Cloud deletion needs a signed-in Supabase parent. Local demo data is still only in this browser.",
+      );
+      return;
+    }
+
+    const result = await deleteKidWizCloudWorkspace({
+      client: supabase,
+      userId: session.userId,
+    });
+
+    if (!result.ok) {
+      setCloudSyncStatus(createCloudSyncStatus(result.status, result.error));
+      setFamilyToolsMessage("KidWiz could not delete the cloud copy yet.");
+      return;
+    }
+
+    setCloudReadyUserId(null);
+    setCloudSyncStatus(createCloudSyncStatus("deleted"));
+    setFamilyToolsMessage(
+      "Cloud copy deleted. This browser preview is still available until you reset it.",
+    );
+  }
+
   function handleResetDemo() {
     if (typeof window !== "undefined") {
       const shouldReset = window.confirm(
@@ -1370,6 +1430,7 @@ function App() {
                   <FamilyTab
                     appState={appState}
                     assignedTrackIds={assignedTrackIds}
+                    cloudSyncStatus={cloudSyncStatus}
                     familyToolsMessage={familyToolsMessage}
                     onAdjustWeeklyTarget={handleAdjustWeeklyTarget}
                     onApplyPlanningNudge={handleApplyPlanningNudge}
@@ -1395,7 +1456,9 @@ function App() {
                       }))
                     }
                     onArchiveCurrentWeek={handleArchiveCurrentWeek}
+                    onDeleteCloudWorkspace={handleDeleteCloudWorkspace}
                     onExitDemo={handleExitDemo}
+                    onExportFamilyData={handleExportFamilyData}
                     onGenerateFreshWeek={handleGenerateFreshWeek}
                     onResetDemo={handleResetDemo}
                     onResetWeeklyHistory={handleResetWeeklyHistory}

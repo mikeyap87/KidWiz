@@ -27,7 +27,7 @@ KidWiz is a modern children's education SaaS concept that combines traditional l
 - a restartable Dashboard tour that teaches setup proof, parent proof, and Family Hub controls
 - a Help tab and `/help` path for the parent workflow, section guide, Learning Studio status, and onboarding restart actions
 - a production-readiness Help layer with a compact Launch Gate that separates “ready for local demo review” from what still needs durable family data, AI safety evidence, privacy/consent decisions, and repeatable QA before real families use KidWiz
-- an opt-in Supabase persistence foundation for signed-in parent accounts, including a family workspace table, AI safety event table, row-level security policies, and visible cloud sync status while keeping local demo mode intact
+- an opt-in Supabase persistence foundation for signed-in parent accounts, including a family workspace table, AI safety event table, row-level security policies, visible cloud sync status, and parent export/delete controls while keeping local demo mode intact
 - a Parent Outcome Dashboard that translates weekly activity into learning readiness, life-skill practice, child momentum, and parent clarity
 - a parent outcome risk ribbon in dashboard view, so parents can quickly spot at-risk children and jump into the right next action in one tap
 - parent outcome filtering controls and one-tap child session starts so new parents can instantly focus on “All,” “Needs support,” or “Top momentum” and act, with clear guidance when a filter has no matches.
@@ -174,8 +174,8 @@ For local testing, KidWiz can temporarily use a shared OpenAI key copied from an
 
 ## Next Good Moves
 
-- apply and test the Supabase persistence migration in the KidWiz Supabase project, then run a signed-in parent smoke test
-- split the JSON family workspace into normalized reporting/export tables after the privacy and retention policy is approved
+- apply and test the Supabase persistence migration in the KidWiz Supabase project, then run a signed-in parent smoke test for save, export, and cloud delete
+- split the JSON family workspace into normalized reporting tables after the privacy and retention policy is approved
 - introduce billing and subscription controls
 - keep trimming the local bundle by pushing the remaining shell-only recommendation and archive helpers behind lazy screen boundaries or async state utilities
 - move more of the always-mounted mobile shell into focused components now that its state derives from shared progression helpers

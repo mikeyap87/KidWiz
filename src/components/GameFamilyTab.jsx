@@ -4,12 +4,14 @@ import {
   Bot,
   Brain,
   CalendarDays,
+  Download,
   Map,
   MessagesSquare,
   NotebookPen,
   RefreshCw,
   ShieldCheck,
   Target,
+  Trash2,
   Trophy,
   Users,
 } from "lucide-react";
@@ -73,13 +75,16 @@ function ChoiceDock({ items, selectedId, onSelect, limit = 4 }) {
 export function FamilyTab({
   appState,
   assignedTrackIds,
+  cloudSyncStatus,
   familyToolsMessage,
   onArchiveAndStartFreshWeek,
   onArchiveCurrentWeek,
   onChangeCelebrationStyle,
   onChangeCoachStyle,
   onChangeRhythm,
+  onDeleteCloudWorkspace,
   onExitDemo,
+  onExportFamilyData,
   onGenerateFreshWeek,
   onResetDemo,
   onResetWeeklyHistory,
@@ -192,6 +197,10 @@ export function FamilyTab({
           <span className="game-stat">
             <strong>{selectedRhythm.title}</strong>
             rhythm
+          </span>
+          <span className="game-stat">
+            <strong>{cloudSyncStatus?.label ?? "Local demo"}</strong>
+            data
           </span>
         </div>
       </header>
@@ -490,6 +499,32 @@ export function FamilyTab({
                 <button className="inline-action" onClick={onToggleBodyBoundaries} type="button">
                   {appState.bodyBoundariesUnlocked ? "Lock sensitive topics" : "Unlock with parent"}
                 </button>
+              </article>
+
+              <article>
+                <strong>Privacy export</strong>
+                <span>
+                  Download the current family workspace as a readable JSON file
+                  before testing real accounts or destructive changes.
+                </span>
+                <div className="game-family-toolbox">
+                  <button onClick={onExportFamilyData} type="button">
+                    <Download size={14} />
+                    Export data
+                  </button>
+                  <button
+                    onClick={() =>
+                      runWithConfirmation(
+                        "Delete the signed-in cloud copy? This keeps the local browser preview until you reset it.",
+                        onDeleteCloudWorkspace,
+                      )
+                    }
+                    type="button"
+                  >
+                    <Trash2 size={14} />
+                    Delete cloud
+                  </button>
+                </div>
               </article>
 
               <article>

@@ -105,7 +105,7 @@ KidWiz aims to close that gap by giving families one place to build:
 - Curriculum Depth Console that scores track coverage across lesson depth, quiz checkpoints, story support, age bands, and parent follow-through
 - Launch Readiness Console and Help readiness layer that clearly mark what is local-demo ready and what still needs production auth, database, AI safety, privacy, billing, QA, and analytics work
 - Production Data Model Console that maps local product behavior to future SaaS records across accounts, children, learning progress, journals, AI safety, consent, and billing
-- opt-in Supabase persistence foundation for signed-in parent accounts, using a family workspace record for durable app state and a separate AI safety event table for future parent/audit review
+- opt-in Supabase persistence foundation for signed-in parent accounts, using a family workspace record for durable app state, a separate AI safety event table for future parent/audit review, and parent-facing export/delete controls
 
 ## Business Value
 
@@ -175,7 +175,7 @@ The value is:
 ### Local Product Logic
 
 - `src/lib/demoState.js` owns the local demo bootstrap state and browser persistence behavior.
-- `src/lib/supabasePersistence.js` owns optional cloud load/save behavior for signed-in parent workspaces and Learning Studio safety events.
+- `src/lib/supabasePersistence.js` owns optional cloud load/save/delete behavior for signed-in parent workspaces, Learning Studio safety events, and parent-readable JSON exports.
 - `src/lib/progression/` owns playlist generation, quest world derivation, mission board logic, weekly report derivation, trend comparison logic, lesson progression, track status, badge logic, and recommended-next-step behavior.
 - `src/lib/appWorkspaceSelectors.js` owns selected-child, active-lesson, active-story, and workspace derivation for the app shell.
 - `src/lib/familyWeekActions.js` owns save-week, archive-week, and fresh-week state transitions.
@@ -297,7 +297,7 @@ The Family Hub now includes local controls to:
 - Family Hub now includes a Parent Consent & Privacy Center so export, deletion, consent, and retention decisions are visible before backend work begins.
 - Family Hub now includes a clearer privacy decision checklist for consent records, export paths, deletion scope, and retention windows before public launch.
 - Help now includes a production-readiness Launch Gate so the next milestone is visible in the product: local demo review can continue, while durable family data, AI safety evidence, privacy/consent policy, and repeatable QA remain required before real-family launch.
-- Supabase persistence is now opt-in and branch-safe: the app can cloud-save signed-in family workspaces after the migration is applied, while local demo mode remains the default no-backend review path.
+- Supabase persistence is now opt-in and branch-safe: the app can cloud-save signed-in family workspaces after the migration is applied, export a parent-readable family archive, and delete the cloud copy while local demo mode remains the default no-backend review path.
 - Family Hub now includes a Curriculum Depth Console so curriculum expansion can be prioritized by coverage and gaps instead of adding content blindly.
 - Family Hub now frames readiness and data planning in parent-readable language through the Family Readiness Plan and Family Data Map, avoiding public-facing prototype or production caveats inside the product UI.
 - Coach now includes a Spark Tutor Safety Studio so future AI behavior can be reviewed locally before any real model or child data is connected.
@@ -315,7 +315,7 @@ The Family Hub now includes local controls to:
 
 - Browser storage remains the default demo path, so the product still works without any backend setup.
 - Supabase persistence now exists as an opt-in foundation, but the migration must be reviewed/applied manually before using it with real signed-in parent accounts.
-- Server-side AI now exists locally for the Learning Studio, and safety events can be persisted after the Supabase migration is applied; retention policy, export/delete flows, and parent controls still need approval before public child use.
+- Server-side AI now exists locally for the Learning Studio, and safety events can be persisted after the Supabase migration is applied; the export/delete controls now exist, but the final retention policy and parent consent wording still need approval before public child use.
 - Journals, playlists, badges, quizzes, and progress can cloud-save as one family workspace JSON record, but richer reporting/export tables are still a later production slice.
 - Billing, subscriptions, and role permissions are not implemented yet.
 - The current build is a strong local product prototype, not a production-ready child data platform.
@@ -323,7 +323,7 @@ The Family Hub now includes local controls to:
 ## Next Priorities
 
 1. Apply and test the Supabase persistence migration in the KidWiz Supabase project with a signed-in parent account.
-2. Add parent export/delete flows and a retention policy for journals, progress, and AI safety events.
+2. Approve a retention policy and consent wording for journals, progress, and AI safety events.
 3. Split the JSON family workspace into normalized tables for richer child reports, exports, and future analytics.
 4. Replace the shared track playbooks with richer authored lesson variants, stronger age-banding, and deeper media or interaction types that fit each track.
 5. Keep trimming the local bundle by moving the remaining shell-owned active-lesson and coach-card helpers behind lazy boundaries or focused child-shell components.
