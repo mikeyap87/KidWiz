@@ -7,7 +7,7 @@ KidWiz still works as a local demo without Supabase. This production slice adds 
 - Supabase project: `KidWiz`
 - Project ref: `fvubmofcaqvrwfmqwric`
 - Region: `us-west-2`
-- Status: linked locally and migrations applied on April 29, 2026
+- Status: linked locally, migrations applied, and signed-in persistence smoke-tested on April 29, 2026
 
 ## What This Stores
 
@@ -40,6 +40,17 @@ When the tables are present, signed-in parent sessions show cloud sync status. W
 - `202604290002_kidwiz_safety_event_delete_policy.sql` adds the parent-owned delete policy for AI safety events so the `Delete cloud` control can remove safety review rows too.
 
 Verified on April 29, 2026: both tables exist, both migrations are recorded remotely, and row-level security policies cover family workspace read/insert/update/delete plus safety-event read/insert/update/delete.
+
+## Signed-In Smoke Test
+
+Verified on April 29, 2026 with a temporary parent account that was deleted after the test:
+
+- parent signed in with the publishable Supabase key
+- family workspace saved through parent-owned row-level security
+- AI safety event saved through parent-owned row-level security
+- family workspace read back through parent-owned row-level security
+- `Delete cloud` path removed the workspace and safety-event rows
+- temporary auth user and test rows were cleaned up afterward
 
 ## Parent Privacy Controls
 

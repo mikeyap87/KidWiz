@@ -176,7 +176,7 @@ For local testing, KidWiz can temporarily use a shared OpenAI key copied from an
 
 ## Next Good Moves
 
-- add the KidWiz Supabase publishable frontend key locally, then run a signed-in parent smoke test for save, export, and cloud delete
+- run a real browser magic-link review with the owner's email, then confirm cloud sync appears in the Parent room after sign-in
 - approve the parent privacy and retention draft in `docs/PRIVACY_RETENTION_DRAFT.md`, then add the final consent step to real account setup
 - split the JSON family workspace into normalized reporting tables after the privacy and retention policy is approved
 - introduce billing and subscription controls
