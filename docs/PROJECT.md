@@ -39,7 +39,7 @@ KidWiz aims to close that gap by giving families one place to build:
 - Setup Quest guided onboarding for goal selection, weekly rhythm, coach style, celebration style, a parent trust console, a clear "choose at least two goals" blocked state, and first-week proof
 - post-launch dashboard confirmation that the selected goals, rhythm, coach tone, and celebration lens are active in the family plan
 - restartable Dashboard tour with skip, back, next, finish, and Family Hub restart controls
-- Help tab plus `/help` path with the fastest parent path, main section guide, Learning Studio status, common fixes, and a production-readiness checklist for real-family launch
+- Help tab plus `/help` path with the fastest parent path, main section guide, Learning Studio status, common fixes, and a compact Launch Gate that separates local demo review from real-family production launch needs
 - shared in-app screen guidance that names each core section's audience, purpose, and best next move
 - focused interaction polish across core screens so keyboard users and hesitant parent/child sessions get clearer affordances, including visible focus states and disabled-action feedback
 - parent dashboard with per-child weekly targets, outcome framing, focus tracks, progress, and recommended next lessons
@@ -292,7 +292,7 @@ The Family Hub now includes local controls to:
 - Family Hub now includes a Parent Safety & Trust Review so parents can quickly see sensitive access, AI boundaries, journal privacy, and available controls.
 - Family Hub now includes a Parent Consent & Privacy Center so export, deletion, consent, and retention decisions are visible before backend work begins.
 - Family Hub now includes a clearer privacy decision checklist for consent records, export paths, deletion scope, and retention windows before public launch.
-- Help now includes a production-readiness layer so the next milestone is visible in the product: durable family data, AI safety evidence, privacy/consent policy, and repeatable QA.
+- Help now includes a production-readiness Launch Gate so the next milestone is visible in the product: local demo review can continue, while durable family data, AI safety evidence, privacy/consent policy, and repeatable QA remain required before real-family launch.
 - Family Hub now includes a Curriculum Depth Console so curriculum expansion can be prioritized by coverage and gaps instead of adding content blindly.
 - Family Hub now frames readiness and data planning in parent-readable language through the Family Readiness Plan and Family Data Map, avoiding public-facing prototype or production caveats inside the product UI.
 - Coach now includes a Spark Tutor Safety Studio so future AI behavior can be reviewed locally before any real model or child data is connected.

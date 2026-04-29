@@ -15,7 +15,9 @@ import {
   Users,
 } from "lucide-react";
 import {
+  launchGateChecks,
   parentLaunchProofSteps,
+  privacyDecisionChecklist,
   productionReadinessMilestones,
 } from "../data/releaseReadinessData";
 
@@ -56,6 +58,11 @@ export function HelpTab({
   const productionReadyCount = productionReadinessMilestones.filter(
     (item) => item.tone === "good",
   ).length;
+  const launchGateActionMap = {
+    coach: onOpenCoach,
+    dashboard: onOpenDashboard,
+    family: onOpenFamily,
+  };
   const goalLabel = selectedGoals.length
     ? selectedGoals.map((goal) => goal.title).join(", ")
     : "Family goals";
@@ -158,16 +165,30 @@ export function HelpTab({
             </button>
           </section>
 
-          <section className="game-help-grid game-help-readiness" aria-label="Readiness milestones">
-            {productionReadinessMilestones.slice(0, 4).map((item) => (
-              <article key={item.id} className={`game-help-card is-${item.tone}`}>
-                <Rocket size={18} />
-                <p>{item.label}</p>
-                <strong>{item.status}</strong>
-                <span>{compactCopy(item.copy)}</span>
-              </article>
-            ))}
+          <section className="game-launch-gate" aria-label="KidWiz launch gate">
+            {launchGateChecks.map((item) => {
+              const action = launchGateActionMap[item.action] ?? onOpenDashboard;
+
+              return (
+                <article key={item.id} className={`game-launch-card is-${item.tone}`}>
+                  <Rocket size={18} />
+                  <div>
+                    <p>{item.label}</p>
+                    <strong>{item.status}</strong>
+                    <span>{compactCopy(item.copy, 92)}</span>
+                  </div>
+                  <button onClick={action} type="button">
+                    {item.actionLabel}
+                  </button>
+                </article>
+              );
+            })}
           </section>
+
+          <p className="game-launch-note">
+            Local demo is ready for review. Public child launch still needs durable accounts,
+            privacy rules, and repeated AI-safety evidence.
+          </p>
         </main>
 
         <aside className="game-console" aria-label="Help checklist console">
@@ -195,6 +216,14 @@ export function HelpTab({
                 <span key={step}>
                   <CheckCircle2 size={15} />
                   {step}
+                </span>
+              ))}
+            </div>
+            <div className="game-privacy-mini" aria-label="Parent privacy launch decisions">
+              {privacyDecisionChecklist.slice(0, 4).map((item) => (
+                <span key={item.label}>
+                  <ShieldCheck size={14} />
+                  <strong>{item.label}</strong>
                 </span>
               ))}
             </div>

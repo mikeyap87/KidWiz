@@ -40,6 +40,45 @@ export const parentLaunchProofSteps = [
   "The app still works when live AI is not configured.",
 ];
 
+export const launchGateChecks = [
+  {
+    id: "demo-ready",
+    label: "Demo review",
+    status: "Ready to show",
+    copy: "Use this build to review the parent and child flow on a laptop or iPad.",
+    tone: "good",
+    actionLabel: "Open Today",
+    action: "dashboard",
+  },
+  {
+    id: "family-data",
+    label: "Family accounts",
+    status: "Not live yet",
+    copy: "Real profiles, journals, progress, and safety events still need production storage.",
+    tone: "warn",
+    actionLabel: "View Parent",
+    action: "family",
+  },
+  {
+    id: "ai-proof",
+    label: "AI review",
+    status: "Needs evidence",
+    copy: "Live tutor answers, blocked prompts, and parent summaries need repeated review before public child use.",
+    tone: "warn",
+    actionLabel: "Open Tutor",
+    action: "coach",
+  },
+  {
+    id: "parent-consent",
+    label: "Parent consent",
+    status: "Policy needed",
+    copy: "KidWiz needs clear consent, export, deletion, and retention rules before real families join.",
+    tone: "neutral",
+    actionLabel: "Check controls",
+    action: "family",
+  },
+];
+
 export const privacyDecisionChecklist = [
   {
     label: "Consent record",

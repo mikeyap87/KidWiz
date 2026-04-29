@@ -26,7 +26,7 @@ KidWiz is a modern children's education SaaS concept that combines traditional l
 - a dashboard setup confirmation panel that shows the selected goals, rhythm, coach tone, and celebration lens are actively shaping the week
 - a restartable Dashboard tour that teaches setup proof, parent proof, and Family Hub controls
 - a Help tab and `/help` path for the parent workflow, section guide, Learning Studio status, and onboarding restart actions
-- a production-readiness Help layer that shows what must be true before real families use KidWiz: durable family data, AI safety evidence, privacy/consent decisions, and repeatable QA
+- a production-readiness Help layer with a compact Launch Gate that separates “ready for local demo review” from what still needs durable family data, AI safety evidence, privacy/consent decisions, and repeatable QA before real families use KidWiz
 - a Parent Outcome Dashboard that translates weekly activity into learning readiness, life-skill practice, child momentum, and parent clarity
 - a parent outcome risk ribbon in dashboard view, so parents can quickly spot at-risk children and jump into the right next action in one tap
 - parent outcome filtering controls and one-tap child session starts so new parents can instantly focus on “All,” “Needs support,” or “Top momentum” and act, with clear guidance when a filter has no matches.
