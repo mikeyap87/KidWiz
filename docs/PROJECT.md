@@ -238,7 +238,7 @@ The Family Hub now includes local controls to:
 5. For live Learning Studio AI, copy `.env.example` to `.env.local`, add `OPENAI_API_KEY`, and run `npm run ai:server` in a second terminal. Local review can temporarily reuse a shared OpenAI key from another trusted local project, but KidWiz should get its own dedicated key before public or production use.
 6. Run `npm run lint` and `npm run build`.
 7. Optionally add Supabase values for real magic-link login.
-8. Before testing signed-in cloud persistence, review and apply `supabase/migrations/202604290001_kidwiz_persistence_foundation.sql`.
+8. The KidWiz Supabase project is `fvubmofcaqvrwfmqwric`; migrations in `supabase/migrations/` were applied on April 29, 2026.
 
 ## Important Decisions
 
@@ -316,15 +316,15 @@ The Family Hub now includes local controls to:
 ## Constraints
 
 - Browser storage remains the default demo path, so the product still works without any backend setup.
-- Supabase persistence now exists as an opt-in foundation, but the migration must be reviewed/applied manually before using it with real signed-in parent accounts.
-- Server-side AI now exists locally for the Learning Studio, and safety events can be persisted after the Supabase migration is applied; export/delete controls and the parent-readable retention draft now exist, but final legal/privacy approval is still required before public child use.
+- Supabase persistence now exists as an opt-in foundation in the linked KidWiz project, but local frontend Supabase URL/key values still need to be added before signed-in browser testing.
+- Server-side AI now exists locally for the Learning Studio, and safety events can be persisted in Supabase for signed-in accounts; export/delete controls and the parent-readable retention draft now exist, but final legal/privacy approval is still required before public child use.
 - Journals, playlists, badges, quizzes, and progress can cloud-save as one family workspace JSON record, but richer reporting/export tables are still a later production slice.
 - Billing, subscriptions, and role permissions are not implemented yet.
 - The current build is a strong local product prototype, not a production-ready child data platform.
 
 ## Next Priorities
 
-1. Apply and test the Supabase persistence migration in the KidWiz Supabase project with a signed-in parent account.
+1. Add the KidWiz Supabase publishable frontend key locally, then run a signed-in parent smoke test for save, export, and cloud delete.
 2. Approve `docs/PRIVACY_RETENTION_DRAFT.md`, then add the final consent acceptance step to real account setup.
 3. Split the JSON family workspace into normalized tables for richer child reports, exports, and future analytics.
 4. Replace the shared track playbooks with richer authored lesson variants, stronger age-banding, and deeper media or interaction types that fit each track.

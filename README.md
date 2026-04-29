@@ -171,11 +171,12 @@ For local testing, KidWiz can temporarily use a shared OpenAI key copied from an
 - `docs/SUPABASE_PERSISTENCE.md` - setup notes for the optional Supabase persistence foundation
 - `docs/PRIVACY_RETENTION_DRAFT.md` - parent-readable privacy and retention draft for review before public child use
 - `docs/IMAGE_GENERATION.md` - prompts, art direction, and filenames for generated bitmap assets
-- `supabase/migrations/202604290001_kidwiz_persistence_foundation.sql` - reviewed manually before enabling real family cloud persistence
+- `supabase/migrations/202604290001_kidwiz_persistence_foundation.sql` - family workspace and AI safety-event persistence foundation
+- `supabase/migrations/202604290002_kidwiz_safety_event_delete_policy.sql` - parent-owned delete policy for AI safety events
 
 ## Next Good Moves
 
-- apply and test the Supabase persistence migration in the KidWiz Supabase project, then run a signed-in parent smoke test for save, export, and cloud delete
+- add the KidWiz Supabase publishable frontend key locally, then run a signed-in parent smoke test for save, export, and cloud delete
 - approve the parent privacy and retention draft in `docs/PRIVACY_RETENTION_DRAFT.md`, then add the final consent step to real account setup
 - split the JSON family workspace into normalized reporting tables after the privacy and retention policy is approved
 - introduce billing and subscription controls

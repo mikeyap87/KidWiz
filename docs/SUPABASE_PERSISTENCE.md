@@ -2,6 +2,13 @@
 
 KidWiz still works as a local demo without Supabase. This production slice adds an opt-in cloud persistence path for signed-in parent accounts.
 
+## Current Project
+
+- Supabase project: `KidWiz`
+- Project ref: `fvubmofcaqvrwfmqwric`
+- Region: `us-west-2`
+- Status: linked locally and migrations applied on April 29, 2026
+
 ## What This Stores
 
 - one family workspace per Supabase parent account
@@ -13,19 +20,26 @@ KidWiz still works as a local demo without Supabase. This production slice adds 
 - no billing
 - no analytics
 - no public child accounts
-- no live migration is applied automatically
+- no live migration is applied automatically; migrations are now applied to the linked KidWiz project through the Supabase CLI
 - no final legal-reviewed privacy/retention policy is enforced yet beyond owner-only row-level security, parent-facing export/delete controls, and the draft in `docs/PRIVACY_RETENTION_DRAFT.md`
 
 ## Setup
 
 1. Create or choose the KidWiz Supabase project.
-2. Review `supabase/migrations/202604290001_kidwiz_persistence_foundation.sql`.
-3. Apply the migration in Supabase SQL editor or through the Supabase CLI.
+2. Review migrations in `supabase/migrations/`.
+3. Apply the migrations in Supabase SQL editor or through the Supabase CLI.
 4. Add `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` to the frontend environment.
 5. Restart the app.
 6. Use the magic-link parent sign-in flow.
 
 When the tables are present, signed-in parent sessions show cloud sync status. When the tables are missing, KidWiz stays usable and shows that cloud setup is needed.
+
+## Applied Migrations
+
+- `202604290001_kidwiz_persistence_foundation.sql` creates the family workspace table, AI safety event table, triggers, indexes, and parent-owned read/insert/update/delete policies for family workspaces.
+- `202604290002_kidwiz_safety_event_delete_policy.sql` adds the parent-owned delete policy for AI safety events so the `Delete cloud` control can remove safety review rows too.
+
+Verified on April 29, 2026: both tables exist, both migrations are recorded remotely, and row-level security policies cover family workspace read/insert/update/delete plus safety-event read/insert/update/delete.
 
 ## Parent Privacy Controls
 
