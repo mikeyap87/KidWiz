@@ -34,30 +34,35 @@ const learningStudioModes = [
     id: "learn",
     label: "Learn",
     icon: MessageSquareText,
+    hint: "Spark explains the next lesson step.",
     prompt: "Help me understand the next step in this lesson.",
   },
   {
     id: "quiz",
     label: "Quiz",
     icon: HelpCircle,
+    hint: "Spark asks one quick lesson question.",
     prompt: "Ask me one question from this lesson and explain the answer.",
   },
   {
     id: "explain",
     label: "Explain",
     icon: Lightbulb,
+    hint: "Spark tries a different kid-friendly example.",
     prompt: "Explain this lesson in a different way with a kid-friendly example.",
   },
   {
     id: "visualize",
     label: "Visual",
     icon: Sparkles,
+    hint: "Spark gives a picture to imagine.",
     prompt: "Describe a simple visual I can picture for this lesson.",
   },
   {
     id: "notebook",
     label: "Notebook",
     icon: BookMarked,
+    hint: "Spark saves a memory card.",
     prompt: "Turn this lesson into a short notebook note I can remember later.",
   },
 ];
@@ -280,6 +285,7 @@ export function CoachTab({
             <form className="game-tutor-form" onSubmit={handleLearningStudioSubmit}>
               <label htmlFor="game-tutor-prompt">
                 {selectedStudioMode.label} mode
+                <span>{selectedStudioMode.hint}</span>
               </label>
               <textarea
                 id="game-tutor-prompt"

@@ -45,6 +45,7 @@ KidWiz aims to close that gap by giving families one place to build:
 - parent dashboard with per-child weekly targets, outcome framing, focus tracks, progress, and recommended next lessons
 - game-style Dashboard, Quest Hub, Courses, Stories, Coach, Journal, Family Hub, and Help rooms with no-scroll HUDs, quest-map/lesson/story stages, mission consoles, parent controls, and quick-action bars
 - game-room QA polish now keeps guided setup, Journal, Parent, and Help closer to a laptop/iPad game flow: Setup Quest is one decision at a time, Journal has a child/parent note toggle on mobile, Parent has a More Controls drawer for protected tools, and Help/Parent both include a visible Public Site exit
+- Tutor mode now shows a short active-mode hint, so Learn, Quiz, Explain, Visual, and Notebook have visible purpose without adding a long instruction panel.
 - Parent Outcome Dashboard that translates learning readiness, life-skill practice, child momentum, parent clarity, and child-specific next proof points into parent-readable value, with resilient filter behavior and recovery prompts when a focus filter is empty.
 - Parent Outcome Dashboard now highlights priority support children and gives direct one-tap continuation actions for the best next lesson or child workspace.
 - Parent Outcome Dashboard now includes outcome filters (“All,” “Needs support,” “Top momentum”) and session-start quick actions for low-friction onboarding of new parents.

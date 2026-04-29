@@ -3189,6 +3189,14 @@ body {
     display: none;
   }
 
+  .setup-choice-panel .stack-row span {
+    display: none;
+  }
+
+  .setup-choice-panel .stack-row {
+    min-height: 44px;
+  }
+
   .setup-quest-console .game-console-panel {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -4656,10 +4664,23 @@ body {
 }
 
 .game-tutor-form label {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
   color: var(--kw-muted);
   font-size: 0.78rem;
   font-weight: 900;
   text-transform: uppercase;
+}
+
+.game-tutor-form label span {
+  overflow: hidden;
+  color: var(--kw-teal-strong);
+  font-size: 0.76rem;
+  text-align: right;
+  text-overflow: ellipsis;
+  text-transform: none;
+  white-space: nowrap;
 }
 
 .game-tutor-form textarea {
@@ -5863,6 +5884,15 @@ button.game-help-card {
     height: 52px;
     min-height: 52px;
     padding: 10px;
+  }
+
+  .game-tutor-form label {
+    display: grid;
+    gap: 2px;
+  }
+
+  .game-tutor-form label span {
+    text-align: left;
   }
 
   .game-tutor-submit {
