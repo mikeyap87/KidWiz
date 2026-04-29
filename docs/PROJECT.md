@@ -106,6 +106,7 @@ KidWiz aims to close that gap by giving families one place to build:
 - Launch Readiness Console and Help readiness layer that clearly mark what is local-demo ready and what still needs production auth, database, AI safety, privacy, billing, QA, and analytics work
 - Production Data Model Console that maps local product behavior to future SaaS records across accounts, children, learning progress, journals, AI safety, consent, and billing
 - opt-in Supabase persistence foundation for signed-in parent accounts, using a family workspace record for durable app state, a separate AI safety event table for future parent/audit review, and parent-facing export/delete controls
+- parent-readable privacy and retention draft covering consent, export, deletion, child journals, tutor prompts, safety events, and dormant-account cleanup
 
 ## Business Value
 
@@ -152,6 +153,7 @@ The value is:
 - `src/data/kidwizMarketingData.js` now owns public-site and trust-copy content so those lazy surfaces no longer share the same all-purpose data module as the main app shell.
 - `src/data/kidwizDemoSeedData.js` now owns the seeded local demo state so bootstrap defaults are cleaner to evolve without bloating the shared data module.
 - `src/data/releaseReadinessData.js` now owns launch proof steps, production readiness milestones, and privacy decisions used across Help, Coach, and Family Hub.
+- `docs/PRIVACY_RETENTION_DRAFT.md` owns the plain-English parent privacy and retention draft until legal/privacy review turns it into final policy.
 - `src/components/GameCoursesTab.jsx` now owns the lesson-experience builder import for the game-room Courses branch, while the original Courses screen remains useful design reference for deeper lesson interactions.
 - `src/data/kidwizData.js` acts as the current content source for demo profiles, course tracks, lessons, quest worlds, stories, playlists, badges, rituals, and setup options.
 - `src/App.css` contains the full visual system and responsive layout.
@@ -315,7 +317,7 @@ The Family Hub now includes local controls to:
 
 - Browser storage remains the default demo path, so the product still works without any backend setup.
 - Supabase persistence now exists as an opt-in foundation, but the migration must be reviewed/applied manually before using it with real signed-in parent accounts.
-- Server-side AI now exists locally for the Learning Studio, and safety events can be persisted after the Supabase migration is applied; the export/delete controls now exist, but the final retention policy and parent consent wording still need approval before public child use.
+- Server-side AI now exists locally for the Learning Studio, and safety events can be persisted after the Supabase migration is applied; export/delete controls and the parent-readable retention draft now exist, but final legal/privacy approval is still required before public child use.
 - Journals, playlists, badges, quizzes, and progress can cloud-save as one family workspace JSON record, but richer reporting/export tables are still a later production slice.
 - Billing, subscriptions, and role permissions are not implemented yet.
 - The current build is a strong local product prototype, not a production-ready child data platform.
@@ -323,7 +325,7 @@ The Family Hub now includes local controls to:
 ## Next Priorities
 
 1. Apply and test the Supabase persistence migration in the KidWiz Supabase project with a signed-in parent account.
-2. Approve a retention policy and consent wording for journals, progress, and AI safety events.
+2. Approve `docs/PRIVACY_RETENTION_DRAFT.md`, then add the final consent acceptance step to real account setup.
 3. Split the JSON family workspace into normalized tables for richer child reports, exports, and future analytics.
 4. Replace the shared track playbooks with richer authored lesson variants, stronger age-banding, and deeper media or interaction types that fit each track.
 5. Keep trimming the local bundle by moving the remaining shell-owned active-lesson and coach-card helpers behind lazy boundaries or focused child-shell components.

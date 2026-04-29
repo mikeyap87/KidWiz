@@ -5382,6 +5382,39 @@ body {
   padding: 0 8px;
 }
 
+.game-family-policy-list,
+.game-retention-mini {
+  display: grid;
+  gap: 7px;
+}
+
+.game-family-policy-list span,
+.game-retention-mini span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-width: 0;
+  padding: 8px 10px;
+  border: 1px solid rgba(67, 127, 0, 0.1);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.76);
+  color: var(--kw-ink);
+  font-size: 0.78rem;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.game-family-policy-list span svg {
+  flex: 0 0 auto;
+  color: var(--kw-teal-strong);
+}
+
+.game-family-policy-list span strong,
+.game-retention-mini span strong {
+  color: var(--kw-ink);
+}
+
 .game-help-stage {
   display: grid;
   grid-template-rows: auto minmax(0, 0.42fr) minmax(0, 0.52fr) auto;

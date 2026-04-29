@@ -23,6 +23,10 @@ import {
   coachStyles,
 } from "../data/kidwizData";
 import {
+  parentPrivacyPromise,
+  retentionPolicyDraft,
+} from "../data/releaseReadinessData";
+import {
   buildChildSummary,
   buildFamilyMeetingBuilder,
   buildJournalInsightCoach,
@@ -524,6 +528,29 @@ export function FamilyTab({
                     <Trash2 size={14} />
                     Delete cloud
                   </button>
+                </div>
+                <div className="game-family-policy-list" aria-label="Parent privacy promise">
+                  {parentPrivacyPromise.slice(0, 2).map((item) => (
+                    <span key={item.label}>
+                      <ShieldCheck size={13} />
+                      {item.label}
+                    </span>
+                  ))}
+                </div>
+              </article>
+
+              <article>
+                <strong>Retention draft</strong>
+                <span>
+                  Use parent-controlled storage until the final legal policy is approved.
+                </span>
+                <div className="game-family-policy-list" aria-label="KidWiz retention policy draft">
+                  {retentionPolicyDraft.slice(0, 3).map((item) => (
+                    <span key={item.label}>
+                      <strong>{item.label}</strong>
+                      {item.window}
+                    </span>
+                  ))}
                 </div>
               </article>
 

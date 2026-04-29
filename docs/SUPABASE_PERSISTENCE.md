@@ -14,7 +14,7 @@ KidWiz still works as a local demo without Supabase. This production slice adds 
 - no analytics
 - no public child accounts
 - no live migration is applied automatically
-- no final privacy/retention policy is enforced yet beyond owner-only row-level security and parent-facing export/delete controls
+- no final legal-reviewed privacy/retention policy is enforced yet beyond owner-only row-level security, parent-facing export/delete controls, and the draft in `docs/PRIVACY_RETENTION_DRAFT.md`
 
 ## Setup
 
@@ -31,8 +31,17 @@ When the tables are present, signed-in parent sessions show cloud sync status. W
 
 - `Export data` in the Parent room downloads the current family workspace as readable JSON.
 - The export excludes browser session credentials and Supabase user ids.
+- The export includes the current parent privacy promise and retention draft for review context.
 - `Delete cloud` deletes the signed-in Supabase family workspace and AI safety event rows.
 - Cloud deletion does not erase the local browser preview; parents can still use the separate demo reset control if they want to clear local data.
+
+## Retention Draft
+
+- Learning progress stays while the family account is active unless the parent deletes it.
+- Child journals are parent-controlled and should support export/deletion by child, category, or full account.
+- Tutor prompts should use a short review window for parent review, safety QA, and abuse prevention.
+- AI safety events stay separate from ordinary learning records and remain parent-visible.
+- Dormant accounts should be deleted or anonymized after a clear parent notice window.
 
 ## Safety Notes
 

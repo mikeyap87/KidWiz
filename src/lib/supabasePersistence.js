@@ -1,4 +1,8 @@
 import { createDefaultState } from "./demoState";
+import {
+  parentPrivacyPromise,
+  retentionPolicyDraft,
+} from "../data/releaseReadinessData";
 
 const WORKSPACES_TABLE = "kidwiz_family_workspaces";
 const SAFETY_EVENTS_TABLE = "kidwiz_ai_safety_events";
@@ -104,6 +108,10 @@ export function buildFamilyExportPayload(appState) {
     familyName: appState.familyName,
     note:
       "KidWiz family export for parent review. Session credentials and Supabase user ids are excluded.",
+    privacy: {
+      parentPromise: parentPrivacyPromise,
+      retentionDraft: retentionPolicyDraft,
+    },
     workspace: buildPersistableKidWizState(appState),
     safetyEvents: safetyEvents.map(({ childId, event }) => ({
       childId,

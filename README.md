@@ -169,12 +169,14 @@ For local testing, KidWiz can temporarily use a shared OpenAI key copied from an
 - `scripts/kidwiz-ai-server.mjs` - local live-AI endpoint for Learning Studio tutoring and moderation
 - `docs/PROJECT.md` - living product and architecture document
 - `docs/SUPABASE_PERSISTENCE.md` - setup notes for the optional Supabase persistence foundation
+- `docs/PRIVACY_RETENTION_DRAFT.md` - parent-readable privacy and retention draft for review before public child use
 - `docs/IMAGE_GENERATION.md` - prompts, art direction, and filenames for generated bitmap assets
 - `supabase/migrations/202604290001_kidwiz_persistence_foundation.sql` - reviewed manually before enabling real family cloud persistence
 
 ## Next Good Moves
 
 - apply and test the Supabase persistence migration in the KidWiz Supabase project, then run a signed-in parent smoke test for save, export, and cloud delete
+- approve the parent privacy and retention draft in `docs/PRIVACY_RETENTION_DRAFT.md`, then add the final consent step to real account setup
 - split the JSON family workspace into normalized reporting tables after the privacy and retention policy is approved
 - introduce billing and subscription controls
 - keep trimming the local bundle by pushing the remaining shell-only recommendation and archive helpers behind lazy screen boundaries or async state utilities

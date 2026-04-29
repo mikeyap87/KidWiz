@@ -18,9 +18,9 @@ export const productionReadinessMilestones = [
   {
     id: "privacy",
     label: "Privacy and consent",
-    status: "Policy decisions needed",
+    status: "Draft policy active",
     copy:
-      "Define export, deletion, retention, parent visibility, sensitive-topic unlocks, and AI tutoring consent before real families join.",
+      "KidWiz now has a parent-readable draft for consent, export, deletion, retention, sensitive-topic unlocks, and AI tutoring review.",
     tone: "warn",
   },
   {
@@ -71,29 +71,79 @@ export const launchGateChecks = [
   {
     id: "parent-consent",
     label: "Parent consent",
-    status: "Policy needed",
-    copy: "KidWiz needs clear consent, export, deletion, and retention rules before real families join.",
+    status: "Draft active",
+    copy: "Parent consent, export, deletion, and retention rules are now drafted for review before real families join.",
     tone: "neutral",
     actionLabel: "Check controls",
     action: "family",
   },
 ];
 
+export const parentPrivacyPromise = [
+  {
+    label: "Parent consent first",
+    status: "Required",
+    copy:
+      "A parent should approve child profiles, AI tutoring, and any sensitive-topic unlock before real child use.",
+  },
+  {
+    label: "Readable family export",
+    status: "Available",
+    copy:
+      "Parents can download a readable family archive for progress, journals, story choices, tutor memory, and safety events.",
+  },
+  {
+    label: "Confirmed deletion",
+    status: "Scoped",
+    copy:
+      "Cloud deletion requires parent confirmation and removes the signed-in workspace plus AI safety event rows.",
+  },
+  {
+    label: "Short retention by default",
+    status: "Draft",
+    copy:
+      "Keep ordinary learning records while the account is active; delete or anonymize dormant child data after a clear parent notice window.",
+  },
+];
+
+export const retentionPolicyDraft = [
+  {
+    label: "Learning progress",
+    window: "Until parent deletes account",
+    copy: "Lessons, badges, playlists, and weekly snapshots stay available so families can track growth.",
+  },
+  {
+    label: "Child journals",
+    window: "Parent-controlled",
+    copy: "Reflections should be exportable and deletable by child, category, or full family account.",
+  },
+  {
+    label: "Tutor prompts",
+    window: "Short review window",
+    copy: "Live AI prompts should be kept only long enough for parent review, safety QA, and abuse prevention.",
+  },
+  {
+    label: "Safety events",
+    window: "Separate audit log",
+    copy: "Blocked or sensitive events should stay separate from ordinary learning records and remain parent-visible.",
+  },
+];
+
 export const privacyDecisionChecklist = [
   {
     label: "Consent record",
-    copy: "Log who approved AI tutoring, sensitive-topic unlocks, and child profile setup.",
+    copy: "Log which parent approved AI tutoring, sensitive-topic unlocks, and child profile setup.",
   },
   {
     label: "Export path",
-    copy: "Let parents download readable family data by child and by category.",
+    copy: "Let parents download readable family data by child, category, and safety-review area.",
   },
   {
     label: "Deletion path",
-    copy: "Support scoped deletion for one journal area, one child, or the whole family account.",
+    copy: "Support confirmed cloud deletion now, then scoped deletion for one child or one journal category later.",
   },
   {
     label: "Retention window",
-    copy: "Choose how long tutor prompts, safety events, weekly snapshots, and journals are kept.",
+    copy: "Use short AI review windows and parent-controlled journal/account retention before public launch.",
   },
 ];

@@ -17,8 +17,9 @@ import {
 import {
   launchGateChecks,
   parentLaunchProofSteps,
-  privacyDecisionChecklist,
+  parentPrivacyPromise,
   productionReadinessMilestones,
+  retentionPolicyDraft,
 } from "../data/releaseReadinessData";
 
 const gameNavItems = [
@@ -230,10 +231,18 @@ export function HelpTab({
               ))}
             </div>
             <div className="game-privacy-mini" aria-label="Parent privacy launch decisions">
-              {privacyDecisionChecklist.slice(0, 4).map((item) => (
+              {parentPrivacyPromise.slice(0, 4).map((item) => (
                 <span key={item.label}>
                   <ShieldCheck size={14} />
                   <strong>{item.label}</strong>
+                </span>
+              ))}
+            </div>
+            <div className="game-retention-mini" aria-label="KidWiz data retention draft">
+              {retentionPolicyDraft.slice(0, 2).map((item) => (
+                <span key={item.label}>
+                  <strong>{item.label}</strong>
+                  {item.window}
                 </span>
               ))}
             </div>
