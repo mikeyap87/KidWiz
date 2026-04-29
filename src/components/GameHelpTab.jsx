@@ -41,6 +41,7 @@ function compactCopy(text, maxLength = 84) {
 
 export function HelpTab({
   aiServerStatus,
+  cloudSyncStatus,
   onExitDemo,
   onOpenCoach,
   onOpenDashboard,
@@ -86,6 +87,10 @@ export function HelpTab({
           <span className="game-stat">
             <strong>{productionReadyCount}/{productionReadinessMilestones.length}</strong>
             launch
+          </span>
+          <span className="game-stat">
+            <strong>{cloudSyncStatus?.label ?? "Local demo"}</strong>
+            sync
           </span>
           <span className="game-stat">
             <strong>{selectedRhythm.title}</strong>
@@ -210,6 +215,11 @@ export function HelpTab({
               <p>AI status</p>
               <strong>{aiStatusLabel}</strong>
               <span>{aiServerStatus.statusText}</span>
+            </article>
+            <article className="game-signal-card">
+              <p>Family data</p>
+              <strong>{cloudSyncStatus?.label ?? "Local demo"}</strong>
+              <span>{cloudSyncStatus?.detail ?? "Saved in this browser."}</span>
             </article>
             <div className="game-help-checklist">
               {parentLaunchProofSteps.slice(0, 5).map((step) => (

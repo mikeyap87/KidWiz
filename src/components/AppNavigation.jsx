@@ -3,6 +3,7 @@ import { tabItems } from "../lib/uiConfig";
 
 export function AppTopbar({
   appZoneLabel,
+  cloudSyncStatus,
   currentTab,
   familyName,
   sessionEmail,
@@ -32,6 +33,14 @@ export function AppTopbar({
             <span>{currentTab.label}</span>
           </div>
           <div className="zone-pill">{appZoneLabel}</div>
+          {cloudSyncStatus ? (
+            <div
+              className={`cloud-sync-pill is-${cloudSyncStatus.tone}`}
+              title={cloudSyncStatus.detail}
+            >
+              <span>{cloudSyncStatus.label}</span>
+            </div>
+          ) : null}
           <button className="ghost-button ghost-button-dark" onClick={onLogout}>
             Back to site
           </button>

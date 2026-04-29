@@ -77,6 +77,7 @@ function GameDrawer({ children, onClose, title }) {
 export function DashboardTab({
   aiServerStatus,
   appState,
+  cloudSyncStatus,
   nextRitual,
   onApplyPlanningNudge,
   onDismissPlanningNudge,
@@ -240,6 +241,7 @@ export function DashboardTab({
           />
           <GameStat label="safety" value={appState.bodyBoundariesUnlocked ? "Open" : "Locked"} />
           <GameStat label="AI" value={aiLabel} />
+          <GameStat label="sync" value={cloudSyncStatus?.label ?? "Local demo"} />
         </div>
       </header>
 

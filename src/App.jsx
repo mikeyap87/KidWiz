@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect, useState } from "react";
+import { Suspense, lazy, useEffect, useRef, useState } from "react";
 import {
   BookOpen,
   NotebookPen,
@@ -48,6 +48,13 @@ import {
   signOut,
   supabase,
 } from "./lib/supabaseClient";
+import {
+  createCloudSyncStatus,
+  createInitialCloudSyncStatus,
+  loadKidWizCloudWorkspace,
+  mergeCloudWorkspaceState,
+  saveKidWizCloudWorkspace,
+} from "./lib/supabasePersistence";
 import "./App.css";
 import "./styles/brightBrand.css";
 import {
@@ -117,6 +124,14 @@ function App() {
   const [aiServerStatus, setAiServerStatus] = useState(() =>
     createInitialAiServerStatus(),
   );
+  const [cloudSyncStatus, setCloudSyncStatus] = useState(() =>
+    createInitialCloudSyncStatus(),
+  );
+  const [cloudReadyUserId, setCloudReadyUserId] = useState(null);
+  const cloudLoadTokenRef = useRef(0);
+  const cloudSaveTimerRef = useRef(null);
+  const sessionType = appState.session?.type;
+  const sessionUserId = appState.session?.userId;
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -136,6 +151,7 @@ function App() {
           type: "supabase",
           role: "parent",
           email: currentEmail,
+          userId: data.session.user.id,
         },
       }));
     });
@@ -152,6 +168,7 @@ function App() {
             type: "supabase",
             role: "parent",
             email: nextEmail,
+            userId: nextSession.user.id,
           },
         }));
         setAuthMessage("Signed in. Welcome back to KidWiz.");
@@ -163,6 +180,8 @@ function App() {
         session:
           current.session?.type === "supabase" ? null : current.session,
       }));
+      setCloudReadyUserId(null);
+      setCloudSyncStatus(createInitialCloudSyncStatus());
     });
 
     return () => subscription.unsubscribe();
@@ -186,6 +205,114 @@ function App() {
       cancelled = true;
     };
   }, []);
+
+  useEffect(() => {
+    if (!isSupabaseConfigured || !supabase) {
+      return undefined;
+    }
+
+    if (sessionType !== "supabase" || !sessionUserId) {
+      return undefined;
+    }
+
+    let cancelled = false;
+    const loadToken = cloudLoadTokenRef.current + 1;
+    cloudLoadTokenRef.current = loadToken;
+
+    queueMicrotask(() => {
+      if (!cancelled) {
+        setCloudSyncStatus(createCloudSyncStatus("loading"));
+      }
+    });
+
+    loadKidWizCloudWorkspace({
+      client: supabase,
+      userId: sessionUserId,
+    })
+      .then((result) => {
+        if (cancelled || cloudLoadTokenRef.current !== loadToken) return;
+
+        if (!result.ok) {
+          setCloudSyncStatus(createCloudSyncStatus(result.status, result.error));
+          return;
+        }
+
+        if (result.workspace?.app_state) {
+          setAppState((current) =>
+            mergeCloudWorkspaceState(current, result.workspace.app_state),
+          );
+        }
+
+        setCloudReadyUserId(sessionUserId);
+        setCloudSyncStatus(
+          createCloudSyncStatus(
+            result.workspace ? "saved" : "idle",
+            result.workspace
+              ? "Cloud workspace loaded."
+              : "New family workspace will save after your next change.",
+          ),
+        );
+      })
+      .catch((error) => {
+        if (cancelled) return;
+        setCloudSyncStatus(createCloudSyncStatus("error", error.message));
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [sessionType, sessionUserId]);
+
+  useEffect(() => {
+    const session = appState.session;
+
+    if (
+      !isSupabaseConfigured ||
+      !supabase ||
+      session?.type !== "supabase" ||
+      !session.userId ||
+      cloudReadyUserId !== session.userId
+    ) {
+      return undefined;
+    }
+
+    if (cloudSaveTimerRef.current) {
+      window.clearTimeout(cloudSaveTimerRef.current);
+    }
+
+    cloudSaveTimerRef.current = window.setTimeout(() => {
+      setCloudSyncStatus(createCloudSyncStatus("saving"));
+
+      saveKidWizCloudWorkspace({
+        appState,
+        client: supabase,
+        userId: session.userId,
+      })
+        .then((result) => {
+          if (!result.ok) {
+            if (result.status === "setup_required") {
+              setCloudReadyUserId(null);
+            }
+
+            setCloudSyncStatus(createCloudSyncStatus(result.status, result.error));
+            return;
+          }
+
+          setCloudSyncStatus(
+            createCloudSyncStatus("saved", "Family workspace saved to Supabase."),
+          );
+        })
+        .catch((error) => {
+          setCloudSyncStatus(createCloudSyncStatus("error", error.message));
+        });
+    }, 900);
+
+    return () => {
+      if (cloudSaveTimerRef.current) {
+        window.clearTimeout(cloudSaveTimerRef.current);
+      }
+    };
+  }, [appState, cloudReadyUserId]);
 
   const {
     activeLesson,
@@ -380,6 +507,8 @@ function App() {
       setAuthMessage(
         "KidWiz opened the parent demo workspace.",
       );
+      setCloudReadyUserId(null);
+      setCloudSyncStatus(createInitialCloudSyncStatus());
       return;
     }
 
@@ -414,6 +543,8 @@ function App() {
         ? "KidWiz opened with a full test family and weekly plan."
         : "KidWiz opened in setup mode so you can shape the family experience first.",
     );
+    setCloudReadyUserId(null);
+    setCloudSyncStatus(createInitialCloudSyncStatus());
   }
 
   async function handleLogout() {
@@ -425,6 +556,8 @@ function App() {
       ...current,
       session: null,
     }));
+    setCloudReadyUserId(null);
+    setCloudSyncStatus(createInitialCloudSyncStatus());
   }
 
   function handleExitDemo() {
@@ -439,6 +572,8 @@ function App() {
     setChildJournalDraft("");
     setParentJournalDraft("");
     setFamilyToolsMessage("");
+    setCloudReadyUserId(null);
+    setCloudSyncStatus(createInitialCloudSyncStatus());
   }
 
   function handleSelectTrack(trackId) {
@@ -802,6 +937,8 @@ function App() {
     setChildJournalDraft("");
     setParentJournalDraft("");
     setFamilyToolsMessage("");
+    setCloudReadyUserId(null);
+    setCloudSyncStatus(createInitialCloudSyncStatus());
   }
 
   function handleToggleBodyBoundaries() {
@@ -1007,6 +1144,7 @@ function App() {
           {!isGameShell ? (
             <AppTopbar
               appZoneLabel={appZoneLabel}
+              cloudSyncStatus={cloudSyncStatus}
               currentTab={currentTab}
               familyName={appState.familyName}
               onLogout={handleLogout}
@@ -1075,6 +1213,7 @@ function App() {
                   <DashboardTab
                     aiServerStatus={aiServerStatus}
                     appState={appState}
+                    cloudSyncStatus={cloudSyncStatus}
                     dashboardTourActive={!appState.dashboardTourCompleted}
                     nextRitual={nextRitual}
                     onAdjustWeeklyTarget={handleAdjustWeeklyTarget}
@@ -1287,6 +1426,7 @@ function App() {
                 {appState.activeTab === "help" ? (
                   <HelpTab
                     aiServerStatus={aiServerStatus}
+                    cloudSyncStatus={cloudSyncStatus}
                     onExitDemo={handleExitDemo}
                     onOpenCoach={() => handleSelectTab("coach")}
                     onOpenDashboard={() => handleSelectTab("dashboard")}

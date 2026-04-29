@@ -1497,11 +1497,34 @@ body {
 }
 
 .mode-pill,
-.zone-pill {
+.zone-pill,
+.cloud-sync-pill {
   min-height: 40px;
   border: 1px solid rgba(67, 127, 0, 0.14);
   border-radius: 999px;
   background: #f7fbf2;
+}
+
+.cloud-sync-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 160px;
+  padding: 0 12px;
+  color: var(--kw-ink);
+  font-size: 0.82rem;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.cloud-sync-pill.is-good {
+  border-color: rgba(67, 127, 0, 0.22);
+  background: rgba(154, 242, 9, 0.18);
+}
+
+.cloud-sync-pill.is-warn {
+  border-color: rgba(255, 184, 0, 0.34);
+  background: #fff8df;
 }
 
 .app-layout {
@@ -2071,7 +2094,8 @@ body {
 .help-ai-status span,
 .mobile-progress-pill,
 .mode-pill,
-.zone-pill {
+.zone-pill,
+.cloud-sync-pill {
   border: 1px solid rgba(67, 127, 0, 0.14);
   border-radius: 999px;
   background: #f7fbf2;
