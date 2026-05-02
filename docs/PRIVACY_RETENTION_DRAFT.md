@@ -33,7 +33,7 @@ This is the plain-English policy draft for local review. It is not legal advice 
 - `Export data` downloads a readable JSON file for the current family workspace.
 - `Delete cloud` removes the signed-in Supabase family workspace and AI safety event rows.
 - Deleting the cloud copy does not erase the local browser preview.
-- The Supabase migration still needs to be applied and tested with a signed-in parent account before this is treated as real persistence.
+- The Supabase migrations have been applied and smoke-tested with a signed-in parent account. Before this is treated as production persistence, run a fresh real-browser magic-link review with the owner's account and confirm cloud sync in the Parent room.
 
 ## Before Public Child Use
 

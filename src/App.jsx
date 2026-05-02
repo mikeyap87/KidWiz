@@ -127,7 +127,9 @@ function App() {
     createInitialAiServerStatus(),
   );
   const [cloudSyncStatus, setCloudSyncStatus] = useState(() =>
-    createInitialCloudSyncStatus(),
+    isSupabaseConfigured
+      ? createCloudSyncStatus("signin_required")
+      : createInitialCloudSyncStatus(),
   );
   const [cloudReadyUserId, setCloudReadyUserId] = useState(null);
   const cloudLoadTokenRef = useRef(0);
@@ -183,7 +185,7 @@ function App() {
           current.session?.type === "supabase" ? null : current.session,
       }));
       setCloudReadyUserId(null);
-      setCloudSyncStatus(createInitialCloudSyncStatus());
+      setCloudSyncStatus(createCloudSyncStatus("signin_required"));
     });
 
     return () => subscription.unsubscribe();
@@ -546,7 +548,11 @@ function App() {
         : "KidWiz opened in setup mode so you can shape the family experience first.",
     );
     setCloudReadyUserId(null);
-    setCloudSyncStatus(createInitialCloudSyncStatus());
+    setCloudSyncStatus(
+      isSupabaseConfigured
+        ? createCloudSyncStatus("signin_required")
+        : createInitialCloudSyncStatus(),
+    );
   }
 
   async function handleLogout() {
@@ -559,7 +565,11 @@ function App() {
       session: null,
     }));
     setCloudReadyUserId(null);
-    setCloudSyncStatus(createInitialCloudSyncStatus());
+    setCloudSyncStatus(
+      isSupabaseConfigured
+        ? createCloudSyncStatus("signin_required")
+        : createInitialCloudSyncStatus(),
+    );
   }
 
   function handleExitDemo() {
@@ -575,7 +585,11 @@ function App() {
     setParentJournalDraft("");
     setFamilyToolsMessage("");
     setCloudReadyUserId(null);
-    setCloudSyncStatus(createInitialCloudSyncStatus());
+    setCloudSyncStatus(
+      isSupabaseConfigured
+        ? createCloudSyncStatus("signin_required")
+        : createInitialCloudSyncStatus(),
+    );
   }
 
   function handleSelectTrack(trackId) {

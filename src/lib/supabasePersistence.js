@@ -29,6 +29,11 @@ export function createCloudSyncStatus(state, detail = "") {
       detail: "Signed in and ready to save.",
       tone: "neutral",
     },
+    signin_required: {
+      label: "Cloud sign-in",
+      detail: "Supabase is configured. Send a parent magic link to save this family workspace.",
+      tone: "neutral",
+    },
     loading: {
       label: "Loading cloud",
       detail: "Checking for a saved family workspace.",
